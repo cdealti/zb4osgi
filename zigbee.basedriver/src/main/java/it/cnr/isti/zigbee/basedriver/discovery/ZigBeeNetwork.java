@@ -1,0 +1,177 @@
+/*
+   Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
+   Institute of Information Science and Technologies 
+   of the Italian National Research Council 
+
+
+   See the NOTICE file distributed with this work for additional 
+   information regarding copyright ownership
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+package it.cnr.isti.zigbee.basedriver.discovery;
+
+import gnu.trove.TIntObjectHashMap;
+import gnu.trove.TShortObjectHashMap;
+import gnu.trove.TShortObjectIterator;
+import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.api.ZigBeeNode;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeDeviceImpl;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @version $LastChangedRevision: 668 $ ($LastChangedDate: 2009-11-19 18:48:39 +0100 (Thu, 19 Nov 2009) $)
+ *
+ */
+public class ZigBeeNetwork {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ZigBeeNetwork.class);
+	
+	private final Hashtable<String, ZigBeeNode> nodes = new Hashtable<String, ZigBeeNode>();	
+	private final Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> > devices = 
+		new Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> >();
+	
+	private final TIntObjectHashMap<ArrayList<ZigBeeDevice>> profiles = 
+		new TIntObjectHashMap<ArrayList<ZigBeeDevice>>();
+
+	
+	public synchronized boolean removeNode(ZigBeeNodeImpl node){
+		final String ieee = node.getIEEEAddress();
+		
+		if( !nodes.containsKey(ieee) ){
+			return false;
+		}
+		TShortObjectHashMap<ZigBeeDevice> toRemove = devices.get(node);
+		for (TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator(); i.hasNext(); i.advance()) {
+			ZigBeeDevice device = i.value();
+			i.remove();
+			removeDeviceFromProfiles(device);
+			
+		}
+		nodes.remove(ieee);
+		return true;
+	}
+	
+	public  synchronized boolean  addNode(ZigBeeNode node){
+		final String ieee = node.getIEEEAddress();
+		
+		if( nodes.containsKey(ieee) ){
+			return false;
+		}
+		nodes.put(ieee, node);
+		devices.put(node, new TShortObjectHashMap<ZigBeeDevice>());
+		return true;
+	}
+	
+	public synchronized boolean removeDevice(ZigBeeDeviceImpl device){
+		final String ieee = device.getPhysicalNode().getIEEEAddress();
+		
+		ZigBeeNode node = null;
+		node = nodes.get(ieee);
+		if( node == null ){
+			logger.error("Trying to remove a device but no catining node exists");
+			return false;
+		}
+
+		final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+		endPoints.remove(device.getId());
+		removeDeviceFromProfiles(device);
+		
+		return true;
+	}
+	
+	public synchronized boolean addDevice(ZigBeeDevice device){
+		final String ieee = device.getPhysicalNode().getIEEEAddress();
+		final short endPoint = device.getId();
+		
+		final ZigBeeNode node = nodes.get(ieee);
+		if( node == null ){
+			return false;
+		}
+
+		TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+		if(endPoints.containsKey(endPoint)){
+			return false;
+		}
+		endPoints.put(endPoint, device);
+		
+		final int profileId = device.getProfileId();
+		ArrayList<ZigBeeDevice> list;
+		list  = profiles.get(profileId);
+		if ( list == null ){
+			list = new ArrayList<ZigBeeDevice>();
+			profiles.put(profileId, list);
+		}
+		list.add(device);
+		
+		return true;
+	}
+	
+	private synchronized boolean removeDeviceFromProfiles(final ZigBeeDevice device){		
+		
+		final int profileId = device.getProfileId();
+		ArrayList<ZigBeeDevice> list = profiles.get(profileId);
+		if( list == null ){
+			logger.error("Trying to remove a device from a give profile but the profile doesn't exist");
+			//XXX It should never happen, we should throw an IllegalStateException
+			return true;
+		}
+		//XXX It following method must always return true, otherwise we should throw an IllegalStateException
+		if( list.remove(device) == false){
+			logger.error("Device to remove not found in the given profile");
+		}
+		
+		return true;
+		
+	}
+	
+	
+	public synchronized Collection<ZigBeeDevice> getDevices(int profileId){
+		final ArrayList<ZigBeeDevice> result = new ArrayList<ZigBeeDevice>();		
+		final ArrayList<ZigBeeDevice> values = profiles.get(profileId);
+		if ( values == null ) {
+			logger.warn("No devices found implemting the profile={}", profileId);
+		} else {
+			logger.error("We found {} implemting the profile={}", values.size(), profileId);
+			result.addAll(values);
+		}				
+		return result;
+	}
+
+	public boolean contains(String ieee, short endPoint) {
+		final ZigBeeNode node = nodes.get(ieee);
+		if ( node == null ){
+			return false;
+		}
+		final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+		if ( endPoints == null ) {
+			return false;
+		}
+		return endPoints.containsKey(endPoint);
+	}
+
+	public ZigBeeNode contains(String ieeeAddress) {
+		return nodes.get(ieeeAddress);
+	}
+
+}

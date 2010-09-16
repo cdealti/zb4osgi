@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.aal-persona.sail</groupId>
+  <artifactId>sail.pom</artifactId>
+  <packaging>pom</packaging>  
+  <version>7-SNAPSHOT</version>
+
+  <name>Suite of bundle for integrating ZigBee device in OSGi and PERSONA</name>
+  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <description><![CDATA[
+	This is the root pom of a suite of bundles (artifacts) which goal is to implement
+	an ZigBee OSGi Base Driver,  to implement a set of Refine Driver for ZigBee 
+	Device, and to integrate the refined device into the PERSONA middleware
+  ]]></description>
+
+  <scm>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/pom</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>ops4j.releases</id>
+      <url>http://repository.ops4j.org/maven2/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>LICENSE*</include>
+          <include>NOTICE*</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.2</version>
+      </plugin>      
+      <plugin>
+        <groupId>org.ops4j</groupId>
+        <artifactId>maven-pax-plugin</artifactId>
+        <version>1.4</version>
+      </plugin>     
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
+        <configuration>
+          <workspace>${basedir}</workspace>
+          <workspaceCodeStylesURL>http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-eclipse-plugin/src/optional/eclipse-config/maven-styles.xml</workspaceCodeStylesURL>
+        </configuration>
+      </plugin> 
+      <plugin>    
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>	
+      </plugin>   
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-8</version>
+        <configuration>
+          <tagBase>svn://svn.aaloa.org/projects/zb4osgi/releases</tagBase>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.0.0</version>
+      </plugin>
+    </plugins>
+  </build>
+ 
+  <dependencyManagement>
+  
+    <!-- INTRA PROJECT DEPENDENCIES -->
+    <dependencies>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.common</artifactId>
+        <version>0.4.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
+        <version>0.5.1-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.dongle.api</artifactId>
+        <version>0.6.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.cc2480.datalink</artifactId>
+        <version>0.6.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.zcl.library</artifactId>
+        <version>0.7.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.sail</groupId>
+        <artifactId>org.aal-persona.zigbee.ha.driver</artifactId>
+        <version>0.6.0-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
+      
+      <!-- WRAPPED BUNDLE -->
+      <dependency>
+        <groupId>org.aal-persona.bundle</groupId>
+        <artifactId>org.aal-persona.bundle.net.sourceforge.trove</artifactId>
+        <version>2.0.4-0002</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.aal-persona.bundle</groupId>
+        <artifactId>org.aal-persona.bundle.rxtx</artifactId>
+        <version>2.1.7-0002</version>
+        <scope>provided</scope>
+      </dependency>
+
+
+      <!-- OSGi Runtime -->
+      <dependency>
+        <groupId>org.ops4j.pax.logging</groupId>
+        <artifactId>pax-logging-api</artifactId>
+        <version>1.4</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.ops4j.pax.logging</groupId>
+        <artifactId>pax-logging-service</artifactId>
+        <version>1.4</version>
+        <scope>provided</scope>
+        <exclusions>
+          <exclusion>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>    
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.osgi.core</artifactId>
+        <version>1.0.0</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.osgi.compendium</artifactId>
+        <version>1.0.0</version>
+        <scope>provided</scope>
+      </dependency>
+      
+      <!-- TESTING -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.5</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.easymock</groupId>
+        <artifactId>easymock</artifactId>
+        <version>2.4</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <reporting>
+    <plugins> 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+          <docletArtifact>
+            <groupId>org.umlgraph</groupId>
+            <artifactId>doclet</artifactId>
+            <version>5.1</version>
+          </docletArtifact>
+          <additionalparam>-views</additionalparam>
+          <useStandardDocletOptions>true</useStandardDocletOptions>
+          <links>
+            <link>http://java.sun.com/j2ee/1.4/docs/api</link>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+            <link>http://trove4j.sourceforge.net/javadocs/</link>
+            <link>http://users.frii.com/jarvi/rxtx/doc/</link>
+            <link>http://www.slf4j.org/apidocs/</link>
+            <link>http://junit.sourceforge.net/javadoc/</link>
+          </links>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+              <report>test-javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.4.2</version>
+      </plugin>
+      <plugin>    
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <format>html</format>
+          <!--format>xml</format-->
+        </configuration>
+      </plugin>    
+    </plugins>    
+  </reporting>
+
+</project>

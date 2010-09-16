@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>sail.pom</artifactId>
+    <groupId>org.aal-persona.sail</groupId>
+    <version>7-SNAPSHOT</version>
+    <relativePath>../pom/pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.aal-persona.sail</groupId>
+  <artifactId>org.aal-persona.zigbee.ha.driver</artifactId>
+  <packaging>bundle</packaging>  
+  <version>0.6.0-SNAPSHOT</version>
+
+  <name>ZigBee Home Automation Profile Driver</name>
+  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <description><![CDATA[
+A Home Automation Profile refinent driver that is able to refin ZigBeeDevice service
+as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specification
+  ]]></description>
+
+  <inceptionYear>2008</inceptionYear>
+  <organization>
+    <name>Institute of Information Science and Technologies of the Italian National Research Council</name>
+    <url>http://isti.cnr.it/</url>
+  </organization> 
+  
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>slenzi</id>
+      <name>Stefano "Kismet" Lenzi</name>
+      <email>stefano.lenzi@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>ffurfari</id>
+      <name>Francesco Furfari</name>
+      <email>francesco.furfari@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>alessandro</id>
+      <name>Alessandro Giari</name>
+      <email>alessandro.giari@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.ha.driver</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.ha.driver</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/zigbee.ha.driver</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.aal-persona.sail</groupId>
+      <artifactId>org.aal-persona.zigbee.zcl.library</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aal-persona.sail</groupId>
+      <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-service</artifactId>
+    </dependency>  
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aal-persona.sail</groupId>
+      <artifactId>org.aal-persona.zigbee.common</artifactId>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>run</id>
+      <build>
+        <plugins>
+          <plugin>    
+            <groupId>org.ops4j</groupId>
+            <artifactId>maven-pax-plugin</artifactId>
+            <configuration>
+              <version>0.17.1</version>
+              <platform>felix</platform>
+              <provision>
+                <param>--org.ops4j.pax.runner.platform.downloadFeedback=false</param>
+                <param>--org.ops4j.pax.runner.scanner.bundle.update=false</param>
+                <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.ha@update</provision>
+                <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver</provision>
+                <provision>mvn:org.aal-persona.bundles/org.aal-persona.bundles.net.sourceforge.trove</provision>
+                <provision>mvn:org.aal-persona.bundles/org.aal-persona.bundles.rxtx</provision>
+              </provision>
+            </configuration>	
+          </plugin>    	
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <groups>
+	  <group>
+	    <title>ZigBee Refinement Driver Extendible Architecture</title>
+	    <packages>it.cnr.isti.zigbee.ha.driver*:it.cnr.isti.zigbee.ha.cluster.factory:it.cnr.isti.zigbee.ha</packages>
+	  </group>
+	  <group>
+	    <title>Simple ZigBee Cluster API</title>
+	    <packages>it.cnr.isti.zigbee.ha.cluster.glue*</packages>
+	  </group>
+	  <group>
+	    <title>Home Automation Device API</title>
+	    <packages>it.cnr.isti.zigbee.ha.device.api*</packages>
+	  </group>
+	  <group>
+	    <title>Default Simple ZigBee Cluster implementation</title>
+	    <packages>it.cnr.isti.zigbee.ha.cluster.impl*</packages>
+	  </group>
+	  <group>
+	    <title>Default Home Automation Device implementation</title>
+	    <packages>it.cnr.isti.zigbee.ha.device.factory:it.cnr.isti.zigbee.ha.device.impl*</packages>
+	  </group>
+	</groups>
+        </configuration>
+      </plugin>
+      <plugin>    
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-Author><![CDATA[
+	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>, 
+	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
+	    Alessandro Giari <alessandro.giari@isti.cnr.it>
+            ]]></Bundle-Author>
+            <Bundle-Name>${pom.name}</Bundle-Name>
+            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-Activator>it.cnr.isti.zigbee.ha.Activator</Bundle-Activator>
+            <Private-Package>
+              it.cnr.isti.primitvetypes.util,
+              com.itaca.ztool.util
+            </Private-Package>
+            <Export-Package>
+              it.cnr.isti.zigbee.ha.*;version=${pom.version},
+              it.cnr.isti.zigbee.persona.*;version=${pom.version}
+            </Export-Package>
+            <Import-Package>
+              !com.itaca.ztool.api.*,
+              it.cnr.isti.zigbee.zcl.*,
+              it.cnr.isti.zigbee.api.*,
+              it.cnr.isti.osgi.util, 
+              org.osgi.*,
+              org.slf4j; provider=paxlogging                
+            </Import-Package>                        
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <configuration>
+          <type>date</type>
+          <dates>
+            <date implementation="java.lang.String">2009-09-25</date>
+            <date implementation="java.lang.String">2010-08-13</date>
+          </dates>
+          <dateFormat>yyyy-MM-dd</dateFormat>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>

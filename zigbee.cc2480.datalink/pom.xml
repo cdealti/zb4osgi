@@ -64,7 +64,7 @@
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.cc2480.datalink</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.cc2480.datalink</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/zigbee.cc2480.datalink</url>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.cc2480.datalink</url>
   </scm>
 
   <dependencies>

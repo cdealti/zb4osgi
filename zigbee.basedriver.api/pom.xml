@@ -119,6 +119,6 @@
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/zigbee.basedriver.api</url>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.basedriver.api</url>
   </scm>
 </project>

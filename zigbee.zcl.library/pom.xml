@@ -64,7 +64,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.zcl.library</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.zcl.library</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/zigbee.zcl.library</url>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.zcl.library</url>
   </scm>
 
 

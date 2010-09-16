@@ -36,7 +36,7 @@
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/pom</url>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/pom</url>
   </scm>
 
   <repositories>

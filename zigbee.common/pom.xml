@@ -48,7 +48,7 @@
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/primitivetypes</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/primitivetypes</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/primitivetypes</url>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/primitivetypes</url>
   </scm>
 
   <dependencies>

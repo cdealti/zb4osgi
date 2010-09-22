@@ -948,7 +948,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.warn(
 					"The channel configuration differ from the channel configuration in use: " +
 					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack shold be should, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
 					value, channel
 			);
 			mismatch = true;
@@ -957,7 +957,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.warn(
 					"The PanId configuration differ from the channel configuration in use: " +
 					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack shold be should, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
 					value, pan
 			);
 			mismatch = true;
@@ -966,7 +966,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.warn(
 					"The NetworkMode configuration differ from the channel configuration in use: " +
 					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack shold be should, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
 					value, mode.ordinal()
 			);
 			mismatch = true;

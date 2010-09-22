@@ -476,9 +476,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	}
 
 	private boolean waitForHardware() {
-		logger.debug("Waiting for HARDWARE to become ready");
 		synchronized (this) {
 			while (state == DriverStatus.CREATED || state == DriverStatus.CLOSED ){
+				logger.debug("Waiting for HARDWARE to become ready");
 				try {
 					wait();
 				} catch (InterruptedException ignored) {
@@ -489,9 +489,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	}			
 	
 	private boolean waitForNetwork() {
-		logger.debug("Waiting for NETWORK to become ready");
 		synchronized (this) {
 			while (state != DriverStatus.NETWORK_READY && state != DriverStatus.CLOSED ){
+				logger.debug("Waiting for NETWORK to become ready");
 				try {
 					wait();
 				} catch (InterruptedException ignored) {

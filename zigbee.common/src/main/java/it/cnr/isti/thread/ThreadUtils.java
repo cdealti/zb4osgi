@@ -22,6 +22,9 @@
 
 package it.cnr.isti.thread;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @version $LastChangedRevision: 662 $ ($LastChangedDate: 2009-11-10 01:45:32 +0100 (Tue, 10 Nov 2009) $)
@@ -30,14 +33,32 @@ package it.cnr.isti.thread;
  */
 public class ThreadUtils {
 	
+    private final static Logger logger = LoggerFactory.getLogger(ThreadUtils.class);
+    
 	public static final void waitNonPreemptive(long time){
 		final long end = System.currentTimeMillis() + time;
 		do{
 			try {
-				Thread.sleep( Math.max( end - System.currentTimeMillis(), 0 ) );
+			    final long delta = Math.max( end - System.currentTimeMillis(), 0 ); 
+			    logger.info( "{} waiting for {}ms", Thread.currentThread(), delta );
+				Thread.sleep( delta );
 			} catch (InterruptedException ignored) {
 			}
 		}while(end < System.currentTimeMillis());
 	}
 	
+	/**
+	 * 
+	 * @since 0.4.0
+	 */
+    public static final void waitingUntil(long time){
+        do{
+            try {
+                final long delta = Math.max( time - System.currentTimeMillis(), 0 ); 
+                logger.info( "{} waiting for {}ms", Thread.currentThread(), delta );
+                Thread.sleep( delta );
+            } catch (InterruptedException ignored) {
+            }
+        }while(time < System.currentTimeMillis());
+    }
 }

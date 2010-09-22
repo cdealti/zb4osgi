@@ -44,7 +44,7 @@ public class ThreadUtils {
 				Thread.sleep( delta );
 			} catch (InterruptedException ignored) {
 			}
-		}while(end < System.currentTimeMillis());
+		}while(end > System.currentTimeMillis());
 	}
 	
 	/**
@@ -59,6 +59,6 @@ public class ThreadUtils {
                 Thread.sleep( delta );
             } catch (InterruptedException ignored) {
             }
-        }while(time < System.currentTimeMillis());
+        }while(time > System.currentTimeMillis());
     }
 }

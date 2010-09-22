@@ -65,7 +65,25 @@ public interface ConfigurationProperties {
 	public final static String APPLICATION_MSG_RETRY_DELAY_KEY = "it.cnr.isti.zigbee.driver.communication.retry.delay";
 
 	public final static int APPLICATION_MSG_TIMEOUT = 2500;
-	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timout";	
+	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timout";
 	
+	/**
+	 * The default value for the {@link ConfigurationProperties#NETWORK_BROWSING_PERIOD_KEY} property, that is <b>15 minutes</b>.
+	 */
+    public final static int NETWORK_BROWSING_PERIOD = 15 * 60 * 1000;
+    /**
+     *  The minimum number of milliseconds that must elapse between that two execution of the ZigBee network<br>
+     *  address-tree browsing, for discovering devices. 
+     */
+    public final static String NETWORK_BROWSING_PERIOD_KEY = "it.cnr.isti.zigbee.driver.network.browsing.period";  
 	
+    /**
+     * The default value for the {@link ConfigurationProperties#DEVICE_INSPECTION_PERIOD_KEY} property, that is <b>10 seconds</b>.
+     */
+    public final static int DEVICE_INSPECTION_PERIOD = 10 * 1000;
+    /**
+     *  The minimum number of milliseconds that must elapse between that two device are inspected by the<br> 
+     *  ZigBee Base Driver. It is useful to reduce the network saturation during the first boot of the driver.  
+     */
+    public final static String DEVICE_INSPECTION_PERIOD_KEY = "it.cnr.isti.zigbee.driver.device.inspection.rate";  
 }

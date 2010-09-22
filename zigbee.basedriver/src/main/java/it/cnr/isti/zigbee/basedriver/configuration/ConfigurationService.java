@@ -68,6 +68,9 @@ public class ConfigurationService implements ManagedService {
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT) );
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY) );
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, ConfigurationProperties.APPLICATION_MSG_TIMEOUT) );
+			
+            configuration.put(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, ConfigurationProperties.NETWORK_BROWSING_PERIOD) );
+            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, ConfigurationProperties.DEVICE_INSPECTION_PERIOD) );
 		}
 		
 		logger.debug("Initialized {} with {}", this, configuration);
@@ -223,4 +226,13 @@ public class ConfigurationService implements ManagedService {
 		driver.setZigBeeNodeMode(getNetworkMode());
 		driver.open(Activator.getCurrentConfiguration().getForceNetworkCleaning());
 	}
+
+    public long getDeviceInspectionPeriod() {
+        return getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY);
+    }
+    
+    public long getNetworkBrowingPeriod() {
+        return getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY);
+    }
+    
 }

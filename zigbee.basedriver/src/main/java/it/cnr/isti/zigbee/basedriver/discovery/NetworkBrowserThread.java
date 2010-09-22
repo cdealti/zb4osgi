@@ -26,7 +26,9 @@ import gnu.trove.TShortArrayList;
 import gnu.trove.TShortHashSet;
 import it.cnr.isti.primitvetypes.util.Integers;
 import it.cnr.isti.thread.Stoppable;
+import it.cnr.isti.thread.ThreadUtils;
 import it.cnr.isti.zigbee.basedriver.Activator;
+import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.io.IOException;
@@ -53,27 +55,23 @@ public class NetworkBrowserThread implements Stoppable {
 	private static final Logger logger = LoggerFactory.getLogger(NetworkBrowserThread.class);
 	
 	private static final short COORDINATOR_NWK_ADDRESS = 0;
-	private static final long DEFAULT_DUTY_PERIOD = 15*60*1000; //15 minutes
 
 	private final ImportingQueue queue;
 	final SimpleDriver driver;
 	private boolean end = false;
-	
-	
-	
+
 	public NetworkBrowserThread(ImportingQueue queue, SimpleDriver driver) {
-		this.queue = queue;
-		this.driver = driver;
-	}
-	
+        this.queue = queue;
+        this.driver = driver;
+    }
+    
 	public void run(){
-		long period = DEFAULT_DUTY_PERIOD;
 		final String threadName = Thread.currentThread().getName();
 		
 		logger.info("{} STARTED Succesfully", threadName);		
 		
 		while(!isEnd()){			
-			long wakeUpTime = System.currentTimeMillis() + period;
+			long wakeUpTime = System.currentTimeMillis() + Activator.getCurrentConfiguration().getNetworkBrowingPeriod();
 			try{
 				logger.info("Inspecting ZigBee network for new nodes");
 				TShortArrayList toInspect = new TShortArrayList(); 
@@ -121,12 +119,7 @@ public class NetworkBrowserThread implements Stoppable {
 					}
 				}
 				
-				try {
-					final long sleeping = wakeUpTime-System.currentTimeMillis();
-					logger.info("{} sleeping for: {}ms", threadName, sleeping);
-					Thread.sleep(sleeping);
-				} catch (InterruptedException ignored) {
-				}
+                ThreadUtils.waitingUntil( wakeUpTime );
 			}catch(Exception e){
 				e.printStackTrace();
 			}

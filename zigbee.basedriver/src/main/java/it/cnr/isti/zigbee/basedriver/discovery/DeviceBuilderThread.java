@@ -62,6 +62,8 @@ public class DeviceBuilderThread implements Stoppable{
 	
 	private final SimpleDriver driver;
 	private boolean end;
+
+    private long nextInspectionSlot = 0;
 	
 	private class ZigBeeDeviceReference{
 		ZigBeeNode node;
@@ -170,30 +172,52 @@ public class DeviceBuilderThread implements Stoppable{
 		inspectDeviceOfNode(nwk, node);
 	}	
 
+	private void inspectNewlyDevice(){
+        logger.info("Trying to register a node extracted from ImportingQueue");
+        final ZigBeeNodeAddress dev = queue.pop();
+        final ZToolAddress16 nwk = dev.getNetworkAddress();
+        final ZToolAddress64 ieee = dev.getIEEEAddress();
+        logger.info("Creating a new set of services for ZigBee Node {} ({})",nwk,ieee);
+        nextInspectionSlot = Activator.getCurrentConfiguration().getDeviceInspectionPeriod() + System.currentTimeMillis();
+        inspectNode(nwk, ieee);
+	}
+	
+	private void inspecFailedDevice(){
+	    //TODO We should add a statistical history for removing a device when we tried it too many times
+        logger.info("Trying to register a node extracted from FailedQueue");
+        final ZigBeeDeviceReference failed = failedDevice.remove(0); 
+        nextInspectionSlot = Activator.getCurrentConfiguration().getDeviceInspectionPeriod() + System.currentTimeMillis();
+        doCreateZigBeeDeviceService(failed.node, failed.endPoint);
+	}
+	
 	public void run() {
-		final String threadName = Thread.currentThread().getName();
-		logger.info("{} STARTED Successfully", threadName);
+		logger.info("{} STARTED Successfully", Thread.currentThread().getName() );
 		
 		while(!isEnd()){
-			try{				
-				if ( queue.size()*2 >=  failedDevice.size() ) {
-					logger.info("Trying to register a node extracted from ImportingQueue");
-					final ZigBeeNodeAddress dev = queue.pop();
-					final ZToolAddress16 nwk = dev.getNetworkAddress();
-					final ZToolAddress64 ieee = dev.getIEEEAddress();
-					logger.info("Creating a new set of services for ZigBee Node {} ({})",nwk,ieee);
-					inspectNode(nwk, ieee);
-				} else {
-					logger.info("Trying to register a node extracted from FailedQueue");
-					final ZigBeeDeviceReference failed = failedDevice.remove(0); 
-					doCreateZigBeeDeviceService(failed.node, failed.endPoint);
-				}
+			try{
+                ThreadUtils.waitingUntil( nextInspectionSlot );
+			    
+                if ( queue.size() > 0 && failedDevice.size() > 0 ){
+                    double sel = Math.random();
+                    if( sel > 0.6 ) {
+                        inspecFailedDevice();
+                    } else {
+                        inspectNewlyDevice();
+                    }
+                } else if ( queue.size() == 0 && failedDevice.size() > 0 ){
+                    inspecFailedDevice();
+                } else if ( queue.size() > 0 && failedDevice.size() == 0 ){
+                    inspectNewlyDevice();
+                } else if ( queue.size() == 0  && failedDevice.size() == 0 ){
+                    inspectNewlyDevice();
+                }
+                
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		
-		logger.info("{} TERMINATED Successfully", threadName);
+		logger.info("{} TERMINATED Successfully", Thread.currentThread().getName());
 	}
 
 	public synchronized boolean isEnd() {

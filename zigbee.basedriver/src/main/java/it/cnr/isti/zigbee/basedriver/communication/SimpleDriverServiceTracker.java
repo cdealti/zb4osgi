@@ -110,8 +110,9 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 		importingQueue.clear();
 		AFLayer.getAFLayer(driverService);
 		driverService.addAnnunceListener(annunceListener);
-		networkBrowser = new NetworkBrowserThread(importingQueue, driverService);
-		deviceBuilder = new DeviceBuilderThread(importingQueue, driverService); 
+		networkBrowser = new NetworkBrowserThread(importingQueue,  driverService );
+		
+		deviceBuilder = new DeviceBuilderThread( importingQueue, driverService); 
 		Thread[] importing = new Thread[]{
 				new Thread(networkBrowser, "NetworkBrowser["+driverService+"]"),
 				new Thread(deviceBuilder, "DeviceBuilder["+driverService+"]")

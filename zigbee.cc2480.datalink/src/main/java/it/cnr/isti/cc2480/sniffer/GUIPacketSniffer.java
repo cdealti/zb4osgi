@@ -3,9 +3,22 @@
  */
 package it.cnr.isti.cc2480.sniffer;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 
 import org.slf4j.Logger;
@@ -38,6 +51,44 @@ public class GUIPacketSniffer
 
     private javax.swing.JButton jbtSave;
 
+    private class SnifferFileFilter extends FileFilter {
+
+        public String getDescription() {
+            return "Serial Sniffer Files (*.sniffer)";
+        }
+
+        public boolean accept( File f ) {
+            if (f.isDirectory()) {
+                return true;
+            } else if (f.getName().endsWith( ".snigger" )){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    
+    private class LoadSaveListener implements ActionListener{
+        
+        public void actionPerformed( ActionEvent e ) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new SnifferFileFilter());
+
+            int returnVal = chooser.showOpenDialog(jScrollPane1);
+
+            if(returnVal != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            
+            if( e.getSource() == jbtLoad ) {
+                loadFile(chooser.getSelectedFile());                
+            }else if( e.getSource() == jbtSave ) {
+                saveFile(chooser.getSelectedFile());                
+            }
+        }        
+    }
+    
+    
     private class SnifferTableModel
         extends AbstractTableModel {
 
@@ -84,6 +135,12 @@ public class GUIPacketSniffer
             rows.add( values );
             fireTableRowsInserted( rows.size() - 1, rows.size() - 1 );
         }
+        
+        public void clear() {
+            int last = rows.size() - 1;
+            rows.clear();
+            fireTableRowsDeleted( 0, last );
+        }
     }
 
     public GUIPacketSniffer() {
@@ -102,15 +159,19 @@ public class GUIPacketSniffer
         jTable1.setModel( getModel() );
         jScrollPane1.setViewportView( jTable1 );
 
+        ActionListener loadSaveHandler = new LoadSaveListener();
+        
         jbtLoad.setText( "Load" );
         jbtLoad.setFocusable( false );
         jbtLoad.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
         jbtLoad.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+        jbtLoad.addActionListener( loadSaveHandler );
 
         jbtSave.setText( "Save" );
         jbtSave.setFocusable( false );
         jbtSave.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
         jbtSave.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+        jbtSave.addActionListener( loadSaveHandler );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout( getContentPane() );
         getContentPane().setLayout( layout );
@@ -131,6 +192,52 @@ public class GUIPacketSniffer
         pack();
     }
 
+    protected void saveFile( File selectedFile ) {       
+        PrintStream out;
+        try {
+            out = new PrintStream(new FileOutputStream(selectedFile,true));
+            out.println("#Dumping packets sniffed with the "+GUIPacketSniffer.class.getName());
+        } catch (Exception e) {
+            logger.debug("Failed to open file for dumping sniffed packet",e);
+            return;
+        }
+        
+        SnifferTableModel packets = getModel();
+        int r = packets.getRowCount();
+        int c = packets.getColumnCount();
+        for ( int i = 0; i < r; i++ ) {
+            StringBuffer sb = new StringBuffer();
+            sb.append( ((Date) packets.getValueAt( i, 0 )).getTime() );
+            for ( int j = 1; j < c; j++ ) {
+                sb.append( ',' ).append( packets.getValueAt( i, j ) );
+            }
+            out.println(sb.toString());
+        }
+        out.flush();
+        out.close();        
+     }
+
+    protected void loadFile( File selectedFile ) {
+        BufferedReader reader;         
+        try {
+            reader = new BufferedReader( new FileReader( selectedFile ) );
+            
+            SnifferTableModel packets = getModel();
+            packets.clear();
+            String line;
+            while ( ( line = reader.readLine() ) != null ) {
+                if ( line.charAt( 0 ) == '#' ) continue;
+                Object[] fields = line.split( "," );
+                fields[0] = new Date( Long.parseLong( (String) fields[0] ) );
+                packets.addRow( fields );
+            }
+        } catch ( IOException e ) {
+            logger.debug("Failed to open file for reading sniffed packet",e);
+            return;
+        }
+        
+    }    
+    
     public SnifferTableModel getModel() {
         if ( model == null ) {
             model = new SnifferTableModel();
@@ -139,8 +246,7 @@ public class GUIPacketSniffer
     }
 
     /**
-     * @param args
-     *            the command line arguments
+     * @param args the command line arguments
      */
     public static void main( String args[] ) {
         java.awt.EventQueue.invokeLater( new Runnable() {

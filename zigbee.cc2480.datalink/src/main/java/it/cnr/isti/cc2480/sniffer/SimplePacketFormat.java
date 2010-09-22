@@ -47,4 +47,18 @@ public class SimplePacketFormat {
 		return 	output;
 	}
 	
+	/*
+    public ZToolPacket parseZToolPacketParsedFormat(final String packet) {
+        String[] fields = packet.split( "\t" );
+        int[] payload = new int[ Integer.parseInt( fields[1] ) ];
+        new ZToolPacket( ApiId, payload );
+        final DoubleByte cmd = packet.getCMD();
+        String output = "0xFE \t " 
+//            + packet.getLEN().getLength()+ " \t " 
+            + ByteUtils.toBase16(cmd.getMsb()) + " " + ByteUtils.toBase16(cmd.getLsb()) + " \t "
+            + " [ " + ByteUtils.toBase16(packet.getPacket(),ZToolPacket.PAYLOAD_START_INDEX) +" ] \t "
+            + ByteUtils.toBase16(packet.getFCS());
+        return  output;
+    }
+    */
 }

@@ -7,18 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 
 import org.slf4j.Logger;
@@ -27,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import com.itaca.ztool.api.ZToolPacket;
 
 /**
+ * <b>NOTE:</bThe file saved by {@link FilePacketSniffer} cannot be opened by {@link GUIPacketSniffer}
+ * 
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @version $LastChangedRevision: 764 $ ($LastChangedDate: 2010-08-04 18:46:44 +0200 (Wed, 04 Aug 2010) $)

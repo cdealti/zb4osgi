@@ -311,7 +311,7 @@ public class Emulator implements SerialHandler{
 	}
 
 	public OutputStream getOutputStream() {
-		return eos;
+		return eos;		
 	}
 
 	public void open(String port, int baudRate, ZToolPacketHandler packethandler) {

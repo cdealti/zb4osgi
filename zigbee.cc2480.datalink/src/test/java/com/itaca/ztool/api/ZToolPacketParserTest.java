@@ -61,36 +61,23 @@ public class ZToolPacketParserTest {
             serial = null;
         }
         
-        /*
-         * PROBLEM: the current serial log contains only BAD PACKET since packet 8,
-         * so maximum value of nPackets is 8 for this log file, and it would not exit
-         * the waiting loop
-         * 
-         * SOLUTION: waiting till enough packet arrived ZToolPacketParser ended
-         * 
-         */
-        final long delta = 500;        
+        final long delta = 250;
+        long time = 0;
         final ZToolPacketParser parser = serial.getParser();
-        long time,joined;
         synchronized (nPackets) {
-            while( nPackets[0] >= 0 && nPackets[0] < 10){
+            while( nPackets[0] >= 0 && nPackets[0] < TOTAL_GOD_PACKET
+            	&& parser.getInternalThread() != null && parser.getInternalThread().isAlive() 
+            	&& time < delta*10
+            ){
+            	logger.debug(
+            			"Waiting for one of the following: " +
+            			"BAD PACKET, enough packet received, parser dead, timout {}", delta*10 
+            	);
             	try {
-					nPackets.wait(delta/2);
+					nPackets.wait(delta);
 				} catch (InterruptedException e) {
 				}
-        	    logger.debug("Sending INTERRUPT to close the parser thread {}", parser.getInternalThread());
-        	    time = delta/2 + System.currentTimeMillis();
-        	    parser.interrupt();
-        	    try{
-        	        parser.getInternalThread().join(delta);
-        	    }catch(InterruptedException ex){
-        	    }
-        	    joined = System.currentTimeMillis();
-            	if( time > joined ){
-            		break;
-            	}else{
-            		logger.debug("Expted to joing with {} but joined failed with time, now is {}", time % 120000, joined % 120000);
-            	}
+				time+=delta;
             }
 		}
         serial.close();

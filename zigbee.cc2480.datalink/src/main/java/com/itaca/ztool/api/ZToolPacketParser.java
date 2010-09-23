@@ -55,7 +55,7 @@ public class ZToolPacketParser implements Runnable {
 	private InputStream in;
 	private int timeout = DEFAULT_TIMEOUT;
 	
-	private Thread thread;
+	private Thread thread = null;
 	
 	private boolean done = false;
 
@@ -64,10 +64,10 @@ public class ZToolPacketParser implements Runnable {
 		this.in = in;
 		this.handler = handler;
 		this.newPacketNotification = lock;
-		
+
 		thread = new Thread(this,"ZToolPacketParser");
+		thread.setDaemon(true);
 		thread.start();
-		
 	}
 	
 	public void run() {
@@ -81,17 +81,17 @@ public class ZToolPacketParser implements Runnable {
 			
 			try {
 				if (in.available() > 0) {
-					
+					//THINK Why we loop on in.available() instead of wait on in.read ?
 					val = in.read();
 					
-					logger.debug("Read {} from input stream ", ByteUtils.formatByte(val));
+					logger.trace("Read {} from input stream ", ByteUtils.formatByte(val));
 					if (val == ZToolPacket.START_BYTE) {
 						profiler.info("Start reading packet");
 						packetStream = new ZToolPacketStream(in);
 						response = packetStream.parsePacket();
 						profiler.info("Packet read and decoded");
 						
-						logger.debug("Response is {}", response.toString());
+						logger.debug("Response is {} -> {}", response.getClass(), response);
 						
 						// wrap around entire parse routine
 						synchronized (this.newPacketNotification) {							

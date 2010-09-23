@@ -25,6 +25,7 @@ import it.cnr.isti.cc2480.low.SerialHandler;
 import it.cnr.isti.thread.ThreadUtils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,6 +110,20 @@ public class Emulator implements SerialHandler{
     
     class EmulatorInputStream extends InputStream {
 
+        public InputStream getFullInputStream() {
+            int size = 0;
+            for ( StreamItem chunck : toJava ) {
+                size += chunck.data.length;
+            }
+            int idx = 0;
+            byte[] big = new byte[size];
+            for ( StreamItem chunck : toJava ) {
+                System.arraycopy( chunck.data, 0, big, idx, chunck.data.length );
+                idx += chunck.data.length;
+            }
+            return new ByteArrayInputStream( big );           
+        }
+        
         @Override
         public synchronized int available()
             throws IOException {
@@ -166,9 +181,12 @@ public class Emulator implements SerialHandler{
     private final EmulatorOutputStream eos;
     private final Object emulatorIO = new Object(); 
     
+    private boolean timeing;
 
 	private Object parserLock = new Object();
     private ZToolPacketParser parser = null;
+
+
 
     /**
      * Only for JUnit purpose
@@ -179,19 +197,24 @@ public class Emulator implements SerialHandler{
     }
     
     public Emulator( String log ) throws IOException {
-        this(new FileInputStream( log ));
+        this(new FileInputStream( log ) , false);
     }    
+
+    public Emulator( InputStream in ) throws IOException {
+        this( in, true );
+    }
     
-    public Emulator( InputStream in) throws IOException {
+    public Emulator( InputStream in, boolean useTiming ) throws IOException {
         reader = new BufferedReader( new InputStreamReader( in ) );
         status = State.Loaded;
         simulate();
         eis = new EmulatorInputStream();
         eos = new EmulatorOutputStream();
         in.close();
+        timeing = useTiming;
         reader.close();
-    }    
-
+    }       
+    
     void simulate()
         throws IOException {
         status = State.FileOpened;
@@ -221,6 +244,15 @@ public class Emulator implements SerialHandler{
                 final byte[] data = extractBytes( line );
                 buffer.add(data);
             }
+        }
+        if ( status == State.Answer ) {
+            StreamItem item = new StreamItem( delta, buffer );
+            buffer.clear();
+            toJava.add( item );
+        } else if ( status == State.Request ) {
+            StreamItem item = new StreamItem( delta, buffer );
+            buffer.clear();
+            fromJava.add( item );
         }
         status = State.EndOfFileReached;
     }
@@ -253,7 +285,7 @@ public class Emulator implements SerialHandler{
         if ( parser != null ) {
             parser.setDone( true );
             // wake up if it's waiting for data
-            parser.interrupt();
+            parser.interrupt();            	
         }
 	}
 
@@ -262,6 +294,10 @@ public class Emulator implements SerialHandler{
 	}
 
 	public void open(String port, int baudRate, ZToolPacketHandler packethandler) {
-        parser = new ZToolPacketParser( eis, packethandler, parserLock );
+	    if ( timeing ){
+	        parser = new ZToolPacketParser( eis, packethandler, parserLock );
+	    } else {
+            parser = new ZToolPacketParser( eis.getFullInputStream(), packethandler, parserLock );
+	    }
 	}
 }

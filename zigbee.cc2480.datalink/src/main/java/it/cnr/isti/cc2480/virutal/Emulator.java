@@ -110,6 +110,11 @@ public class Emulator implements SerialHandler{
     
     class EmulatorInputStream extends InputStream {
 
+    	/**
+    	 * 
+    	 * @return an {@link ByteArrayInputStream} with <b>all</b> the data parsed from the serial log
+    	 * @since 0.6.0
+    	 */
         public InputStream getFullInputStream() {
             int size = 0;
             for ( StreamItem chunck : toJava ) {
@@ -194,6 +199,22 @@ public class Emulator implements SerialHandler{
     Emulator( ) {
         eis = new EmulatorInputStream();
         eos = new EmulatorOutputStream();
+    }
+
+    /**
+     * <b>NOTE:</b> Used only for testunit purpose
+     * @since 0.6.0
+     */
+    EmulatorInputStream getEmulatorInputStream() {
+    	return eis;
+    }
+    
+    /**
+     * <b>NOTE:</b> Used only for testunit purpose
+     * @since 0.6.0
+     */
+    EmulatorOutputStream getEmulatorOutputStream() {
+    	return eos;
     }
     
     public Emulator( String log ) throws IOException {

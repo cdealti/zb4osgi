@@ -67,4 +67,27 @@ public class EmulatorTest {
             fail("Exception thrwon");
         }
     }
+    
+    @Test
+    public void testParsing(){
+    	Emulator e;
+    	try {
+            e = new Emulator( this.getClass().getResourceAsStream( "session.size.0.fsm" ) );
+            assertEquals(
+            		"The number of input byte parsed is wrong", 
+            		0,
+            		e.getEmulatorInputStream().getFullInputStream().available()            		
+            );
+            e = new Emulator( this.getClass().getResourceAsStream( "session.size.27.fsm" ) );
+            assertEquals(
+            		"The number of input byte parsed is wrong", 
+            		27,
+            		e.getEmulatorInputStream().getFullInputStream().available()            		
+            );
+        }
+        catch ( Exception ex ) {
+            ex.printStackTrace( );
+            fail("Exception thrwon");
+        }
+    }
 }

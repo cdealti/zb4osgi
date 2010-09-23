@@ -13,6 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * 
+ * Test unit for class {@link ZToolPacketParser}
+ * 
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.6.0
+ * 
+ */
 public class ZToolPacketParserTest {
 
     int[] nPackets = new int[1];

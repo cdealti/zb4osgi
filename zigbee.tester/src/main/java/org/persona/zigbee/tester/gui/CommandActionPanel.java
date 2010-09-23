@@ -51,7 +51,7 @@ import javax.swing.table.TableModel;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 748 $ ($LastChangedDate: 2010-04-09 18:25:01 +0200 (Fri, 09 Apr 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.3.0
  */
 public class CommandActionPanel extends JPanel {

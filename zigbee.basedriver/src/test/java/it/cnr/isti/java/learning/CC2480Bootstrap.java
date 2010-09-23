@@ -18,7 +18,7 @@ import com.itaca.ztool.api.system.SYS_VERSION;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
  *         </a> - Copyright (c) 2008
- * @version $LastChangedRevision: 291 $ ($LastChangedDate: 2009-03-09 23:44:11 +0100 (Mon, 09 Mar 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

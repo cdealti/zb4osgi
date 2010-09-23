@@ -37,7 +37,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.IdentifyCluster;
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
- * @version $LastChangedRevision: 669 $ ($LastChangedDate: 2009-11-19 18:49:43 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

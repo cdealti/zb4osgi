@@ -27,7 +27,7 @@ import org.junit.Test;
 /**
  * 
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 665 $ ($LastChangedDate: 2009-11-19 18:09:24 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZToolAddress64Test {

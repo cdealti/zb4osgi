@@ -103,7 +103,7 @@ import com.itaca.ztool.util.IIntArrayInputStream;
  *
  * @author <a href="mailto:andrew.rapp@gmail.com">Andrew Rapp</a>
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 709 $ ($LastChangedDate: 2010-03-08 14:21:06 +0100 (Mon, 08 Mar 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  */
 public class ZToolPacketStream implements IIntArrayInputStream {
 

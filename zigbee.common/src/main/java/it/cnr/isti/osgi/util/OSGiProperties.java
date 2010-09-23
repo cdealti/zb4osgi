@@ -26,7 +26,7 @@ import org.osgi.framework.BundleContext;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 662 $ ($LastChangedDate: 2009-11-10 01:45:32 +0100 (Tue, 10 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class OSGiProperties {

@@ -45,7 +45,7 @@ import org.osgi.framework.BundleContext;
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  *         
- * @version $LastChangedRevision: 325 $ ($LastChangedDate: 2009-06-26 19:14:10 +0200 (Fri, 26 Jun 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

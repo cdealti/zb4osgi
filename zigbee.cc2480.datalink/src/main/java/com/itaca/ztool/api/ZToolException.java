@@ -31,7 +31,7 @@ package com.itaca.ztool.api;
  * 
  * @author <a href="mailto:andrew.rapp@gmail.com">Andrew Rapp</a>
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 772 $ ($LastChangedDate: 2010-08-08 23:35:50 +0200 (Sun, 08 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZToolException extends Exception {

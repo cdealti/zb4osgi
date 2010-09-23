@@ -55,7 +55,7 @@ import com.itaca.ztool.api.zdo.ZDO_SIMPLE_DESC_RSP;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
- * @version $LastChangedRevision: 670 $ ($LastChangedDate: 2009-11-19 18:50:26 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.6.0
  *
  */

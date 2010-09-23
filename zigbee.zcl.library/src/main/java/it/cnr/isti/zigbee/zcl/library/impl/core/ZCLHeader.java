@@ -28,7 +28,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Command;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 668 $ ($LastChangedDate: 2009-11-19 18:48:39 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZCLHeader {

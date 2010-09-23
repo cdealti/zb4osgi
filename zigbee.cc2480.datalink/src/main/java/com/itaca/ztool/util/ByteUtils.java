@@ -31,7 +31,7 @@ import java.io.IOException;
  * 
  * @author <a href="mailto:andrew.rapp@gmail.com">Andrew Rapp</a>
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 765 $ ($LastChangedDate: 2010-08-04 18:56:02 +0200 (Wed, 04 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ByteUtils {

@@ -28,7 +28,7 @@ import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 692 $ ($LastChangedDate: 2009-12-17 17:28:18 +0100 (Thu, 17 Dec 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.2.0
  *
  */

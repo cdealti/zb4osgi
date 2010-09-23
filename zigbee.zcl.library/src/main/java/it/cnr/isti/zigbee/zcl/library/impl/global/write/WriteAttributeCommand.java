@@ -31,7 +31,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 730 $ ($LastChangedDate: 2010-03-17 17:34:12 +0100 (Wed, 17 Mar 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class WriteAttributeCommand extends AbstractCommand {

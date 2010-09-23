@@ -25,7 +25,7 @@ package org.persona.zigbee.tester.discovery;
 /**
  * 
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 667 $ ($LastChangedDate: 2009-11-19 18:41:49 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

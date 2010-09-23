@@ -47,7 +47,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * 
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 747 $ ($LastChangedDate: 2010-04-09 18:20:34 +0200 (Fri, 09 Apr 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

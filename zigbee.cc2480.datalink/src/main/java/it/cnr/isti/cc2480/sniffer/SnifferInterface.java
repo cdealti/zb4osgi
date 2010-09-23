@@ -30,7 +30,7 @@ import com.itaca.ztool.api.ZToolPacket;
  * 
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 766 $ ($LastChangedDate: 2010-08-06 12:29:43 +0200 (Fri, 06 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

@@ -35,7 +35,7 @@ import com.itaca.ztool.api.ZToolCMD;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 658 $ ($LastChangedDate: 2009-11-10 01:30:04 +0100 (Tue, 10 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZDO_END_DEVICE_ANNCE_INDTest {

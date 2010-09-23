@@ -22,7 +22,7 @@ import org.osgi.framework.ServiceReference;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
  *         </a> - Copyright (c) 2008 - 2009
- * @version $LastChangedRevision: 635 $ ($LastChangedDate: 2009-10-23 17:52:38 +0200 (Fri, 23 Oct 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

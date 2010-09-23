@@ -37,7 +37,7 @@ import com.itaca.ztool.util.DoubleByte;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 758 $ ($LastChangedDate: 2010-08-04 17:32:31 +0200 (Wed, 04 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZToolPacketTest extends TestCase {

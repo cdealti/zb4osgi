@@ -24,7 +24,7 @@ import com.itaca.ztool.api.system.SYS_VERSION_RESPONSE;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 772 $ ($LastChangedDate: 2010-08-08 23:35:50 +0200 (Sun, 08 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.6.0
  * 
  */

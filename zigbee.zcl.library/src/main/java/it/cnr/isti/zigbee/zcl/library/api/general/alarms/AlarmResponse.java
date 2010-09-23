@@ -32,7 +32,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Status;
  *   
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 291 $ ($LastChangedDate: 2009-03-09 23:44:11 +0100 (Mon, 09 Mar 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.4.0
  *
  */

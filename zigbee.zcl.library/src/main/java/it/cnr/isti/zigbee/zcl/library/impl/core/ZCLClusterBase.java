@@ -40,7 +40,7 @@ import java.util.HashMap;
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  *         
- * @version $LastChangedRevision: 704 $ ($LastChangedDate: 2010-02-25 16:03:53 +0100 (Thu, 25 Feb 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

@@ -35,7 +35,7 @@ import com.itaca.ztool.util.DoubleByte;
  * Test class of {@link ZDO_BIND_REQ}
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 658 $ ($LastChangedDate: 2009-11-10 01:30:04 +0100 (Tue, 10 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.3.0
  */
 public class ZDO_BIND_REQTest {

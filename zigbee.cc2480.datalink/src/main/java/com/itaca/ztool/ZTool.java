@@ -76,7 +76,7 @@ import com.itaca.ztool.util.ExceptionHandler;
  * 
  * This is disappointing: "The WR command should be used sparingly. The EM250 supports a limited number of write cycles.� How many is limited??
  * @author <a href="mailto:andrew.rapp@gmail.com">Andrew Rapp</a>
- * @version $LastChangedRevision: 665 $ ($LastChangedDate: 2009-11-19 18:09:24 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * 
  */
 public class ZTool extends RxTxSerialComm implements ZToolPacketHandler {

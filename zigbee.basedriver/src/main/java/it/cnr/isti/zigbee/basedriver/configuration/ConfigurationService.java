@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 763 $ ($LastChangedDate: 2010-08-04 18:32:22 +0200 (Wed, 04 Aug 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

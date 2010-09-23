@@ -35,7 +35,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.OccupacySensingC
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
- * @version $LastChangedRevision: 677 $ ($LastChangedDate: 2009-11-30 16:47:28 +0100 (Mon, 30 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

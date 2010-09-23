@@ -4,7 +4,7 @@ package it.cnr.isti.java.learning;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
  *         </a> - Copyright (c) 2008
- * @version $LastChangedRevision: 93 $ ($LastChangedDate: 2009-01-12 09:13:57 +0100 (Mon, 12 Jan 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

@@ -29,7 +29,7 @@ import com.itaca.ztool.api.ZToolPacket;
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 658 $ ($LastChangedDate: 2009-11-10 01:30:04 +0100 (Tue, 10 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  */
 public class ZToolPacketUtil {

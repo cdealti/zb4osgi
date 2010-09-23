@@ -39,7 +39,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.RelativeHumidity
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 688 $ ($LastChangedDate: 2009-12-02 10:47:59 +0100 (Wed, 02 Dec 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.4.0
  *
  */

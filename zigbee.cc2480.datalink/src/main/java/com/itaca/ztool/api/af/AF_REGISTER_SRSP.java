@@ -30,7 +30,7 @@ import com.itaca.ztool.util.DoubleByte;
 /**
  *
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 665 $ ($LastChangedDate: 2009-11-19 18:09:24 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  */
 public class AF_REGISTER_SRSP extends ZToolPacket /*implements IRESPONSE, IAF*/{
     /// <name>TI.ZPI1.AF_REGISTER_RESPONSE.Status</name>

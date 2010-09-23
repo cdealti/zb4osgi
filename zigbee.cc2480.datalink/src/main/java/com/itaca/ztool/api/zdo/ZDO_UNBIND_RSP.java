@@ -31,7 +31,7 @@ import com.itaca.ztool.util.DoubleByte;
 /**
  *
  * @author <a href="mailto:alfiva@aaa.upv.es">Alvaro Fides Valero</a>
- * @version $LastChangedRevision: 665 $ ($LastChangedDate: 2009-11-19 18:09:24 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  */
 public class ZDO_UNBIND_RSP extends ZToolPacket/* implements IRESPONSE_CALLBACK,IZDO*/ {
     /// <name>TI.ZPI1.ZDO_UNBIND_RSP.SrcAddress</name>

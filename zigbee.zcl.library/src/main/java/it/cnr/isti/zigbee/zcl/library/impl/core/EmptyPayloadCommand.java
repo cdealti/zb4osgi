@@ -27,7 +27,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Command;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 702 $ ($LastChangedDate: 2010-02-24 15:56:06 +0100 (Wed, 24 Feb 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class EmptyPayloadCommand implements Command {

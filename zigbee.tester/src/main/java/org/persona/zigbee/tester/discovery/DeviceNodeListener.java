@@ -28,7 +28,7 @@ import it.cnr.isti.zigbee.api.ZigBeeDevice;
  * 
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 667 $ ($LastChangedDate: 2009-11-19 18:41:49 +0100 (Thu, 19 Nov 2009) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

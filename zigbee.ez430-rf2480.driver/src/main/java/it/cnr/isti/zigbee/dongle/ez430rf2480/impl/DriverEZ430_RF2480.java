@@ -89,7 +89,7 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @version $LastChangedRevision: 776 $ ($LastChangedDate: 2010-09-08 14:16:47 +0200 (Wed, 08 Sep 2010) $)
+ * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */

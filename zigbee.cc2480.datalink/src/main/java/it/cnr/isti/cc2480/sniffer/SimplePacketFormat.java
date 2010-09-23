@@ -40,7 +40,7 @@ public class SimplePacketFormat {
 	public String parsedFormat(final ZToolPacket packet) {
 		final DoubleByte cmd = packet.getCMD();
 		String output = "0xFE \t " 
-			+ packet.getLEN().getLength()+ " \t " 
+			+ packet.getLEN() + " \t " 
 			+ ByteUtils.toBase16(cmd.getMsb()) + " " + ByteUtils.toBase16(cmd.getLsb()) + " \t "
 			+ " [ " + ByteUtils.toBase16(packet.getPacket(),ZToolPacket.PAYLOAD_START_INDEX) +" ] \t "
 			+ ByteUtils.toBase16(packet.getFCS());

@@ -37,21 +37,13 @@ public class ZToolResponse {
     public final static int ERROR_RESPONSE = -1;
     private int apiId;
     private int checksum;
-    private ZToolPacketLength length;
+    private int length;
     // TODO create Error/ErrorList object
     private boolean error = false;
     private String errorMsg;
 
     public ZToolResponse() {
 
-    }
-
-    public ZToolPacketLength getLength() {
-        return length;
-    }
-
-    public void setLength(ZToolPacketLength length) {
-        this.length = length;
     }
 
     public int getApiId() {
@@ -88,7 +80,7 @@ public class ZToolResponse {
 
     public String toString() {
         return "apiId=" + ByteUtils.toBase16(this.apiId) +
-                ",length=" + length.getLength() +
+                ",length=" + length +
                 ",checksum=" + ByteUtils.toBase16(checksum) +
                 ",error=" + this.error +
                 ",errorMessage=" + this.errorMsg;

@@ -57,7 +57,7 @@ public class ZToolPacket {
     //private final static Logger log = Logger.getLogger(ZToolPacket.class);
     public final static int START_BYTE = 0xFE;
     protected int[] packet;
-    private ZToolPacketLength LEN;
+    private int LEN;
     private DoubleByte CMD;
     private int FCS;
     private boolean error = false;
@@ -89,8 +89,8 @@ public class ZToolPacket {
         // checksum is always computed on pre-escaped packet
         Checksum checksum = new Checksum();
         // Packet length does not include escape bytes 
-        this.LEN = new ZToolPacketLength(frameData.length);
-        packet[1] = this.LEN.getLength();
+        this.LEN = frameData.length;
+        packet[1] = this.LEN;
         checksum.addByte(packet[1]);
         // msb Cmd0 -> Type & Subsystem
         packet[2] = ApiId.getMsb();
@@ -131,8 +131,8 @@ public class ZToolPacket {
         return packet;
     }
 
-    public ZToolPacketLength getLEN() {
-        return this.LEN;
+    public int getLEN() {
+        return LEN;
     }
 
     public DoubleByte getCMD() {
@@ -172,7 +172,7 @@ public class ZToolPacket {
     }
 
     public String toString() {
-        return "Packet: length = " + this.LEN.getLength() +
+        return "Packet: length = " + this.LEN +
                 ", apiId = " + ByteUtils.toBase16(this.CMD.getMsb()) + " " + ByteUtils.toBase16(this.CMD.getLsb()) +
                 ", full data = " + ByteUtils.toBase16(this.packet) +
                 ", checksum = " + ByteUtils.toBase16(this.FCS) +

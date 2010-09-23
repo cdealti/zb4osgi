@@ -3,6 +3,7 @@ package com.itaca.ztool.api;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.security.GuardedObject;
 
 import it.cnr.isti.cc2480.low.HWLowLevelDriver;
 import it.cnr.isti.cc2480.low.PacketListener;
@@ -31,6 +32,7 @@ public class ZToolPacketParserTest {
     @Test
     public void testOverwrittenPacketHandling() {
         final ZToolPacket[] packets = new ZToolPacket[1];        
+        final int TOTAL_GOD_PACKET = 26;
         Emulator serial;
         try {
             serial = new Emulator( ZToolPacketParserTest.class.getResourceAsStream( "overwritten.packet.fsm" ), false );
@@ -93,6 +95,7 @@ public class ZToolPacketParserTest {
 		}
         serial.close();
         assertTrue("Notified of a bad packet", packets[0].isError() == false);
+        assertEquals("Parsed less input packet then available", TOTAL_GOD_PACKET, nPackets[0]);
     }
 
 }

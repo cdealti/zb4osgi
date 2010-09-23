@@ -109,7 +109,7 @@ public class ZToolPacketStream implements IIntArrayInputStream {
 
     //private final static Logger log = Logger.getLogger(ZToolPacketStream.class);
     private InputStream in;
-    private ZToolPacketLength length;
+    private int length;
     private Checksum checksum = new Checksum();
     private boolean done = false;
     private int bytesRead;
@@ -131,10 +131,10 @@ public class ZToolPacketStream implements IIntArrayInputStream {
 
         try {
             
-            int byteLength = this.read("Length");
-            this.length = new ZToolPacketLength(byteLength);            
+            //int byteLength = this.read("Length");
+            this.length = this.read("Length");           
             //log.debug("data length is " + ByteUtils.formatByte(length.getLength()));
-            frameData = new int[length.getLength()];
+            frameData = new int[length];
             this.apiIdMSB = this.read("API ID MSB");
             this.apiIdLSB = this.read("API ID LSB");
             this.apiId = new DoubleByte(this.apiIdMSB, this.apiIdLSB);
@@ -417,25 +417,19 @@ public class ZToolPacketStream implements IIntArrayInputStream {
         // when verifying checksum you must add the checksum that we are verifying
         // when computing checksum, do not include start byte; when verifying, include checksum
         checksum.addByte(b);
-        if (this.length == null) {
-            //log.debug("Read byte " + ByteUtils.formatByte(b) + " at position " + bytesRead + ", data length is still unknow");
-        } else {
-            //log.debug("Read byte " + ByteUtils.formatByte(b) + " at position " + bytesRead + ", data length is " + this.length.getLength() + ", #escapeBytes is " + escapeBytes + ", remaining bytes is " + this.getRemainingBytes());
+        //log.debug("Read byte " + ByteUtils.formatByte(b) + " at position " + bytesRead + ", data length is " + this.length.getLength() + ", #escapeBytes is " + escapeBytes + ", remaining bytes is " + this.getRemainingBytes());
 
-            if (this.getFrameDataBytesRead() >= (length.getLength() + 1)) {
-                // this is checksum and final byte of packet
-                done = true;
+        if (this.getFrameDataBytesRead() >= (length + 1)) {
+            // this is checksum and final byte of packet
+            done = true;
 
-                //log.debug("Checksum byte is " + b);
-            /*
-            if (!checksum.verify()) {/////////////Maybe expected in ZTool is 0x00, not FF////////////////////
-            throw new ZToolParseException("Checksum is incorrect.  Expected 0xff, but got " + checksum.getChecksum());
-            }
-             */
-            }
+            //log.debug("Checksum byte is " + b);
+        /*
+        if (!checksum.verify()) {/////////////Maybe expected in ZTool is 0x00, not FF////////////////////
+        throw new ZToolParseException("Checksum is incorrect.  Expected 0xff, but got " + checksum.getChecksum());
         }
-
-
+         */
+        }
 
         return b;
     }
@@ -444,7 +438,7 @@ public class ZToolPacketStream implements IIntArrayInputStream {
 
     // TODO verify
     private int[] readRemainingBytes() throws IOException {
-        int[] value = new int[length.getLength() - this.getFrameDataBytesRead()];
+        int[] value = new int[length - this.getFrameDataBytesRead()];
 
         for (int i = 0; i < value.length; i++) {
             value[i] = this.read("Remaining bytes " + (value.length-i));
@@ -487,11 +481,8 @@ public class ZToolPacketStream implements IIntArrayInputStream {
      * @return
      */
     public int getRemainingBytes() {
-        if (this.length == null) {
-            return -1;
-        }
         // add one for checksum byte (not included) in packet length
-        return this.length.getLength() - this.getFrameDataBytesRead() + 1;
+        return length - this.getFrameDataBytesRead() + 1;
     }
 
     // get unescaped packet length

@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.slf4j.Logger;
@@ -120,6 +121,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private final AFMessageListnerFilter afListner = new AFMessageListnerFilter(afMessageListners);
 	
 	private long ieeeAddress = -1;
+	private final HashMap<Class<?>, Thread> conversation3Way = new HashMap<Class<?>, Thread>();
 	
 	private class AnnunceListerFilter implements AsynchrounsCommandListener{
 		
@@ -281,7 +283,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	
 	public ZDO_IEEE_ADDR_RSP sendZDOIEEEAddressRequest(ZDO_IEEE_ADDR_REQ request){
 		if( waitForNetwork() == false ) return null;
+		ZDO_IEEE_ADDR_RSP result = null;
 		
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_IEEE_ADDR_RSP, high);
 		
 		logger.debug("Sending ZDO_IEEE_ADDR_REQ {}", request);
@@ -289,29 +293,36 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		if ( response == null || response.Status != 0 ) {
 			logger.debug("ZDO_IEEE_ADDR_REQ failed, recieved {}", response);
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_IEEE_ADDR_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_IEEE_ADDR_RSP) waiter.getCommand(TIMEOUT);
 		}
+		unLock3WayConversation(request);
+		return result;
 	}
 
 	public ZDO_NODE_DESC_RSP sendZDONodeDescriptionRequest(ZDO_NODE_DESC_REQ request) {
 		if( waitForNetwork() == false ) return null;
+		ZDO_NODE_DESC_RSP result = null;
 		
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_NODE_DESC_RSP, high);
 		
 		ZDO_NODE_DESC_REQ_SRSP response = (ZDO_NODE_DESC_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_NODE_DESC_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_NODE_DESC_RSP) waiter.getCommand(TIMEOUT);
 		}
+		
+		unLock3WayConversation(request);
+		return result;
 	}
 	
 	public ZDO_ACTIVE_EP_RSP sendZDOActiveEndPointRequest(ZDO_ACTIVE_EP_REQ request) {
 		if( waitForNetwork() == false ) return null;
+		ZDO_ACTIVE_EP_RSP result = null;
 		
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_ACTIVE_EP_RSP, high);
 		
 		logger.debug("Sending ZDO_ACTIVE_EP_REQ {}", request);
@@ -319,24 +330,68 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		if ( response == null || response.Status != 0 ) {
 			logger.debug("ZDO_ACTIVE_EP_REQ failed, recieved {}", response);
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_ACTIVE_EP_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_ACTIVE_EP_RSP) waiter.getCommand(TIMEOUT);
+		}
+		unLock3WayConversation(request);
+		return result;
+	}
+	
+	/**
+	 * @param request
+	 */
+	private void waitAndLock3WayConversation(ZToolPacket request) {
+		synchronized (conversation3Way) {
+			Class<?> clz = request.getClass();
+			Thread requestor = null;
+			while(	(requestor = conversation3Way.get(clz) ) != null ){
+				logger.debug("Waiting for {} issued by {} to complete", clz, requestor);
+				try{
+					conversation3Way.wait();
+				}catch(InterruptedException ex){					
+				}
+			}
+			conversation3Way.put(clz, Thread.currentThread());
+		}
+	}
+
+	/**
+	 * Release the lock held for the 3-way communication
+	 * 
+	 * @param request
+	 */
+	private void unLock3WayConversation(ZToolPacket request) {
+		Class<?> clz = request.getClass();
+		Thread requestor = null;
+		synchronized ( conversation3Way ) {
+			requestor = conversation3Way.get( clz );
+			conversation3Way.put( clz, null ); 
+		}
+		if( requestor == null ){
+			logger.error("LOCKING BROKEN SOMEONE RELEASE LOCK WITHOU LOCKING IN ADVANCE for {}", clz);
+		} else if( requestor != Thread.currentThread() ) {
+			logger.error(
+					"Thread {} stolen the answer of {} waited by {}",
+					new Object[]{ Thread.currentThread(), clz, requestor } 
+			);
 		}
 	}
 	
 	public ZDO_SIMPLE_DESC_RSP sendZDOSimpleDescriptionRequest(ZDO_SIMPLE_DESC_REQ request) {
 		if( waitForNetwork() == false ) return null;
-		
+		ZDO_SIMPLE_DESC_RSP result = null;
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_SIMPLE_DESC_RSP, high);
 		
 		ZDO_SIMPLE_DESC_REQ_SRSP response = (ZDO_SIMPLE_DESC_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_SIMPLE_DESC_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_SIMPLE_DESC_RSP) waiter.getCommand(TIMEOUT);
 		}
+		
+		unLock3WayConversation(request);
+		return result;
 	}
 
 	public void run() {
@@ -1082,44 +1137,54 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	public AF_DATA_CONFIRM sendAFDataRequest(AF_DATA_REQUEST request) {
 		if( waitForNetwork() == false ) return null;
-		
+		AF_DATA_CONFIRM result = null;
+
+		waitAndLock3WayConversation(request);		
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.AF_DATA_CONFIRM, high);
 		
 		AF_DATA_SRSP  response = (AF_DATA_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
-			return null;
 		} else {
-			return (AF_DATA_CONFIRM) waiter.getCommand(TIMEOUT);
+			result = (AF_DATA_CONFIRM) waiter.getCommand(TIMEOUT);
 		}
+		unLock3WayConversation(request);
+		return result;
 	}
 
 	public ZDO_BIND_RSP sendZDOBind(ZDO_BIND_REQ request) {
 		if( waitForNetwork() == false ) return null;
+		ZDO_BIND_RSP result = null;
 		
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_BIND_RSP, high);
 		
 		ZDO_BIND_REQ_SRSP  response = (ZDO_BIND_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_BIND_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_BIND_RSP) waiter.getCommand(TIMEOUT);
 		}
+		unLock3WayConversation(request);
+		return result;
 	}
 	
 	public ZDO_UNBIND_RSP sendZDOUnbind(ZDO_UNBIND_REQ request) {
 		if( waitForNetwork() == false ) return null;
+		ZDO_UNBIND_RSP result = null;
 		
+		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_UNBIND_RSP, high);
 		
 		ZDO_UNBIND_REQ_SRSP  response = (ZDO_UNBIND_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
-			return null;
 		} else {
-			return (ZDO_UNBIND_RSP) waiter.getCommand(TIMEOUT);
+			result = (ZDO_UNBIND_RSP) waiter.getCommand(TIMEOUT);
 		}
+		
+		unLock3WayConversation(request);
+		return result;
 	}
 	
 	public boolean removeAFMessageListener(AFMessageListner listner){

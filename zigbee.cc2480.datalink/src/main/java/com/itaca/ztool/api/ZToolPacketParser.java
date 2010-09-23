@@ -29,6 +29,7 @@
 
 package com.itaca.ztool.api;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class ZToolPacketParser implements Runnable {
 	
 	private ZToolPacketHandler handler;
 	private Object newPacketNotification = null;
-	private InputStream in;
+	private final InputStream in;
 	private int timeout = DEFAULT_TIMEOUT;
 	
 	private Thread thread = null;
@@ -61,7 +62,15 @@ public class ZToolPacketParser implements Runnable {
 
 	public ZToolPacketParser(InputStream in, ZToolPacketHandler handler, Object lock) {
 		logger.debug("Creating ZToolPacketParser");
-		this.in = in;
+		if ( in.markSupported() ) {
+			this.in = in;
+		} else {
+			logger.warn(
+					"Provided InputStream {} doesn't provide the mark()/reset() feature, " +
+					"wrapping it up as BufferedInputStream", in.getClass()
+			);
+			this.in = new BufferedInputStream(in);
+		}
 		this.handler = handler;
 		this.newPacketNotification = lock;
 

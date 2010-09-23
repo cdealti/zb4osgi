@@ -83,16 +83,20 @@ public class ZToolPacketParser implements Runnable {
 				if (in.available() > 0) {
 					//THINK Why we loop on in.available() instead of wait on in.read ?
 					val = in.read();
-					
 					logger.trace("Read {} from input stream ", ByteUtils.formatByte(val));
 					if (val == ZToolPacket.START_BYTE) {
+						//in.mark(256);
 						profiler.info("Start reading packet");
 						packetStream = new ZToolPacketStream(in);
 						response = packetStream.parsePacket();
 						profiler.info("Packet read and decoded");
 						
 						logger.debug("Response is {} -> {}", response.getClass(), response);
-						
+						if ( response.isError() ){
+							logger.error("Recived a BAD PACKET {}", response.getPacket() );
+							//in.reset();
+							continue;
+						} 
 						// wrap around entire parse routine
 						synchronized (this.newPacketNotification) {							
 							// add to handler and newPacketNotification
@@ -166,5 +170,12 @@ public class ZToolPacketParser implements Runnable {
 	
 	public void interrupt() {
 		thread.interrupt();
+	}
+
+	/**
+	 * @return the internal thread that is handling the {@link InputStream} for parsing packet
+	 */
+	public Thread getInternalThread() {
+		return thread;
 	}
 }

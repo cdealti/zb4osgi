@@ -32,6 +32,20 @@ package com.itaca.ztool.api;
  *
  */
 public interface ZToolPacketHandler {
+	
+	/**
+	 * A callback used by {@link ZToolPacketParser} for notifying that a new packet is arrived
+	 * <b>NOTE</b>: Bad packet would not be notified
+	 * 
+	 * @param response the new {@link ZToolPacket} parsed by {@link ZToolPacketParser}
+	 */
 	public void handlePacket(ZToolPacket response);
+	
+	/**
+	 * A callback used by {@link ZToolPacketParser} for notifying that an {@link Exception} has<br>
+	 * been thrown
+	 * 
+	 * @param th
+	 */
 	public void error(Throwable th);
 }

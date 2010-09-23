@@ -321,4 +321,8 @@ public class Emulator implements SerialHandler{
             parser = new ZToolPacketParser( eis.getFullInputStream(), packethandler, parserLock );
 	    }
 	}
+	
+	public ZToolPacketParser getParser() {
+		return parser;
+	}
 }

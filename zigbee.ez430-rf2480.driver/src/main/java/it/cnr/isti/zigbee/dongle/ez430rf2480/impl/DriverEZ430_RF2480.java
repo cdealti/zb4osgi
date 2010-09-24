@@ -97,8 +97,15 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	private final static Logger logger = LoggerFactory.getLogger(DriverEZ430_RF2480.class);
 	private final static Logger logger4Waiter = LoggerFactory.getLogger(WaitForCommand.class);
+
+	public static final int RESEND_TIMEOUT_DEFAULT = 1000;
+	public static final String RESEND_TIMEOUT_KEY = "zigbee.driver.ez430_rf2480.resend.timout";
 	
+	public  static final int RESEND_MAX_RESEND_DEFAULT = 3;
+	public  static final String RESEND_MAX_RESEND_KEY = "zigbee.driver.ez430_rf2480.resend.max";
 	
+	public  static final boolean RESEND_ONLY_EXCEPTION_DEFAULT = true;
+	public  static final String RESEND_ONLY_EXCEPTION_KEY = "zigbee.driver.ez430_rf2480.resend.exceptiononly";
 	
 	private Thread driver;
 	
@@ -113,7 +120,10 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private boolean cleanStatus;
 
 	private long TIMEOUT = 5000;//Activator.getCurrentConfiguration().getZigBeeTimeout();
-
+	private final int RESEND_TIMEOUT; 
+	private final int RESEND_MAX_RETRY;
+	private final boolean RESEND_ONLY_EXCEPTION;
+	
 	private final HashSet<AnnunceListner> annunceListners = new HashSet<AnnunceListner>();
 	private final AnnunceListerFilter annunceListner = new AnnunceListerFilter(annunceListners);
 	
@@ -192,6 +202,34 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	public DriverEZ430_RF2480(
 			String serialPort, int bitRate, NetworkMode mode, int pan, int channel, boolean cleanNetworkStatus
 	) throws ZToolException {
+		
+		int aux = RESEND_TIMEOUT_DEFAULT;
+		try{
+			aux = Integer.parseInt(System.getProperty(RESEND_TIMEOUT_KEY)); 
+			logger.debug("Using RESEND_TIMEOUT set from enviroment {}", aux);
+		}catch(NumberFormatException ex){
+			logger.debug("Using RESEND_TIMEOUT set as DEFAULT {}", aux);
+		}		
+		RESEND_TIMEOUT = aux;
+		
+		aux = RESEND_MAX_RESEND_DEFAULT;
+		try{
+			aux = Integer.parseInt(System.getProperty(RESEND_MAX_RESEND_KEY)); 
+			logger.debug("Using RESEND_MAX_RETRY set from enviroment {}", aux);
+		}catch(NumberFormatException ex){
+			logger.debug("Using RESEND_MAX_RETRY set as DEFAULT {}", aux);
+		}
+		RESEND_MAX_RETRY = aux; 			
+		
+		boolean b = RESEND_ONLY_EXCEPTION_DEFAULT;
+		try{
+			aux = Integer.parseInt(System.getProperty(RESEND_ONLY_EXCEPTION_KEY)); 
+			logger.debug("Using RESEND_MAX_RETRY set from enviroment {}", aux);
+		}catch(NumberFormatException ex){
+			logger.debug("Using RESEND_MAX_RETRY set as DEFAULT {}", aux);
+		}
+		RESEND_ONLY_EXCEPTION = b; 			
+
 		
 		state = DriverStatus.CLOSED;
 		this.cleanStatus = cleanNetworkStatus;
@@ -1062,7 +1100,6 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	private ZToolPacket sendSynchrouns(final HWHighLevelDriver hwDriver, final ZToolPacket request) {
 		final ZToolPacket[] response = new ZToolPacket[]{null};
-		final int TIMEOUT = 1000, MAX_SEND = 3;					
 		int sending = 1;		
 		
 		logger.info("Sending Synchrouns {}", request.getClass().getName());
@@ -1079,12 +1116,12 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		
 		};
 		
-		while( sending <= MAX_SEND ){
+		while( sending <= RESEND_MAX_RETRY ){
 			try {
-				hwDriver.sendSynchrounsCommand(request, listener, TIMEOUT);
+				hwDriver.sendSynchrounsCommand(request, listener, RESEND_TIMEOUT);
 				logger.info("Sent {} during the {}-th tenative", request.getClass().getName(),sending);
 				synchronized (response) {
-					long wakeUpTime = System.currentTimeMillis() + TIMEOUT;
+					long wakeUpTime = System.currentTimeMillis() + RESEND_TIMEOUT;
 					while(response[0] == null && wakeUpTime > System.currentTimeMillis()){
 						final long sleeping = wakeUpTime - System.currentTimeMillis();
 						logger.debug("Waiting Synchrouns for up to {}ms till {} Unixtime", sleeping, wakeUpTime);
@@ -1102,7 +1139,12 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				} else {
 					logger.debug("Timeout fired and not synchrouns command recieved", response[0]);
 				}
-				break;
+				if ( RESEND_ONLY_EXCEPTION ) {
+					break;
+				}else{
+					logger.info("Failed to send {} during the {}-th tenative", request.getClass().getName(),sending);
+					sending++;
+				}
 			}catch(IOException ignored){
 				logger.info("Failed to send {} during the {}-th tenative", request.getClass().getName(),sending);
 				logger.debug("Sending operation failed due to ", ignored);

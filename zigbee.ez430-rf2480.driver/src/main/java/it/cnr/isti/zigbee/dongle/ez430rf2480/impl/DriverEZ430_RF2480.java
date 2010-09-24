@@ -206,27 +206,27 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		int aux = RESEND_TIMEOUT_DEFAULT;
 		try{
 			aux = Integer.parseInt(System.getProperty(RESEND_TIMEOUT_KEY)); 
-			logger.debug("Using RESEND_TIMEOUT set from enviroment {}", aux);
+			logger.debug("Using {} set from enviroment {}", RESEND_TIMEOUT_KEY, aux);
 		}catch(NumberFormatException ex){
-			logger.debug("Using RESEND_TIMEOUT set as DEFAULT {}", aux);
+			logger.debug("Using {} set as DEFAULT {}", RESEND_TIMEOUT_KEY, aux);
 		}		
 		RESEND_TIMEOUT = aux;
 		
 		aux = RESEND_MAX_RESEND_DEFAULT;
 		try{
 			aux = Integer.parseInt(System.getProperty(RESEND_MAX_RESEND_KEY)); 
-			logger.debug("Using RESEND_MAX_RETRY set from enviroment {}", aux);
+			logger.debug("Using {} set from enviroment {}", RESEND_MAX_RESEND_KEY, aux);
 		}catch(NumberFormatException ex){
-			logger.debug("Using RESEND_MAX_RETRY set as DEFAULT {}", aux);
+			logger.debug("Using {} set as DEFAULT {}", RESEND_MAX_RESEND_KEY, aux);
 		}
 		RESEND_MAX_RETRY = aux; 			
 		
 		boolean b = RESEND_ONLY_EXCEPTION_DEFAULT;
 		try{
-			aux = Integer.parseInt(System.getProperty(RESEND_ONLY_EXCEPTION_KEY)); 
-			logger.debug("Using RESEND_MAX_RETRY set from enviroment {}", aux);
+			b = Boolean.parseBoolean(System.getProperty(RESEND_ONLY_EXCEPTION_KEY)); 
+			logger.debug("Using {} set from enviroment {}", RESEND_ONLY_EXCEPTION_KEY, b);
 		}catch(NumberFormatException ex){
-			logger.debug("Using RESEND_MAX_RETRY set as DEFAULT {}", aux);
+			logger.debug("Using {} set as DEFAULT {}", RESEND_ONLY_EXCEPTION_KEY, b);
 		}
 		RESEND_ONLY_EXCEPTION = b; 			
 

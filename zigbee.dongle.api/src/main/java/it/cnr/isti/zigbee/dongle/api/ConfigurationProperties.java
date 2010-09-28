@@ -22,7 +22,10 @@
 
 package it.cnr.isti.zigbee.dongle.api;
 
+
 /**
+ * 
+ * This class contains all the system property that <b>SHOULD</b> affect the behavior of a {@link SimpleDriver}
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -32,7 +35,7 @@ package it.cnr.isti.zigbee.dongle.api;
 public interface ConfigurationProperties {
 
 	/**
-	 * 
+	 * The default value for the {@link #NETWORK_MODE_KEY} property, that is <b>Coordinator</b>
 	 */
 	public final static String NETWORK_MODE = NetworkMode.Coordinator.toString();
 	/**
@@ -43,30 +46,100 @@ public interface ConfigurationProperties {
 	 */
 	public final static String NETWORK_MODE_KEY = "it.cnr.isti.zigbee.driver.mode";
 	
+	
+    /**
+     * The default value for the {@link #PAN_ID_KEY} property, that is <b>0x1357</b>
+     */
 	public final static int PAN_ID = 0x1357;
+
+	/**
+     * Key to use to control the <b>Network Pan Id</b> to connect to or to create by the driver 
+     */
 	public final static String PAN_ID_KEY = "it.cnr.isti.zigbee.pan.id";
 	
-	public final static byte CHANNEL_ID = 23;
-	public final static String CHANNEL_ID_KEY = "it.cnr.isti.zigbee.pan.channel";
 	
+    /**
+     * The default value for the {@link #CHANNEL_ID_KEY} property, that is <b>23</b>
+     */
+	public final static byte CHANNEL_ID = 23;
+
+	/**
+     * Key to use to control the <b>Network Channel</b> to connect to or to create by the driver 
+     */
+	public final static String CHANNEL_ID_KEY = "it.cnr.isti.zigbee.pan.channel";
+
+	
+    /**
+     * The default value for the {@link #COM_NAME_KEY} property, that is <b>auto</b>
+     */
 	public final static String COM_NAME = "auto";
+
+    /**
+     * Key to use to control the <b>Serial Port</b> used by the driver for communicating with the dongle.<br>
+     * The value <b>MUST</b> represent the <i>Serial Port</i> name or <i>auto</i> for enabling the auto discovery
+     */
 	public final static String COM_NAME_KEY = "it.cnr.isti.zigbee.driver.serial.portname";
 
-	public final static int COM_BOUDRATE = 38400;
-	public final static String COM_BOUDRATE_KEY = "it.cnr.isti.zigbee.driver.serial.boudrate";
 	
+    /**
+     * The default value for the {@link #COM_BOUDRATE_KEY} property, that is <b>38400</b>
+     */
+	public final static int COM_BOUDRATE = 38400;
+
+    /**
+     * Key to use to control the <b>Boud Rate</b> used by the driver for communicating with the dongle
+     */
+	public final static String COM_BOUDRATE_KEY = "it.cnr.isti.zigbee.driver.serial.boudrate";
+
+	
+    /**
+     * The default value for the {@link #NETWORK_FLUSH_KEY} property, that is <b>false</b>
+     */
 	public final static boolean NETWORK_FLUSH = false;
+
+	/**
+     * Key to use to control if we have to reset the status of the dongle. We it is set to <b>true</b> it reset the dongle<br>
+     * regardless of the current setting of the used and the old setting used by the dongle<br>
+     * <br>
+     * <b>NOTE</b>:Resetting the status usually means creation of a new ZigBee network
+     */
 	public final static String NETWORK_FLUSH_KEY = "it.cnr.isti.zigbee.driver.flush";
 
+	    
+    /**
+     * The default value for the {@link #APPLICATION_MSG_RETRY_COUNT_KEY} property, that is <b>3</b>
+     */
 	public final static int APPLICATION_MSG_RETRY_COUNT = 3;
+
+	/**
+     * Key to use to control the how many times the driver should retransmit an application message before giving up
+     */
 	public final static String APPLICATION_MSG_RETRY_COUNT_KEY = "it.cnr.isti.zigbee.driver.communication.retry.count";
 	
+    
+    /**
+     * The default value for the {@link #APPLICATION_MSG_RETRY_DELAY_KEY} property, that is <b>1000ms</b>
+     */
 	public final static int APPLICATION_MSG_RETRY_DELAY = 1000;
+
+    /**
+     * Key to use to control the how much time to wait between the automatic retransmission
+     */
 	public final static String APPLICATION_MSG_RETRY_DELAY_KEY = "it.cnr.isti.zigbee.driver.communication.retry.delay";
 
+    
+    /**
+     * The default value for the {@link #APPLICATION_MSG_TIMEOUT_KEY} property, that is <b>2500ms</b>
+     */
 	public final static int APPLICATION_MSG_TIMEOUT = 2500;
+
+    /**
+     * Key to use to control the how much time to wait for waiting an response to a request,<br>
+     * when timeout is fired it is considered as a failed communication even if the message arrives later on
+     */
 	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timout";
 	
+
 	/**
 	 * The default value for the {@link ConfigurationProperties#NETWORK_BROWSING_PERIOD_KEY} property, that is <b>15 minutes</b>.
 	 */
@@ -77,6 +150,7 @@ public interface ConfigurationProperties {
      */
     public final static String NETWORK_BROWSING_PERIOD_KEY = "it.cnr.isti.zigbee.driver.network.browsing.period";  
 	
+    
     /**
      * The default value for the {@link ConfigurationProperties#DEVICE_INSPECTION_PERIOD_KEY} property, that is <b>10 seconds</b>.
      */

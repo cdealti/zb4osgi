@@ -28,7 +28,6 @@ import it.cnr.isti.primitvetypes.util.Integers;
 import it.cnr.isti.thread.Stoppable;
 import it.cnr.isti.thread.ThreadUtils;
 import it.cnr.isti.zigbee.basedriver.Activator;
-import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.io.IOException;
@@ -104,7 +103,7 @@ public class NetworkBrowserThread implements Stoppable {
 						
 						short[] toAdd = result.getAssociatedDeviceList();
 						for (int i = 0; i < toAdd.length; i++) {
-							logger.info("Found device #{} associated to #{}",toAdd[i],nwkAddress);
+							logger.info("Found node #{} associated to node #{}",toAdd[i],nwkAddress);
 							if(!alreadyInspected.contains(toAdd[i])){
 								toInspect.add(toAdd[i]);
 							}

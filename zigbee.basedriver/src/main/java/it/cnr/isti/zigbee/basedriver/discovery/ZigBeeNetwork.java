@@ -76,8 +76,10 @@ public class ZigBeeNetwork {
 		final String ieee = node.getIEEEAddress();
 		
 		if( nodes.containsKey(ieee) ){
+		    logger.debug( "Node {} already present on the network", node );
 			return false;
 		}
+		logger.debug( "Adding node {} to the network", node );
 		nodes.put(ieee, node);
 		devices.put(node, new TShortObjectHashMap<ZigBeeDevice>());
 		return true;
@@ -89,7 +91,7 @@ public class ZigBeeNetwork {
 		ZigBeeNode node = null;
 		node = nodes.get(ieee);
 		if( node == null ){
-			logger.error("Trying to remove a device but no catining node exists");
+			logger.error("Trying to remove a device but containing node {} does not exists", node);
 			return false;
 		}
 
@@ -106,11 +108,13 @@ public class ZigBeeNetwork {
 		
 		final ZigBeeNode node = nodes.get(ieee);
 		if( node == null ){
+		    logger.debug( "No node {} found" );
 			return false;
 		}
 
 		TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
 		if(endPoints.containsKey(endPoint)){
+            logger.debug( "Device {} on node {} already registered", endPoint, node );
 			return false;
 		}
 		endPoints.put(endPoint, device);

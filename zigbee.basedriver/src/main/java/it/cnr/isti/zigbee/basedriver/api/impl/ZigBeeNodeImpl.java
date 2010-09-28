@@ -45,9 +45,7 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	final private ZToolAddress64 ieeeAddress;
 	final private Properties description;
 	
-	public ZigBeeNodeImpl(int nwkAddress, ZToolAddress64 ieeeAddress){
-		System.out.println("Inspecting ZigBee Device on node: "+nwkAddress);
-		
+	public ZigBeeNodeImpl(int nwkAddress, ZToolAddress64 ieeeAddress){		
 		this.nwkAddress = nwkAddress;
 		this.ieeeAddress = ieeeAddress;
 		
@@ -74,5 +72,9 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	public int getNetworkAddress() {
 		return nwkAddress;
 	}	
+	
+	public String toString() {
+	    return getNetworkAddress() + "(" + getIEEEAddress() + ") ";
+	}
 
 }

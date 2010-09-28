@@ -96,9 +96,9 @@ public class DeviceBuilderThread implements Stoppable{
 			if( result == null ){
 				final long waiting = Activator.getCurrentConfiguration().getMessageRetryDelay();
 				logger.debug(
-						"Inspecting device on node #{} failed during it {}-nth attempt. " +
+						"Inspecting device on node {} failed during it {}-nth attempt. " +
 						"Waiting for {}ms before retrying",
-						new Object[]{nwkAddress, i, waiting}
+						new Object[]{node, i, waiting}
 				);
 				ThreadUtils.waitNonPreemptive(waiting);
 				i++;
@@ -114,40 +114,45 @@ public class DeviceBuilderThread implements Stoppable{
 		
 		final ZDO_ACTIVE_EP_RSP result  = doInspectDeviceOfNode(nwkAddress, node);
 		if( result == null ){	
-			logger.warn("ZDO_ACTIVE_EP_REQ FAILED on #{}", nwkAddress);
+			logger.warn("ZDO_ACTIVE_EP_REQ FAILED on {}", node);
 			return;
 		}
 		
 		byte[] endPoints = result.getActiveEndPointList();
-		logger.info("ZDO_ACTIVE_EP_REQ SUCCESS with {} from #{}", endPoints.length, nwkAddress);		
+		logger.info("ZDO_ACTIVE_EP_REQ SUCCESS with {} from {}", endPoints.length, node);		
 		for (int i = 0; i < endPoints.length; i++) {
-			final ZigBeeNetwork network = AFLayer.getAFLayer(driver).getZigBeeNetwork();
-			synchronized (network) {
-				if( network.contains(node.getIEEEAddress(), endPoints[i]) ){
-					logger.info("Skipping service creation for endpoint {} on node {} it is already registered as a Service",endPoints[i],nwkAddress);
-					continue;
-				}else{
-					logger.info(
-							"Creating {} service for {}:{}", 
-							new Object[]{ZigBeeDevice.class, nwkAddress, endPoints[i]}
-						);
-				}
-	
-				doCreateZigBeeDeviceService(node, endPoints[i]);
-			}
+			doCreateZigBeeDeviceService(node, endPoints[i]);
 		}
 	}
 
 	private void doCreateZigBeeDeviceService(ZigBeeNode node, byte ep) {
+        final ZigBeeNetwork network = AFLayer.getAFLayer(driver).getZigBeeNetwork();
+        synchronized (network) {
+            if( network.contains(node.getIEEEAddress(), ep) ){
+                logger.info(
+                    "Skipping service creation for endpoint {} on node {} it is already registered as a Service", ep, node  
+                );
+                return ;
+            }else{
+                logger.info(
+                        "Creating {} service for endpoint {} on node {}", 
+                        new Object[]{ ZigBeeDevice.class, ep, node }
+                    );
+            }
+    
+        }
 		try {
 			ZigBeeDeviceImpl device = new ZigBeeDeviceImpl(driver, node, ep);
-			AFLayer.getAFLayer(driver).getZigBeeNetwork().addDevice(device);
-			ServiceRegistration registration = Activator.getBundleContext().registerService(
-					ZigBeeDevice.class.getName(),
-					device,
-					device.getDescription()
-			);
-			Activator.devices.add(registration);
+			if ( network.addDevice(device)  ) { 
+    			ServiceRegistration registration = Activator.getBundleContext().registerService(
+    					ZigBeeDevice.class.getName(),
+    					device,
+    					device.getDescription()
+    			);
+    			Activator.devices.add(registration);
+			} else {
+			    logger.error( "Failed to add endpoint {} to the network map for node {}", ep, node );
+			}
 		} catch (ZigBeeBasedriverException e) {
 			logger.error("Error building the device:",e);
 			failedDevice.add(new ZigBeeDeviceReference(node, ep)); 
@@ -163,8 +168,14 @@ public class DeviceBuilderThread implements Stoppable{
 			node = (ZigBeeNode) network.contains(ieeeAddress.toString());
 			if( node == null ){
 				node = new ZigBeeNodeImpl(nwk, ieeeAddress);
-			}else if( node.getNetworkAddress() != nwkAddress.get16BitValue() ){
+			} else if( node.getNetworkAddress() != nwkAddress.get16BitValue() ) {
+			    logger.warn(
+			        "The device {} has been found again with a new network address {} ",
+			        node, nwkAddress.get16BitValue() 
+			    );
 				//TODO Handle somehow: should we remove the all registered service?!?!?
+			} else {
+			    logger.debug( "Looking again for EndPoint on the ndde {}", node );
 			}
 			network.addNode(node);
 		}

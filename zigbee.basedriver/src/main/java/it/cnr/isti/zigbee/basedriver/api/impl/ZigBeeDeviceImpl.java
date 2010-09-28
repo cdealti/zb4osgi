@@ -159,7 +159,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		
 		if( result == null ){	
 			logger.error(
-					"Unable to recieve a ZDO_SIMPLE_DESC_RSP from the endpoint {} on device {}",
+					"Unable to recieve a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
 					NetworkAddress.toString((short)node.getNetworkAddress()),endPointAddress
 			);
 			throw new ZigBeeBasedriverException("Unable to recieve a ZDO_SIMPLE_DESC_RSP from endpoint");

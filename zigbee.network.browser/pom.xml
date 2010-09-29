@@ -105,8 +105,6 @@
                 org.xml.*,
                 it.cnr.isti.zigbee.api.*,
                 org.aaloa.zb4osgi.api.*,
-                it.cnr.isti.zigbee.ha.*,
-                it.cnr.isti.zigbee.zcl.*,
                 org.osgi.*,
                 org.ops4j.*,
                 org.slf4j.*; provider=paxlogging              

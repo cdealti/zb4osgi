@@ -36,55 +36,100 @@ import java.util.Dictionary;
 public interface ZigBeeDevice {
 	
 	/**
-	 * Key of the {@link String} profile id implemented by the device
+	 * Key of the {@link String} profile id implemented by the device.
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String PROFILE_ID = "zigbee.device.profile.id";
 	
 	/**
 	 * Key of the {@link String} profile implemented by the device
+	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String PROFILE_NAME = "zigbee.device.profile.name";
 	
 	/**
 	 * Key of the {@link String} containing the DeviceId of the device
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String DEVICE_ID = "zigbee.device.device.id";
 	
 	/**
+	 * Key of the {@link String} containing the DeviceVersion of the device
+	 * <br>It is <b>mandatory</b> property for this service
+	 */
+	public final String DEVICE_VERSION = "zigbee.device.device.version";
+	
+	/**
 	 * Key of the {@link String} containing the name of the device
+	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String DEVICE_NAME = "zigbee.device.device.name";
 	
 	/**
 	 * Key of the int array of containing the ids of each input cluster 
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String CLUSTERS_INPUT_ID = "zigbee.device.clusters.input.id";
 	
 	/**
 	 * Key of the {@link String} array of containing the names of input cluster
+	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String CLUSTERS_INPUT_NAME = "zigbee.device.clusters.input.name";
 	
 	/**
 	 * Key of the int array of containing the ids of each output cluster 
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String CLUSTERS_OUTPUT_ID = "zigbee.device.clusters.output.id";
 	
 	/**
 	 * Key of the {@link String} array of containing the names of output cluster
+	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String CLUSTERS_OUTPUT_NAME = "zigbee.device.clusters.output.name";
 	
 	/**
 	 * Key of the {@link String} containing the EndPoint Address of the device
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String ENDPOINT = "zigbee.device.endpoint";
 	
 	/**
-	 * Key of the {@link String} containing an unique identifier that represent an unique Address 
-	 * of the device composed by 
+	 * Key of the {@link String} containing an unique identifier that represent an unique identifier 
+	 * for the device composed by: <br>
+	 * {@link #PROFILE_ID}, {@link #DEVICE_ID}, {@link #DEVICE_VERSION}, 
+	 * {@link ZigBeeNode#IEEE_ADDRESS}, and {@link #ENDPOINT}
+	 * Joined using the following format <pre>profile_id:device_id:device_version@ieee_address:endpoint</pre><br>
+	 * It is used also as {@link Constants#DEVICE_SERIAL}
+	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String UUID = "zigbee.device.uuid";
+
+	/**
+	 * Constant for the value of the service property {@link Constants#DEVICE_CATEGORY} used for
+	 * all ZigBee devices. 
+	 * <br>It is <b>mandatory</b> property for this service
+	 */
+	public final String DEVICE_CATEGORY = "ZigBee";
+	
+	/**
+	 * Constant for the ZigBee device match scale, indicating a match with the ProfileId. Value is 1024.
+	 */
+	public static final int MATCH_PROFILE_ID = 1024;
+
+	/**
+	 * Constant for the ZigBee device match scale to add when a device match with the ProfileId
+	 * for each of the cluster matching. Value is 1.
+	 */
+	public static final int MATCH_CLUSTER_ID = 1;
+
+	/**
+	 * Constant for the ZigBee device match scale, indicating a match with the ProfileId
+	 * and the DeviceId. Value is 4096.
+	 */
+	public static final int MATCH_DEVICE_ID = 4096;
+	
 
 	/**
 	 * 

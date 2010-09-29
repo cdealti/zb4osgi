@@ -22,8 +22,12 @@
 
 package org.aaloa.zb4osgi.network.browser;
 
+import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
+import org.aaloa.zb4osgi.api.monitor.impl.ZigBeeDiscoveryMonitorImpl;
+import org.aaloa.zb4osgi.network.browser.ui.NetworkGraph;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 
 /**
@@ -35,17 +39,29 @@ import org.osgi.framework.BundleContext;
  */
 public class Activtor
     implements BundleActivator {
+	
+	public static ZigBeeDiscoveryMonitorImpl service;
+	public static BundleContext context;
 
-    public void start( BundleContext bc )
+    private ServiceRegistration registration;
+    
+	public void start( BundleContext bc )
         throws Exception {
-        // TODO Auto-generated method stub
+		
+    	context = bc;
+    	NetworkGraph gui = new NetworkGraph();
+    	service = new ZigBeeDiscoveryMonitorImpl(gui.getGraph());
+    	registration = bc.registerService(ZigBeeDiscoveryMonitor.class.getName(), service, null);
 
     }
 
     public void stop( BundleContext bc )
         throws Exception {
-        // TODO Auto-generated method stub
-
+    	
+    	
+    	registration.unregister();
+    	service = null;
+    	context = null;
     }
 
 }

@@ -1,112 +1,187 @@
+/*
+   Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
+   Institute of Information Science and Technologies 
+   of the Italian National Research Council 
+
+
+   See the NOTICE file distributed with this work for additional 
+   information regarding copyright ownership
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 package org.aaloa.zb4osgi.network.browser.ui;
 
+import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Paint;
-import java.util.ArrayList;
-import java.util.Dictionary;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.HashSet;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.border.EtchedBorder;
 
+import org.aaloa.zb4osgi.network.browser.Activtor;
+import org.aaloa.zb4osgi.network.browser.ui.model.ZigBeeEdge;
+import org.aaloa.zb4osgi.network.browser.ui.model.ZigBeeVertex;
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.graph.SparseMultigraph;
-import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
-import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 
 public class NetworkGraph extends JFrame {
     
-    private SparseMultigraph<ZigBeeNode, String> graph;
-    private VisualizationViewer<ZigBeeNode, String> viewer;
+    private SparseMultigraph<ZigBeeVertex, ZigBeeEdge> graph = new SparseMultigraph<ZigBeeVertex, ZigBeeEdge>();
+    private VisualizationViewer<ZigBeeVertex,ZigBeeEdge> viewer = null;
+	private JToolBar jToolBar;
+	private JPanel statusBar;
+	private JLabel statusLeft;
+	private JLabel statusMiddle;
+	private JLabel statusRight;
 
     
-    private class ZigBeeNodeLocal implements ZigBeeNode {
-
-        private int nwk;
-        private String ieee;                
-        
-        public ZigBeeNodeLocal( int nwk, String ieee ) {
-            this.nwk = nwk;
-            this.ieee = ieee;
-        }
-
-        public Dictionary getDescription() {
-            return null;
-        }
-
-        public String getIEEEAddress() {
-            return ieee;
-        }
-
-        public int getNetworkAddress() {
-            return nwk;
-        }
-
-        public String toString(){
-            return nwk + "/" + getIEEEAddress();
-        }
-        
-        public boolean equals( Object obj ){
-            final ZigBeeNode n = (ZigBeeNode) obj;
-            return n.getNetworkAddress()==nwk && n.getIEEEAddress().equals( ieee );
-        }
-        
-        public int hashCode(){
-            return toString().hashCode();
-        }
-        
+    
+    public NetworkGraph() {    	
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add( getToolBar(), BorderLayout.NORTH );
+        getContentPane().add( getGraphViewer(), BorderLayout.CENTER );
+        getContentPane().add( getStatusBar(), BorderLayout.SOUTH );
+        pack();
+        setVisible( true );
     }
     
-    public NetworkGraph() {
-        graph = new SparseMultigraph<ZigBeeNode, String>();
-        viewer =  new VisualizationViewer<ZigBeeNode, String>( new FRLayout<ZigBeeNode, String>( graph ) );
-        getContentPane().add( viewer );
-                
-        HashMap<Integer, ZigBeeNode> vertexes = new HashMap<Integer, ZigBeeNode>();
-        vertexes.put( 2468, new ZigBeeNodeLocal( 2468, "0x0011223344556677") );
-        vertexes.put(    0, new ZigBeeNodeLocal(    0, "0x7766554433221100") );
-        vertexes.put( 1357, new ZigBeeNodeLocal( 1357, "0x0011223377665544") );
-        vertexes.put( 3825, new ZigBeeNodeLocal( 2468, "0x7766554400112233") );
-        
-        
-        graph.addEdge( "Root-A", vertexes.get( 0 ), vertexes.get( 2468 ), EdgeType.DIRECTED );
-        graph.addEdge( "Root-B", vertexes.get( 0 ), vertexes.get( 1357 ), EdgeType.DIRECTED );
-        graph.addEdge( "B-C", vertexes.get( 1357 ), vertexes.get( 3825 ), EdgeType.DIRECTED );
-        graph.addEdge( "C-B", vertexes.get( 3825 ), vertexes.get( 1357 ), EdgeType.DIRECTED );
-        graph.addEdge( "C<->B", vertexes.get( 3825 ), vertexes.get( 1357 ) );
+	private JPanel getStatusBar() {
+		if ( statusBar != null ) {
+			return statusBar;
+		}
+		statusBar = new JPanel();
+		statusBar.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		statusBar.setLayout(new GridBagLayout());
+		statusBar.setPreferredSize( new Dimension( 800, 16 ) );
+		Dimension dimension = new Dimension(1280, 16);
+		GridBagConstraints opt = new GridBagConstraints();
+		opt.fill = GridBagConstraints.HORIZONTAL;
+		opt.gridy = 0;
+		opt.ipady = 1;
+		opt.ipadx = 3;
 
-        Transformer<ZigBeeNode, Paint> transformerNode = new Transformer<ZigBeeNode, Paint>() {
-            
-            public Paint transform( ZigBeeNode node ) {
-                if ( node.getNetworkAddress() == 0 ) {
-                    return Color.RED;
-                }
-                return Color.GREEN;
+		opt.gridx = 0;
+		statusLeft = new JLabel("");
+		statusLeft.setPreferredSize(dimension);
+		statusLeft.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		statusBar.add(statusLeft, opt);
+
+		opt.gridx = 1;
+		statusLeft.setPreferredSize(dimension);
+		statusMiddle = new JLabel("Picking Mode");
+		statusMiddle.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		statusBar.add(statusMiddle, opt);
+		
+		opt.gridx = 2;
+		statusLeft.setPreferredSize(dimension);
+		statusRight = new JLabel("");
+		statusRight.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		statusBar.add(statusRight, opt);
+		return statusBar;
+	}
+
+	private VisualizationViewer<ZigBeeVertex, ZigBeeEdge> getGraphViewer() {
+		if ( viewer != null ){
+			return viewer;
+		}
+        viewer =  new VisualizationViewer<ZigBeeVertex, ZigBeeEdge>( new FRLayout<ZigBeeVertex, ZigBeeEdge>( graph ) );
+
+        Transformer<ZigBeeVertex, Paint> transformerNode = new Transformer<ZigBeeVertex, Paint>() {            
+            public Paint transform( ZigBeeVertex v) {
+            	if ( v.getZigBeeDevice() == null )
+            		return Color.BLUE;
+            	
+            	return Color.GREEN;
             }
         };
 
         viewer.getRenderContext().setVertexFillPaintTransformer( transformerNode );
-        viewer.getRenderContext().setVertexLabelTransformer( new ToStringLabeller<ZigBeeNode>() );
+        viewer.getRenderContext().setVertexLabelTransformer( new Transformer<ZigBeeVertex, String>(){
+			public String transform(ZigBeeVertex v) {
+				return v.toString();
+			}
+        });
+        
+        viewer.setVertexToolTipTransformer( new Transformer<ZigBeeVertex, String>(){
+			public String transform(ZigBeeVertex v) {
+				return v.getNetworkAddress() + "\n" + v.getIEEEAddress();
+			}
+        });
         viewer.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
         
         DefaultModalGraphMouse<ZigBeeNode, Paint> hci = new DefaultModalGraphMouse<ZigBeeNode, Paint>();
         hci.setMode( ModalGraphMouse.Mode.PICKING  );
         viewer.setGraphMouse( hci );
         
-        pack();
-        setVisible( true );
-    }
-    
-    public static void main(String[] args){
-        new NetworkGraph();
-    }
+        return viewer;
+	}
+	
+	private Component getToolBar() {
+		if ( jToolBar != null )
+			return jToolBar;
+		
+		jToolBar = new JToolBar();
+		addButton(jToolBar,"P", new ActionListener(){
+			public void actionPerformed(ActionEvent e) {				
+		        DefaultModalGraphMouse<ZigBeeNode, Paint> hci = new DefaultModalGraphMouse<ZigBeeNode, Paint>();
+		        hci.setMode( ModalGraphMouse.Mode.PICKING  );
+		        getGraphViewer().setGraphMouse( hci );
+		        statusMiddle.setText("Pick Mode");
+
+			}			
+		});
+		addButton(jToolBar,"T", new ActionListener(){
+			public void actionPerformed(ActionEvent e) {				
+		        DefaultModalGraphMouse<ZigBeeNode, Paint> hci = new DefaultModalGraphMouse<ZigBeeNode, Paint>();
+		        hci.setMode( ModalGraphMouse.Mode.TRANSFORMING  );
+		        getGraphViewer().setGraphMouse( hci );
+		        statusMiddle.setText("Transform Mode");
+
+			}			
+		});
+		return jToolBar;
+	}
+
+	private void addButton(final JToolBar bar, final String name, final ActionListener listener) {
+		JButton btn = new JButton(name);
+		btn.addActionListener(listener);
+		bar.add(btn);
+	}
+
+	public SparseMultigraph<ZigBeeVertex,ZigBeeEdge> getGraph() {
+		return graph;
+	}
 
 }

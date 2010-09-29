@@ -171,7 +171,15 @@
       <artifactId>jung-samples</artifactId>
       <version>2.0.1</version>
     </dependency>
-  </dependencies>
+    <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-service</artifactId>
+    </dependency>
+   </dependencies>
 
   <properties>
     <bundles.configuration.location>../configurations</bundles.configuration.location>

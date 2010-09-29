@@ -22,20 +22,26 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import gnu.trove.TShortArrayList;
-import gnu.trove.TShortHashSet;
+import gnu.trove.TShortObjectHashMap;
 import it.cnr.isti.primitvetypes.util.Integers;
 import it.cnr.isti.thread.Stoppable;
 import it.cnr.isti.thread.ThreadUtils;
+import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.Activator;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.itaca.ztool.api.ZToolAddress16;
+import com.itaca.ztool.api.ZToolAddress64;
 import com.itaca.ztool.api.ZToolException;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_REQ;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_RSP;
@@ -59,6 +65,29 @@ public class NetworkBrowserThread implements Stoppable {
 	final SimpleDriver driver;
 	private boolean end = false;
 
+	final ArrayList<NetworkAddressNodeItem> toInspect = new ArrayList<NetworkAddressNodeItem>();
+	final TShortObjectHashMap<NetworkAddressNodeItem> alreadyInspected = new TShortObjectHashMap<NetworkAddressNodeItem>();
+	
+	
+	private class NetworkAddressNodeItem {
+		final NetworkAddressNodeItem parent;
+		final short address;
+		ZigBeeNodeImpl node = null;
+		
+		NetworkAddressNodeItem(NetworkAddressNodeItem p, short a){
+			parent = p;
+			address = a;
+		}
+		
+		public String toString(){
+			if ( parent != null ) {
+				return "<" + parent.address + " / " + parent.node + "," + address + " / " + node + ">";
+			} else {
+				return "< NULL ," + address + " / " + node + ">";
+			}
+		}
+	}
+	
 	public NetworkBrowserThread(ImportingQueue queue, SimpleDriver driver) {
         this.queue = queue;
         this.driver = driver;
@@ -71,51 +100,32 @@ public class NetworkBrowserThread implements Stoppable {
 		
 		while(!isEnd()){			
 			long wakeUpTime = System.currentTimeMillis() + Activator.getCurrentConfiguration().getNetworkBrowingPeriod();
+			cleanUpWalkingTree();
+			
 			try{
-				logger.info("Inspecting ZigBee network for new nodes");
-				TShortArrayList toInspect = new TShortArrayList(); 
-				TShortHashSet alreadyInspected = new TShortHashSet();
-				toInspect.add(COORDINATOR_NWK_ADDRESS);
+				logger.info("Inspecting ZigBee network for new nodes");				
+				toInspect.add(new NetworkAddressNodeItem(null, COORDINATOR_NWK_ADDRESS) );
 				while(toInspect.size() != 0){
-					short nwkAddress = toInspect.remove( toInspect.size()-1 );
-					alreadyInspected.add(nwkAddress);
-					logger.info("Inspecting node #{} ({})", nwkAddress, ((int) nwkAddress & 0xFFFF));
+					final NetworkAddressNodeItem inspecting = toInspect.remove( toInspect.size()-1 );
+					
+					alreadyInspected.put(inspecting.address, inspecting);
+					logger.info("Inspecting node #{} ({})", inspecting.address, ((int) inspecting.address & 0xFFFF));
 					ZDO_IEEE_ADDR_RSP result = driver.sendZDOIEEEAddressRequest(
-							new ZDO_IEEE_ADDR_REQ(nwkAddress,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) 0)						
+							new ZDO_IEEE_ADDR_REQ(inspecting.address,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) 0)						
 					);
 					
 					if( result == null) {
-						logger.debug("No answer from #{} ({})", nwkAddress, ((int) nwkAddress & 0xFFFF));
+						logger.debug("No answer from #{} ({})", inspecting.address, ((int) inspecting.address & 0xFFFF));
 					} else {
 						logger.debug(
 								"Answer from {} with {} associated", 
 								result.getIEEEAddress(), result.getAssociatedDeviceCount()
 						);
-					}
-					
-					while(result != null){
+						inspecting.node = new ZigBeeNodeImpl( inspecting.address, result.getIEEEAddress());
 						
-						ZToolAddress16 nwk = new ZToolAddress16(
-								Integers.getByteAsInteger(nwkAddress, 1),
-								Integers.getByteAsInteger(nwkAddress, 0)
-						);
-						queue.push(nwk, result.getIEEEAddress());						
-						
-						short[] toAdd = result.getAssociatedDeviceList();
-						for (int i = 0; i < toAdd.length; i++) {
-							logger.info("Found node #{} associated to node #{}",toAdd[i],nwkAddress);
-							if(!alreadyInspected.contains(toAdd[i])){
-								toInspect.add(toAdd[i]);
-							}
-						}
-						if( toAdd.length + result.getStartIndex() < result.getAssociatedDeviceCount() ) {
-							result = driver.sendZDOIEEEAddressRequest(
-									new ZDO_IEEE_ADDR_REQ(nwkAddress,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) toAdd.length)						
-							);						
-						}else{
-							result = null;
-						}
+						notifyBrowsedNode(inspecting);
 					}
+					addChildrenNodesToInspectingQueue( inspecting, result );
 				}
 				
                 ThreadUtils.waitingUntil( wakeUpTime );
@@ -127,6 +137,85 @@ public class NetworkBrowserThread implements Stoppable {
 	}
 	
 	
+	private void cleanUpWalkingTree() {
+		alreadyInspected.clear();
+		toInspect.clear();
+	}
+
+	private void addChildrenNodesToInspectingQueue(NetworkAddressNodeItem inspecting, ZDO_IEEE_ADDR_RSP result) {
+		while(result != null){
+			
+			ZToolAddress16 nwk = new ZToolAddress16(
+					Integers.getByteAsInteger(inspecting.address, 1),
+					Integers.getByteAsInteger(inspecting.address, 0)
+			);
+			queue.push(nwk, result.getIEEEAddress());						
+			
+			short[] toAdd = result.getAssociatedDeviceList();
+			for (int i = 0; i < toAdd.length; i++) {
+				logger.info("Found node #{} associated to node #{}",toAdd[i],inspecting.address);
+				final NetworkAddressNodeItem next = new NetworkAddressNodeItem(inspecting, COORDINATOR_NWK_ADDRESS);
+				final NetworkAddressNodeItem found = alreadyInspected.get(toAdd[i]);
+				if( found != null ) {
+					//NOTE Logging this wrong behavior but doing nothing
+					logger.error(
+							"BROKEN ZIGBEE UNDERSTANDING (while walking address-tree): " +
+							"found twice the same node with network address {} ", toAdd[i]
+					);
+					logger.debug("Previus node data was {} while current has parent {}", found, inspecting);
+				} else {								
+					toInspect.add(next);
+				}
+			}
+			if( toAdd.length + result.getStartIndex() >= result.getAssociatedDeviceCount() ) {
+				//NOTE No more node connected to inspecting
+				return;
+			}
+			
+			logger.info(
+					"Node #{} as many too many device connected to it received only {} out of {}, " +
+					"we need to inspect it once more", new Object[]{
+					inspecting.address, toAdd.length, result.getAssociatedDeviceCount()
+			});
+			result = driver.sendZDOIEEEAddressRequest(
+					new ZDO_IEEE_ADDR_REQ(inspecting.address,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) toAdd.length)						
+			);
+			if ( result == null ){
+				logger.error("Faild to further inspect connected device to node #{}", inspecting.address);
+			}
+		}
+	}
+
+	private void notifyBrowsedNode(NetworkAddressNodeItem item) {
+		ServiceReference[] references = null;
+		try {
+			references = Activator.getBundleContext().getServiceReferences(ZigBeeDiscoveryMonitor.class.getName(), null);
+		} catch (InvalidSyntaxException ex) {
+			logger.error( "CODE BROKEN we need to recompile and fix", ex );
+		}
+		if ( references == null ){
+			return ;
+		}
+		
+		final ZigBeeNode child = item.node;
+		final ZigBeeNode parent;
+		if ( item.parent == null ){ 
+			//Notifying the root node
+			parent = null;
+		}else if( item.parent.node == null ){
+			//This should not happen
+			logger.error("BROKEN CODE: Found a parent node that is null, but it has a parent");
+			parent = null;
+		}else{
+			parent = item.parent.node;
+		}
+		for (int i = 0; i < references.length; i++) {
+			ZigBeeDiscoveryMonitor listener = 
+				(ZigBeeDiscoveryMonitor) Activator.getBundleContext().getService(references[i]);
+			listener.browsedNode( parent, child );			
+		}
+	}
+
 	private synchronized boolean isEnd() {
 		return end;
 	}

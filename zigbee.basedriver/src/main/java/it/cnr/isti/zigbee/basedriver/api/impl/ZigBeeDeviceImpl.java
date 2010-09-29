@@ -43,6 +43,7 @@ import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Properties;
 
+import org.osgi.service.device.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,20 +111,24 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		StringBuffer sb_uuid = new StringBuffer()
 			.append(profileId).append(":")
 			.append(deviceId).append(":")
-			.append(deviceVersion).append(":")
-			.append(endPointAddress).append("@")
-			.append(node.getIEEEAddress());
+			.append(deviceVersion).append("@")
+			.append(node.getIEEEAddress()).append(":")
+			.append(endPointAddress);
 			
 		uuid = sb_uuid.toString();
 		properties = new Properties();
 		properties.put(ZigBeeDevice.PROFILE_ID, Integer.toString((profileId & 0xFFFF)));
 		properties.put(ZigBeeDevice.DEVICE_ID, Integer.toString((deviceId & 0xFFFF)));
+		properties.put(ZigBeeDevice.DEVICE_VERSION, Integer.toString((deviceVersion & 0xFF)));
 		properties.put(ZigBeeDevice.ENDPOINT, Integer.toString((endPointAddress & 0xFF)));
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
 		properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
 		properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
 		properties.put(ZigBeeDevice.UUID, uuid.toString());
+		//Setting the Device Access specification properties
+		properties.put(Constants.DEVICE_SERIAL, uuid.toString());
+		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
 	}
 	
 	private ZDO_SIMPLE_DESC_RSP doRetrieveSimpleDescription() throws ZigBeeBasedriverException {
@@ -472,4 +477,5 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	public String toString(){
 		return getUniqueIdenfier();
 	}
+
 }

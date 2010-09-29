@@ -22,9 +22,15 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
+import it.cnr.isti.zigbee.api.ZigBeeNode;
+import it.cnr.isti.zigbee.basedriver.Activator;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.dongle.api.AnnunceListner;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
+import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +72,32 @@ public class AnnunceListnerThread implements AnnunceListner{
 		
 		
 		logger.info("Recieved an ANNUNCE from {} {}", senderAddress, ieeeAddress);		
-		queue.push(senderAddress, ieeeAddress);		
+		queue.push(senderAddress, ieeeAddress);	
+		annuncedNode( new ZigBeeNodeImpl( senderAddress.get16BitValue(), ieeeAddress ) );
+		
+		
 	}
+
+	private void annuncedNode(ZigBeeNode node) {
+		ServiceReference[] refs = null;
+		try {
+			refs = Activator.getBundleContext().getServiceReferences(ZigBeeDiscoveryMonitor.class.getName(), null);
+		} catch (InvalidSyntaxException ex) {
+			logger.error( "CODE BROKEN we need to recompile and fix", ex );
+		}
+		if ( refs == null ){
+			return ;
+		}
+		
+		for (int i = 0; i < refs.length; i++) {
+			final ZigBeeDiscoveryMonitor listener;
+			try{
+				listener = (ZigBeeDiscoveryMonitor) Activator.getBundleContext().getService(refs[i]);
+				listener.annuncedNode( node );			
+			}catch(Exception ex) {
+				logger.error("Handled excepetion during notification", ex);
+			}
+		}
+	}
+	
 }

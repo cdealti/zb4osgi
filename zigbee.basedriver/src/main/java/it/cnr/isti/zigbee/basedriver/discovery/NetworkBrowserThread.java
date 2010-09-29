@@ -31,7 +31,6 @@ import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
@@ -41,8 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.itaca.ztool.api.ZToolAddress16;
-import com.itaca.ztool.api.ZToolAddress64;
-import com.itaca.ztool.api.ZToolException;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_REQ;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_RSP;
 
@@ -123,9 +120,15 @@ public class NetworkBrowserThread implements Stoppable {
 						);
 						inspecting.node = new ZigBeeNodeImpl( inspecting.address, result.getIEEEAddress());
 						
+						ZToolAddress16 nwk = new ZToolAddress16(
+								Integers.getByteAsInteger(inspecting.address, 1),
+								Integers.getByteAsInteger(inspecting.address, 0)
+						);
+						queue.push(nwk, result.getIEEEAddress());						
+						
 						notifyBrowsedNode(inspecting);
 					}
-					addChildrenNodesToInspectingQueue( inspecting, result );
+					toInspect.addAll( addChildrenNodesToInspectingQueue( inspecting, result ) );
 				}
 				
                 ThreadUtils.waitingUntil( wakeUpTime );
@@ -142,15 +145,11 @@ public class NetworkBrowserThread implements Stoppable {
 		toInspect.clear();
 	}
 
-	private void addChildrenNodesToInspectingQueue(NetworkAddressNodeItem inspecting, ZDO_IEEE_ADDR_RSP result) {
-		while(result != null){
-			
-			ZToolAddress16 nwk = new ZToolAddress16(
-					Integers.getByteAsInteger(inspecting.address, 1),
-					Integers.getByteAsInteger(inspecting.address, 0)
-			);
-			queue.push(nwk, result.getIEEEAddress());						
-			
+	private ArrayList<NetworkAddressNodeItem> addChildrenNodesToInspectingQueue(NetworkAddressNodeItem inspecting, ZDO_IEEE_ADDR_RSP result) {
+		int start = 0;
+		final ArrayList<NetworkAddressNodeItem> adding = new ArrayList<NetworkAddressNodeItem>();
+		do{
+						
 			short[] toAdd = result.getAssociatedDeviceList();
 			for (int i = 0; i < toAdd.length; i++) {
 				logger.info("Found node #{} associated to node #{}",toAdd[i],inspecting.address);
@@ -164,13 +163,14 @@ public class NetworkBrowserThread implements Stoppable {
 					);
 					logger.debug("Previus node data was {} while current has parent {}", found, inspecting);
 				} else {								
-					toInspect.add(next);
+					adding.add(next);
 				}
 			}
 			if( toAdd.length + result.getStartIndex() >= result.getAssociatedDeviceCount() ) {
 				//NOTE No more node connected to inspecting
-				return;
+				return adding;
 			}
+			start += toAdd.length;
 			
 			logger.info(
 					"Node #{} as many too many device connected to it received only {} out of {}, " +
@@ -178,22 +178,24 @@ public class NetworkBrowserThread implements Stoppable {
 					inspecting.address, toAdd.length, result.getAssociatedDeviceCount()
 			});
 			result = driver.sendZDOIEEEAddressRequest(
-					new ZDO_IEEE_ADDR_REQ(inspecting.address,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) toAdd.length)						
+					new ZDO_IEEE_ADDR_REQ(inspecting.address,ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) start )						
 			);
 			if ( result == null ){
 				logger.error("Faild to further inspect connected device to node #{}", inspecting.address);
 			}
-		}
+		}while(result != null);
+		
+		return adding;
 	}
 
 	private void notifyBrowsedNode(NetworkAddressNodeItem item) {
-		ServiceReference[] references = null;
+		ServiceReference[] refs = null;
 		try {
-			references = Activator.getBundleContext().getServiceReferences(ZigBeeDiscoveryMonitor.class.getName(), null);
+			refs = Activator.getBundleContext().getServiceReferences(ZigBeeDiscoveryMonitor.class.getName(), null);
 		} catch (InvalidSyntaxException ex) {
 			logger.error( "CODE BROKEN we need to recompile and fix", ex );
 		}
-		if ( references == null ){
+		if ( refs == null ){
 			return ;
 		}
 		
@@ -209,10 +211,14 @@ public class NetworkBrowserThread implements Stoppable {
 		}else{
 			parent = item.parent.node;
 		}
-		for (int i = 0; i < references.length; i++) {
-			ZigBeeDiscoveryMonitor listener = 
-				(ZigBeeDiscoveryMonitor) Activator.getBundleContext().getService(references[i]);
-			listener.browsedNode( parent, child );			
+		for (int i = 0; i < refs.length; i++) {
+			final ZigBeeDiscoveryMonitor listener;
+			try{
+				listener = (ZigBeeDiscoveryMonitor) Activator.getBundleContext().getService(refs[i]);
+				listener.browsedNode( parent, child );			
+			}catch(Exception ex) {
+				logger.error("Handled excepetion during notification", ex);
+			}
 		}
 	}
 
@@ -222,9 +228,5 @@ public class NetworkBrowserThread implements Stoppable {
 
 	public synchronized void end() {
 		end = true;
-	}
-	
-	public static void main(String[] args) throws NumberFormatException, IOException, ZToolException{
-		//new ZigBeeAccessDriver(args[0],Integer.parseInt(args[1])).run();
 	}
 }

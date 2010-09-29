@@ -95,6 +95,7 @@
             </Export-Package>
             <Private-Package>
               org.aaloa.zb4osgi.network.browser.*,
+              org.aaloa.zb4osgi.api.monitor.impl,
               cern.colt.*, cern.jet.*, hep.aida.*, 
               edu.uci.ics.jung.*, corejava, 
               EDU.*,
@@ -104,7 +105,7 @@
                 javax.*,
                 org.xml.*,
                 it.cnr.isti.zigbee.api.*,
-                org.aaloa.zb4osgi.api.*,
+                org.aaloa.zb4osgi.api.monitor,
                 org.osgi.*,
                 org.ops4j.*,
                 org.slf4j.*; provider=paxlogging              

@@ -148,6 +148,7 @@
               it.cnr.isti.zigbee.basedriver.*
             </Private-Package>
             <Import-Package>
+              org.aaloa.zb4osgi.api.*,
               it.cnr.isti.zigbee.api.*,
               it.cnr.isti.zigbee.dongle.api*,
               com.itaca.ztool.*,

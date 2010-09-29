@@ -84,25 +84,32 @@
             <Bundle-Name>${pom.name}</Bundle-Name>
             <Bundle-Vendor>The Apache Software Foundation</Bundle-Vendor>
             <Bundle-Author><![CDATA[
-	    Francesco Furfari <francesco.furfari@isti.cnr.it>,
-	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>
+	    	Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>
             ]]></Bundle-Author>
             <Bundle-Description>
                	ZigBee network browser
             </Bundle-Description>
-            <Bundle-SymbolicName>org.aal-persona.zigbee.tester</Bundle-SymbolicName>
-            <Bundle-Activator>org.persona.zigbee.tester.Activator</Bundle-Activator>
+            <Bundle-SymbolicName>org.aaloa.zb4osgi.network.browser</Bundle-SymbolicName>
+            <Bundle-Activator>org.aaloa.zb4osgi.network.browser.Activtor</Bundle-Activator>
             <Export-Package>
             </Export-Package>
             <Private-Package>
-              org.aaloa.zb4osgi.browser.*
+              org.aaloa.zb4osgi.network.browser.*,
+              cern.colt.*, cern.jet.*, hep.aida.*, 
+              edu.uci.ics.jung.*, corejava, 
+              EDU.*,
+              org.apache.commons.*,
             </Private-Package>
             <Import-Package>
-                javax.swing.*,
+                javax.*,
+                org.xml.*,
                 it.cnr.isti.zigbee.api.*,
+                org.aaloa.zb4osgi.api.*,
                 it.cnr.isti.zigbee.ha.*,
                 it.cnr.isti.zigbee.zcl.*,
-                org.osgi.*
+                org.osgi.*,
+                org.ops4j.*,
+                org.slf4j.*; provider=paxlogging              
             </Import-Package>
           </instructions>
         </configuration>

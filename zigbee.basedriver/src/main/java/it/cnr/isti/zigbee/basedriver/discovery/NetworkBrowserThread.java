@@ -71,9 +71,9 @@ public class NetworkBrowserThread implements Stoppable {
 		final short address;
 		ZigBeeNodeImpl node = null;
 		
-		NetworkAddressNodeItem(NetworkAddressNodeItem p, short a){
-			parent = p;
-			address = a;
+		NetworkAddressNodeItem(NetworkAddressNodeItem addressTreeParent, short networkAddress){
+			parent = addressTreeParent;
+			address = networkAddress;
 		}
 		
 		public String toString(){
@@ -153,7 +153,7 @@ public class NetworkBrowserThread implements Stoppable {
 			short[] toAdd = result.getAssociatedDeviceList();
 			for (int i = 0; i < toAdd.length; i++) {
 				logger.info("Found node #{} associated to node #{}",toAdd[i],inspecting.address);
-				final NetworkAddressNodeItem next = new NetworkAddressNodeItem(inspecting, COORDINATOR_NWK_ADDRESS);
+				final NetworkAddressNodeItem next = new NetworkAddressNodeItem(inspecting, toAdd[i]);
 				final NetworkAddressNodeItem found = alreadyInspected.get(toAdd[i]);
 				if( found != null ) {
 					//NOTE Logging this wrong behavior but doing nothing

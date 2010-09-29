@@ -92,7 +92,9 @@
             </Private-Package>
             <Import-Package>
             </Import-Package>
-            <Export-Package> it.cnr.isti.zigbee.api.*;version=${pom.version} 
+            <Export-Package>
+              org.aaloa.zb4osgi.api.*;version=${pom.version},
+              it.cnr.isti.zigbee.api.*;version=${pom.version} 
             </Export-Package>
           </instructions>
         </configuration>

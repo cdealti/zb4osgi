@@ -57,7 +57,7 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	private void createDescription() {
 		description.put(ZigBeeNode.IEEE_ADDRESS, IEEEAddress.toString(ieeeAddress.getLong()));
 		description.put(ZigBeeNode.NWK_ADDRESS, nwkAddress);
-		description.put(ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId());			
+		description.put(ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId());
 	}
 
 	@SuppressWarnings("unchecked")

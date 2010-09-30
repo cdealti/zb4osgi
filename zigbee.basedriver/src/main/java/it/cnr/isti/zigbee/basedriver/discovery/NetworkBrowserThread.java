@@ -29,11 +29,13 @@ import it.cnr.isti.thread.ThreadUtils;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
+import it.cnr.isti.zigbee.basedriver.configuration.ConfigurationService;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.ArrayList;
 
 import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
@@ -87,9 +89,9 @@ public class NetworkBrowserThread implements Stoppable {
 	
 	public NetworkBrowserThread(ImportingQueue queue, SimpleDriver driver) {
         this.queue = queue;
-        this.driver = driver;
+        this.driver = driver;        
     }
-    
+    			
 	public void run(){
 		final String threadName = Thread.currentThread().getName();
 		
@@ -113,6 +115,7 @@ public class NetworkBrowserThread implements Stoppable {
 					
 					if( result == null) {
 						logger.debug("No answer from #{} ({})", inspecting.address, ((int) inspecting.address & 0xFFFF));
+						continue;
 					} else {
 						logger.debug(
 								"Answer from {} with {} associated", 

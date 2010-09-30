@@ -83,12 +83,12 @@ public class ImportingQueue {
 	
 	public void push(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress){
 		ZigBeeNodeAddress inserting = new ZigBeeNodeAddress(nwkAddress, ieeeAddress);
-		logger.debug("Adding {} {}",nwkAddress,ieeeAddress);
+		logger.debug("Adding {} ({})",nwkAddress,ieeeAddress);
 		synchronized (addresses) {
 			addresses.add(inserting);
 			addresses.notify();
 		}		
-		logger.debug("Added {} {}",nwkAddress,ieeeAddress);
+		logger.debug("Added {} ({})",nwkAddress,ieeeAddress);
 	}
 
 	public ZigBeeNodeAddress pop(){

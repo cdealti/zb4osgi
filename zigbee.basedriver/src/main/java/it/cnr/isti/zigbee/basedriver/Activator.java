@@ -51,19 +51,13 @@ public class Activator implements BundleActivator {
 	private static final String FILTER_SIMPLE_DRIVER_SERVICE = 
 		"(" + Constants.OBJECTCLASS + "=" + SimpleDriver.class.getName() + ")";
 	
-	private static BundleContext bc;
+	private static BundleContext context;
 	private static ConfigurationService configuration;
 	
 	private static Object singelton = new Object();
 	
 	public static final ArrayList<ServiceRegistration> devices = new ArrayList<ServiceRegistration>();
 	
-	public static final BundleContext getBundleContext() {
-		synchronized ( singelton ) {
-			return bc;
-		}		
-	}
-
 	private SimpleDriverServiceTracker tracker;	
 	
 	private void registerConfigurableService(){
@@ -84,7 +78,7 @@ public class Activator implements BundleActivator {
 	
 	public void start(BundleContext bc) throws Exception {
 		synchronized (singelton) {
-			Activator.bc = bc;
+			Activator.context = bc;
 		}
 		registerConfigurableService();
 		registerSimpleDriverTracker();
@@ -114,13 +108,33 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bc) throws Exception {
 		unregisterSimpleDriverTracker();
 		synchronized (singelton) {
-			Activator.bc = null;
+			Activator.context = null;
 		}
 	}
-
+	
+	/**
+	 * <b>DO NOT USE!! IT IS NEEDED ONLY FOR TEST UNIT PURPOSE</b><br>
+	 * 
+	 * @param cs
+	 * @param bc
+	 * @since 0.6.0 -  Revision 60
+	 */
+	public static final void setStubObjectes(ConfigurationService cs, BundleContext bc) {
+		synchronized (singelton) {
+			configuration = cs;
+			context = bc;
+		}
+	}
+	
 	public static final ConfigurationService getCurrentConfiguration() {
 		synchronized (singelton) {
 			return configuration;
 		}
 	}
+	
+	public static final BundleContext getBundleContext() {
+		synchronized ( singelton ) {
+			return context;
+		}		
+	}	
 }

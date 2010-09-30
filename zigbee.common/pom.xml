@@ -65,6 +65,15 @@
       <artifactId>org.osgi.core</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.logging</groupId>
+      <artifactId>pax-logging-service</artifactId>
+    </dependency>    
+    <!-- TESTING -->
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
@@ -94,7 +103,8 @@
             <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
             <Bundle-Activator />
             <Import-Package>
-              org.osgi.*
+              org.osgi.*,
+              org.slf4j; provider=paxlogging              
             </Import-Package>
             <Export-Package>
               it.cnr.isti.*;version=${pom.version}

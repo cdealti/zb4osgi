@@ -13,6 +13,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.itaca.ztool.api.simple.ZB_GET_DEVICE_INFO_RSP;
+import com.itaca.ztool.util.ByteUtils;
+
 
 /**
  * 
@@ -28,6 +31,22 @@ public class ZToolPacketParserTest {
     int[] nPackets = new int[1];
 
     private final static Logger logger = LoggerFactory.getLogger(ZToolPacketParserTest.class);    
+    
+    @Test
+    public void testBufferParser() {
+    	String BUFFER_ZB_GET_DEVICE_INFO_RSP = 
+    		"0xfe 0x09 0x66 0x06 0x06 0x4d 0x05 0x09 0x8d 0x0f 0x00 0x2b 0xe2 0x65";
+		
+    	ZToolPacket parsedFromInt = ZToolPacketStream.parsePacket(ByteUtils.fromBase16toIntArray(BUFFER_ZB_GET_DEVICE_INFO_RSP));
+    	try{
+    		ZToolPacket parsedFromByte = ZToolPacketStream.parsePacket(ByteUtils.fromBase16toByteArray(BUFFER_ZB_GET_DEVICE_INFO_RSP));
+    		fail("Expected exception due to negative length");
+    	}catch(Exception ex){
+    	}
+    	
+    	assertTrue("Paserd wrong packet type from int stream", parsedFromInt.getClass()==ZB_GET_DEVICE_INFO_RSP.class);
+    	
+    }
     
     @Test
     public void testOverwrittenPacketHandling() {

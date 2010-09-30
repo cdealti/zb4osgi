@@ -6,8 +6,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import javax.swing.text.ZoneView;
-
 import it.cnr.isti.cc2480.virutal.Emulator;
 
 import org.junit.Test;
@@ -16,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.itaca.ztool.api.ZToolException;
 import com.itaca.ztool.api.ZToolPacket;
-import com.itaca.ztool.api.system.SYS_PING;
-import com.itaca.ztool.api.system.SYS_PING_RESPONSE;
 import com.itaca.ztool.api.system.SYS_VERSION;
 import com.itaca.ztool.api.system.SYS_VERSION_RESPONSE;
 
@@ -61,7 +57,7 @@ public class HWLowLevelDriverTest {
 			driver.sendPacket(new SYS_VERSION());
 		} catch (IOException e) {
 		}
-		long future = System.currentTimeMillis()+2500;
+		long future = System.currentTimeMillis()+5000;
 		synchronized (packets) {
 			while (packets[0] == null && future > System.currentTimeMillis() ) {
 				try {
@@ -71,9 +67,13 @@ public class HWLowLevelDriverTest {
 			}			
 		}
 		if( packets[0] == null ){
-			fail("Unable get answer");
+			fail("Recieved no answer from the emulated transmission");
 		}else{
-			assertEquals(SYS_VERSION_RESPONSE.class, packets[0].getClass());
+			assertEquals(
+					"Recieved the wrong packet from the emulated transmission",
+					SYS_VERSION_RESPONSE.class.getName(), 
+					packets[0].getClass().getName()
+			);
 		}
 	}
 

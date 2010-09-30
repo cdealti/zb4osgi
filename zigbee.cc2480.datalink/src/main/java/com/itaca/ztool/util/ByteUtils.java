@@ -26,6 +26,7 @@
 package com.itaca.ztool.util;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -36,6 +37,8 @@ import java.io.IOException;
  */
 public class ByteUtils {
 
+
+	
 	/**
 	 * There is a slight problem with this method that you might have noticed;  a Java int is signed, so we can't make
 	 * use of the 32nd bit.  This means we this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127).
@@ -177,13 +180,67 @@ public class ByteUtils {
 		return sb.toString();
 	}
 	
+	/**
+	 * 
+	 * @param bytes the String representing the bytes in hex form
+	 * @return the formatted bytes
+	 * @since 0.6.0 - Revision 60
+	 */
+	public static int[] fromBase16toIntArray(String bytes){
+		final String PATTERN = "\\s*((0x[0-9a-f]{2}|[0-9a-f]{2})\\s*)+";
+		bytes = bytes.toLowerCase();
+		if( bytes.matches(PATTERN) == false ){
+			throw new IllegalArgumentException("Unable to parse "+bytes+" doesn't match regex "+PATTERN);
+		}
+		String[] singleBytes = bytes.split("\\s+");
+		String item;
+		int[] values = new int[singleBytes.length];
+		for (int i = 0; i < singleBytes.length; i++) {
+			item = singleBytes[i];
+			if ( item.length() == 0 ) 
+				continue;
+			
+			if( item.startsWith("0x") ) {
+				item = item.substring(2);
+			}
+			
+			values[i] = (Integer.parseInt(item, 16) & 0xFF);
+		}
+		return values;
+	}
+	
+	/**
+	 * This method return a <code>byte[]</code> from a <code>String</code>. It support the format<br>
+	 * of the {@link #toBase16(byte[])} and in general it supports the following {@link Pattern}:<br>
+	 * <pre>\s*((0x[0-9a-f]{2}|[0-9a-f]{2})\s*)+</pre>
+	 * <b>Exmaple:</b>
+	 * <pre>
+	 * 0x23 0xab 0xfE 0xDD
+	 * 0x23 0xab 0xfe 0xdd
+	 * 0x23 ab 0xfE DD
+	 * </pre>  
+	 * <b>NOTE</b><br>
+	 * The main difference with {@link #fromBase16toIntArray(String)} is that the data returned<br>
+	 * is signed, so values goes from <code>-128 to 127</code>
+	 * 
+	 * @param bytes the String representing the bytes in hex form
+	 * @return the formatted bytes
+	 * @since 0.6.0 - Revision 60 
+	 */
+	public static byte[] fromBase16toByteArray(String bytes){
+		int[] values = fromBase16toIntArray(bytes);
+		byte[] returns = new byte[values.length];
+		for (int i = 0; i < values.length; i++) {
+			returns[i] = (byte) (values[i] & 0xFF);
+		}
+		return returns;
+	}
+	
 	public static String toBase16(byte[] arr) {
-		
 		StringBuffer sb = new StringBuffer();
 		
 		for (int i = 0; i < arr.length; i++) {
-			sb.append(toBase16(arr[i]));
-			
+			sb.append(toBase16(arr[i]));			
 			if (i < arr.length - 1) {
 				sb.append(" ");
 			}

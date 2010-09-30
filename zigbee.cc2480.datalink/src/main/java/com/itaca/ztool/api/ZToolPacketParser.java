@@ -69,6 +69,8 @@ public class ZToolPacketParser implements Runnable {
 					"Provided InputStream {} doesn't provide the mark()/reset() feature, " +
 					"wrapping it up as BufferedInputStream", in.getClass()
 			);
+			//XXX the slow down caused by BufferedInputStream
+			//XXX the failure of TestUnit due to deadlock on parser
 			this.in = new BufferedInputStream(in);
 		}
 		this.handler = handler;
@@ -130,8 +132,8 @@ public class ZToolPacketParser implements Runnable {
 						// serial event will wake us up
 						this.wait(timeout);
 					}
-					
-					if (System.currentTimeMillis() - start >= timeout) {
+					final long waited = System.currentTimeMillis() - start; 
+					if ( waited >= timeout) {
 						logger.debug("Timeout fired: checking for data");
 					} else {
 						logger.debug("Serial Event fired: Thread woken up");

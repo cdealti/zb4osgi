@@ -101,9 +101,9 @@ public class NetworkBrowserThread implements Stoppable {
 			long wakeUpTime = System.currentTimeMillis() + Activator.getCurrentConfiguration().getNetworkBrowingPeriod();
 			cleanUpWalkingTree();
 			
+            logger.info("Inspecting ZigBee network for new nodes");             
+            toInspect.add(new NetworkAddressNodeItem(null, COORDINATOR_NWK_ADDRESS) );
 			try{
-				logger.info("Inspecting ZigBee network for new nodes");				
-				toInspect.add(new NetworkAddressNodeItem(null, COORDINATOR_NWK_ADDRESS) );
 				while(toInspect.size() != 0){
 					final NetworkAddressNodeItem inspecting = toInspect.remove( toInspect.size()-1 );
 					
@@ -134,10 +134,11 @@ public class NetworkBrowserThread implements Stoppable {
 					toInspect.addAll( addChildrenNodesToInspectingQueue( inspecting, result ) );
 				}
 				
-                ThreadUtils.waitingUntil( wakeUpTime );
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+            logger.info("Network browsing completed, waiting until {}", wakeUpTime);
+            ThreadUtils.waitingUntil( wakeUpTime );
 		}
 		logger.info("{} TERMINATED Succesfully", threadName);
 	}

@@ -75,10 +75,11 @@ public interface HADeviceFactory {
 	public HADeviceBase getInstance(ZigBeeDevice zbd) throws ZigBeeHAException;
 	
 	/**
+	 * <b>NOT IN USE</b>
 	 * 
 	 * @param sr the {@link ServiceReference} referencing at the {@link ZigBeeDevice}
 	 * @return a matching value between the {@link ZigBeeDevice} referenced by the<br>
-	 * 			{@link ServiceReference} and this refinement driver
+	 * 			{@link ServiceReference} for this refinement driver
 	 */
 	public int hasMatch(ServiceReference sr);
 

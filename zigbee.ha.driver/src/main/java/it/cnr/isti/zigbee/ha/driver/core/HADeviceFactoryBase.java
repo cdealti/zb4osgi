@@ -25,6 +25,7 @@ package it.cnr.isti.zigbee.ha.driver.core;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.ha.driver.ArraysUtil;
 
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Properties;
 
@@ -99,6 +100,7 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
     	dictionary.put(key, value);
     }
 
+    
     public int hasMatch(ServiceReference ref) {
 		int[] inclusterIds = (int[]) ref.getProperty(ZigBeeDevice.CLUSTERS_INPUT_ID);
 		int[] refinedClusterIds = (int[]) getDeviceClusters();
@@ -118,10 +120,16 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
 		}
 		return score;
     }
-
+    
     public HADeviceFactoryBase register() {
 		dictionary.put(ZigBeeDevice.DEVICE_ID, getDeviceId());
 		dictionary.put(ZigBeeDevice.CLUSTERS_INPUT_ID, getDeviceClusters());
+		if( logger.isInfoEnabled() ) {
+    		logger.info( 
+    		    "Registering a HADeviceFactory ( a refinement driver ) whose refines service with deviceId={} and clusters={}",
+    		    getDeviceId(), Arrays.toString( getDeviceClusters() )
+    		);
+		}
 		registration = ctx.registerService(HADeviceFactory.class.getName(), this, dictionary);
 		return this;
     }

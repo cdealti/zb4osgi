@@ -36,6 +36,6 @@ import com.itaca.ztool.util.DoubleByte;
 public class ErrorPacket extends ZToolPacket {
 
 	public ErrorPacket() {
-		super(new DoubleByte(-1),new int[]{});
+		super(new DoubleByte(),new int[]{});
 	}
 }

@@ -247,7 +247,7 @@ public class ZToolPacketStream
             //log.error("Failed due to exception", e);
             exception = e;
         }
-        final ZToolPacket exceptionResponse = new ErrorPacket();;
+        final ZToolPacket exceptionResponse = new ErrorPacket();
 
         if ( exception != null ) {
             exceptionResponse.setError( true );

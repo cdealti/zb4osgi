@@ -42,23 +42,52 @@ import com.itaca.ztool.api.ZToolAddress64;
 public class ZigBeeNodeImpl implements ZigBeeNode {
 
 	final private int nwkAddress;
-	final private ZToolAddress64 ieeeAddress;
 	final private Properties description;
 	
-	public ZigBeeNodeImpl(int nwkAddress, ZToolAddress64 ieeeAddress){		
+	/**
+	 * 
+	 * @param nwkAddress
+	 * @param ieee
+	 * @param pan
+	 * @since 0.6.0 - Revision 67
+	 */
+    public ZigBeeNodeImpl(int nwkAddress, String ieee, short pan){     
+        this.nwkAddress = nwkAddress;
+        IEEEAddress.fromColonNotation( ieee ); //Only for checking the IEEE format
+
+        description  = new Properties();        
+        description.put(ZigBeeNode.IEEE_ADDRESS, ieee );
+        description.put(ZigBeeNode.NWK_ADDRESS, nwkAddress);
+        description.put(ZigBeeNode.PAN_ID, pan);
+    }
+    
+    /**
+     * 
+     * @param nwkAddress
+     * @param ieee
+     * @param pan
+     * @since 0.6.0 - Revision 67
+     */
+	public ZigBeeNodeImpl(int nwkAddress, String ieee){		
 		this.nwkAddress = nwkAddress;
-		this.ieeeAddress = ieeeAddress;
-		
-		description  = new Properties();
-		
-		createDescription();
+		IEEEAddress.fromColonNotation( ieee ); //Only for checking the IEEE format
+
+		description  = new Properties();		
+        description.put(ZigBeeNode.IEEE_ADDRESS, ieee );
+        description.put(ZigBeeNode.NWK_ADDRESS, nwkAddress);
+        description.put(ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId());
 	}
+
 	
-	private void createDescription() {
-		description.put(ZigBeeNode.IEEE_ADDRESS, IEEEAddress.toString(ieeeAddress.getLong()));
-		description.put(ZigBeeNode.NWK_ADDRESS, nwkAddress);
-		description.put(ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId());
-	}
+    public ZigBeeNodeImpl(int nwkAddress, ZToolAddress64 ieeeAddress){      
+        this.nwkAddress = nwkAddress;
+        
+        description  = new Properties();
+        description.put(ZigBeeNode.IEEE_ADDRESS, IEEEAddress.toString(ieeeAddress.getLong()));
+        description.put(ZigBeeNode.NWK_ADDRESS, nwkAddress);
+        description.put(ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId());
+    }
+	
 
 	@SuppressWarnings("unchecked")
 	public Dictionary getDescription() {
@@ -75,6 +104,21 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	
 	public String toString() {
 	    return getNetworkAddress() + "(" + getIEEEAddress() + ") ";
+	}
+	
+	public boolean equals(Object obj) {
+	    if ( obj == this ) {
+	        return true;
+	    }else if ( obj instanceof ZigBeeNode ){
+	        ZigBeeNode node = (ZigBeeNode) obj;
+	        return nwkAddress == node.getNetworkAddress() && getIEEEAddress().equals( node.getIEEEAddress() );
+	    }else{
+	        return false;
+	    }
+	}
+	
+	public int hashCode() {
+	    return getIEEEAddress().hashCode();
 	}
 
 }

@@ -54,7 +54,19 @@ public class ZigBeeNetwork {
 	private final TIntObjectHashMap<ArrayList<ZigBeeDevice>> profiles = 
 		new TIntObjectHashMap<ArrayList<ZigBeeDevice>>();
 
-	
+	/**
+	 * 
+	 * <b>NOT IN USE, the Driver does not define a logic for unregister devices</b><br>
+	 * This method is require for implementing issues:
+	 * <ul>
+	 * <li><a href="http://zb4osgi.aaloa.org/redmine/issues/35">Blacklisting of device (#35)</a></li>
+     * <li><a href="http://zb4osgi.aaloa.org/redmine/issues/64">Base Driver should monitor the health status of device (#64)</a></li>
+     * </ul>
+	 * 
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public synchronized boolean removeNode(ZigBeeNodeImpl node){
 		final String ieee = node.getIEEEAddress();
 		
@@ -167,6 +179,10 @@ public class ZigBeeNetwork {
 		if ( node == null ){
 			return false;
 		}
+		/*
+		 * If node is not null it means that we found the same network node because
+		 * IEEE address must be unique for each network node
+		 */
 		final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
 		if ( endPoints == null ) {
 			return false;

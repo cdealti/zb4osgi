@@ -94,12 +94,12 @@ public class NetworkBrowserThreadTest {
 	}
 	
 	/**
-	 * Testing a network with the dongle and 7 devices connected to hit that do not answer
+	 * Testing a network with the dongle and 7 devices connected to it that do not answer
 	 * 
 	 * Test method for {@link it.cnr.isti.zigbee.basedriver.discovery.NetworkBrowserThread#run()}.
 	 */
-	//@Test
-	public void testNetwork1_7d() {
+	@Test
+	public void testNetwork_7d() {
 		SimpleDriver driver = createMock(SimpleDriver.class);
 		
 		expect( driver.sendZDOIEEEAddressRequest( EasyMock.isA(ZDO_IEEE_ADDR_REQ.class) ) )
@@ -133,12 +133,12 @@ public class NetworkBrowserThreadTest {
 
 
 	/**
-	 * Testing a network with the dongle and 7 devices connected to hit that do not answer
+	 * Testing a network with the dongle and 19 devices connected to it that do not answer
 	 * 
 	 * Test method for {@link it.cnr.isti.zigbee.basedriver.discovery.NetworkBrowserThread#run()}.
 	 */
 	@Test
-	public void testNetwork() {
+	public void testNetwork_19d() {
 		SimpleDriver driver = createMock(SimpleDriver.class);
 		int DEVICES_COUNT = 0;
 		String[] packets = new String[]{

@@ -161,13 +161,13 @@ public class DeviceBuilderThread implements Stoppable{
 
 	private void inspectNode(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress) {
 		int nwk = nwkAddress.get16BitValue();
-		logger.info("Creating {} object for {} ", ZigBeeNode.class, nwk);
 		ZigBeeNode node = null;
 		final ZigBeeNetwork network = AFLayer.getAFLayer(driver).getZigBeeNetwork();
 		synchronized (network) {
 			node = (ZigBeeNode) network.contains(ieeeAddress.toString());
 			if( node == null ){
 				node = new ZigBeeNodeImpl(nwk, ieeeAddress);
+                logger.debug( "Created node object for {} that was not available on the network", node );
 			} else if( node.getNetworkAddress() != nwkAddress.get16BitValue() ) {
 			    logger.warn(
 			        "The device {} has been found again with a new network address {} ",
@@ -175,7 +175,7 @@ public class DeviceBuilderThread implements Stoppable{
 			    );
 				//TODO Handle somehow: should we remove the all registered service?!?!?
 			} else {
-			    logger.debug( "Looking again for EndPoint on the ndde {}", node );
+			    logger.debug( "Looking again for EndPoint on the node {}", node );
 			}
 			network.addNode(node);
 		}

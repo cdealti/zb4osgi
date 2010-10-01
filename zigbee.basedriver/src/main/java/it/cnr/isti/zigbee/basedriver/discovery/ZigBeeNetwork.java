@@ -117,7 +117,7 @@ public class ZigBeeNetwork {
 	public synchronized boolean addDevice(ZigBeeDevice device){
 		final String ieee = device.getPhysicalNode().getIEEEAddress();
 		final short endPoint = device.getId();
-		
+		logger.debug( "Addind device {} on node {} the network", endPoint, device.getPhysicalNode() );
 		final ZigBeeNode node = nodes.get(ieee);
 		if( node == null ){
 		    logger.debug( "No node {} found" );

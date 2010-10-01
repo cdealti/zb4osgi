@@ -38,7 +38,6 @@ import org.junit.Test;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
@@ -80,6 +79,8 @@ public class ZigBeeNetworkTest {
         mock_d11_n10.nodes = nodes;        
     }
 
+    
+    
     @Before
     public void setUp_FakeNetwork11Devices_10Nodes() {
         String[] ieees = new String[]{
@@ -106,63 +107,62 @@ public class ZigBeeNetworkTest {
         fake_d11_n10.nodes = nodes;        
     }
     
+    public void setUp_MockDriverForNetwork11Devices_10Nodes() {
+        
+    }
     
     /**
      * This method aims to test replicate and identifies the
      * <a href="http://zb4osgi.aaloa.org/redmine/issues/50" title="Duplicated devices registered">#50</a>
+     * 
+     * @since 0.6.0 - Revision 71
      */
-    //@Test
+    @Test
     public void testDuplicatedDevices() {
-        String[][] devices = new String[][]{
-            new String[]{"0x00 0x00:","0x00:0x12:0x4B:0x00:0x01:0x25:0x6B:0xFA"},
-            new String[]{"0x00 0x01:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0F:0x6E"},
-            new String[]{"0x00 0x01:","0x00:0x12:0x4B:0x00:0x00:0x03:0x15:0xAD"},
-            new String[]{"0x00 0x02:","0x00:0x12:0x4B:0x00:0x00:0x03:0x15:0xAC"},
-            new String[]{"0x00 0x02:","0x00:0x12:0x4B:0x00:0x00:0x03:0x16:0x69"},
-            new String[]{"0x14 0x3E:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0D:0xF8"},
-            new String[]{"0x14 0x3E:","0x00:0x12:0x4B:0x00:0x00:0x03:0x15:0xAD"},
-            new String[]{"0x14 0x3F:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0E:0x1B"},
-            new String[]{"0x14 0x3F:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0F:0x9D"},
-            new String[]{"0x17 0x9C:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0F:0x9D"},
-            new String[]{"0x17 0x9C:","0x00:0x12:0x4B:0x00:0x00:0x03:0x15:0xAC"},
-            new String[]{"0x1A 0xF9:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0F:0x6E"},
-            new String[]{"0x1A 0xF9:","0x00:0x12:0x4B:0x00:0x00:0x03:0x16:0x69"},
-            new String[]{"0x28 0x7B:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0B:0xAC"},
-            new String[]{"0x28 0x7B:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0E:0x1B"},
-            new String[]{"0x3C 0xB8:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0B:0xAC"},
-            new String[]{"0x50 0xF5:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0B:0xAE"},
-            new String[]{"0x50 0xF6:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0B:0xAE"},
-            new String[]{"0x50 0xF6:","0x00:0x12:0x4B:0x00:0x00:0x03:0x0D:0xF8"}            
+        Object[][] devices = new Object[][]{
+            new Object[]{ 0x0000, "00:12:4B:00:01:25:6B:FA", true  },
+            new Object[]{ 0x0001, "00:12:4B:00:00:03:0F:6E", true  },
+            new Object[]{ 0x0001, "00:12:4B:00:00:03:15:AD", true  },
+            new Object[]{ 0x0002, "00:12:4B:00:00:03:15:AC", true  },
+            new Object[]{ 0x0002, "00:12:4B:00:00:03:16:69", true  },
+            new Object[]{ 0x143E, "00:12:4B:00:00:03:0D:F8", true  },
+            new Object[]{ 0x143E, "00:12:4B:00:00:03:15:AD", false },
+            new Object[]{ 0x143F, "00:12:4B:00:00:03:0E:1B", true  },
+            new Object[]{ 0x143F, "00:12:4B:00:00:03:0F:9D", true  },
+            new Object[]{ 0x179C, "00:12:4B:00:00:03:0F:9D", false },
+            new Object[]{ 0x179C, "00:12:4B:00:00:03:15:AC", false },
+            new Object[]{ 0x1AF9, "00:12:4B:00:00:03:0F:6E", false },
+            new Object[]{ 0x1AF9, "00:12:4B:00:00:03:16:69", false },
+            new Object[]{ 0x287B, "00:12:4B:00:00:03:0B:AC", true  },
+            new Object[]{ 0x287B, "00:12:4B:00:00:03:0E:1B", false },
+            new Object[]{ 0x3CB8, "00:12:4B:00:00:03:0B:AC", false },
+            new Object[]{ 0x50F5, "00:12:4B:00:00:03:0B:AE", true  },
+            new Object[]{ 0x50F6, "00:12:4B:00:00:03:0B:AE", false },
+            new Object[]{ 0x50F6, "00:12:4B:00:00:03:0D:F8", false }            
         };
-        /*
-        ZigBeeNode[] nodes = new ZigBeeNode[ieees.length];
-        boolean[] inserted = new boolean[ieees.length];
-        for ( int i = 0; i < nodes.length; i++ ) {
-            final ZigBeeNode node = createMock(ZigBeeNode.class);
-            expect(node.getIEEEAddress()).andReturn(ieees[i]).anyTimes();
-            replay(node);
-            nodes[i] = node;
-            inserted[i] = false;
-        }
-        for ( int i = 0; i < inserted.length; i++ ) {
-            ZigBeeDevice deviceAlpha = createMock(ZigBeeDevice.class);
-            expect(deviceAlpha.getPhysicalNode()).andReturn(nodes[i]).anyTimes();            
-            expect(deviceAlpha.getId()).andReturn((short)0x20);
-            expect(deviceAlpha.getProfileId()).andReturn(0x104).anyTimes();
-        }
         
         ZigBeeNetwork network = new ZigBeeNetwork();
-        network.addDevice( null );
-        ZigBeeNode nodeAlpha = createMock(ZigBeeNode.class);
-        expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
-        replay(nodeAlpha);
-        assertTrue(network.addNode(nodeAlpha));
-        
-        ZigBeeNode nodeBeta = createMock(ZigBeeNode.class);
-        expect(nodeBeta.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
-        replay(nodeBeta);
-        assertFalse(network.addNode(nodeBeta));
-        */
+        ZigBeeNode[] nodes = new ZigBeeNode[devices.length];
+        boolean[] inserted = new boolean[devices.length];
+        for ( int i = 0; i < devices.length; i++ ) {
+            final ZigBeeNode node = new ZigBeeNodeImpl( 
+                (Integer) devices[i][0], (String) devices[i][1], (short) 0
+            );
+            network.addNode( node );
+            
+            final ZigBeeDevice device = createMock(ZigBeeDevice.class);
+            expect(device.getPhysicalNode()).andReturn(node).anyTimes();            
+            expect(device.getId()).andReturn((short)i).anyTimes();
+            expect(device.getProfileId()).andReturn(0x104).anyTimes();
+            replay( device );
+            
+            System.out.println();
+            assertEquals( 
+                "Inserting device "+i+"-th on the network" , 
+                devices[i][2], network.addDevice( device )
+            );
+
+        }
     }    
     
     /**
@@ -170,7 +170,7 @@ public class ZigBeeNetworkTest {
      * It partially cover issue:
      * <a href="http://zb4osgi.aaloa.org/redmine/issues/50" title="Duplicated devices registered">#50</a>
      */
-	@Test
+	//@Test
 	public void testAvoidDuplicatedNodeMock() {
 	    
         ZigBeeNetwork network = new ZigBeeNetwork();
@@ -209,7 +209,7 @@ public class ZigBeeNetworkTest {
      * It partially cover issue:
      * <a href="http://zb4osgi.aaloa.org/redmine/issues/50" title="Duplicated devices registered">#50</a>
      */
-    @Test
+    //@Test
     public void testAvoidDuplicatedNodeFake() {
         
         ZigBeeNetwork network = new ZigBeeNetwork();
@@ -244,7 +244,7 @@ public class ZigBeeNetworkTest {
     }
 	
 	
-	@Test
+	//@Test
 	public void testAddDevice() {
 		ZigBeeNetwork network = new ZigBeeNetwork();
 		ZigBeeNode nodeAlpha = createMock(ZigBeeNode.class);
@@ -271,7 +271,7 @@ public class ZigBeeNetworkTest {
 		assertFalse(network.addDevice(deviceBeta));
 	}
 
-	@Test
+	//@Test
 	public void testContainsString() {
 		ZigBeeNetwork network = new ZigBeeNetwork();
 		ZigBeeNode nodeAlpha = createMock(ZigBeeNode.class);

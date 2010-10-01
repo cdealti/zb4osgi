@@ -29,7 +29,8 @@
 
 package com.itaca.ztool.api;
 
-import java.io.BufferedInputStream;
+import it.cnr.isti.io.MarkableInputStream;
+
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -69,9 +70,7 @@ public class ZToolPacketParser implements Runnable {
 					"Provided InputStream {} doesn't provide the mark()/reset() feature, " +
 					"wrapping it up as BufferedInputStream", in.getClass()
 			);
-			//XXX the slow down caused by BufferedInputStream
-			//XXX the failure of TestUnit due to deadlock on parser
-			this.in = new BufferedInputStream(in);
+			this.in = new MarkableInputStream(in);
 		}
 		this.handler = handler;
 		this.newPacketNotification = lock;

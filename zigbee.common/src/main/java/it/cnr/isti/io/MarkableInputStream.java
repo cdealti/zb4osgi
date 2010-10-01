@@ -47,6 +47,17 @@ public class MarkableInputStream
     public MarkableInputStream(final InputStream input){
         this.in = input;
     }
+    
+    @Override
+    public int available()
+        throws IOException {
+        
+        if ( buffer == null || idx >= buffer.size() ) {
+            return in.available();
+        } else {
+            return buffer.size();
+        }
+    }
 
     @Override
     public synchronized void mark( int size ) {

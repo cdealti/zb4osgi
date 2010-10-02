@@ -37,6 +37,7 @@ import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 import it.cnr.isti.zigbee.util.IEEEAddress;
 import it.cnr.isti.zigbee.util.NetworkAddress;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
@@ -76,7 +77,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	private final short profileId;
 	private final byte deviceVersion;		
 	
-	private final ZigBeeNode node;
+	private ZigBeeNode node;
 	private final Properties properties;
 	private final SimpleDriver driver; 
 	private final byte endPointAddress;
@@ -84,12 +85,11 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	private final TIntHashSet boundCluster = new TIntHashSet();
 	private final HashSet<ClusterListner> listeners = new HashSet<ClusterListner>();
 	private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
-	private final String uuid;	
+	private String uuid;	
 	
 	public ZigBeeDeviceImpl(final SimpleDriver driver, final ZigBeeNode node,  byte endPoint) throws ZigBeeBasedriverException	
 	{
 		this.driver = driver;
-		this.node = node;
 		endPointAddress = endPoint;
 		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription();
 		short[] ins = result.getInputClustersList();
@@ -108,28 +108,71 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		deviceId = result.getDeviceId();
 		profileId = result.getProfileId();
 		deviceVersion = result.getDeviceVersion();
-		StringBuffer sb_uuid = new StringBuffer()
-			.append(profileId).append(":")
-			.append(deviceId).append(":")
-			.append(deviceVersion).append("@")
-			.append(node.getIEEEAddress()).append(":")
-			.append(endPointAddress);
+        properties = new Properties();
 			
-		uuid = sb_uuid.toString();
-		properties = new Properties();
+
 		properties.put(ZigBeeDevice.PROFILE_ID, Integer.toString((profileId & 0xFFFF)));
 		properties.put(ZigBeeDevice.DEVICE_ID, Integer.toString((deviceId & 0xFFFF)));
 		properties.put(ZigBeeDevice.DEVICE_VERSION, Integer.toString((deviceVersion & 0xFF)));
 		properties.put(ZigBeeDevice.ENDPOINT, Integer.toString((endPointAddress & 0xFF)));
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
-		properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
-		properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
-		properties.put(ZigBeeDevice.UUID, uuid.toString());
-		//Setting the Device Access specification properties
-		properties.put(Constants.DEVICE_SERIAL, uuid.toString());
+		
+		setPhysicalNode( node );
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
+		
 	}
+	
+    /**
+     * Generates the UUID from the actual value of the variables
+     */
+    private String generateUUID() {
+        StringBuffer sb_uuid = new StringBuffer()
+            .append(profileId).append(":")
+            .append(deviceId).append(":")
+            .append(deviceVersion).append("@")
+            .append(node.getIEEEAddress()).append(":")
+            .append(endPointAddress);
+        return sb_uuid.toString();
+    }
+
+        
+    /**
+     * This method set the ZigBeeNode for the device, it updates the linked variable as need.<br>
+     * It updates the node only if it differs from the old node.
+     * 
+     * @param n the new {@link ZigBeeNode} for the device
+     * @return <code>true</code> if and only if the {@link ZigBeeNode} has been updated
+     * @since 0.6.0 - Revision 72
+     * 
+     */
+    public boolean setPhysicalNode(ZigBeeNode n) {
+        if ( node == null ) {
+            node = n;
+            uuid = generateUUID();      
+            properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
+            properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
+            properties.put(ZigBeeDevice.UUID, uuid);
+            
+            properties.put(Constants.DEVICE_SERIAL, uuid);
+            return true;
+        }else if ( node != null && node.equals( n ) ){
+            return false;
+        }else if( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
+            node = n;
+            uuid = generateUUID();      
+            properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
+            properties.put(ZigBeeDevice.UUID, uuid);
+            
+            properties.put(Constants.DEVICE_SERIAL, uuid);
+            return true;
+        } else if ( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
+            node = n;
+            properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
+            return true;
+        }
+        return false;
+    }
 	
 	private ZDO_SIMPLE_DESC_RSP doRetrieveSimpleDescription() throws ZigBeeBasedriverException {
 		//TODO Move into SimpleDriver?!?!?

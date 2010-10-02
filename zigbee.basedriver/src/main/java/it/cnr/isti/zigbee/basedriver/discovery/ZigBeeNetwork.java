@@ -27,7 +27,6 @@ import gnu.trove.TShortObjectHashMap;
 import gnu.trove.TShortObjectIterator;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
-import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeDeviceImpl;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class ZigBeeNetwork {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeNetwork.class);
 	
-	private final Hashtable<String, ZigBeeNode> nodes = new Hashtable<String, ZigBeeNode>();	
+	private final Hashtable<String, ZigBeeNodeImpl> nodes = new Hashtable<String, ZigBeeNodeImpl>();	
 	private final Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> > devices = 
 		new Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> >();
 	
@@ -67,7 +66,7 @@ public class ZigBeeNetwork {
 	 * @param node
 	 * @return
 	 */
-	public synchronized boolean removeNode(ZigBeeNodeImpl node){
+	public synchronized boolean removeNode(ZigBeeNode node){
 		final String ieee = node.getIEEEAddress();
 		
 		if( !nodes.containsKey(ieee) ){
@@ -84,20 +83,21 @@ public class ZigBeeNetwork {
 		return true;
 	}
 	
-	public  synchronized boolean  addNode(ZigBeeNode node){
+	public  synchronized boolean  addNode(ZigBeeNodeImpl node){
 		final String ieee = node.getIEEEAddress();
 		
 		if( nodes.containsKey(ieee) ){
 		    logger.debug( "Node {} already present on the network", node );
 			return false;
 		}
+		
 		logger.debug( "Adding node {} to the network", node );
 		nodes.put(ieee, node);
 		devices.put(node, new TShortObjectHashMap<ZigBeeDevice>());
 		return true;
 	}
 	
-	public synchronized boolean removeDevice(ZigBeeDeviceImpl device){
+	public synchronized boolean removeDevice(ZigBeeDevice device){
 		final String ieee = device.getPhysicalNode().getIEEEAddress();
 		
 		ZigBeeNode node = null;
@@ -115,13 +115,17 @@ public class ZigBeeNetwork {
 	}
 	
 	public synchronized boolean addDevice(ZigBeeDevice device){
-		final String ieee = device.getPhysicalNode().getIEEEAddress();
+	    final ZigBeeNode deviceNode = device.getPhysicalNode();
+		final String ieee = deviceNode.getIEEEAddress();
 		final short endPoint = device.getId();
 		logger.debug( "Addind device {} on node {} the network", endPoint, device.getPhysicalNode() );
 		final ZigBeeNode node = nodes.get(ieee);
 		if( node == null ){
 		    logger.debug( "No node {} found" );
 			return false;
+		} else if ( node.getNetworkAddress() != deviceNode.getNetworkAddress() ){
+		    logger.debug( "Node ieee collision, stored is {} and new one is {}", node, deviceNode );
+		    return false;
 		}
 
 		TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
@@ -174,7 +178,7 @@ public class ZigBeeNetwork {
 		return result;
 	}
 
-	public boolean contains(String ieee, short endPoint) {
+	public boolean containsDevice(String ieee, short endPoint) {
 		final ZigBeeNode node = nodes.get(ieee);
 		if ( node == null ){
 			return false;
@@ -189,8 +193,8 @@ public class ZigBeeNetwork {
 		}
 		return endPoints.containsKey(endPoint);
 	}
-
-	public ZigBeeNode contains(String ieeeAddress) {
+    
+	public ZigBeeNodeImpl containsNode(String ieeeAddress) {
 		return nodes.get(ieeeAddress);
 	}
 

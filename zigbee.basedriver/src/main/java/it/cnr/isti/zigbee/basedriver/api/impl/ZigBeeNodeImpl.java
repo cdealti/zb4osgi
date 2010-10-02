@@ -41,7 +41,7 @@ import com.itaca.ztool.api.ZToolAddress64;
  */
 public class ZigBeeNodeImpl implements ZigBeeNode {
 
-	final private int nwkAddress;
+	private int nwkAddress;
     final private String ieeeAddress;
 	final private Properties description;
 	
@@ -76,12 +76,11 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 
 	
     public ZigBeeNodeImpl(int nwk, ZToolAddress64 ieee){      
-        this.nwkAddress = nwk;
         this.ieeeAddress = IEEEAddress.toString(ieee.getLong());
         description  = new Properties();
         description.put( ZigBeeNode.IEEE_ADDRESS, ieee );
-        description.put( ZigBeeNode.NWK_ADDRESS, nwk );
         description.put( ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId() );
+        setNetworkAddress( nwk );
     }
 	
 
@@ -94,6 +93,17 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 		return ieeeAddress;
 	}
 
+	/**
+	 * 
+	 * @param nwk the new network address
+	 * 
+	 * @since 0.6.0 - Revision 74
+	 */
+    public void setNetworkAddress(int nwk) {
+        nwkAddress = nwk;
+        description.put( ZigBeeNode.NWK_ADDRESS, nwk );
+    }   
+    
 	public int getNetworkAddress() {
 		return nwkAddress;
 	}	

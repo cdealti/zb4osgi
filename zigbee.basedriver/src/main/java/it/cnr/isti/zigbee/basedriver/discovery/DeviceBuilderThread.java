@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.basedriver.communication.AFLayer;
 import it.cnr.isti.zigbee.basedriver.discovery.ImportingQueue.ZigBeeNodeAddress;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
+import it.cnr.isti.zigbee.util.IEEEAddress;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,12 @@ import com.itaca.ztool.api.zdo.ZDO_ACTIVE_EP_REQ;
 import com.itaca.ztool.api.zdo.ZDO_ACTIVE_EP_RSP;
 
 /**
+ * 
+ * This class implements the {@link Thread} that completes the discovery of the node<br>
+ * found either by {@link NetworkBrowserThread} or {@link AnnunceListnerThread} by<br>
+ * inspecting the <i>End Point</i> on the node.<br>
+ * The inspection of each <i>End Point</i> lead to the creation {@link ZigBeeDevice}<br>
+ * service, that is registered on the OSGi framework.
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
@@ -128,7 +135,7 @@ public class DeviceBuilderThread implements Stoppable{
 	private void doCreateZigBeeDeviceService(ZigBeeNode node, byte ep) {
         final ZigBeeNetwork network = AFLayer.getAFLayer(driver).getZigBeeNetwork();
         synchronized (network) {
-            if( network.contains(node.getIEEEAddress(), ep) ){
+            if( network.containsDevice(node.getIEEEAddress(), ep) ){
                 logger.info(
                     "Skipping service creation for endpoint {} on node {} it is already registered as a Service", ep, node  
                 );
@@ -149,7 +156,18 @@ public class DeviceBuilderThread implements Stoppable{
     					device,
     					device.getDescription()
     			);
-    			Activator.devices.add(registration);
+    			ArrayList<ServiceRegistration> list;
+    			synchronized ( Activator.devices ) {
+    			    final String ieee = node.getIEEEAddress();
+    			    list = Activator.devices.get( ieee );
+    			    if ( list == null ) {
+                        list = new ArrayList<ServiceRegistration>();
+                        Activator.devices.put( ieee, list );
+                    }
+                }
+    			synchronized ( list ) {
+    			    list.add( registration );
+                }
 			} else {
 			    logger.error( "Failed to add endpoint {} to the network map for node {}", ep, node );
 			}
@@ -161,29 +179,82 @@ public class DeviceBuilderThread implements Stoppable{
 
 	private void inspectNode(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress) {
 		int nwk = nwkAddress.get16BitValue();
-		ZigBeeNode node = null;
+		final String ieee = IEEEAddress.toString(ieeeAddress.getLong());
+		ZigBeeNodeImpl node = null;
+		boolean isNew = false;
 		final ZigBeeNetwork network = AFLayer.getAFLayer(driver).getZigBeeNetwork();
 		synchronized (network) {
-			node = (ZigBeeNode) network.contains(ieeeAddress.toString());
+			node = network.containsNode(ieee);
 			if( node == null ){
 				node = new ZigBeeNodeImpl(nwk, ieeeAddress);
+				isNew = true;
+	            network.addNode(node);
                 logger.debug( "Created node object for {} that was not available on the network", node );
-			} else if( node.getNetworkAddress() != nwkAddress.get16BitValue() ) {
-			    logger.warn(
-			        "The device {} has been found again with a new network address {} ",
-			        node, nwkAddress.get16BitValue() 
-			    );
-				//TODO Handle somehow: should we remove the all registered service?!?!?
-			} else {
-			    logger.debug( "Looking again for EndPoint on the node {}", node );
-			}
-			network.addNode(node);
+			} 
 		}
-		
-		inspectDeviceOfNode(nwk, node);
+		if( isNew ){
+		    inspectDeviceOfNode(nwk, node);
+		} else if( node.getNetworkAddress() != nwk ) {
+            logger.warn(
+                "The device {} has been found again with a new network address {} ",
+                node, nwkAddress.get16BitValue() 
+            );
+            if ( ! changedNetworkAddress( node, nwk ) ) {
+                /*
+                 * No previous device inspection completed successfully, so we should try to inspect
+                 * the device agagin 
+                 */
+                inspectDeviceOfNode( nwk, new ZigBeeNodeImpl( nwk, node.getIEEEAddress() ) );
+            } 
+            node.setNetworkAddress( nwk );
+        } 		
 	}	
 
-	private void inspectNewlyDevice(){
+	/**
+	 * This method updates the network address on all the device belonging the node<br>
+	 * with the change network address<br>
+	 * 
+     * @param node {@link ZigBeeNodeImpl} the old node with the obsoleted network address
+     * @param nwk the new network address of the node
+     * @return if at least a device has been updated
+     * @since 0.6.0 - Revision 74
+     */
+    private boolean changedNetworkAddress( ZigBeeNodeImpl node, int nwk ) {
+        /*
+         * This may happen either for two reason:
+         *  A - Device has re-joined the network, it may happen either in end-user or
+         *      ZigBee developer environment
+         *  B - Device has been re-programmed and it joins as new device on the network,
+         *      it could happen only on ZigBee developer environment 
+         * The actual code handle only the case A 
+         */
+        final ArrayList<ServiceRegistration> registrations;
+        synchronized ( Activator.devices ) {
+            registrations = Activator.devices.get( node.getIEEEAddress() ); 
+        }
+        if ( registrations ==  null ) {
+            logger.info( "No registered service to updated even if we identified a network address changing" );
+            return false; 
+        }
+        boolean changed = false;
+        /*
+         * //TODO For covering case B: we should compare the content of "registrations"
+         * with the actual list of End Point on the node    
+         */
+        for ( ServiceRegistration registration : registrations ) {
+            final ZigBeeDeviceImpl device = 
+                (ZigBeeDeviceImpl) Activator.getBundleContext().getService( registration.getReference() );
+            if ( device.setPhysicalNode( new ZigBeeNodeImpl( nwk, node.getIEEEAddress() ) ) ) {
+                changed = true;
+                registration.setProperties( device.getDescription() );                
+            }
+        }
+        
+        return changed;
+    }
+
+
+    private void inspectNewlyDevice(){
         logger.info("Trying to register a node extracted from ImportingQueue");
         final ZigBeeNodeAddress dev = queue.pop();
         final ZToolAddress16 nwk = dev.getNetworkAddress();
@@ -201,6 +272,22 @@ public class DeviceBuilderThread implements Stoppable{
         doCreateZigBeeDeviceService(failed.node, failed.endPoint);
 	}
 	
+	/**
+	 * @return the number of Node waiting for inspection
+	 * @since 0.6.0 - Revision 71
+	 */
+	public int getPendingNodes() {
+	    return queue.size();
+	}
+	
+    /**
+     * @return the number of Node waiting for inspection
+     * @since 0.6.0 - Revision 71
+     */
+    public int getPendingDevices() {
+        return failedDevice.size();
+    }
+    
 	public void run() {
 		logger.info("{} STARTED Successfully", Thread.currentThread().getName() );
 		

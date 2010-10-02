@@ -22,11 +22,16 @@
 
 package it.cnr.isti.zigbee.basedriver;
 
+import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeDeviceImpl;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.basedriver.communication.SimpleDriverServiceTracker;
 import it.cnr.isti.zigbee.basedriver.configuration.ConfigurationService;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.osgi.framework.BundleActivator;
@@ -56,8 +61,23 @@ public class Activator implements BundleActivator {
 	
 	private static Object singelton = new Object();
 	
-	public static final ArrayList<ServiceRegistration> devices = new ArrayList<ServiceRegistration>();
-	
+	/**
+	 * This variable contains the list of {@link ServiceRegistration} referring to the<br>
+	 * {@link ZigBeeDeviceImpl} service registered by the Base Driver as {@link ZigBeeDevice}.<br>
+	 * The {@link ServiceRegistration} are indexed by IEEE represented as {@link String} with format 01:23:45:67:89:AB:CD:EF<br>
+	 * If you want to obtain {@link ZigBeeDeviceImpl} you can use the code<br>
+	 * <code><pre>
+        ZigBeeNodeImpl node = null;
+        
+        ArrayList<ServiceRegistration> devicesOnNode = devices.get(node.getIEEEAddress());
+        ServiceRegistration registration = devicesOnNode.get( 0 );
+        ZigBeeDeviceImpl dev = (ZigBeeDeviceImpl) 
+            Activator.getBundleContext().getService( registration.getReference() );
+	 * </pre></code> 
+	 */
+	public static final HashMap<String, ArrayList<ServiceRegistration> > devices = 
+	    new HashMap<String, ArrayList<ServiceRegistration> >();
+
 	private SimpleDriverServiceTracker tracker;	
 	
 	private void registerConfigurableService(){
@@ -99,10 +119,14 @@ public class Activator implements BundleActivator {
 	}
 	
 	public static void unregisterAllDeviceService() {
-		for (ServiceRegistration registration : devices) {
-			registration.unregister();
-		}
-		devices.clear();
+	    synchronized ( devices ) {
+	        for (ArrayList<ServiceRegistration> registrations : devices.values()) {
+	            for ( ServiceRegistration registration : registrations ) {
+	                registration.unregister();
+	            }
+	        }
+	        devices.clear();
+        }
 	}
 	
 	public void stop(BundleContext bc) throws Exception {

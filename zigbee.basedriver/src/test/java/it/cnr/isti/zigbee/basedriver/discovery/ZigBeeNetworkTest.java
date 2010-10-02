@@ -22,13 +22,10 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gnu.trove.TIntArrayList;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
@@ -44,7 +41,7 @@ import org.junit.Test;
 public class ZigBeeNetworkTest {
 
     private class ZigBeeNetworkSample {
-        private ZigBeeNode[] nodes;
+        private ZigBeeNodeImpl[] nodes;
         private ZigBeeDevice[] devices;
     }
 
@@ -66,10 +63,10 @@ public class ZigBeeNetworkTest {
             "00:12:4B:00:01:25:6B:FA"           
         };
         
-        ZigBeeNode[] nodes = new ZigBeeNode[ieees.length];
+        ZigBeeNodeImpl[] nodes = new ZigBeeNodeImpl[ieees.length];
         boolean[] inserted = new boolean[ieees.length];
         for ( int i = 0; i < nodes.length; i++ ) {
-            final ZigBeeNode node = createMock(ZigBeeNode.class);
+            final ZigBeeNodeImpl node = createMock(ZigBeeNodeImpl.class);
             expect(node.getIEEEAddress()).andReturn(ieees[i]).anyTimes();
             replay(node);
             nodes[i] = node;
@@ -96,10 +93,10 @@ public class ZigBeeNetworkTest {
             "00:12:4B:00:01:25:6B:FA"           
         };
         
-        ZigBeeNode[] nodes = new ZigBeeNode[ieees.length];
+        ZigBeeNodeImpl[] nodes = new ZigBeeNodeImpl[ieees.length];
         boolean[] inserted = new boolean[ieees.length];
         for ( int i = 0; i < nodes.length; i++ ) {
-            final ZigBeeNode node = new ZigBeeNodeImpl( 0, ieees[i], (short) 0 );
+            final ZigBeeNodeImpl node = new ZigBeeNodeImpl( 0, ieees[i], (short) 0 );
             nodes[i] = node;
             inserted[i] = false;
         }
@@ -142,10 +139,10 @@ public class ZigBeeNetworkTest {
         };
         
         ZigBeeNetwork network = new ZigBeeNetwork();
-        ZigBeeNode[] nodes = new ZigBeeNode[devices.length];
+        ZigBeeNodeImpl[] nodes = new ZigBeeNodeImpl[devices.length];
         boolean[] inserted = new boolean[devices.length];
         for ( int i = 0; i < devices.length; i++ ) {
-            final ZigBeeNode node = new ZigBeeNodeImpl( 
+            final ZigBeeNodeImpl node = new ZigBeeNodeImpl( 
                 (Integer) devices[i][0], (String) devices[i][1], (short) 0
             );
             network.addNode( node );
@@ -170,11 +167,11 @@ public class ZigBeeNetworkTest {
      * It partially cover issue:
      * <a href="http://zb4osgi.aaloa.org/redmine/issues/50" title="Duplicated devices registered">#50</a>
      */
-	//@Test
+	@Test
 	public void testAvoidDuplicatedNodeMock() {
 	    
         ZigBeeNetwork network = new ZigBeeNetwork();
-        ZigBeeNode[] nodes = mock_d11_n10.nodes;
+        ZigBeeNodeImpl[] nodes = mock_d11_n10.nodes;
         
         boolean[] inserted = new boolean[nodes.length];
 
@@ -209,11 +206,11 @@ public class ZigBeeNetworkTest {
      * It partially cover issue:
      * <a href="http://zb4osgi.aaloa.org/redmine/issues/50" title="Duplicated devices registered">#50</a>
      */
-    //@Test
+    @Test
     public void testAvoidDuplicatedNodeFake() {
         
         ZigBeeNetwork network = new ZigBeeNetwork();
-        ZigBeeNode[] nodes = fake_d11_n10.nodes;
+        ZigBeeNodeImpl[] nodes = fake_d11_n10.nodes;
         
         boolean[] inserted = new boolean[nodes.length];
 
@@ -244,23 +241,22 @@ public class ZigBeeNetworkTest {
     }
 	
 	
-	//@Test
+	@Test
 	public void testAddDevice() {
 		ZigBeeNetwork network = new ZigBeeNetwork();
-		ZigBeeNode nodeAlpha = createMock(ZigBeeNode.class);
-		expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
+		ZigBeeNodeImpl nodeAlpha = createMock(ZigBeeNodeImpl.class);
+		expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08").anyTimes();
+        expect(nodeAlpha.getNetworkAddress()).andReturn(0x0001).anyTimes();
 
 		ZigBeeDevice deviceAlpha = createMock(ZigBeeDevice.class);
-		expect(deviceAlpha.getPhysicalNode()).andReturn(nodeAlpha);
-		expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
-		expect(deviceAlpha.getId()).andReturn((short)0x20);
-		expect(deviceAlpha.getProfileId()).andReturn(0x104);
+		expect(deviceAlpha.getPhysicalNode()).andReturn(nodeAlpha).anyTimes();
+		expect(deviceAlpha.getId()).andReturn((short)0x20).anyTimes();
+		expect(deviceAlpha.getProfileId()).andReturn(0x104).anyTimes();
 
 		ZigBeeDevice deviceBeta = createMock(ZigBeeDevice.class);
-		expect(deviceBeta.getPhysicalNode()).andReturn(nodeAlpha);
-		expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
-		expect(deviceBeta.getId()).andReturn((short)0x20);
-		expect(deviceBeta.getProfileId()).andReturn(0x104);
+		expect(deviceBeta.getPhysicalNode()).andReturn(nodeAlpha).anyTimes();
+		expect(deviceBeta.getId()).andReturn((short)0x20).anyTimes();
+		expect(deviceBeta.getProfileId()).andReturn(0x104).anyTimes();
 		
 		
 		replay(nodeAlpha);
@@ -271,21 +267,21 @@ public class ZigBeeNetworkTest {
 		assertFalse(network.addDevice(deviceBeta));
 	}
 
-	//@Test
+	@Test
 	public void testContainsString() {
 		ZigBeeNetwork network = new ZigBeeNetwork();
-		ZigBeeNode nodeAlpha = createMock(ZigBeeNode.class);
+		ZigBeeNodeImpl nodeAlpha = createMock(ZigBeeNodeImpl.class);
 		expect(nodeAlpha.getIEEEAddress()).andReturn("01:02:03:04:05:06:07:08");
 		replay(nodeAlpha);
 		assertTrue(network.addNode(nodeAlpha));
-		assertEquals(nodeAlpha, network.contains("01:02:03:04:05:06:07:08"));
+		assertEquals(nodeAlpha, network.containsNode("01:02:03:04:05:06:07:08"));
 
 		final String beta = "00:01:02:03:04:05:06:07";
-		ZigBeeNode nodeBeta = createMock(ZigBeeNode.class);
+		ZigBeeNodeImpl nodeBeta = createMock(ZigBeeNodeImpl.class);
 		expect(nodeBeta.getIEEEAddress()).andReturn(beta);
 		replay(nodeBeta);
 		assertTrue(network.addNode(nodeBeta));
-		assertEquals(nodeBeta, network.contains(beta));	
+		assertEquals(nodeBeta, network.containsNode(beta));	
 	}
 
 }

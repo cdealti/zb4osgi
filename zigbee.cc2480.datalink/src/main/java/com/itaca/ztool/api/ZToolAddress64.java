@@ -62,7 +62,7 @@ public class ZToolAddress64 extends ZToolAddress  {
 		
 		for (int i = 0; i < address.length; i++) {
 			String byteStr = st.nextToken();
-			address[i] = Byte.parseByte(byteStr, 16);
+			address[i] = (byte) ( Integer.parseInt(byteStr, 16) & 0xFF );
 			
 			//log.debug("byte is " + ByteUtils.toBase16(address[i]) + " at pos " + i);
 		}

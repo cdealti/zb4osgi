@@ -57,8 +57,17 @@ public interface ZigBeeNode {
 	public final static String POWER_CURRENT_SOURCE = "zigbee.node.description.power.source.current";
 	public final static String POWER_AVAILABLE_SOURCE = "zigbee.node.description.power.source.available";
 		
+	/**
+	 * 
+	 * @return int representing the current network address linked to the device
+	 */
 	public int getNetworkAddress();
 	
+	/**
+	 * //TODO Define a ZigBeeAddress object
+	 *  
+	 * @return a {@link String} representing the IEEEAddress of the device
+	 */
 	public String getIEEEAddress();
 	
 	/**

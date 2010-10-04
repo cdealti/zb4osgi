@@ -117,6 +117,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		properties.put(ZigBeeDevice.ENDPOINT, Integer.toString((endPointAddress & 0xFF)));
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
+        properties.put(ZigBeeDevice.ZIGBEE_IMPORT, driver.getClass());
 		
 		setPhysicalNode( node );
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});

@@ -86,11 +86,15 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
 	private String uuid;	
 	
-	public ZigBeeDeviceImpl(final SimpleDriver driver, final ZigBeeNode node,  byte endPoint) throws ZigBeeBasedriverException	
+	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n,  byte ep) throws ZigBeeBasedriverException	
 	{
-		this.driver = driver;
-		endPointAddress = endPoint;	      
-        setPhysicalNode( node );
+        if ( drv == null || n == null) {
+            logger.error( "Creating {} with some nulls parameters {}", new Object[]{ ZigBeeDevice.class, drv, n, ep } );
+            throw new NullPointerException("Cannont create a device with a null SimpleDriver or a null ZigBeeNode");
+        }
+		this.driver = drv;
+		endPointAddress = ep;	   
+        setPhysicalNode( n );
         
 		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription();
 		short[] ins = result.getInputClustersList();
@@ -118,7 +122,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		properties.put(ZigBeeDevice.ENDPOINT, Integer.toString((endPointAddress & 0xFF)));
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
-        properties.put(ZigBeeDevice.ZIGBEE_IMPORT, driver.getClass());
+        properties.put(ZigBeeDevice.ZIGBEE_IMPORT, drv.getClass());
         
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
 		
@@ -157,7 +161,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
             
             properties.put(Constants.DEVICE_SERIAL, uuid);
             return true;
-        }else if ( node != null && node.equals( n ) ){
+        }else if ( node == n || node != null && node.equals( n ) ){
             return false;
         }else if( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
             node = n;

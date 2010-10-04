@@ -76,15 +76,15 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	private final short profileId;
 	private final byte deviceVersion;		
 	
-	private ZigBeeNode node;
-	private final Properties properties;
+	private ZigBeeNode node = null;
+	private final Properties properties = new Properties();
 	private final SimpleDriver driver; 
 	private final byte endPointAddress;
 	
 	private final TIntHashSet boundCluster = new TIntHashSet();
 	private final HashSet<ClusterListner> listeners = new HashSet<ClusterListner>();
 	private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
-	private String uuid;	
+	private String uuid = null;	
 	
 	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n,  byte ep) throws ZigBeeBasedriverException	
 	{
@@ -113,7 +113,6 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		deviceId = result.getDeviceId();
 		profileId = result.getProfileId();
 		deviceVersion = result.getDeviceVersion();
-        properties = new Properties();
 			
 
 		properties.put(ZigBeeDevice.PROFILE_ID, Integer.toString((profileId & 0xFFFF)));
@@ -152,7 +151,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
      * 
      */
     public boolean setPhysicalNode(ZigBeeNode n) {
-        if ( node == null ) {
+        if ( node == null && n != null || node != n && node.equals( n ) == false ) {
             node = n;
             uuid = generateUUID();      
             properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());

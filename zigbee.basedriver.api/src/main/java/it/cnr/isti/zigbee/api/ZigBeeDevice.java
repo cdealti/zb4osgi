@@ -112,6 +112,12 @@ public interface ZigBeeDevice {
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String DEVICE_CATEGORY = "ZigBee";
+
+	/**
+	 * This property identify which <code>SimpleDriver</code> has been used for discovering
+	 * the ZigBee device
+	 */
+    public final String ZIGBEE_IMPORT = "zigbee.import.id";
 	
 	/**
 	 * Constant for the ZigBee device match scale, indicating a match with the ProfileId. Value is 1024.

@@ -92,11 +92,10 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
             logger.error( "Creating {} with some nulls parameters {}", new Object[]{ ZigBeeDevice.class, drv, n, ep } );
             throw new NullPointerException("Cannont create a device with a null SimpleDriver or a null ZigBeeNode");
         }
-		this.driver = drv;
+		driver = drv;
 		endPointAddress = ep;	   
-        setPhysicalNode( n );
         
-		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription();
+		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription( n );
 		short[] ins = result.getInputClustersList();
 		inputs = new int[ins.length];
 		for (int i = 0; i < ins.length; i++) {
@@ -114,6 +113,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		profileId = result.getProfileId();
 		deviceVersion = result.getDeviceVersion();
 			
+        setPhysicalNode( n );
 
 		properties.put(ZigBeeDevice.PROFILE_ID, Integer.toString((profileId & 0xFFFF)));
 		properties.put(ZigBeeDevice.DEVICE_ID, Integer.toString((deviceId & 0xFFFF)));
@@ -178,11 +178,11 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
         return false;
     }
 	
-	private ZDO_SIMPLE_DESC_RSP doRetrieveSimpleDescription() throws ZigBeeBasedriverException {
+	private ZDO_SIMPLE_DESC_RSP doRetrieveSimpleDescription(ZigBeeNode n) throws ZigBeeBasedriverException {
 		//TODO Move into SimpleDriver?!?!?
-		
+		final short nwk = (short) n.getNetworkAddress();
 		int i = 0;
-		final String nwkAddress = NetworkAddress.toString((short)node.getNetworkAddress());
+		final String nwkAddress = NetworkAddress.toString(nwk);
 		ZDO_SIMPLE_DESC_RSP result = null;
 		
 		while (i < Activator.getCurrentConfiguration().getMessageRetryCount()) {
@@ -191,7 +191,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 			);
 		
 			result = driver.sendZDOSimpleDescriptionRequest(
-					new ZDO_SIMPLE_DESC_REQ((short)node.getNetworkAddress(),endPointAddress)
+					new ZDO_SIMPLE_DESC_REQ( nwk, endPointAddress )
 			);
 			if( result == null) {
 				//long waiting = (long) (Math.random() * (double) Activator.getCurrentConfiguration().getMessageRetryDelay())
@@ -212,7 +212,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		if( result == null ){	
 			logger.error(
 					"Unable to recieve a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
-					NetworkAddress.toString((short)node.getNetworkAddress()),endPointAddress
+					NetworkAddress.toString(nwk),endPointAddress
 			);
 			throw new ZigBeeBasedriverException("Unable to recieve a ZDO_SIMPLE_DESC_RSP from endpoint");
 		}

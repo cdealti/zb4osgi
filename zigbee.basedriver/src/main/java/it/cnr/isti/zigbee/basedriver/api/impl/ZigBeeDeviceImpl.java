@@ -37,7 +37,6 @@ import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 import it.cnr.isti.zigbee.util.IEEEAddress;
 import it.cnr.isti.zigbee.util.NetworkAddress;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
@@ -90,7 +89,9 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	public ZigBeeDeviceImpl(final SimpleDriver driver, final ZigBeeNode node,  byte endPoint) throws ZigBeeBasedriverException	
 	{
 		this.driver = driver;
-		endPointAddress = endPoint;
+		endPointAddress = endPoint;	      
+        setPhysicalNode( node );
+        
 		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription();
 		short[] ins = result.getInputClustersList();
 		inputs = new int[ins.length];
@@ -118,8 +119,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
         properties.put(ZigBeeDevice.ZIGBEE_IMPORT, driver.getClass());
-		
-		setPhysicalNode( node );
+        
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
 		
 	}

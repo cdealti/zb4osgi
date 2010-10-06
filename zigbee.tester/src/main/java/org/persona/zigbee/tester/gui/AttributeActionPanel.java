@@ -143,19 +143,36 @@ public class AttributeActionPanel extends JPanel {
 		doAction.addActionListener(new AbstractAction(){
 			public void actionPerformed(ActionEvent e) {
 				ReportListener listener = subscription.get(attribute);
-				String category = null;
 				if ( listener == null ){
 					listener = createListener();
 					if ( attribute.getSubscription().addReportListner(listener) ) {
+						LogPanel.log(
+								"Subscribed to " + attribute.getName() + "\n\t" +
+										"Status: SUCCESS\n"
+						);
 						updateCategory(HADeviceTreeNode.SUBSCRIBED_STATE);
 						subscription.put(attribute, listener);
 						getSubscribeButton().setText("Unsubscribe");
+					} else {
+						LogPanel.log(
+								"Subscribed to " + attribute.getName() + "\n\t" +
+										"Status: FAILED\n"
+						);							
 					}
 				} else {
 					if ( attribute.getSubscription().removeReportListner(listener) ) {
+						LogPanel.log(
+								"Unsubscribed to " + attribute.getName() + "\n\t" +
+										"Status: SUCCESS\n"
+						);
 						updateCategory(HADeviceTreeNode.EVENTED_STATE);
 						subscription.remove(attribute);
 						getSubscribeButton().setText("Subscribe");
+					} else {
+						LogPanel.log(
+								"Unsubscribed to " + attribute.getName() + "\n\t" +
+										"Status: FAILED\n"
+						);							
 					}
 				}
 			}

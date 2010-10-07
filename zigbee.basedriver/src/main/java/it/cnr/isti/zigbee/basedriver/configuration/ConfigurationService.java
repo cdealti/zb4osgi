@@ -71,6 +71,9 @@ public class ConfigurationService implements ManagedService {
 			
             configuration.put(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, ConfigurationProperties.NETWORK_BROWSING_PERIOD) );
             configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, ConfigurationProperties.DEVICE_INSPECTION_PERIOD) );
+            
+            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
+            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
 		}
 		
 		logger.debug("Initialized {} with {}", this, configuration);
@@ -234,5 +237,19 @@ public class ConfigurationService implements ManagedService {
     public long getNetworkBrowingPeriod() {
         return getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY);
     }
+
+    /**
+     * 
+     * @return
+     * @since 0.6.0 - Revision 81
+     */
+	public int getAutomaticFreeEndPointRetry() {
+        return getInt(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY);
+	}
+
+	public int getFirstFreeEndPoint() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
 }

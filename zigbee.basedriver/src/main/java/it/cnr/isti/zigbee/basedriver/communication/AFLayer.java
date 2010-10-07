@@ -29,10 +29,13 @@ import gnu.trove.TShortHashSet;
 import gnu.trove.TShortObjectHashMap;
 import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.basedriver.discovery.ZigBeeNetwork;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.Collection;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,11 +94,12 @@ public class AFLayer {
 	private final SimpleDriver driver;
 	private final ZigBeeNetwork network;
 	
-	private byte firstFreeEndPoint = 2;
+	private byte firstFreeEndPoint;
 
 	
 	private AFLayer(SimpleDriver driver){
 		this.driver = driver;
+		firstFreeEndPoint = (byte) Activator.getCurrentConfiguration().getFirstFreeEndPoint();
 		network = new ZigBeeNetwork();
 	}
 		
@@ -142,6 +146,11 @@ public class AFLayer {
 		
 		short[] clusters = collectClusterForProfile(si.profileId);
 		
+		/*
+		 * //XXX Registering clusters only as input or output would increase the number of controllable clusters  
+		 * It could be possible that the device doesn't take into account if the cluster is registered as input
+		 * or as output so we could double the capacity of the dongle by distinguish between input and outpu
+		 */
 		//TODO We should use also output cluster in order to achieve 66 registration for each End Point
 		if(clusters.length > 33){
 			logger.warn(
@@ -157,18 +166,30 @@ public class AFLayer {
 			for (int i = 1; i < values.length; i++) {
 				values[i] = clusters[i];
 			}
-			logger.warn( "Followin list of filtered cluster that we are going to register: {} ", clusters );
+			logger.warn( "Following the list of filtered cluster that we are going to register: {} ", clusters );
 		} 
-		
-		AF_REGISTER_SRSP result = driver.sendAFRegister(new AF_REGISTER(
-			endPoint, si.profileId, (short)0, (byte)0,
-			clusters,clusters						
-		));
-		if(result.getStatus() != 0){
-			//XXX We may implement a workaround for this limitation imposed by the Hardware, in particular we may reset the dongle
-			throw new IllegalStateException("Unable create a new Endpoint. AF_REGISTER command failed with "+result.getStatus()+":"+result.getErrorMsg());			
-		}
-		
+		AF_REGISTER_SRSP result = null;
+		int retry = 0;
+		do {
+			result = driver.sendAFRegister(new AF_REGISTER(
+				endPoint, si.profileId, (short)0, (byte)0,
+				clusters,clusters						
+			));
+			//FIX We should retry only when Status != 0xb8  ( ZApsDuplicateEntry )
+			if( result.getStatus() != 0 ){
+				if ( retry < Activator.getCurrentConfiguration().getAutomaticFreeEndPointRetry() ) {
+					endPoint = getFreeEndPoint();
+				} else {
+					/*
+					 * //TODO We should provide a workaround for the maximum number of registered EndPoint
+					 * For example, with the CC2480 we could reset the dongle
+					 */			
+					throw new IllegalStateException("Unable create a new Endpoint. AF_REGISTER command failed with "+result.getStatus()+":"+result.getErrorMsg());			
+				}
+			} else {
+				break;
+			}
+		} while( true );
 		logger.debug("Registered endpoint {} with clusters: {}", endPoint, clusters);
 		final TShortArrayList list;
 		synchronized (profile2Cluster) {

@@ -72,8 +72,8 @@ public class ConfigurationService implements ManagedService {
             configuration.put(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, ConfigurationProperties.NETWORK_BROWSING_PERIOD) );
             configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, ConfigurationProperties.DEVICE_INSPECTION_PERIOD) );
             
-            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
-            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
+            configuration.put(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
+            configuration.put(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
 		}
 		
 		logger.debug("Initialized {} with {}", this, configuration);

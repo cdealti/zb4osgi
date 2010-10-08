@@ -70,9 +70,9 @@ public class Activator implements BundleActivator {
 
 	private ServiceRegistration configRegistration;
 
-    private static ReportingConfiguration configuration = null;
+    private static HADriverConfiguration configuration = null;
     
-    public static ReportingConfiguration getConfiguration(){
+    public static HADriverConfiguration getConfiguration(){
     	return configuration;
     }
     

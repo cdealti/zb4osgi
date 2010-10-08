@@ -23,12 +23,15 @@
 package it.cnr.isti.zigbee.ha.driver.core;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.ha.Activator;
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Alarms;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Basic;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.DeviceTemperatureConfiguration;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Identify;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.PowerConfiguration;
+import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration;
+import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration.ProvidedClusterMode;
 import it.cnr.isti.zigbee.ha.driver.core.reflection.DeviceDescription;
 import it.cnr.isti.zigbee.zcl.library.api.core.Subscription;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
@@ -80,26 +83,14 @@ public abstract class HADeviceBase implements HADevice  {
 	protected DeviceTemperatureConfiguration deviceTemperature;
 	protected PowerConfiguration powerConfiguration;
 	
-	enum ProvidedClusterMode {
-		HomeAutomationProfileStrict,
-		EitherInputAndOutput;		
-	}
-	
-	private static final String PROVIDED_CLUSTER_MODE_KEY = "it.isti.cnr.zigbee.ha.driver.cluster.discovery.mode";
-	private static final ProvidedClusterMode PROVIDED_CLUSTER_MODE = ProvidedClusterMode.valueOf(
-		System.getProperty(
-				PROVIDED_CLUSTER_MODE_KEY, 
-				ProvidedClusterMode.HomeAutomationProfileStrict.toString()
-		)
-	);
-		 
+			 
 	
 	public HADeviceBase(BundleContext ctx, ZigBeeDevice zbDevice ) throws ZigBeeHAException{
 		this.zbDevice = zbDevice;
 		this.ctx = ctx;
 		
-		final int size;
-		if( PROVIDED_CLUSTER_MODE == ProvidedClusterMode.HomeAutomationProfileStrict ){
+		final int size;		
+		if( Activator.getConfiguration().getClusterMode() == ProvidedClusterMode.HomeAutomationProfileStrict ){
 			size = zbDevice.getInputClusters().length;
 		}else{
 			size = zbDevice.getInputClusters().length + zbDevice.getOutputClusters().length;
@@ -127,17 +118,10 @@ public abstract class HADeviceBase implements HADevice  {
 		return zbDevice.getProfileId();
 	}
 
-	
-	// nota bene: getDescription() is astratta per cui se questo metodo is eseguito nel costruttore della classe base
-	// potrebbe essere risultare indefinito l'accesso a getDescription()
-	// non dovebbero esserci problemi in genere because basic e identify sono obbligatori
-	// ma per il genericHAdevice bisogna stare attenti e forse conviene  definire un metodo start() per evitare noie a runtime.
-	
+		
 	protected Cluster addCluster(int clusterId) throws ZigBeeHAException {
 		if ( ! zbDevice.providesInputCluster(clusterId) ){
 			if (getDescription().isMandatory(clusterId)){
-				//ADD Option for relaxed or restricted mode 
-				//throw new ZigBeeHAException("Device doesn't implement mandatory cluster "+clusterId);
 				logger.warn(
 						"ZigBeeDevice with DeviceId={} of Home Automation profile " +
 						"doesn't implement mandatory cluster {}", zbDevice.getDeviceId(), clusterId
@@ -150,14 +134,14 @@ public abstract class HADeviceBase implements HADevice  {
 							"in the implementation of firmware of the physical device", 
 							zbDevice.getDeviceId(), clusterId
 					);
-					if( PROVIDED_CLUSTER_MODE == ProvidedClusterMode.HomeAutomationProfileStrict ) {
+					if( Activator.getConfiguration().getClusterMode() == ProvidedClusterMode.HomeAutomationProfileStrict ) {
 						logger.warn(
 								"The cluster {} of the device {} is PROVIDED AS OUTPUT instead of AS INPUT, " +
 								"if you want to add it anyway please change the value of the property {} " +
 								" from {} to {}", new Object[]{
 										clusterId, 
 										zbDevice.getDeviceId(), 
-										PROVIDED_CLUSTER_MODE_KEY, 
+										HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY, 
 										ProvidedClusterMode.HomeAutomationProfileStrict,
 										ProvidedClusterMode.EitherInputAndOutput
 								}
@@ -171,7 +155,7 @@ public abstract class HADeviceBase implements HADevice  {
 								new Object[]{
 									clusterId, 
 									zbDevice.getDeviceId(), 
-									PROVIDED_CLUSTER_MODE_KEY, 
+									HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY, 
 									ProvidedClusterMode.EitherInputAndOutput,
 									ProvidedClusterMode.HomeAutomationProfileStrict
 								}										

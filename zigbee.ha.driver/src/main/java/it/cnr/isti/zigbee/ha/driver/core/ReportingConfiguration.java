@@ -22,6 +22,8 @@
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
+import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration.ProvidedClusterMode;
+
 import org.osgi.framework.Constants;
 
 /**
@@ -45,37 +47,50 @@ public interface ReportingConfiguration {
 	public final static String SERVICE_FILTER = "( " + Constants.OBJECTCLASS + "=" + ReportingConfiguration.class.getName() + ")";
 
 	
-	/**
-	 * The key to {@link Integer} property that set the default value for the <b>Minimum Rerporting Interval</b> field 
-	 * of the <br>
-	 * <b>Configure Reporting Command</b> command. By default it sets the reporting to up one message per minute
-	 */
-	public static final String CONFIGURE_REPORTING_MIN_KEY = "it.cnr.isti.zigbee.ha.reporting.min";
-	public static final int DEFAULT_CONFIGURE_REPORTING_MIN = 60;
+    /**
+     * The key to {@link Integer} property that set the default value for the <b>Minimum Rerporting Interval</b> field 
+     * of the <br>
+     * <b>Configure Reporting Command</b> command. By default it sets the reporting to up one message per minute
+     */
+    public static final String CONFIGURE_REPORTING_MIN_KEY = "it.cnr.isti.zigbee.ha.reporting.min";
+    /**
+     * The default value for the property {@link #CONFIGURE_REPORTING_MIN_KEY}, that is 60
+     */
+    public static final int DEFAULT_CONFIGURE_REPORTING_MIN = 60;
 
-	
-	/**
-	 * The key to {@link Integer} property that set the default value for the <b>Maximum Rerporting Interval</b> field 
-	 * of the <br>
-	 * <b>Configure Reporting Command</b> command. By default it sets the reporting to send message only when value change
-	 */
-	public static final String CONFIGURE_REPORTING_MAX_KEY = "it.cnr.isti.zigbee.ha.reporting.max";
-	public static final int DEFAULT_CONFIGURE_REPORTING_MAX = 0;
+    
+    /**
+     * The key to {@link Integer} property that set the default value for the <b>Maximum Rerporting Interval</b> field 
+     * of the <br>
+     * <b>Configure Reporting Command</b> command. By default it sets the reporting to send message only when value change
+     */
+    public static final String CONFIGURE_REPORTING_MAX_KEY = "it.cnr.isti.zigbee.ha.reporting.max";
+    /**
+     * The default value for the property {@link #CONFIGURE_REPORTING_MAX_KEY}, that is 0
+     */
+    public static final int DEFAULT_CONFIGURE_REPORTING_MAX = 0;
 
-	
-	/**
-	 * The key to {@link Double} property that set the default value for the <b>Rerportabl Change</b> field of the <br>
-	 * <b>Configure Reporting Command</b> command. By default it sets the reporting to send message for any change
-	 */
-	public static final String CONFIGURE_REPORTING_CHANGE_KEY = "it.cnr.isti.zigbee.ha.reporting.change";
-	public static final double DEFAULT_CONFIGURE_REPORTING_CHANGE = 0.0d;
-	
-	/**
-	 * The key to {@link Boolean} property that specify if the reporting should overwrite pre-existing configuration or not<br>
-	 * By default the system overwrite the configuration
-	 */
-	public static final String CONFIGURE_REPORTING_OVERWRITE_KEY = "it.cnr.isti.zigbee.ha.reporting.overwrite";
-	public static final boolean DEFAULT_CONFIGURE_REPORTING_OVERWRITE = true;
+    
+    /**
+     * The key to {@link Double} property that set the default value for the <b>Rerportable Change</b> field of the <br>
+     * <b>Configure Reporting Command</b> command. By default it sets the reporting to send message for any change
+     */
+    public static final String CONFIGURE_REPORTING_CHANGE_KEY = "it.cnr.isti.zigbee.ha.reporting.change";
+    /**
+     * The default value for the property {@link #CONFIGURE_REPORTING_CHANGE_KEY}, that is 0.0
+     */
+    public static final double DEFAULT_CONFIGURE_REPORTING_CHANGE = 0.0d;
+    
+    /**
+     * The key to {@link Boolean} property that specify if the reporting should overwrite pre-existing configuration or not<br>
+     * By default the system overwrite the configuration
+     */
+    public static final String CONFIGURE_REPORTING_OVERWRITE_KEY = "it.cnr.isti.zigbee.ha.reporting.overwrite";
+    /**
+     * The default value for the property {@link #CONFIGURE_REPORTING_OVERWRITE_KEY}, that is true
+     */
+    public static final boolean DEFAULT_CONFIGURE_REPORTING_OVERWRITE = true;   
+
 	
 	public abstract int getReportingMinimum();
 

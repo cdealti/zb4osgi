@@ -140,6 +140,35 @@ public interface ConfigurationProperties {
 	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timout";
 	
 
+    /**
+     * The default value for the {@link ConfigurationProperties#AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY} property, that is <b>0</b>.
+     * @since 0.6.0 - Revision 86
+     */
+    public final static int AUTOMATIC_ENDPOINT_ADDRESS_RETRY = 0;
+    /**
+     *  The maximum number of retry that the ZigBee Base Driver should before giving up the<br>
+     *  registration of a local device when the End Point address chosen was not actually free.<br>
+     *  <br>
+     *  <b>NOTE:</b><i>The maximum theoretical value is 240 so any value greater than 240 would<br>
+     *  not change the result</i>
+     *  
+     *  @since 0.6.0 - Revision 86
+     */
+	public static final String AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY = "it.cnr.isti.zigbee.driver.communication.ep.address.retry";  
+	
+	
+    /**
+     * The default value for the {@link ConfigurationProperties#FIRST_ENDPOINT_ADDRESS_KEY} property, that is <b>2</b>.
+     * @since 0.6.0 - Revision 86
+     */
+    public final static int FIRST_ENDPOINT_ADDRESS = 2;
+    /**
+     *  The first end point address that the ZigBee Base Driver should use for registering local device<br>
+     *  @since 0.6.0 - Revision 86
+     */
+	public static final String FIRST_ENDPOINT_ADDRESS_KEY  = "it.cnr.isti.zigbee.driver.communication.ep.address.first";  
+	
+	
 	/**
 	 * The default value for the {@link ConfigurationProperties#NETWORK_BROWSING_PERIOD_KEY} property, that is <b>15 minutes</b>.
 	 */
@@ -159,5 +188,5 @@ public interface ConfigurationProperties {
      *  The minimum number of milliseconds that must elapse between that two device are inspected by the<br> 
      *  ZigBee Base Driver. It is useful to reduce the network saturation during the first boot of the driver.  
      */
-    public final static String DEVICE_INSPECTION_PERIOD_KEY = "it.cnr.isti.zigbee.driver.device.inspection.rate";  
+    public final static String DEVICE_INSPECTION_PERIOD_KEY = "it.cnr.isti.zigbee.driver.device.inspection.rate";
 }

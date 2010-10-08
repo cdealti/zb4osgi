@@ -247,9 +247,13 @@ public class ConfigurationService implements ManagedService {
         return getInt(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY);
 	}
 
+    /**
+     * 
+     * @return
+     * @since 0.6.0 - Revision 86
+     */
 	public int getFirstFreeEndPoint() {
-		// TODO Auto-generated method stub
-		return 0;
+        return getInt(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY);
 	}
     
 }

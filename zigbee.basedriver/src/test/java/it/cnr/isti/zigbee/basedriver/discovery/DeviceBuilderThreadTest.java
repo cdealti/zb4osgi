@@ -84,6 +84,10 @@ public class DeviceBuilderThreadTest {
     public ConfigurationService createConfigurationServiceStub() {      
         ConfigurationService stub = createMock(ConfigurationService.class);
         
+        expect(stub.getFirstFreeEndPoint())
+            .andReturn( new Integer(2) )
+            .anyTimes();
+        
         expect(stub.getDeviceInspectionPeriod())
             .andReturn( new Long(250) )
             .anyTimes();

@@ -22,9 +22,12 @@
 
 package org.persona.zigbee.tester.gui;
 
+import it.cnr.isti.zigbee.zcl.library.api.core.AnalogSubscription;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.core.ReportListener;
+import it.cnr.isti.zigbee.zcl.library.api.core.Subscription;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -62,6 +65,10 @@ public class AttributeActionPanel extends JPanel {
 	private JTextField inputText; 
 	
 	private Hashtable<Attribute, ReportListener> subscription = new Hashtable<Attribute, ReportListener>();
+    private JPanel subscriptionPanel;
+    private JTextField minText;
+    private JTextField maxText;
+    private JTextField changeText;
 	
 	/**
 	 * 
@@ -141,39 +148,58 @@ public class AttributeActionPanel extends JPanel {
 		}
 		JButton doAction = new JButton("Subscribe");
 		doAction.addActionListener(new AbstractAction(){
+		    
+		    public void doSubscribe(ReportListener listener) {
+		        
+                final Subscription sub = attribute.getSubscription();
+                sub.setMaximumReportingInterval( Integer.parseInt( maxText.getText() ) );
+                sub.setMinimumReportingInterval( Integer.parseInt( minText.getText() ) );
+                if ( sub instanceof AnalogSubscription ) {
+                    AnalogSubscription asub = (AnalogSubscription) sub;
+                    final ZigBeeType type = attribute.getZigBeeType();
+                    asub.setReportableChange( Converter.fromString( changeText.getText(), type ) );
+                }
+                
+                if ( attribute.getSubscription().addReportListner(listener) ) {
+                    LogPanel.log(
+                            "Subscribed to " + attribute.getName() + "\n\t" +
+                                    "Status: SUCCESS\n"
+                    );
+                    updateCategory(HADeviceTreeNode.SUBSCRIBED_STATE);
+                    subscription.put(attribute, listener);
+                    getSubscribeButton().setText("Unsubscribe");
+                } else {
+                    LogPanel.log(
+                            "Subscribed to " + attribute.getName() + "\n\t" +
+                                    "Status: FAILED\n"
+                    );                          
+                }
+		    }
+		    
+		    public void doUnsubscribe(ReportListener listener) {
+                if ( attribute.getSubscription().removeReportListner(listener) ) {
+                    LogPanel.log(
+                            "Unsubscribed to " + attribute.getName() + "\n\t" +
+                                    "Status: SUCCESS\n"
+                    );
+                    updateCategory(HADeviceTreeNode.EVENTED_STATE);
+                    subscription.remove(attribute);
+                    getSubscribeButton().setText("Subscribe");
+                } else {
+                    LogPanel.log(
+                            "Unsubscribed to " + attribute.getName() + "\n\t" +
+                                    "Status: FAILED\n"
+                    );                          
+                }
+		    }
+		    
 			public void actionPerformed(ActionEvent e) {
 				ReportListener listener = subscription.get(attribute);
 				if ( listener == null ){
 					listener = createListener();
-					if ( attribute.getSubscription().addReportListner(listener) ) {
-						LogPanel.log(
-								"Subscribed to " + attribute.getName() + "\n\t" +
-										"Status: SUCCESS\n"
-						);
-						updateCategory(HADeviceTreeNode.SUBSCRIBED_STATE);
-						subscription.put(attribute, listener);
-						getSubscribeButton().setText("Unsubscribe");
-					} else {
-						LogPanel.log(
-								"Subscribed to " + attribute.getName() + "\n\t" +
-										"Status: FAILED\n"
-						);							
-					}
+					doSubscribe( listener );
 				} else {
-					if ( attribute.getSubscription().removeReportListner(listener) ) {
-						LogPanel.log(
-								"Unsubscribed to " + attribute.getName() + "\n\t" +
-										"Status: SUCCESS\n"
-						);
-						updateCategory(HADeviceTreeNode.EVENTED_STATE);
-						subscription.remove(attribute);
-						getSubscribeButton().setText("Subscribe");
-					} else {
-						LogPanel.log(
-								"Unsubscribed to " + attribute.getName() + "\n\t" +
-										"Status: FAILED\n"
-						);							
-					}
+				    doUnsubscribe( listener );
 				}
 			}
 
@@ -202,11 +228,34 @@ public class AttributeActionPanel extends JPanel {
 		return subscribeButton;
 	}
 	
+	private JPanel getSubscriptionPanel() {
+	    if ( subscriptionPanel != null ) {
+	        return subscriptionPanel;
+	    }
+	    
+	    subscriptionPanel = new JPanel(new GridBagLayout());
+	    subscriptionPanel.add( new JButton("Minimum"), Util.setConstrains( 0, 0, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( new JButton("Maximum"), Util.setConstrains( 1, 0, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( new JButton("Delta"), Util.setConstrains( 2, 0, 1, 1, 1, 1 ) );
+        
+        minText = new JTextField();
+        subscriptionPanel.add( minText, Util.setConstrains( 0, 1, 1, 1, 1, 1 ) );
+        
+        maxText = new JTextField();
+        subscriptionPanel.add( maxText, Util.setConstrains( 1, 1, 1, 1, 1, 1 ) );
+        
+        changeText = new JTextField();
+        subscriptionPanel.add( changeText, Util.setConstrains( 2, 1, 1, 1, 1, 1 ) );
+        
+        return subscriptionPanel;
+	}
+	
 	private void buildButtonPanel(){
-		buttonPanel = new JPanel();
-	    buttonPanel.add(getReadButton());
-    	buttonPanel.add(getWriteButton());
-    	buttonPanel.add(getSubscribeButton());
+		buttonPanel = new JPanel(new GridBagLayout());
+	    buttonPanel.add( getReadButton(), Util.setConstrains( 0, 0, 1, 1, 1, 1 ) );
+    	buttonPanel.add( getWriteButton(), Util.setConstrains( 1, 0, 1, 1, 1, 1 ) );
+    	buttonPanel.add( getSubscribeButton(), Util.setConstrains( 2, 0, 1, 1, 1, 1 ) );
+    	buttonPanel.add( getSubscriptionPanel(), Util.setConstrains( 0, 1, 3, 1, 1, 1 ) );
 	}
 	
 	public void setAttribute(Attribute action){
@@ -217,7 +266,16 @@ public class AttributeActionPanel extends JPanel {
 		
 		if( attribute.isReportable() ){
 			getSubscribeButton().setVisible(true);
-			
+			final Subscription sub = attribute.getSubscription();
+			maxText.setText( "" + sub.getMaximumReportingInterval() );
+            minText.setText( "" + sub.getMinimumReportingInterval() );
+            if ( sub instanceof AnalogSubscription ) {
+                final AnalogSubscription  asub = (AnalogSubscription) sub;
+                changeText.setText( "" + asub.getReportableChange() );
+                changeText.setEnabled( true );
+            } else {
+                changeText.setEnabled( false );
+            }
 			if( subscription.get(attribute) == null ){
 				getSubscribeButton().setText("Subscribe");
 			} else {
@@ -226,6 +284,7 @@ public class AttributeActionPanel extends JPanel {
 		}else{
 			getSubscribeButton().setVisible(false);
 		}
+        getSubscriptionPanel().setVisible( getSubscribeButton().isVisible() );
 	}
 	
 }

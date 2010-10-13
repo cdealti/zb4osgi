@@ -22,10 +22,19 @@
 
 package it.cnr.isti.zigbee.basedriver.communication;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
 import static org.junit.Assert.*;
+import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.basedriver.communication.AFLayer.SenderIdentifier;
+import it.cnr.isti.zigbee.basedriver.configuration.ConfigurationService;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 
 
 /**
@@ -37,6 +46,27 @@ import org.junit.Test;
  */
 public class AFLayerTest {
 
+    private ConfigurationService cs = null;
+    
+    @Before
+    public void createActivatorStub() {
+        cs = createConfigurationServiceStub();
+        Activator.setStubObjectes(cs, null);
+    }
+    
+    public ConfigurationService createConfigurationServiceStub() {      
+        ConfigurationService stub = createMock(ConfigurationService.class);
+        
+        expect(stub.getFirstFreeEndPoint())
+            .andReturn( new Integer(2) )
+            .anyTimes();
+        
+        replay(stub);
+        
+        return stub;
+    }
+    
+    
 	@Test
 	public void getSendingEndpointZigBeeDeviceCluster(){
 		AFLayer layer = AFLayer.getAFLayer(null);

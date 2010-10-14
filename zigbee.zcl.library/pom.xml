@@ -121,8 +121,8 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
 	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
 	    Alessandro Giari <alessandro.giari@isti.cnr.it>
             ]]></Bundle-Author>
-            <Bundle-Name>${pom.name}</Bundle-Name>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.name}</Bundle-Name>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Activator />
             <Private-Package>
             </Private-Package>

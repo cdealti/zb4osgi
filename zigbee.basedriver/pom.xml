@@ -133,7 +133,7 @@
             <provision>mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002</provision>
             <provision>mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002</provision>
             <provision>mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2@nostart</provision>
-            <provision>mvn:${groupId}/org.aal-persona.zigbee.basedriver</provision>
+            <provision>mvn:${project.groupId}/org.aal-persona.zigbee.basedriver</provision>
           </provision>
         </configuration>	
       </plugin>   
@@ -148,8 +148,8 @@
 	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>, 
 	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
             ]]></Bundle-Author>
-            <Bundle-Name>${pom.name}</Bundle-Name>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.name}</Bundle-Name>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Activator>it.cnr.isti.zigbee.basedriver.Activator</Bundle-Activator>
             <Private-Package>
               it.cnr.isti.zigbee.basedriver.*

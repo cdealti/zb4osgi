@@ -149,8 +149,8 @@
               Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>,
               Álvaro Fides Valero <alfiva@aaa.upv.es>
             ]]></Bundle-Author>
-            <Bundle-Name>${pom.name}</Bundle-Name>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.name}</Bundle-Name>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Activator />
             <Import-Package>
               org.osgi.*,

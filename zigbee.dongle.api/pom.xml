@@ -88,8 +88,8 @@
         <configuration>
           <instructions>
             <Bundle-Author><![CDATA[Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>]]></Bundle-Author>
-            <Bundle-Name>${pom.name}</Bundle-Name>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.name}</Bundle-Name>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Private-Package>
             </Private-Package>
             <Export-Package>

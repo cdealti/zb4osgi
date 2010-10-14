@@ -34,9 +34,9 @@ as OSGi bundle
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Bundle-Name>${pom.name}</Bundle-Name>
+            <Bundle-Name>${project.name}</Bundle-Name>
             <Bundle-Description>${pom.description}</Bundle-Description>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Export-Package>
               gnu.trove.*;version=${pkgVersion}
             </Export-Package>

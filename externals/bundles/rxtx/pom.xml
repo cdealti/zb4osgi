@@ -38,9 +38,9 @@ on the JAR package of this artifact.
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Bundle-Name>${pom.name}</Bundle-Name>
+            <Bundle-Name>${project.name}</Bundle-Name>
             <Bundle-Description>${pom.description}</Bundle-Description>
-            <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
             <Bundle-NativeCode>
               Windows/i368-mingw32/rxtxSerial.dll; Windows/i368-mingw32/rxtxParallel.dll; osname=win32; processor=x86, 
               Linux/i686-unknown-linux-gnu/librxtxSerial.so; Linux/i686-unknown-linux-gnu/librxtxParallel.so; osname=linux; processor=x86, 

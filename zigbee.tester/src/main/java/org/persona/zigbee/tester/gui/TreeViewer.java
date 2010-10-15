@@ -39,6 +39,7 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Formatter;
 import java.util.Hashtable;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
@@ -247,9 +248,12 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 		}
 		Mediator.getPropertiesViewer().setProperties(names,values);
 	}
-
+	
 	private void makeProperties(ZigBeeDevice zb){
 		int[] clusters;
+		if ( zb == null ) 
+			return;
+		
 		Dictionary<String,Object> dict = new Hashtable<String, Object>();
 		formatted.setLength(0); formatter.format("%08X", zb.getDeviceId());
 		dict.put(ZigBeeDevice.DEVICE_ID,"0x"+formatted.toString().substring(4)+" ("+zb.getDeviceId()+")");
@@ -257,8 +261,12 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 		dict.put(ZigBeeDevice.ENDPOINT,"0x"+formatted.toString().substring(2)+" ("+zb.getId()+")");
 		formatted.setLength(0); formatter.format("%08X", zb.getProfileId());
 		dict.put(ZigBeeDevice.PROFILE_ID,"0x"+formatted.toString().substring(4)+" ("+zb.getProfileId()+")");
-		dict.put(ZigBeeDevice.UUID,zb.getUniqueIdenfier());
-		dict.put(ZigBeeNode.IEEE_ADDRESS, zb.getPhysicalNode().getIEEEAddress());
+		dict.put(ZigBeeDevice.UUID, zb.getUniqueIdenfier());
+		if ( zb.getPhysicalNode() == null ) {
+			LogPanel.log("Device "+zb.getUniqueIdenfier()+" has a null Physical node which is not possible!");
+		} else {
+			dict.put(ZigBeeNode.IEEE_ADDRESS, zb.getPhysicalNode().getIEEEAddress());
+		}
 		formatted.setLength(0); formatter.format("%08X", zb.getDeviceId());
 		dict.put(ZigBeeDevice.DEVICE_ID,"0x"+formatted.toString().substring(4)+" ("+zb.getDeviceId()+")");
 		

@@ -1,0 +1,36 @@
+#--log=DEBUG
+--profiles=log,config
+--executor=script
+--org.ops4j.pax.runner.platform.downloadFeedback=false
+#<!-- OSGi Tool -->
+mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2	    
+#<!-- ZigBee Stack General Dependencies & Tool -->
+mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester
+#<!-- ZigBee Hardware Access Layer -->
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.dongle.api
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.common
+#<!-- ZigBee Base Driver -->
+#
+# PAX-RUNNER OPTIONS
+#
+--profiles=log,config
+--executor=script
+--org.ops4j.pax.runner.platform.downloadFeedback=false
+--startLevel=10
+
+#
+# BUNDLE LIST
+#
+
+# OSGi Tool 
+mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2@nostart    
+
+# ZigBee Stack General Dependencies & Tool
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester
+
+# ZigBee Base Driver ( STUB )
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver.stub
+
+# ZigBee Refinement Architecture 
+mvn:org.aal-persona.sail/org.aal-persona.zigbee.ha.driver

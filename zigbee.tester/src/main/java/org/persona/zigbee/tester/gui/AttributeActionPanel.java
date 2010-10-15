@@ -29,6 +29,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Subscription;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.Dictionary;
@@ -36,7 +37,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -234,18 +237,25 @@ public class AttributeActionPanel extends JPanel {
 	    }
 	    
 	    subscriptionPanel = new JPanel(new GridBagLayout());
-	    subscriptionPanel.add( new JButton("Minimum"), Util.setConstrains( 0, 0, 1, 1, 1, 1 ) );
-        subscriptionPanel.add( new JButton("Maximum"), Util.setConstrains( 1, 0, 1, 1, 1, 1 ) );
-        subscriptionPanel.add( new JButton("Delta"), Util.setConstrains( 2, 0, 1, 1, 1, 1 ) );
+	    subscriptionPanel.setBorder( BorderFactory.createLineBorder(Color.black) );
+	    
+	    subscriptionPanel.add( 
+	    		new JLabel( "Reporting Configuration", JLabel.CENTER ), 
+	    		Util.setConstrains( 0, 0, 3, 1, 1, 1 ) 
+		);
+	    
+	    subscriptionPanel.add( new JLabel("Minimum", JLabel.CENTER ), Util.setConstrains( 0, 1, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( new JLabel("Maximum", JLabel.CENTER ), Util.setConstrains( 1, 1, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( new JLabel("Delta", JLabel.CENTER ), Util.setConstrains( 2, 1, 1, 1, 1, 1 ) );
         
         minText = new JTextField();
-        subscriptionPanel.add( minText, Util.setConstrains( 0, 1, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( minText, Util.setConstrains( 0, 2, 1, 1, 1, 1 ) );
         
         maxText = new JTextField();
-        subscriptionPanel.add( maxText, Util.setConstrains( 1, 1, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( maxText, Util.setConstrains( 1, 2, 1, 1, 1, 1 ) );
         
         changeText = new JTextField();
-        subscriptionPanel.add( changeText, Util.setConstrains( 2, 1, 1, 1, 1, 1 ) );
+        subscriptionPanel.add( changeText, Util.setConstrains( 2, 2, 1, 1, 1, 1 ) );
         
         return subscriptionPanel;
 	}

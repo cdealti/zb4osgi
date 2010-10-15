@@ -35,9 +35,4 @@ public class OnOffLightDevice extends StubZigbeeDeviceBase {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public ZigBeeNode getPhysicalNode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

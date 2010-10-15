@@ -43,6 +43,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.osgi.framework.ServiceReference;
 import org.persona.zigbee.tester.Activator;
 import org.persona.zigbee.tester.discovery.DeviceNode;
 
@@ -113,6 +114,7 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 			}
 		}
 		
+		Activator.context.ungetService(node.getReference());
 	}
 	
 	public HADeviceTreeNode(Cluster obj) {
@@ -177,7 +179,11 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		else category = ZCL_ATTRIBUTE;
 	}
 	
-	public HADeviceTreeNode(ZigBeeDevice obj) {
+	public HADeviceTreeNode( ZigBeeDevice obj ) {
+	/*
+	 * We should use the below constructor to avoid service refernce leak
+	 * public HADeviceTreeNode(ServiceReference sr, ZigBeeDevice obj) {
+	 */
 		super(obj);
 		category = ZIGBEE_DEVICE;
 	}

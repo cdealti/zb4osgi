@@ -58,6 +58,7 @@ import javax.swing.tree.TreePath;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
+import org.persona.zigbee.tester.Activator;
 import org.persona.zigbee.tester.Mediator;
 import org.persona.zigbee.tester.discovery.DeviceNode;
 import org.persona.zigbee.tester.discovery.DeviceNodeListener;
@@ -145,8 +146,9 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 			}
 			if( matches ) {
 				LogPanel.log("Removing from TreeView the node "+node+" ("+node.getUserObject()+")");
-				node.removeFromParent();
-				treeModel.nodeChanged(root);
+				treeModel.removeNodeFromParent(node);
+//				node.removeFromParent();
+//				treeModel.nodeChanged(root);
 				return;
 			}
 		}

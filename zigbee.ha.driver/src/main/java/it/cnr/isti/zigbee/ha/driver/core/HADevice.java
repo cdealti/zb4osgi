@@ -133,6 +133,7 @@ public interface HADevice {
 	 * 
 	 * @return return {@link ZigBeeDevice} service that has been refined has {@link HADevice} 
 	 * @since 0.2.0
+	 * @deprecated The method should be avoided because it cause Service Reference Leak
 	 */
 	public ZigBeeDevice getZBDevice(); 
 	

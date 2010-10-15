@@ -22,7 +22,7 @@
 
 package org.persona.zigbee.tester.discovery;
 
-import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import org.osgi.framework.ServiceReference;
 
 /**
  * 
@@ -34,10 +34,10 @@ import it.cnr.isti.zigbee.api.ZigBeeDevice;
  */
 public interface DeviceNodeListener {
 	
-	public void deviceDetected(DeviceNode d);
+	public void deviceDetected( DeviceNode d );
 	
-	public void deviceDetected(ZigBeeDevice node);
+	public void deviceDetected( ServiceReference sr );
 	
-	public void rootDeviceUnplugged(String udn);
+	public void rootDeviceUnplugged( String udn );
 	
 }

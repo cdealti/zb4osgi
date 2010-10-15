@@ -118,8 +118,8 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
     }
     
 
-	public void deviceDetected(ZigBeeDevice node) {
-		root.add(new HADeviceTreeNode(node));
+	public void deviceDetected( ServiceReference sr ) {
+		root.add( new HADeviceTreeNode( sr ) );
 		treeModel.nodeStructureChanged(root);
 	}
     
@@ -132,6 +132,9 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 	public void rootDeviceUnplugged(String udn){
 		Enumeration list = root.children();
 		LogPanel.log("Unregistering udn = '" + udn + "'"); 
+		if ( udn == null ) {
+		    return;
+		}
 		while (list.hasMoreElements()){
 			HADeviceTreeNode node = (HADeviceTreeNode)list.nextElement();
 			boolean matches = false;
@@ -140,15 +143,14 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 				LogPanel.log("Comparing with HA_DEVICE with udn = '" + dn + "'");
 				matches = udn.equals(dn.toString());
 			}else if ( node.category == HADeviceTreeNode.ZIGBEE_DEVICE ) {
-				ZigBeeDevice zbd = (ZigBeeDevice) node.getUserObject();
-				LogPanel.log("Comparing with ZIGBEE_DEVICE with udn = '" + zbd.getUniqueIdenfier() +"'");
-				matches = udn.equals( zbd.getUniqueIdenfier() );
+				ServiceReference sr = (ServiceReference) node.getUserObject();
+				final String  myUDN = (String) sr.getProperty( ZigBeeDevice.UUID );
+				LogPanel.log("Comparing with ZIGBEE_DEVICE with udn = '" + myUDN +"'");
+				matches = udn.equals( myUDN );
 			}
 			if( matches ) {
 				LogPanel.log("Removing from TreeView the node "+node+" ("+node.getUserObject()+")");
 				treeModel.removeNodeFromParent(node);
-//				node.removeFromParent();
-//				treeModel.nodeChanged(root);
 				return;
 			}
 		}
@@ -191,8 +193,10 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 			Mediator.getPropertiesViewer().showCommandPanel(false);
 		}
 		if ( node.category.equals(HADeviceTreeNode.ZIGBEE_DEVICE) ) {
-			ZigBeeDevice device = (ZigBeeDevice) node.getUserObject();
+			ServiceReference sr = (ServiceReference) node.getUserObject();
+			ZigBeeDevice device = (ZigBeeDevice) Activator.context.getService( sr );
 			makeProperties(device);
+			Activator.context.ungetService( sr );
 		} else if ( node.category.equals(HADeviceTreeNode.HA_DEVICE)){
 			DeviceNode device = (DeviceNode) node.getUserObject();
 			makeProperties(device.getReference());		

@@ -43,6 +43,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.osgi.framework.Constants;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.persona.zigbee.tester.Activator;
 import org.persona.zigbee.tester.discovery.DeviceNode;
@@ -81,14 +83,26 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		
 		final HADevice device = node.getDevice(Activator.context);
 		/* Adding the wrapped ZigBeeDevice as subnode and removing it from the sibling nodes */
-		this.add(new HADeviceTreeNode(device.getZBDevice()));	
+		ServiceReference[] sr = null;
+        try {
+            sr = Activator.context.getServiceReferences( 
+                ZigBeeDevice.class.getName(), 
+                "(" +  ZigBeeDevice.UUID + "=" + device.getZBDevice().getUniqueIdenfier() + ")"
+            );
+        } catch ( InvalidSyntaxException e ) {
+            //IGNORED 
+        }
+        this.add( new HADeviceTreeNode( sr[0] ) );    
 		
+        final long sid = (Long) sr[0].getProperty( Constants.SERVICE_ID );
 		for(int i = 0; i < root.getChildCount(); i++){
 			final HADeviceTreeNode current = (HADeviceTreeNode) root.getChildAt(i);
 			if ( current.category != HADeviceTreeNode.ZIGBEE_DEVICE ) {
 				continue;
 			}
-			if ( device.getZBDevice() == current.getUserObject() ){
+			final ServiceReference currentSR = ( ServiceReference ) current.getUserObject();
+			final long currentSID = (Long) currentSR.getProperty( Constants.SERVICE_ID );
+			if ( sid == currentSID ){
 				current.removeFromParent();
 				break;
 			}
@@ -179,12 +193,8 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		else category = ZCL_ATTRIBUTE;
 	}
 	
-	public HADeviceTreeNode( ZigBeeDevice obj ) {
-	/*
-	 * We should use the below constructor to avoid service refernce leak
-	 * public HADeviceTreeNode(ServiceReference sr, ZigBeeDevice obj) {
-	 */
-		super(obj);
+	public HADeviceTreeNode(ServiceReference sr) {
+		super(sr);
 		category = ZIGBEE_DEVICE;
 	}
 	
@@ -197,15 +207,15 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		super(obj);
 		category = HA_EVENT;
 	}
-
+	
 	public String toString() {
 		if (category.equals(HA_DEVICE)){
 			DeviceNode node =  (DeviceNode) getUserObject();
 			return node.toString();
 		}
 		else if (category.equals(ZIGBEE_DEVICE) ){
-			ZigBeeDevice device = (ZigBeeDevice) getUserObject();
-			return device.toString();
+		    ServiceReference sr = (ServiceReference) getUserObject();
+			return (String) sr.getProperty( ZigBeeDevice.UUID );
 		}
 		else if (category.equals(SERVICE)){
 			Cluster node =  (Cluster) getUserObject();
@@ -303,9 +313,9 @@ class TreeNodeCellRenderer extends DefaultTreeCellRenderer implements ImageObser
         } 
         else if ( tag.equals(HADeviceTreeNode.ZIGBEE_DEVICE) )
         {
-            ZigBeeDevice device = (ZigBeeDevice) node.getUserObject();
+            ServiceReference sr = (ServiceReference) node.getUserObject();
             setToolTipText("<html><TABLE BORDER='0' CELLPADDING='0' CELLSPACING='0' ><TR BGCOLOR='#F9FF79' ><TD>" 
-                    + device.getUniqueIdenfier() 
+                    + sr.getProperty( ZigBeeDevice.UUID ) 
                     +"</TD></TR></TABLE ></html>");
         }
         else

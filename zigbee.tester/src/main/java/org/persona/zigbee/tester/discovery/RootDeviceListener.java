@@ -27,17 +27,14 @@ import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
-//import org.osgi.service.upnp.UPnPDevice;
 import org.persona.zigbee.tester.Activator;
 import org.persona.zigbee.tester.gui.LogPanel;
-import org.persona.zigbee.tester.gui.Util;
 
 
 /**
@@ -83,7 +80,7 @@ public class RootDeviceListener {
 		public void serviceChanged(ServiceEvent e) {
 			switch(e.getType()){
 				case ServiceEvent.REGISTERED:{
-					listener.deviceDetected( (ZigBeeDevice) Activator.context.getService(e.getServiceReference()));				
+					listener.deviceDetected( e.getServiceReference() );				
 				};break;
 				
 				case ServiceEvent.MODIFIED:{				

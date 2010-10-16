@@ -78,7 +78,7 @@ public class OnOffOutputDevice extends HADeviceBase implements OnOffOutput {
 		return OnOffLight.NAME;
 	}
 
-	final static DeviceDescription DEVICE_DESCRIPTOR =  new AbstractDeviceDescription(){
+	public final static DeviceDescription DEVICE_DESCRIPTOR =  new AbstractDeviceDescription(){
 
 		public int[] getCustomClusters() {
 			return OnOffLight.CUSTOM;

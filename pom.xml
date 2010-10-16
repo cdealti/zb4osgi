@@ -29,6 +29,7 @@
     <module>zigbee.basedriver.api</module>
     <module>zigbee.dongle.api</module>
     <module>zigbee.ha.driver</module>
+    <module>zigbee.ha.driver.stub</module>
     <module>zigbee.tester</module>
     <module>zigbee.common</module>
     <module>zigbee.network.browser</module>

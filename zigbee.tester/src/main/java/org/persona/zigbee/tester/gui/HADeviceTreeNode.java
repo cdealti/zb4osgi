@@ -150,19 +150,22 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
 			} else if ( methodName.startsWith("add") || methodName.startsWith("remove") ) {
-				String pairName = null;
-				if ( ( pairName = checkForAddRemoveMethodsPair(methods,i) ) == null ) continue;
-				int childCount = this.getChildCount();
-				boolean isDuplicate = false;
-				for (int j = 0; j < childCount && ! isDuplicate; j++) {
-					HADeviceTreeNode node = (HADeviceTreeNode) this.getChildAt(j);
-					if( node.category != HA_EVENT ) continue;
-					HAEvent event = (HAEvent) node.getUserObject();
-					isDuplicate = event.getName().equals(pairName);
-				}
-				if( isDuplicate ) continue;
-				this.add(new HADeviceTreeNode(new HAEvent(obj, pairName)));
-				//TODO Add support for Specific Cluster Eventing
+			    Class<?>[] args = methods[i].getParameterTypes();
+               if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
+	                String pairName = null;
+	                if ( ( pairName = checkForAddRemoveMethodsPair(methods,i) ) == null ) continue;
+	                int childCount = this.getChildCount();
+	                boolean isDuplicate = false;
+	                for (int j = 0; j < childCount && ! isDuplicate; j++) {
+	                    HADeviceTreeNode node = (HADeviceTreeNode) this.getChildAt(j);
+	                    if( node.category != HA_EVENT ) continue;
+	                    HAEvent event = (HAEvent) node.getUserObject();
+	                    isDuplicate = event.getName().equals(pairName);
+	                }
+	                if( isDuplicate ) continue;
+	                this.add(new HADeviceTreeNode(new HAEvent(obj, pairName)));
+	                //TODO Add support for Specific Cluster Eventing
+			    }
 			}
 			this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
 		}
@@ -231,25 +234,27 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 }
 
 //   local class for JTree icon renderer
-class TreeNodeCellRenderer extends DefaultTreeCellRenderer implements ImageObserver{
+class TreeNodeCellRenderer extends DefaultTreeCellRenderer implements ImageObserver {
 	
 	private HashMap icons ;
 	ImageIcon image;
+	
 	public TreeNodeCellRenderer() {
 		super();
 		icons = new HashMap();
 		try {
-			icons.put(HADeviceTreeNode.EVENTED_STATE, loadIcon(HADeviceTreeNode.EVENTED_STATE));
-			image =  loadIcon(HADeviceTreeNode.SUBSCRIBED_STATE);
-			// to use animate gif
-			//image.setImageObserver(this);
- 			icons.put(HADeviceTreeNode.SUBSCRIBED_STATE, image);
+			icons.put( HADeviceTreeNode.EVENTED_STATE, loadIcon( HADeviceTreeNode.EVENTED_STATE ) );
+            image = loadIcon( HADeviceTreeNode.SUBSCRIBED_STATE );
+            // to use animate gif
+            //image.setImageObserver(this);
+            icons.put( HADeviceTreeNode.SUBSCRIBED_STATE, image );
 
- 			icons.put(HADeviceTreeNode.HA_DEVICE, loadIcon(HADeviceTreeNode.HA_DEVICE));
-			icons.put(HADeviceTreeNode.ZIGBEE_DEVICE, loadIcon(HADeviceTreeNode.ZIGBEE_DEVICE));
-			icons.put(HADeviceTreeNode.SERVICE, loadIcon(HADeviceTreeNode.SERVICE));
-			icons.put(HADeviceTreeNode.ZCL_COMMAND, loadIcon(HADeviceTreeNode.ZCL_COMMAND));
-			icons.put(HADeviceTreeNode.ZCL_ATTRIBUTE, loadIcon(HADeviceTreeNode.ZCL_ATTRIBUTE));
+            icons.put( HADeviceTreeNode.HA_DEVICE, loadIcon( HADeviceTreeNode.HA_DEVICE ) );
+            icons.put( HADeviceTreeNode.ZIGBEE_DEVICE, loadIcon( HADeviceTreeNode.ZIGBEE_DEVICE ) );
+            icons.put( HADeviceTreeNode.SERVICE, loadIcon( HADeviceTreeNode.SERVICE ) );
+            icons.put( HADeviceTreeNode.ZCL_COMMAND, loadIcon( HADeviceTreeNode.ZCL_COMMAND ) );
+            icons.put( HADeviceTreeNode.ZCL_ATTRIBUTE, loadIcon( HADeviceTreeNode.ZCL_ATTRIBUTE ) );
+            icons.put( HADeviceTreeNode.HA_EVENT, loadIcon( HADeviceTreeNode.HA_EVENT ) );
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -327,15 +332,10 @@ class TreeNodeCellRenderer extends DefaultTreeCellRenderer implements ImageObser
     public  static ImageIcon loadIcon(String name)
     {
         try {
-            /*
-            System.out.println("loading image ..."+name);
-            System.out.println("from "+"IMAGES/" + name + ".gif");
-            */
             URL eventIconUrl = HADeviceTreeNode.class.getResource("IMAGES/" + name + ".gif");           
             return new ImageIcon(eventIconUrl,name);
-        }
-        catch (Exception ex){
-		        System.out.println("Resource:" + name + " not found : " + ex.toString());
+        } catch (Exception ex) {
+            System.out.println("Resource:" + name + " not found : " + ex.toString());
             return null;
         }
     }

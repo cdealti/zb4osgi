@@ -51,7 +51,6 @@ public class HAEventActionPanel extends JPanel {
 	JPanel buttonPanel;
 	
 	private JButton subscribeButton;
-	private JTextField inputText; 
 	
 	private Hashtable<HAEvent, HAGenericListener> subscription = new Hashtable<HAEvent, HAGenericListener>();
 	
@@ -61,18 +60,9 @@ public class HAEventActionPanel extends JPanel {
 	public HAEventActionPanel() {
 		super(new GridBagLayout());
 		buildButtonPanel();
-		add(new JScrollPane(getInputText()),Util.setConstrains(0,1,1,1,100,100)); 
 		add(buttonPanel,Util.setConstrains(0,2,1,1,1,1));
 	}
-	
-	private JTextField getInputText(){
-		if( inputText != null ){
-			return inputText;
-		}
-		inputText = new JTextField();
-		return inputText;
-	}
-	
+		
 	@SuppressWarnings("serial")
 	private JButton getSubscribeButton(){
 		if( subscribeButton != null ){

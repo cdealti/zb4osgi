@@ -166,32 +166,26 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 	}
 	
 	private void doNodeAction(HADeviceTreeNode node){
+        clearPropertiesViewer();
 		if (node == null) {
-			clearPropertiesViewer();
 			return;
 		}
 		if ( node.category == HADeviceTreeNode.ZCL_ATTRIBUTE 
 				|| node.category == HADeviceTreeNode.SUBSCRIBED_STATE 
 				|| node.category == HADeviceTreeNode.EVENTED_STATE) {
 			Mediator.getPropertiesViewer().showAttrbutePanel(true);
-		} else {
-			Mediator.getPropertiesViewer().showAttrbutePanel(false);
-		}
+		} 
 		if (node.category == HADeviceTreeNode.HA_EVENT) {
 			//TODO Add read all
 			//TODO Add write all
 			Mediator.getPropertiesViewer().setHAEvent((HAEvent) node.getUserObject());
 			Mediator.getPropertiesViewer().showHAEventPanel(true);
-		} else {
-			Mediator.getPropertiesViewer().showHAEventPanel(false);
-		}
+		} 
 		if (node.category.equals(HADeviceTreeNode.ZCL_COMMAND)) {
 			//TODO Add read all
 			//TODO Add write all
 			Mediator.getPropertiesViewer().showCommandPanel(true);
-		} else {
-			Mediator.getPropertiesViewer().showCommandPanel(false);
-		}
+		} 
 		if ( node.category.equals(HADeviceTreeNode.ZIGBEE_DEVICE) ) {
 			ServiceReference sr = (ServiceReference) node.getUserObject();
 			ZigBeeDevice device = (ZigBeeDevice) Activator.context.getService( sr );
@@ -221,9 +215,10 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 		String[] names = new String[]{};
 		String[] values = new String[]{};
 		PropertiesViewer viewer = Mediator.getPropertiesViewer();
-		viewer.setProperties(names,values);
-		viewer.showAttrbutePanel(false);
-		viewer.showCommandPanel(false);
+		viewer.showAttrbutePanel( false );
+		viewer.setProperties( names, values );
+		viewer.showAttrbutePanel( false );
+		viewer.showCommandPanel( false );
 	}
 	
 	private void makeProperties(ServiceReference reference) {

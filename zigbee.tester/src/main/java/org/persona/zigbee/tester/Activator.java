@@ -23,13 +23,15 @@
 package org.persona.zigbee.tester;
 
 
+import java.util.HashMap;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.persona.zigbee.tester.event.HAListenerFactoryServiceTracker;
 
 /**
- * 
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
@@ -37,6 +39,7 @@ import org.persona.zigbee.tester.event.HAListenerFactoryServiceTracker;
 public class Activator implements BundleActivator {
 
 	public static BundleContext context;
+    public static HashMap<Options, Object> options = new HashMap<Options, Object>();
     
 	private ControlPoint cp;
 
@@ -46,9 +49,15 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
+	    Options[] opts = Options.values();
+	    for ( int i = 0; i < opts.length; i++ ) {
+            options.put( opts[i], opts[i].defaultValue );
+        }
         tracker = new HAListenerFactoryServiceTracker(context);
 		Activator.context = context;
         cp = new ControlPoint();
+        
+        
 	}
 
 	/**

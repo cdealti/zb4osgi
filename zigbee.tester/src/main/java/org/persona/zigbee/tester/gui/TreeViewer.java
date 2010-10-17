@@ -79,7 +79,7 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 	private HADeviceTreeNode root;
 	private DefaultTreeModel treeModel;
 	private JTree tree;
-    final TreePopup popup ;
+    final TreeNodeBindPopupMenu popup ;
     private StringBuilder formatted = new StringBuilder();
 	private Formatter formatter = new Formatter(formatted);
     
@@ -96,9 +96,9 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 		addTreeSelectionListener();
         
         
-        popup = new TreePopup(tree);
-        popup.setEnabled(false);
-        /*
+        popup = new TreeNodeBindPopupMenu(tree);
+        popup.setEnabled( true );
+        
         tree.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
                 if (SwingUtilities.isRightMouseButton(e)){
@@ -109,7 +109,6 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
                 }
             }
         });
-        */
         ToolTipManager.sharedInstance().registerComponent(tree);
          
 
@@ -384,65 +383,3 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 	
 }
 
-class TreePopup extends JPopupMenu implements PopupMenuListener {
-    JTree tree;
-    JMenuItem item;
-
-    public TreePopup(final JTree tree){
-        super();
-        this.tree = tree;
-        (item = add(new AbstractAction(){
-            public void actionPerformed(ActionEvent e){
-                HADeviceTreeNode selectedNode = (HADeviceTreeNode)tree.getLastSelectedPathComponent();   
-                String url = "";
-                if (selectedNode.category.equals(HADeviceTreeNode.ZIGBEE_DEVICE)){
-//                    HADeviceTreeNode parent =  (HADeviceTreeNode)selectedNode.getParent();
-//                    while (parent.category!=HADeviceTreeNode.ROOT_DEVICE)
-//                         parent =  (HADeviceTreeNode)parent.getParent();
-//                    DeviceNode device =  (DeviceNode) parent.getUserObject();
-//                    String udn = (String)device.getReference().getProperty(HADevice.ZIGBEE_DEVICE_UUID);
-//                    url = Mediator.getDriverProxy().getDeviceDescriptionURI(udn);
-                }
-                        
-                else if (selectedNode.category.equals(HADeviceTreeNode.HA_DEVICE))
-                {
-//                    DeviceNode node =  (DeviceNode) selectedNode.getUserObject();
-//                    String udn = (String)node.getReference().getProperty(HADevice.ZIGBEE_DEVICE_UUID);
-//                    url = Mediator.getDriverProxy().getDeviceDescriptionURI(udn);
-                }
-                else if (selectedNode.category.equals(HADeviceTreeNode.SERVICE))
-                {
-                    HADeviceTreeNode parent =  (HADeviceTreeNode)selectedNode.getParent();
-                    while (parent.category!=HADeviceTreeNode.HA_DEVICE)
-                         parent =  (HADeviceTreeNode)parent.getParent();
-                    DeviceNode device =  (DeviceNode) parent.getUserObject();
-                    String udn = (String)device.getReference().getProperty(HADevice.ZIGBEE_DEVICE_UUID);
-                    Cluster service =  (Cluster) selectedNode.getUserObject();
-//                    url = Mediator.getDriverProxy().getServiceDescriptionURI(udn,service.getId());
-                }                    
-                Util.openUrl(url);   
-            }
-        })).setText("Show Description");
-        addPopupMenuListener(this);
-
-    }
-    
-    public void popupMenuCanceled(PopupMenuEvent e){}
-    public void popupMenuWillBecomeInvisible(PopupMenuEvent e){}
-    public void popupMenuWillBecomeVisible(PopupMenuEvent e){
-//        if (Mediator.getDriverProxy().isDriverAvailable()){
-//        HADeviceTreeNode selectedNode = (HADeviceTreeNode)tree.getLastSelectedPathComponent();              
-//            if (selectedNode.category.equals(HADeviceTreeNode.DEVICE)
-//                ||selectedNode.category.equals(HADeviceTreeNode.ROOT_DEVICE)
-//                ||selectedNode.category.equals(HADeviceTreeNode.SERVICE))
-//            {
-//                item.setEnabled(true);
-//            } 
-//            else
-//                item.setEnabled(false);
-//        }
-//        else
-//            item.setEnabled(false);
-           
-    }
-}

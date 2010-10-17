@@ -36,6 +36,7 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -156,7 +157,26 @@ public class ControlPoint implements PopupMenuListener {
         file_menu.addSeparator();
         file_menu.add(exitItem);
 
+        JMenu option_menu = new JMenu("Option");
+        final Options[] opts = Options.values();
+        for ( int i = 0; i < opts.length; i++ ) {
+            final int j = i;
+            if ( opts[i].defaultValue.getClass() != Boolean.class ){
+                continue;
+            }
+            JCheckBoxMenuItem opt = new JCheckBoxMenuItem(opts[i].title);
+            opt.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    synchronized ( Activator.options ) {
+                        Activator.options.put( opts[j], ( ( JCheckBoxMenuItem ) e.getSource() ).getState() );
+                    }
+                }
+            });
+            option_menu.add( opt );
+        }
+                
         menuBar.add(file_menu);                   
+        menuBar.add(option_menu);                   
         frame.setJMenuBar(menuBar);
 
     }

@@ -97,7 +97,7 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
         
         
         popup = new TreeNodeBindPopupMenu(tree);
-        popup.setEnabled( true );
+        popup.setEnabled( false );
         
         tree.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
@@ -109,6 +109,7 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
                 }
             }
         });
+        
         ToolTipManager.sharedInstance().registerComponent(tree);
          
 

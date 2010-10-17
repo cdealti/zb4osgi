@@ -27,9 +27,11 @@ import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -55,23 +57,23 @@ public class TreeNodeBindPopupMenu
     implements PopupMenuListener {
 
     JTree tree;
-    final JMenuItem bind;
-    final JPopupMenu targets;
+    final JMenu bind;
     final Action action;
     HADeviceTreeNode lastNode = null;
     
     public TreeNodeBindPopupMenu(final JTree tree){
         super();
+        addPopupMenuListener(this);
         this.tree = tree;
-        bind = new JMenuItem("Bind To");
-        targets = new JPopupMenu();
-        bind.add( targets );
+        bind = new JMenu("Bind To");
+        add( bind );
         action = new AbstractAction(){
 
             public void actionPerformed( ActionEvent e ) {
                 final JMenuItem item = (JMenuItem) e.getSource();
-                final String uuidTo = item.getName();
+                final String uuidTo = item.getText();
                 final Cluster binding = (Cluster) lastNode.getUserObject();
+                LogPanel.log( "Binding on cluster " + binding.getName() + " invoked" );
                 final int clusterId = binding.getId();
                 final DeviceNode device = (DeviceNode) ( (HADeviceTreeNode) lastNode.getParent() ).getUserObject();
                 final String uuidFrom = (String) device.getReference().getProperty( HADevice.ZIGBEE_DEVICE_UUID );
@@ -83,6 +85,7 @@ public class TreeNodeBindPopupMenu
                 try {
                     ServiceReference[] pair = Activator.context.getServiceReferences( ZigBeeDevice.class.getName(), filter );
                     if ( pair == null || pair.length != 2 ) {
+                        LogPanel.log( "Binding failed because one of the service expired" );
                         return;
                     }
                     final ZigBeeDevice fromDevice;
@@ -95,13 +98,22 @@ public class TreeNodeBindPopupMenu
                         fromDevice = (ZigBeeDevice) Activator.context.getService( pair[1] );
                     }
                     if ( fromDevice == null || toDevice == null ) {
+                        LogPanel.log( "Binding failed because one of the service expired" );
                         return;
                     }
-                    if ( Activator.options.get( Options.AlwaysDoubleBinding ) == Boolean.TRUE ){
-                        fromDevice.bindTo( toDevice, clusterId );
-                        toDevice.bindTo( fromDevice, clusterId );
+                    LogPanel.log( "Binding cluster " + clusterId + " from " + uuidFrom + " to " + uuidTo + "... ");
+                    if ( fromDevice.bindTo( toDevice, clusterId ) ) {
+                        LogPanel.log( "Binding cluster " + clusterId + " from " + uuidFrom + " to " + uuidTo + "... SUCCESS");
                     } else {
-                        fromDevice.bindTo( toDevice, clusterId );                        
+                        LogPanel.log( "Binding cluster " + clusterId + " from " + uuidFrom + " to " + uuidTo + "... FAILED");
+                    }
+                    if ( (Boolean) Activator.options.get( Options.AlwaysDoubleBinding ) ){
+                        LogPanel.log( "Binding cluster " + clusterId + " from " + uuidTo + " to " + uuidFrom + "... ");
+                        if ( toDevice.bindTo( fromDevice, clusterId ) ) {
+                            LogPanel.log( "Binding cluster " + clusterId + " from " + uuidTo + " to " + uuidFrom + "... SUCCESS");
+                        } else {
+                            LogPanel.log( "Binding cluster " + clusterId + " from " + uuidTo + " to " + uuidFrom + "... FAILED");
+                        }
                     }
                 }
                 catch ( Throwable ex ) {
@@ -125,17 +137,19 @@ public class TreeNodeBindPopupMenu
     public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
         HADeviceTreeNode selectedNode = (HADeviceTreeNode) tree.getLastSelectedPathComponent();
         if ( lastNode != selectedNode && selectedNode.category == HADeviceTreeNode.SERVICE ) {
+            this.setEnabled( true );
             lastNode = selectedNode;
             generateSubItems(lastNode);
         } else {
-            bind.setEnabled( selectedNode.category == HADeviceTreeNode.SERVICE );
+            this.setEnabled( selectedNode.category == HADeviceTreeNode.SERVICE );
         }
     }
 
     private void generateSubItems(HADeviceTreeNode node) {
         final String filter;
+        bind.removeAll();
         final Cluster binding = (Cluster) node.getUserObject();
-        if ( Activator.options.get( Options.StrictBinding ) == Boolean.TRUE ){
+        if ( (Boolean) Activator.options.get( Options.StrictBinding ) ){
             filter = "( " + ZigBeeDevice.CLUSTERS_OUTPUT_ID + "=" + binding.getId() + ")";
         } else {
             filter = null;
@@ -146,12 +160,14 @@ public class TreeNodeBindPopupMenu
             if ( refs == null ) {
                 item = new JMenuItem("No valid target");
                 bind.add( item );
+                return;
             }
             for ( int i = 0; i < refs.length; i++ ) {
                 item = new JMenuItem( (String) refs[i].getProperty( ZigBeeDevice.UUID ) );
-                item.setAction( action );
-                bind.add( item );
+                item.addActionListener( action );
+                bind.add( item );                
             }
+            bind.repaint();
         } catch ( InvalidSyntaxException e ) {
         }
     }

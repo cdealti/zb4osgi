@@ -27,7 +27,6 @@ import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -137,11 +136,13 @@ public class TreeNodeBindPopupMenu
     public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
         HADeviceTreeNode selectedNode = (HADeviceTreeNode) tree.getLastSelectedPathComponent();
         if ( lastNode != selectedNode && selectedNode.category == HADeviceTreeNode.SERVICE ) {
-            this.setEnabled( true );
+            //bind.setVisible( true );
+            bind.setEnabled( true );
             lastNode = selectedNode;
             generateSubItems(lastNode);
         } else {
-            this.setEnabled( selectedNode.category == HADeviceTreeNode.SERVICE );
+            bind.setEnabled( selectedNode.category == HADeviceTreeNode.SERVICE );
+            //bind.setVisible( selectedNode.category == HADeviceTreeNode.SERVICE );
         }
     }
 
@@ -163,7 +164,15 @@ public class TreeNodeBindPopupMenu
                 return;
             }
             for ( int i = 0; i < refs.length; i++ ) {
-                item = new JMenuItem( (String) refs[i].getProperty( ZigBeeDevice.UUID ) );
+                final String uuid = (String) refs[i].getProperty( ZigBeeDevice.UUID );
+                item = new JMenuItem( uuid );
+                final String hadevice = "( " + HADevice.ZIGBEE_DEVICE_UUID + "=" + uuid + ")"; 
+                final ServiceReference[] refined = Activator.context.getServiceReferences( HADevice.class.getName(), hadevice );
+                if ( refined != null ) {
+                    item.setToolTipText( (String) refined[0].getProperty( HADevice.HA_DEVICE_NAME ) );
+                } else {
+                    item.setText( uuid );
+                }
                 item.addActionListener( action );
                 bind.add( item );                
             }

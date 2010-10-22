@@ -23,7 +23,7 @@
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>sail.pom</artifactId>
   <packaging>pom</packaging>  
-  <version>7</version>
+  <version>8-SNAPSHOT</version>
 
   <name>Suite of bundle for integrating ZigBee device in OSGi</name>
   <url>http://zb4osgi.aaloa.org/</url>
@@ -51,9 +51,9 @@
   </mailingLists>
 
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/sail.pom-7</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/sail.pom-7</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/releases/sail.pom-7</url>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/pom</url>
   </scm>
 
   <repositories>

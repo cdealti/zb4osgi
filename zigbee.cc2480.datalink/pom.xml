@@ -11,7 +11,7 @@
 
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>org.aal-persona.zigbee.cc2480.datalink</artifactId>
-  <version>0.6.0-SNAPSHOT</version>
+  <version>0.6.0</version>
   <packaging>bundle</packaging>  
 
   <name>CC2480 Data Link protocol library</name>
@@ -62,9 +62,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.cc2480.datalink</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.cc2480.datalink</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.cc2480.datalink</url>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.cc2480.datalink-0.6.0</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.cc2480.datalink-0.6.0</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/releases/org.aal-persona.zigbee.cc2480.datalink-0.6.0</url>
   </scm>
 
   <dependencies>

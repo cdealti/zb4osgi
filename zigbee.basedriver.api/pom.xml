@@ -11,7 +11,7 @@
    
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
-  <version>0.6.0-SNAPSHOT</version>
+  <version>0.5.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
    
   <name>ZigBee Base Driver API for OSGi</name>

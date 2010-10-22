@@ -31,6 +31,12 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.basedriver.api</url>
+  </scm>
   
   <developers>
     <developer>
@@ -109,17 +115,12 @@
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-25</date>
             <date implementation="java.lang.String">2010-08-13</date>
+            <date implementation="java.lang.String">2010-10-23</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>
       </plugin>
     </plugins>
   </reporting>
-  <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.basedriver.api</url>
-  </scm>
 </project>

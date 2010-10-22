@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
@@ -12,7 +11,7 @@
    
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
-  <version>0.5.1-SNAPSHOT</version>
+  <version>0.5.1</version>
   <packaging>bundle</packaging>
    
   <name>ZigBee Base Driver API for OSGi</name>
@@ -119,8 +118,8 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.basedriver.api</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.basedriver.api</url>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.basedriver.api-0.5.1</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.basedriver.api-0.5.1</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/releases/org.aal-persona.zigbee.basedriver.api-0.5.1</url>
   </scm>
 </project>

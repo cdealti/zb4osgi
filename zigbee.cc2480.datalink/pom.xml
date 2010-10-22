@@ -5,7 +5,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <version>7</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@
   <packaging>bundle</packaging>  
 
   <name>CC2480 Data Link protocol library</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[
   	A Java library that implementats the Texas Instrument CC2480 Interface Specification. 
 	In particular, it provides the implementation of data link protocol over the serial port and 
@@ -179,8 +179,8 @@
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-25</date>
             <date implementation="java.lang.String">2010-08-13</date>
+            <date implementation="java.lang.String">2010-10-23</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

@@ -12,7 +12,7 @@
 
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>org.aal-persona.zigbee.tester</artifactId>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.3.0</version>
   <packaging>bundle</packaging>
 
   <name>Zigbee Tester</name>
@@ -145,5 +145,11 @@
     <bundles.configuration.location>../configurations</bundles.configuration.location>
     <pax.args.file>pax.args</pax.args.file>
   </properties>
+
+  <scm>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.tester-0.3.0</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aal-persona.zigbee.tester-0.3.0</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/releases/org.aal-persona.zigbee.tester-0.3.0</url>
+  </scm>
 </project>
 

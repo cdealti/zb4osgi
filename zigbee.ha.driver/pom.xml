@@ -6,7 +6,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <version>7</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
   <version>0.6.0-SNAPSHOT</version>
 
   <name>ZigBee Home Automation Profile Driver</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[
 A Home Automation Profile refinent driver that is able to refin ZigBeeDevice service
 as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specification
@@ -200,8 +200,8 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-25</date>
-            <date implementation="java.lang.String">2010-08-13</date>
+            <date implementation="java.lang.String">2009-09-26</date>
+            <date implementation="java.lang.String">2010-10-23</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

@@ -5,7 +5,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <version>7</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@
   <version>0.7.0-SNAPSHOT</version>
 
   <name>ZigBee Common Cluster Library</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[
 A set of Java classes reppresenting the ZigBee Common Cluster library
   ]]></description>
@@ -149,7 +149,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
           <type>date</type>
           <dates>
             <date implementation="java.lang.String">2009-03-10</date>
-            <date implementation="java.lang.String">2099-12-31</date>
+            <date implementation="java.lang.String">2010-10-23</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

@@ -4,18 +4,26 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <version>7</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.aal-persona.sail</groupId>
   <artifactId>org.aal-persona.zigbee.tester</artifactId>
-  <packaging>bundle</packaging>
-  <name>Zigbee Tester</name>
   <version>0.3.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+
+  <name>Zigbee Tester</name>
+  <url>http://zb4osgi.aaloa.org/</url>
+  <description><![CDATA[
+    A simple Java Swing application for controlling the ZigBee Device service, and its refined version.
+    This application aims at be a tool for testing the whole ZigBee 4 OSGi suite, but it also allows
+    the user to start to play with the ZigBee network
+  ]]></description>
   
-   <inceptionYear>2008</inceptionYear>
+  <inceptionYear>2008</inceptionYear>
   <organization>
     <name>Institute of Information Science and Technologies of the Italian National Research Council</name>
     <url>http://isti.cnr.it/</url>
@@ -105,7 +113,7 @@
           <type>date</type>
           <dates>
             <date implementation="java.lang.String">2009-09-25</date>
-            <date implementation="java.lang.String">2010-08-13</date>
+            <date implementation="java.lang.String">2010-10-23</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>
@@ -135,7 +143,7 @@
 
   <properties>
     <bundles.configuration.location>../configurations</bundles.configuration.location>
-	<pax.args.file>pax.args</pax.args.file>
+    <pax.args.file>pax.args</pax.args.file>
   </properties>
 </project>
 

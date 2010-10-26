@@ -23,7 +23,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>pom/pom.xml</relativePath>
   </parent>
 
@@ -33,7 +33,7 @@
   <version>1.0.0</version>
 
   <name>Suite of bundle for integrating ZigBee device in OSGi and PERSONA</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description>This is the root pom of a suite of bundles (artifacts) which goal is to implement
 	an ZigBee OSGi Base Driver,  to implement a set of Refine Driver for ZigBee 
 	Device, and to integrate the refined device into the PERSONA middleware</description>

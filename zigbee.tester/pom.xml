@@ -22,7 +22,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 

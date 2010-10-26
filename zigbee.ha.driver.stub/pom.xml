@@ -33,7 +33,7 @@
   <packaging>bundle</packaging>  
 
   <name>STUB implementation of:OSGi ZigBee HA Refinement Driver</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[
     A stub implementation of a ZigBee HA Refinement Driver, which register HADevice services
     that do not rely on a ZigBee services, and in particular on any real ZigBee network. 

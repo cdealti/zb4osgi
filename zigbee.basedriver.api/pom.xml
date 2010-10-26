@@ -23,7 +23,7 @@
   <parent>
     <artifactId>sail.pom</artifactId>
     <groupId>org.aal-persona.sail</groupId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
    
@@ -33,7 +33,7 @@
   <packaging>bundle</packaging>
    
   <name>ZigBee Base Driver API for OSGi</name>
-  <url>http://zb4osgi.aaloa.org/projects/zb4osgi</url>
+  <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[API of the ZigBee Base Driver]]></description>
   
   <inceptionYear>2008</inceptionYear>

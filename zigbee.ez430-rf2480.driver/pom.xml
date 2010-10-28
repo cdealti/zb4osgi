@@ -21,14 +21,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>sail.pom</artifactId>
-    <groupId>org.aal-persona.sail</groupId>
+    <groupId>org.aaloa.zb4osgi</groupId>
+    <artifactId>org.aaloa.zb4osgi.pom</artifactId>
     <version>8-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.aal-persona.sail</groupId>
-  <artifactId>org.aal-persona.zigbee.ez430-rf2480.driver</artifactId>
+  <groupId>org.aaloa.zb4osgi</groupId>
+  <artifactId>org.aaloa.zb4osgi.zigbee.ez430-rf2480.driver</artifactId>
   <version>0.7.0-SNAPSHOT</version>
   <packaging>bundle</packaging>  
 
@@ -78,16 +78,16 @@
       <artifactId>org.aal-persona.bundle.rxtx</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.dongle.api</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.common</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.cc2480.datalink</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>

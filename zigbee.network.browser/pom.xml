@@ -20,15 +20,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <artifactId>sail.pom</artifactId>
-    <groupId>org.aal-persona.sail</groupId>
-    <version>7-SNAPSHOT</version>
+    <groupId>org.aaloa.zb4osgi</groupId>
+    <artifactId>org.aaloa.zb4osgi.pom</artifactId>
+    <version>8-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.aaloa.zb4osgi</groupId>
-  <artifactId>org.aaloa.zb4osgi.network.browser</artifactId>
+  <artifactId>org.aaloa.zb4osgi.zigbee.network.browser</artifactId>
   <packaging>bundle</packaging>
   <name>Zigbee Network Browser</name>
   <version>0.1.0-SNAPSHOT</version>
@@ -162,32 +162,32 @@
       <artifactId>org.osgi.compendium</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.ha.driver</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.ha.driver</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.zcl.library</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.zcl.library</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
     </dependency>    
     <!--dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.cc2480.datalink</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.common</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.dongle.api</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.basedriver</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.basedriver</artifactId>
       <version>0.6.0-SNAPSHOT</version>
     </dependency-->
     <dependency>

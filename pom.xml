@@ -21,14 +21,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>sail.pom</artifactId>
-    <groupId>org.aal-persona.sail</groupId>
+    <groupId>org.aaloa.zb4osgi</groupId>
+    <artifactId>org.aaloa.zb4osgi.pom</artifactId>
     <version>8-SNAPSHOT</version>
     <relativePath>pom/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.aal-persona.sail</groupId>
-  <artifactId>sail.builder</artifactId>
+  <groupId>org.aaloa.zb4osgi</groupId>
+  <artifactId>org.aaloa.zb4osgi.builder</artifactId>
   <packaging>pom</packaging>  
   <version>1.0.0</version>
 

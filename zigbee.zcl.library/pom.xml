@@ -21,14 +21,14 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
-    <artifactId>sail.pom</artifactId>
-    <groupId>org.aal-persona.sail</groupId>
+    <groupId>org.aaloa.zb4osgi</groupId>
+    <artifactId>org.aaloa.zb4osgi.pom</artifactId>
     <version>8-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.aal-persona.sail</groupId>
-  <artifactId>org.aal-persona.zigbee.zcl.library</artifactId>
+  <groupId>org.aaloa.zb4osgi</groupId>
+  <artifactId>org.aaloa.zb4osgi.zigbee.zcl.library</artifactId>
   <packaging>bundle</packaging>  
   <version>0.8.0-SNAPSHOT</version>
 
@@ -88,12 +88,12 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
 
   <dependencies>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.basedriver.api</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.sail</groupId>
-      <artifactId>org.aal-persona.zigbee.common</artifactId>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.ops4j.pax.logging</groupId>

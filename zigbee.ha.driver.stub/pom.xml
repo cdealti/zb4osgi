@@ -115,8 +115,8 @@
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-25</date>
-            <date implementation="java.lang.String">2010-08-13</date>
+            <date implementation="java.lang.String">2010-10-17</date>
+            <date implementation="java.lang.String">2029-12-31</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

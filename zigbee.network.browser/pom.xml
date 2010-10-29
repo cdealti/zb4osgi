@@ -58,6 +58,12 @@
     </developer>
   </developers> 
 
+  <scm>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.network.browser</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.network.browser</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.network.browser</url>
+  </scm>
+
   <build>
     <plugins>
       <plugin>    
@@ -143,7 +149,7 @@
           <type>date</type>
           <dates>
             <date implementation="java.lang.String">2010-09-28</date>
-            <date implementation="java.lang.String">2090-08-13</date>
+            <date implementation="java.lang.String">2029-12-31</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

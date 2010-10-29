@@ -217,8 +217,8 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-26</date>
-            <date implementation="java.lang.String">2010-10-23</date>
+            <date implementation="java.lang.String">2010-10-24</date>
+            <date implementation="java.lang.String">2029-12-31</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

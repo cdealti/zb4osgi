@@ -27,21 +27,21 @@
 <listEntry value="log"/>
 </listAttribute>
 <mapAttribute key="org.ops4j.pax.cursor.provisionItems">
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.zcl.library" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.pcl.library" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.tsb.driver" value="true@false@null@false"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.ez430-rf2480.driver" value="true@false@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.zcl.library" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.pcl.library" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.tsb.driver" value="true@false@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.ez430-rf2480.driver" value="true@false@null@true"/>
 <mapEntry key="mvn:org.ops4j.pax.confman/pax-confman-propsloader" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.common" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.dongle.api" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.cc2480.datalink" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester" value="true@true@10@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver.api" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.persona.driverx" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.ha.driver" value="true@true@null@false"/>
-<mapEntry key="mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.common" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi.bundle/org.aaloa.zb4osgi.bundle.net.sourceforge.trove/2.0.4-0002" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.basedriver" value="true@true@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.dongle.api" value="true@true@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.cc2480.datalink" value="true@true@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.tester" value="true@true@10@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.basedriver.api" value="true@true@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.persona.driverx" value="true@true@null@true"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.ha.driver" value="true@true@null@false"/>
+<mapEntry key="mvn:org.aaloa.zb4osgi.bundle/org.aaloa.zb4osgi.bundle.rxtx/2.1.7-0002" value="true@true@null@false"/>
 </mapAttribute>
 <listAttribute key="org.ops4j.pax.cursor.runArguments">
 <listEntry value="--overwrite=true"/>
@@ -49,20 +49,20 @@
 <listEntry value="--overwriteSystemBundles=false"/>
 <listEntry value="--log=DEBUG"/>
 <listEntry value="--profiles=config,log"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.zcl.library"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.pcl.library"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.tsb.driver@nostart"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.ez430-rf2480.driver@nostart@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi.sail/org.aaloa.zb4osgi.zigbee.zcl.library"/>
+<listEntry value="mvn:org.aaloa.zb4osgi.sail/org.aaloa.zb4osgi.zigbee.pcl.library"/>
+<listEntry value="mvn:org.aaloa.zb4osgi.sail/org.aaloa.zb4osgi.zigbee.tsb.driver@nostart"/>
+<listEntry value="mvn:org.aaloa.zb4osgi.sail/org.aaloa.zb4osgi.zigbee.ez430-rf2480.driver@nostart@update"/>
 <listEntry value="mvn:org.ops4j.pax.confman/pax-confman-propsloader"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.common"/>
 <listEntry value="mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.dongle.api@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.cc2480.datalink@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester@10@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver.api@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.persona.driverx@update"/>
-<listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.ha.driver"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.common"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.basedriver@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.dongle.api@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.cc2480.datalink@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.tester@10@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.basedriver.api@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.persona.driverx@update"/>
+<listEntry value="mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.ha.driver"/>
 <listEntry value="mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002"/>
 </listAttribute>
 <stringAttribute key="osgi_framework_id" value="--platform=felix --version=1.8.1"/>

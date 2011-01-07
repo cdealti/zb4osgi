@@ -15,16 +15,16 @@ mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2
 # ZigBee Stack General Dependencies & Tool
 mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002
 mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.tester
 
 # ZigBee Hardware Access Layer 
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.dongle.api
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.ez430-rf2480.driver@nostart
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.cc2480.datalink
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.common
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.dongle.api
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.ez430-rf2480.driver@nostart
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.cc2480.datalink
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.common
 
 # ZigBee Base Driver 
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver	    
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.basedriver	    
 
 # ZigBee Refinement Architecture 
-mvn:org.aal-persona.sail/org.aal-persona.zigbee.ha.driver
+mvn:org.aaloa.zb4osgi/org.aal-persona.zigbee.ha.driver

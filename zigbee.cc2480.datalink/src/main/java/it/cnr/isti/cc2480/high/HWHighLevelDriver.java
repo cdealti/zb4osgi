@@ -135,6 +135,7 @@ public class HWHighLevelDriver {
 			for (Short key : expired) {
 				pendingSREQ.remove(key);
 			}
+			pendingSREQ.notifyAll();
 		}
 	}
 	
@@ -169,7 +170,8 @@ public class HWHighLevelDriver {
 				while(pendingSREQ.get(cmdId) != null) {
 					try {
 						logger.debug("Waiting for other request {} to complete", id);
-						pendingSREQ.wait();
+						pendingSREQ.wait(500);
+						cleanExpiredListener();
 					} catch (InterruptedException ignored) {
 					}
 				}			
@@ -180,10 +182,12 @@ public class HWHighLevelDriver {
 		}else{
 			synchronized (pendingSREQ) {
 				final short id = (short) (cmdId.get16BitValue() & 0x1FFF);
-				while(pendingSREQ.isEmpty() == false) {
+				//while(pendingSREQ.isEmpty() == false || pendingSREQ.size() == 1 && pendingSREQ.get(id) == listner ) {
+				while(pendingSREQ.isEmpty() == false ) {
 					try {
 						logger.debug("Waiting for other request to complete");
-						pendingSREQ.wait();
+						pendingSREQ.wait(500);
+						cleanExpiredListener();
 					} catch (InterruptedException ignored) {
 					}
 				}			

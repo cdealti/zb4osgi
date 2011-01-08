@@ -288,10 +288,14 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	}
 	
 	public void close(){
+		//TODO create a method changeStatus() which notify and handle all the action required when switch from state A to B
 		if(state == DriverStatus.CLOSED){
-			logger.debug("Already CLOSED");
+			logger.debug("Already CLOSED");			
 			return;
 		}
+		synchronized (this) {
+			notifyAll();
+		}		
 		logger.info("Closing");
 		if( Thread.currentThread() != driver ){
 			logger.debug("Waiting for intialization operation to complete before closing");

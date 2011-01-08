@@ -131,6 +131,12 @@ public class ZToolPacketParser implements Runnable {
 						// serial event will wake us up
 						this.wait(timeout);
 					}
+										
+					//Looing for deadlock when packet is not recieved
+					synchronized (this.newPacketNotification) {
+						newPacketNotification.notifyAll();						
+					}					
+					
 					final long waited = System.currentTimeMillis() - start; 
 					if ( waited >= timeout) {
 						logger.debug("Timeout fired: checking for data");

@@ -161,13 +161,14 @@ public class HWHighLevelDriver {
 			);
 		}
 		profiler.info("m_sendSynchrounsCommand(ZToolPacket packet, SynchrounsCommandListner listner): called");
-		logger.debug("Send SynchrounsCommand");
+		logger.debug("Preparing to send SynchrounsCommand {} ", packet);
 		cleanExpiredListener();
 		if ( supportMultipleSynchrounsCommand ) {
 			synchronized (pendingSREQ) {
 				final short id = (short) (cmdId.get16BitValue() & 0x1FFF);
 				while(pendingSREQ.get(cmdId) != null) {
 					try {
+						logger.debug("Waiting for other request {} to complete", id);
 						pendingSREQ.wait();
 					} catch (InterruptedException ignored) {
 					}
@@ -181,6 +182,7 @@ public class HWHighLevelDriver {
 				final short id = (short) (cmdId.get16BitValue() & 0x1FFF);
 				while(pendingSREQ.isEmpty() == false) {
 					try {
+						logger.debug("Waiting for other request to complete");
 						pendingSREQ.wait();
 					} catch (InterruptedException ignored) {
 					}
@@ -190,6 +192,7 @@ public class HWHighLevelDriver {
 				pendingSREQ.put(id, listner);			
 			}
 		}
+		logger.debug("Sending SynchrounsCommand {} ", packet);
 		profiler.info("m_sendSynchrounsCommand(ZToolPacket packet, SynchrounsCommandListner listner): acquired lock");
 		driver.sendPacket(packet);
 	}

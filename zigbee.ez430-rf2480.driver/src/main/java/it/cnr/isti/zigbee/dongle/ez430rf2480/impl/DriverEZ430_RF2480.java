@@ -1136,6 +1136,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				}
 				if ( response[0] != null ) {
 					logger.debug("Recieved synchrouns command {} before timout", response[0]);
+					return response[0];
 				} else {
 					logger.debug("Timeout fired and not synchrouns command recieved", response[0]);
 				}

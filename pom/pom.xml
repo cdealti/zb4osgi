@@ -152,7 +152,7 @@
     <dependencies>
       <dependency>
         <groupId>org.aaloa.zb4osgi</groupId>
-        <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
+        <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId> 
         <version>0.5.0</version>
         <scope>provided</scope>
       </dependency>

@@ -23,7 +23,7 @@
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.pom</artifactId>
   <packaging>pom</packaging>  
-  <version>8</version>
+  <version>8-SNAPSHOT</version>
 
   <name>Suite of bundle for integrating ZigBee device in OSGi</name>
   <url>http://zb4osgi.aaloa.org/</url>
@@ -51,9 +51,9 @@
   </mailingLists>
 
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aaloa.zb4osgi.pom-8</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aaloa.zb4osgi.pom-8</developerConnection>
-    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/releases/org.aaloa.zb4osgi.pom-8</url>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/pom</developerConnection>
+    <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/pom</url>
   </scm>
 
   <repositories>
@@ -152,7 +152,7 @@
     <dependencies>
       <dependency>
         <groupId>org.aaloa.zb4osgi</groupId>
-        <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId> 
+        <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
         <version>0.5.0</version>
         <scope>provided</scope>
       </dependency>

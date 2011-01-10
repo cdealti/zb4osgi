@@ -130,6 +130,7 @@ public class Activator implements BundleActivator {
 	}
 	
 	public void stop(BundleContext bc) throws Exception {
+		unregisterAllDeviceService();
 		unregisterSimpleDriverTracker();
 		synchronized (singelton) {
 			Activator.context = null;

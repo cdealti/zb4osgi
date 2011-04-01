@@ -43,6 +43,7 @@
   <modules>
     <module>zigbee.cc2480.datalink</module>
     <module>zigbee.ez430-rf2480.driver</module>
+	<module>zigbee.CC2530.driver</module>
     <module>zigbee.zcl.library</module>
     <module>zigbee.basedriver</module>
     <module>zigbee.basedriver.stub</module>

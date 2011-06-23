@@ -1,5 +1,3 @@
-package it.cnr.isti.zigbee.dongle.CC2530;
-
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
    Institute of Information Science and Technologies 
@@ -21,29 +19,56 @@ package it.cnr.isti.zigbee.dongle.CC2530;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+package it.cnr.isti.zigbee.dongle.CC2530;
 
+import it.cnr.isti.osgi.util.OSGiProperties;
+import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
+import it.cnr.isti.zigbee.dongle.api.DriverStatus;
+import it.cnr.isti.zigbee.dongle.api.NetworkMode;
+import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
+//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSB;
+//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSBi;
+import it.cnr.isti.zigbee.dongle.CC2530.impl.DriverCC2530;
+
+import java.util.Properties;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
- * @author <a href="mailto:michele.girolami@isti.cnr.it">Michele Girolami</a>
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
+ * @version $LastChangedRevision: 229 $ ($LastChangedDate: 2011-05-20 11:42:58 +0200 (ven, 20 mag 2011) $)
+ * @since 0.1.0
  *
  */
 public class Activator implements BundleActivator {
 
-	public void start(BundleContext arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void stop(BundleContext arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
+	private DriverCC2530 driver;
+	private ServiceRegistration service;
 	
+	public void start(BundleContext bc) throws Exception {
+		driver = new DriverCC2530(
+				OSGiProperties.getString(bc, ConfigurationProperties.COM_NAME_KEY, ConfigurationProperties.COM_NAME),
+				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, 115200),
+				NetworkMode.valueOf(OSGiProperties.getString(
+						bc, ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE
+				)),
+				OSGiProperties.getInt(bc, ConfigurationProperties.PAN_ID_KEY, ConfigurationProperties.PAN_ID),
+				OSGiProperties.getInt(bc, ConfigurationProperties.CHANNEL_ID_KEY, ConfigurationProperties.CHANNEL_ID),
+				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH)
+		);
+		Properties properties = new Properties();
+		properties.put("zigbee.driver.id", DriverCC2530.class.getName());
+		properties.put("zigbee.supported.devices", new String[]{"tsb"});
+		properties.put("zigbee.driver.type", "hardware");
+		properties.put("zigbee.driver.mode", "real");
+		service = bc.registerService(SimpleDriver.class.getName(), driver, properties);	}
+
+	public void stop(BundleContext bc) throws Exception {
+		service.unregister();
+		driver.close();
+	}
 
 }

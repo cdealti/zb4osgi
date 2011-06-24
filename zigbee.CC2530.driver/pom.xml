@@ -22,7 +22,7 @@
   adapted to be complaint with the "CC2530 Serial Interface"
   ]]></description>
 
-  <inceptionYear>2008</inceptionYear>
+  <inceptionYear>2011</inceptionYear>
   <organization>
     <name><![CDATA[
     ISTI-CNR, Institute of Information Science and Technologies of the Italian National Research Council and Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)
@@ -50,6 +50,14 @@
       <timezone>+1</timezone>
     </developer>
     <developer>
+    <developer>
+      <id>michele.girolami</id>
+      <name>Michele Girolami</name>
+      <email>michele.girolami@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
       <id>alfiva</id>
       <name>Álvaro Fides Valero</name>
       <email>alfiva@aaa.upv.es</email>
@@ -160,7 +168,8 @@
           <instructions>
             <Bundle-Author><![CDATA[
               Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>,
-              Álvaro Fides Valero <alfiva@aaa.upv.es>
+              Álvaro Fides Valero <alfiva@aaa.upv.es>,
+              Michele Girolami <michele.girolami@isti.cnr.it>
             ]]></Bundle-Author>
             <Bundle-Name>${pom.name}</Bundle-Name>
             <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
@@ -193,7 +202,7 @@
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2009-09-25</date>
+            <date implementation="java.lang.String">2011-04-01</date>
             <date implementation="java.lang.String">2011-06-24</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>

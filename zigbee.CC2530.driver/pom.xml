@@ -57,6 +57,7 @@
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>
     </developer>
+    <developer>
       <id>alfiva</id>
       <name>Álvaro Fides Valero</name>
       <email>alfiva@aaa.upv.es</email>

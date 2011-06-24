@@ -42,15 +42,13 @@
 
   <modules>
     <module>zigbee.cc2480.datalink</module>
-    <module>zigbee.ez430-rf2480.driver</module>
 	<module>zigbee.CC2530.driver</module>
+	<module>zigbee.ez430-rf2480.driver</module>
     <module>zigbee.zcl.library</module>
     <module>zigbee.basedriver</module>
-    <module>zigbee.basedriver.stub</module>
     <module>zigbee.basedriver.api</module>
     <module>zigbee.dongle.api</module>
     <module>zigbee.ha.driver</module>
-    <module>zigbee.ha.driver.stub</module>
     <module>zigbee.tester</module>
     <module>zigbee.common</module>
     <module>zigbee.network.browser</module>

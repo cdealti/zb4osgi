@@ -92,7 +92,14 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-
+  
+  <repositories>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
 
   <scm>
     <connection>scm:svn:https://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>

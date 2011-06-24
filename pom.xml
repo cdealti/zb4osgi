@@ -66,6 +66,11 @@
       <url>http://repository.ops4j.org/maven2/</url>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
   </repositories>
 
   <build>

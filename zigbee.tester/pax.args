@@ -20,6 +20,7 @@ mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.tester
 # ZigBee Hardware Access Layer 
 mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.dongle.api
 mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.CC2530.driver@nostart
+mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.ez430-rf2480.driver@nostart
 mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.cc2480.datalink
 mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.common
 

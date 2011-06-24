@@ -18,19 +18,17 @@
   <url>http://zb4osgi.aaloa.org/</url>
   <description><![CDATA[
   Implementation of the ZigBee Controller Interface API for a CC2530 based usb devices.
-  The firmware is based on the Z-Stack 2.x and the serial port communication protocol has been 
+ The firmware is based on the Z-Stack 2.x and the serial port communication protocol has been 
   adapted to be complaint with the "CC2530 Serial Interface"
   ]]></description>
 
   <inceptionYear>2008</inceptionYear>
   <organization>
     <name><![CDATA[
-    ISTI-CNR, Institute of Information Science and Technologies of the Italian National Research Council
-    Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)
+    ISTI-CNR, Institute of Information Science and Technologies of the Italian National Research Council and Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)
     ]]></name>
     <url><![CDATA[
-    http://isti.cnr.it/
-    http://www.itaca.upv.es/
+    http://isti.cnr.it   http://www.itaca.upv.es/
     ]]></url>
   </organization>
   
@@ -57,6 +55,14 @@
       <email>alfiva@aaa.upv.es</email>
       <organization>Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)</organization>
       <organizationUrl>http://www.itaca.upv.es//</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+        <developer>
+      <id>michele</id>
+      <name>Michele Girolami</name>
+      <email>michele.girolami@isti.cnr.it</email>
+      <organization>Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>
     </developer>
   </developers>
@@ -188,7 +194,7 @@
           <type>date</type>
           <dates>
             <date implementation="java.lang.String">2009-09-25</date>
-            <date implementation="java.lang.String">2010-10-23</date>
+            <date implementation="java.lang.String">2011-06-24</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

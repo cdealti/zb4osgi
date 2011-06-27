@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
-    <version>8</version>
+    <version>9-SNAPSHOT</version>
     <relativePath>..pom/pom.xml</relativePath>
   </parent>
 
@@ -102,8 +102,8 @@
   </repositories>
 
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</developerConnection>
+    <connection>scm:svn:https://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>
+    <developerConnection>scm:svn:https://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</developerConnection>
     <url>http://zb4osgi.aaloa.org/redmine/projects/zb4osgi/repository/show/trunk/zigbee.CC2530.driver</url>
   </scm>
 
@@ -223,8 +223,8 @@
         <configuration>
           <type>date</type>
           <dates>
-            <date implementation="java.lang.String">2011-04-01</date>
-            <date implementation="java.lang.String">2011-06-24</date>
+            <date implementation="java.lang.String">2011-06-27</date>
+            <date implementation="java.lang.String">2031-06-24</date>
           </dates>
           <dateFormat>yyyy-MM-dd</dateFormat>
         </configuration>

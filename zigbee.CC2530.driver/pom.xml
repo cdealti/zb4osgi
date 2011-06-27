@@ -102,8 +102,8 @@
   </repositories>
 
   <scm>
-    <connection>scm:svn:https://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>
-    <developerConnection>scm:svn:https://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</developerConnection>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</developerConnection>
     <url>http://zb4osgi.aaloa.org/redmine/projects/zb4osgi/repository/show/trunk/zigbee.CC2530.driver</url>
   </scm>
 

@@ -29,7 +29,7 @@
 
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.CC2530.driver</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>bundle</packaging>  
 
   <name>ZIC CC2530 dongle</name>
@@ -102,9 +102,9 @@
   </repositories>
 
   <scm>
-    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aaloa.zb4osgi.zigbee.CC2530.driver-0.1.0</connection>
-    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/releases/org.aaloa.zb4osgi.zigbee.CC2530.driver-0.1.0</developerConnection>
-    <url>http://zb4osgi.aaloa.org/redmine/projects/zb4osgi/repository/show/releases/org.aaloa.zb4osgi.zigbee.CC2530.driver-0.1.0</url>
+    <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</connection>
+    <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.CC2530.driver</developerConnection>
+    <url>http://zb4osgi.aaloa.org/redmine/projects/zb4osgi/repository/show/trunk/zigbee.CC2530.driver</url>
   </scm>
 
   <dependencies>

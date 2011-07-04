@@ -24,7 +24,7 @@
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
     <version>9-SNAPSHOT</version>
-    <relativePath>..pom/pom.xml</relativePath>
+    <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
   <groupId>org.aaloa.zb4osgi</groupId>
@@ -146,8 +146,8 @@
     	<scope>compile</scope>
     </dependency>
       <dependency>
-      <groupId>org.aal-persona.bundle</groupId>
-      <artifactId>org.aal-persona.bundle.rxtx</artifactId>
+      <groupId>org.aaloa.zb4osgi.bundle</groupId>
+      <artifactId>org.aaloa.zb4osgi.bundle.rxtx</artifactId>
     </dependency>
   </dependencies>
 

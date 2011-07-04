@@ -91,8 +91,8 @@
       <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.aal-persona.bundle</groupId>
-      <artifactId>org.aal-persona.bundle.rxtx</artifactId>
+      <groupId>org.aaloa.zb4osgi.bundle</groupId>
+      <artifactId>org.aaloa.zb4osgi.bundle.rxtx</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

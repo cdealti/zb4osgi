@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
-    <version>8</version>
+    <version>9-SNAPSHOT</version>
   </parent>
 
   <properties>
     <pkgArtifactId>rxtx</pkgArtifactId>
     <pkgVersion>2.1.7</pkgVersion>
-    <pomVersion>1</pomVersion>
+    <pomVersion>2-SNAPSHOT</pomVersion>
     <osgiVersion>${pkgVersion}</osgiVersion>
   </properties>
 

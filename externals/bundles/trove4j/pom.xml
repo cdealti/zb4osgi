@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
     
   <properties>
-    <pkgArtifactId>net.sourceforge.trove</pkgArtifactId>
+    <pkgArtifactId>net.sf.trove</pkgArtifactId>
     <pkgVersion>2.0.4</pkgVersion>
-    <pomVersion>0002</pomVersion>
+    <pomVersion>1</pomVersion>
     <osgiVersion>${pkgVersion}</osgiVersion>
   </properties>
 
-  <groupId>org.aal-persona.bundle</groupId>
+  <groupId>org.aaloa.zb4osgi.bundle</groupId>
   <artifactId>${project.groupId}.${pkgArtifactId}</artifactId>
   <version>${osgiVersion}-${pomVersion}</version>
   <packaging>bundle</packaging>
@@ -20,7 +20,7 @@ as OSGi bundle
 
   <dependencies>
     <dependency>
-      <groupId>org.aal-persona.3rd-lib</groupId>
+      <groupId>org.aaloa.zb4osgi.library</groupId>
       <artifactId>${pkgArtifactId}</artifactId>
       <version>${pkgVersion}</version>
     </dependency>   

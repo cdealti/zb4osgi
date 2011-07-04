@@ -5,11 +5,11 @@
   <properties>
     <pkgArtifactId>rxtx</pkgArtifactId>
     <pkgVersion>2.1.7</pkgVersion>
-    <pomVersion>0002</pomVersion>
+    <pomVersion>1</pomVersion>
     <osgiVersion>${pkgVersion}</osgiVersion>
   </properties>
 
-  <groupId>org.aal-persona.bundle</groupId>
+  <groupId>org.aaloa.zb4osgi.bundle</groupId>
   <artifactId>${project.groupId}.${pkgArtifactId}</artifactId>
   <version>${osgiVersion}-${pomVersion}</version>
   <packaging>bundle</packaging>

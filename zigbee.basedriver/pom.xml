@@ -140,25 +140,7 @@
 
 
   <build>
-    <plugins>  
-    
-      <plugin>    
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <configuration>
-          <profiles>config</profiles>
-          <version>1.1.1</version>
-          <provision>
-            <executor>--executor=script</executor>
-            <param>--org.ops4j.pax.runner.platform.downloadFeedback=false</param>
-            <provision>mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002</provision>
-            <provision>mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002</provision>
-            <provision>mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2@nostart</provision>
-            <provision>mvn:${project.groupId}/org.aal-persona.zigbee.basedriver</provision>
-          </provision>
-        </configuration>	
-      </plugin>   
-
+    <plugins>      
       <plugin>    
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>

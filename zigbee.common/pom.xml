@@ -69,6 +69,14 @@
     <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.common</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>org.ops4j.pax.logging</groupId>

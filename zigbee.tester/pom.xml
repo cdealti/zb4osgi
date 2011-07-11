@@ -79,7 +79,7 @@
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.tester</developerConnection>
     <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.tester</url>
   </scm>
-
+    
   <build>
     <plugins>
       <plugin>
@@ -137,6 +137,14 @@
   </reporting>
 
 
+  <repositories>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>

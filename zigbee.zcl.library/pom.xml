@@ -85,6 +85,13 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
     <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.zcl.library</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>

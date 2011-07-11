@@ -86,6 +86,14 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
     <url>http://zb4osgi.aaloa.org/projects/zb4osgi/repository/show/trunk/zigbee.ha.driver</url>
   </scm>
 
+  <repositories>
+    <repository>
+      <id>nexus.aaloa.org</id>
+      <url>http://nexus.aaloa.org/content/repositories/releases/</url>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>org.aaloa.zb4osgi</groupId>

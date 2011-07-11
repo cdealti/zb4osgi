@@ -13,8 +13,8 @@
 mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2	    
 
 # ZigBee Stack General Dependencies & Tool
-mvn:org.aal-persona.bundle/org.aal-persona.bundle.net.sourceforge.trove/2.0.4-0002
-mvn:org.aal-persona.bundle/org.aal-persona.bundle.rxtx/2.1.7-0002
+mvn:org.aaloa.zb4osgi.bundle/org.aaloa.zb4osgi.bundle.rxtx/2.1.7-1
+mvn:org.aaloa.zb4osgi.bundle/org.aaloa.zb4osgi.bundle.net.sf.trove4j/2.0.4-1
 mvn:org.aaloa.zb4osgi/org.aaloa.zb4osgi.zigbee.tester
 
 # ZigBee Hardware Access Layer 

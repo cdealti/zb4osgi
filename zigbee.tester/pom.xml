@@ -82,15 +82,6 @@
 
   <build>
     <plugins>
-      <plugin>    
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <configuration>
-          <runner>1.4.0</runner>
-		  <args>${pax.args.file}</args>
-        </configuration>
-      </plugin>    
-
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -167,7 +158,6 @@
 
   <properties>
     <bundles.configuration.location>../configurations</bundles.configuration.location>
-    <pax.args.file>pax.args</pax.args.file>
   </properties>
 </project>
 

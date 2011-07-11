@@ -125,27 +125,18 @@
       <artifactId>pax-logging-service</artifactId>
     </dependency>
     <dependency>
-    	<groupId>org.aaloa.zb4osgi</groupId>
-    	<artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
-    	<version>0.6.0</version>
-    	<type>bundle</type>
-    	<scope>compile</scope>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
     </dependency>
     <dependency>
-    	<groupId>org.aaloa.zb4osgi</groupId>
-    	<artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
-    	<version>0.5.0</version>
-    	<type>bundle</type>
-    	<scope>compile</scope>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
     </dependency>
     <dependency>
-    	<groupId>org.aaloa.zb4osgi</groupId>
-    	<artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
-    	<version>0.7.0</version>
-    	<type>bundle</type>
-    	<scope>compile</scope>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
     </dependency>
-      <dependency>
+    <dependency>
       <groupId>org.aaloa.zb4osgi.bundle</groupId>
       <artifactId>org.aaloa.zb4osgi.bundle.rxtx</artifactId>
     </dependency>
@@ -167,19 +158,6 @@
           ]]></bottom>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <configuration>
-          <runner>0.13.0</runner>
-          <!-- args>file:src/test/resources/pax.args</args -->
-          <!-- provision>
-            <provision>mvn:org.apache.felix/org.apache.felix.upnp.basedriver/0.8.0@nostart</provision>
-            <provision>mvn:org.apache.felix/org.apache.felix.upnp.tester</provision>
-            <provision>mvn:org.apache.felix/org.apache.felix.upnp.extra</provision>
-          </provision -->
-        </configuration>
-      </plugin>        
  
       <plugin>    
         <groupId>org.apache.felix</groupId>

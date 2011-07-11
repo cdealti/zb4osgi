@@ -66,39 +66,6 @@
 
   <build>
     <plugins>
-      <plugin>    
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <configuration>
-          <runner>1.4.0</runner>
-          <profiles>log,config</profiles>
-          <provision>
-            <param>--executor=script</param>
-            <param>--org.ops4j.pax.runner.platform.downloadFeedback=false</param>
-	    <!-- OSGi Tool -->
-            <provision>mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2</provision>
-	    
-	    <!-- ZigBee Stack General Dependencies & Tool -->
-            <provision>mvn:org.aal-persona.bundles/org.aal-persona.bundles.net.sourceforge.trove/2.0.4-0001</provision>
-            <provision>mvn:org.aal-persona.bundles/org.aal-persona.bundles.rxtx/2.1.7-0001</provision>
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.tester</provision>
-	    
-	    <!-- ZigBee Hardware Access Layer -->
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.dongle.api</provision>
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.ez430-rf2480.driver@nostart</provision>
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.cc2480.datalink</provision>
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.common</provision>
-	    
-	    <!-- ZigBee Base Driver -->
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver</provision>
-	    
-	    <!-- ZigBee Refinement Architecture -->
-            <provision>mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver</provision>
-          </provision>
-        </configuration>
-      </plugin>    
-
-
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -179,23 +146,6 @@
       <groupId>org.aaloa.zb4osgi</groupId>
       <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
     </dependency>    
-    <!--dependency>
-      <groupId>org.aaloa.zb4osgi</groupId>
-      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aaloa.zb4osgi</groupId>
-      <artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aaloa.zb4osgi</groupId>
-      <artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aaloa.zb4osgi</groupId>
-      <artifactId>org.aaloa.zb4osgi.zigbee.basedriver</artifactId>
-      <version>0.6.0-SNAPSHOT</version>
-    </dependency-->
     <dependency>
       <groupId>net.sf.jung</groupId>
       <artifactId>jung-samples</artifactId>

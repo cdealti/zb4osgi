@@ -116,7 +116,11 @@
         <groupId>org.ops4j</groupId>
         <artifactId>maven-pax-plugin</artifactId>
         <version>1.4</version>
-      </plugin>     
+        <configuration>
+          <runner>1.4.0</runner>
+		  <args>${pax.args.file}</args>
+        </configuration>
+		</plugin>     
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -324,5 +328,8 @@
       </plugin>    
     </plugins>    
   </reporting>
-
+  
+  <properties>
+    <pax.args.file>pax.args</pax.args.file>
+  </properties>
 </project>

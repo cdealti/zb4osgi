@@ -18,10 +18,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
+import it.cnr.isti.zigbee.ha.device.api.generic.MainsPowerOutlet;
 import it.cnr.isti.zigbee.ha.device.api.generic.OnOffOutput;
 import it.cnr.isti.zigbee.ha.device.api.hvac.TemperatureSensor;
 import it.cnr.isti.zigbee.ha.device.api.lighting.DimmableLight;
@@ -58,6 +59,7 @@ public class  HAProfile {
 
 	public static final int ID = 260;
 
+	//CLUSTERS
 	//Generic
 	public static final int BASIC = Basic.ID;
 	public static final int IDENTIFY = Identify.ID;
@@ -66,17 +68,22 @@ public class  HAProfile {
 	public static final int ON_OFF = OnOff.ID;
 	public static final int TIME = Time.ID;
 	public static final int LEVEL_CONTROL = LevelControl.ID;
-	public static final int ONOFF_OUTPUT = OnOffOutput.DEVICE_ID;
 	public static final int ON_OFF_SWITCH_CONFIGURATION = OnOffSwitchConfiguration.ID;
 	public static final int ALARMS = Alarms.ID;
 	public static final int POWER_CONFIGURATION = PowerConfiguration.ID;
 	public static final int DEVICE_TEMPERATURE_CONFIGURATION = DeviceTemperatureConfiguration.ID;
-	
+
 	//Measureament & Sensing
 	public static final int TEMPERATURE_MEASUREMENT = TemperatureMeasurement.ID;
 	public static final int OCCUPANCY_SENSING = OccupacySensing.ID;
 	public static final int RELATIVE_HUMIDITY_MEASUREMENT = RelativeHumidityMeasurement.ID;
-	
+
+
+	//DEVICES
+	//Generic
+	public static final int ONOFF_OUTPUT = OnOffOutput.DEVICE_ID;
+	public static final int MAINS_POWER_OUTLET = MainsPowerOutlet.DEVICE_ID;
+
 	//Lighting
 	public static final int ONOFF_LIGHT = OnOffLight.DEVICE_ID; 
 	public static final int DIMMABLE_LIGHT = DimmableLight.DEVICE_ID;
@@ -85,9 +92,8 @@ public class  HAProfile {
 
 	//HVAC
 	public static final int TEMPERATURE_SENSOR = TemperatureSensor.DEVICE_ID;
-	
+
 	//Security & Safety
 	public static final int IAS_ZONE = IASZone.ID;
 	public static final int IAS_WD = IASWD.ID;
-
 }

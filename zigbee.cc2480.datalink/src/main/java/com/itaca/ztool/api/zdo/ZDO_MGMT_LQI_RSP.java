@@ -185,4 +185,10 @@ public class ZDO_MGMT_LQI_RSP extends ZToolPacket /*implements IRESPONSE_CALLBAC
             this.RxLQI = num7;
         }
     }
+
+public int getNeighborLQICount(){ return this.NeighborLQICount; }
+
+public int getNeighborLQIEntries(){ return this. NeighborLQIEntries; }
+
+public NeighborLqiListItemClass[] getNeighborLqiList(){ return this.getNeighborLqiList(); }
 }

@@ -62,7 +62,7 @@ public class HWHighLevelDriver {
     		this.parent = parent;
     	}
     	
-    	public void packetRecieved(ZToolPacket packet) {
+    	public void packetReceived(ZToolPacket packet) {
     		final DoubleByte cmdId = packet.getCMD();
     		switch (cmdId.getMsb() & 0xE0) {
     			case  0x40: { //We received a AREQ

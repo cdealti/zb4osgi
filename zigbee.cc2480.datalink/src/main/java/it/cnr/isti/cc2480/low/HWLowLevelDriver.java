@@ -267,7 +267,7 @@ public class HWLowLevelDriver
 
         for ( PacketListener listener : copy ) {
             try {
-                listener.packetRecieved( packet );
+                listener.packetReceived( packet );
             }
             catch ( Throwable e ) {
                 logger.error( "Error genereated by notifyPacketListeners {}", e );

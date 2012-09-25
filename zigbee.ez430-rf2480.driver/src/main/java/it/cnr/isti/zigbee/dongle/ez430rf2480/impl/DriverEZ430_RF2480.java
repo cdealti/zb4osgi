@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package it.cnr.isti.zigbee.dongle.ez430rf2480.impl;
 
 import gnu.io.CommPortIdentifier;
@@ -76,6 +76,8 @@ import com.itaca.ztool.api.zdo.ZDO_END_DEVICE_ANNCE_IND;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_REQ;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_REQ_SRSP;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_RSP;
+import com.itaca.ztool.api.zdo.ZDO_MGMT_LQI_REQ;
+import com.itaca.ztool.api.zdo.ZDO_MGMT_LQI_RSP;
 import com.itaca.ztool.api.zdo.ZDO_NODE_DESC_REQ;
 import com.itaca.ztool.api.zdo.ZDO_NODE_DESC_REQ_SRSP;
 import com.itaca.ztool.api.zdo.ZDO_NODE_DESC_RSP;
@@ -100,15 +102,15 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	public static final int RESEND_TIMEOUT_DEFAULT = 1000;
 	public static final String RESEND_TIMEOUT_KEY = "zigbee.driver.ez430_rf2480.resend.timout";
-	
+
 	public  static final int RESEND_MAX_RESEND_DEFAULT = 3;
 	public  static final String RESEND_MAX_RESEND_KEY = "zigbee.driver.ez430_rf2480.resend.max";
-	
+
 	public  static final boolean RESEND_ONLY_EXCEPTION_DEFAULT = true;
 	public  static final String RESEND_ONLY_EXCEPTION_KEY = "zigbee.driver.ez430_rf2480.resend.exceptiononly";
-	
+
 	private Thread driver;
-	
+
 	private HWHighLevelDriver high;
 	private HWLowLevelDriver low;
 	private String port;
@@ -123,24 +125,24 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private final int RESEND_TIMEOUT; 
 	private final int RESEND_MAX_RETRY;
 	private final boolean RESEND_ONLY_EXCEPTION;
-	
+
 	private final HashSet<AnnunceListner> annunceListners = new HashSet<AnnunceListner>();
 	private final AnnunceListerFilter annunceListner = new AnnunceListerFilter(annunceListners);
-	
+
 	private final ArrayList<AFMessageListner> afMessageListners = new ArrayList<AFMessageListner>();
 	private final AFMessageListnerFilter afListner = new AFMessageListnerFilter(afMessageListners);
-	
+
 	private long ieeeAddress = -1;
 	private final HashMap<Class<?>, Thread> conversation3Way = new HashMap<Class<?>, Thread>();
-	
+
 	private class AnnunceListerFilter implements AsynchrounsCommandListener{
-		
+
 		private final Collection<AnnunceListner> listners;
-		
+
 		private AnnunceListerFilter(Collection<AnnunceListner> list){
 			listners = list;
 		}
-		
+
 		public void receivedAsynchrounsCommand(ZToolPacket packet) {
 			if(packet.isError()) return;
 			if(packet.getCMD().get16BitValue() == ZToolCMD.ZDO_END_DEVICE_ANNCE_IND){
@@ -150,17 +152,17 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private class AFMessageListnerFilter implements AsynchrounsCommandListener{
 
 		private final Collection<AFMessageListner> listners;
-		
+
 		private AFMessageListnerFilter(Collection<AFMessageListner> list){
 			listners = list;
 		}
-		
+
 		public void receivedAsynchrounsCommand(ZToolPacket packet) {
 			if(packet.isError()) return;
 			if(packet.getCMD().get16BitValue() == ZToolCMD.AF_INCOMING_MSG){
@@ -175,34 +177,34 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 					localCopy = new ArrayList<AFMessageListner>(listners);
 				}
 				for ( AFMessageListner l : localCopy){
-//					if( l.match(
-//							msg.getClusterId(), msg.getSrcAddr(),
-//							msg.getSrcEndpoint(), msg.getDstEndpoint(),
-//							msg.getTransId()
-//					) ) {
-						l.notify(msg);
-//					}					
+					//					if( l.match(
+					//							msg.getClusterId(), msg.getSrcAddr(),
+					//							msg.getSrcEndpoint(), msg.getDstEndpoint(),
+					//							msg.getTransId()
+					//					) ) {
+					l.notify(msg);
+					//					}					
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public DriverEZ430_RF2480(String serialPort, int bitrate) throws ZToolException {		
 		this(serialPort,bitrate,NetworkMode.Coordinator,0,19, false);
 	}
 
 	public DriverEZ430_RF2480(
 			String serialPort, int bitrate, NetworkMode mode, int pan, int channel
-	) throws ZToolException {
-		
+			) throws ZToolException {
+
 		this(serialPort, bitrate, mode, pan, channel, false);
 	}	
-	
+
 	public DriverEZ430_RF2480(
 			String serialPort, int bitRate, NetworkMode mode, int pan, int channel, boolean cleanNetworkStatus
-	) throws ZToolException {
-		
+			) throws ZToolException {
+
 		int aux = RESEND_TIMEOUT_DEFAULT;
 		try{
 			aux = Integer.parseInt(System.getProperty(RESEND_TIMEOUT_KEY)); 
@@ -211,7 +213,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.debug("Using {} set as DEFAULT {}", RESEND_TIMEOUT_KEY, aux);
 		}		
 		RESEND_TIMEOUT = aux;
-		
+
 		aux = RESEND_MAX_RESEND_DEFAULT;
 		try{
 			aux = Integer.parseInt(System.getProperty(RESEND_MAX_RESEND_KEY)); 
@@ -220,7 +222,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.debug("Using {} set as DEFAULT {}", RESEND_MAX_RESEND_KEY, aux);
 		}
 		RESEND_MAX_RETRY = aux; 			
-		
+
 		boolean b = RESEND_ONLY_EXCEPTION_DEFAULT;
 		try{
 			b = Boolean.parseBoolean(System.getProperty(RESEND_ONLY_EXCEPTION_KEY)); 
@@ -230,19 +232,19 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		}
 		RESEND_ONLY_EXCEPTION = b; 			
 
-		
+
 		state = DriverStatus.CLOSED;
 		this.cleanStatus = cleanNetworkStatus;
 		setSerialPort(serialPort, bitRate);
 		setZigBeeNetwork((byte)channel, (short)pan);
 		setZigBeeNodeMode(mode);
-		
+
 	}
-		
+
 	private String buildDriverThreadName(String serialPort, int bitrate) {
 		return "SimpleDriver["+serialPort+","+bitrate+"]";
 	}
-	
+
 	public void setZigBeeNodeMode(NetworkMode m) {
 		if ( state != DriverStatus.CLOSED ) {
 			throw new IllegalStateException("Network mode can be changed only " +
@@ -251,7 +253,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		cleanStatus = mode != m;
 		mode = m;
 	}
-	
+
 	public void setZigBeeNetwork(byte ch, short panId) {
 		if ( state != DriverStatus.CLOSED ) {
 			throw new IllegalStateException("Network mode can be changed only " +
@@ -270,12 +272,12 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		port = serialName;
 		rate = bitRate;
 	}
-	
+
 	public void open(boolean cleanCache){
 		cleanStatus = cleanCache;
 		open();
 	}
-	
+
 	public void open(){
 		if ( state == DriverStatus.CLOSED ) {
 			state = DriverStatus.CREATED;
@@ -286,7 +288,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			throw new IllegalStateException("Driver already opened, current status is:"+state);
 		}
 	}
-	
+
 	public void close(){
 		//TODO create a method changeStatus() which notify and handle all the action required when switch from state A to B
 		if(state == DriverStatus.CLOSED){
@@ -322,14 +324,14 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		}
 		logger.info("Closed");
 	}
-	
+
 	public ZDO_IEEE_ADDR_RSP sendZDOIEEEAddressRequest(ZDO_IEEE_ADDR_REQ request){
 		if( waitForNetwork() == false ) return null;
 		ZDO_IEEE_ADDR_RSP result = null;
-		
+
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_IEEE_ADDR_RSP, high);
-		
+
 		logger.debug("Sending ZDO_IEEE_ADDR_REQ {}", request);
 		ZDO_IEEE_ADDR_REQ_SRSP response = (ZDO_IEEE_ADDR_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
@@ -345,28 +347,28 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	public ZDO_NODE_DESC_RSP sendZDONodeDescriptionRequest(ZDO_NODE_DESC_REQ request) {
 		if( waitForNetwork() == false ) return null;
 		ZDO_NODE_DESC_RSP result = null;
-		
+
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_NODE_DESC_RSP, high);
-		
+
 		ZDO_NODE_DESC_REQ_SRSP response = (ZDO_NODE_DESC_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
 		} else {
 			result = (ZDO_NODE_DESC_RSP) waiter.getCommand(TIMEOUT);
 		}
-		
+
 		unLock3WayConversation(request);
 		return result;
 	}
-	
+
 	public ZDO_ACTIVE_EP_RSP sendZDOActiveEndPointRequest(ZDO_ACTIVE_EP_REQ request) {
 		if( waitForNetwork() == false ) return null;
 		ZDO_ACTIVE_EP_RSP result = null;
-		
+
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_ACTIVE_EP_RSP, high);
-		
+
 		logger.debug("Sending ZDO_ACTIVE_EP_REQ {}", request);
 		ZDO_ACTIVE_EP_REQ_SRSP response = (ZDO_ACTIVE_EP_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
@@ -378,7 +380,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		unLock3WayConversation(request);
 		return result;
 	}
-	
+
 	/**
 	 * @param request
 	 */
@@ -415,23 +417,23 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.error(
 					"Thread {} stolen the answer of {} waited by {}",
 					new Object[]{ Thread.currentThread(), clz, requestor } 
-			);
+					);
 		}
 	}
-	
+
 	public ZDO_SIMPLE_DESC_RSP sendZDOSimpleDescriptionRequest(ZDO_SIMPLE_DESC_REQ request) {
 		if( waitForNetwork() == false ) return null;
 		ZDO_SIMPLE_DESC_RSP result = null;
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_SIMPLE_DESC_RSP, high);
-		
+
 		ZDO_SIMPLE_DESC_REQ_SRSP response = (ZDO_SIMPLE_DESC_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
 		} else {
 			result = (ZDO_SIMPLE_DESC_RSP) waiter.getCommand(TIMEOUT);
 		}
-		
+
 		unLock3WayConversation(request);
 		return result;
 	}
@@ -445,7 +447,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			close();
 			return;
 		}
-		
+
 		setState(DriverStatus.NETWORK_INITIALIZING);
 		if(initializeZigBeeNetwork() == true){
 			setState(DriverStatus.NETWORK_READY);
@@ -455,7 +457,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		}
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	private boolean initializeHardware() {
 		String portToOpen = null; 
@@ -482,7 +484,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				return false;
 			}
 		}
-		
+
 		low = new HWLowLevelDriver();
 		try {
 			low.open(portToOpen, rate);
@@ -513,13 +515,13 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			high.addAsynchrounsCommandListener(annunceListner);
 		}
 	}
-	
+
 	static boolean initializeHardware(String portName, int boudRate) {
 		boolean result = false;
 		final int recieved[] = new int[1];
 		final HWLowLevelDriver probingDriver = new HWLowLevelDriver();
 		final PacketListener monitor = new PacketListener(){			
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				if(packet.getCommandId() == ZToolCMD.SYS_VERSION_RESPONSE){
 					logger.debug("Initializing Hardware: Received correctly SYS_VERSION_RESPONSE");
 					synchronized (recieved) {
@@ -537,7 +539,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 					}
 				}
 			}
-			
+
 		};
 		probingDriver.addPacketListener(monitor);
 		try {
@@ -550,7 +552,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 						break;						
 					}
 				}
-				
+
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException ignored) {
@@ -584,7 +586,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			return isHardwareReady();
 		}		 
 	}			
-	
+
 	private boolean waitForNetwork() {
 		synchronized (this) {
 			while (state != DriverStatus.NETWORK_READY && state != DriverStatus.CLOSED ){
@@ -597,9 +599,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			return isNetworkReady();
 		}		 
 	}			
-	
+
 	private class WaitForCommand implements AsynchrounsCommandListener{
-				
+
 		final ZToolPacket[] result = new ZToolPacket[]{null};
 		final int waitFor;
 		final HWHighLevelDriver driver;
@@ -623,7 +625,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				cleanup();
 			}
 		}
-		
+
 		public ZToolPacket getCommand(final long timeout){
 			synchronized (result) {
 				final long wakeUpTime = System.currentTimeMillis() + timeout;
@@ -641,7 +643,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			cleanup();
 			return result[0];
 		}
-		
+
 		public void cleanup(){
 			synchronized (result) {
 				driver.removeAsynchrounsCommandListener(this);
@@ -649,119 +651,119 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			}
 		}
 	}	
-	
-	private class WaitForAList implements PacketListener{
-		
-			final int[] waitingList;
-			final ZToolPacket[] packetHistory;
-			final HWLowLevelDriver hwDriver;
-			int idx = 0;
-			
-			/**
-			 * This constructor uses the {@link WaitForAList#WaitForAList(int[], ZToolPacket[], HWLowLevelDriver) constructor<br>
-			 * with the following parameters <code>WaitForAList(list,null,null)</code>
-			 * 
-			 * @see WaitForAList#WaitForAList(int[], ZToolPacket[], HWLowLevelDriver)
-			 * @param list
-			 */
-			public WaitForAList(final int[] list){
-				this(list, null, null);
-			}
 
-			/**
-			 * Create a {@link WaitForAList} that wait for a specified list<br>
-			 * of packet to be received. Furthermore, the {@link WaitForAList}<br>
-			 * while record all the matching packet received, and it will handle<br>
-			 * by itself the registration and unregistration as {@link PacketListener}<br>
-			 * to the specified {@link HWLowLevelDriver}.<br>
-			 * <br>
-			 * <b>NOTE:</b>If the {@link ZToolPacket} array is null no packet will be recorded<br>
-			 * <b>NOTE:</b>If the {@link HWLowLevelDriver} array is null registration and unregistration as<br>
-			 * {@link PacketListener} must be handled by the invoker<br>
-			 * 
-			 * @param list the array of <code>int</code> to listen to
-			 * @param packets {@link ZToolPacket} the array of the same size as <code>list</code> to record the received packet
-			 * @param lowDriver {@link HWLowLevelDriver} to register to, if <code>null</code> to handle registration/unregistration manually
-			 */
-			public WaitForAList(
-					final int[] list, 
-					final ZToolPacket[] packets,
-					final HWLowLevelDriver lowDriver){
-				this.waitingList = list;
-				this.packetHistory = packets;
-				this.hwDriver = lowDriver;
-				if (  hwDriver != null) {
-					hwDriver.addPacketListener(this);				
-				}
-			}			
-			
-			public void waitForAll(long timeout){
-				long wakeUpTime = System.currentTimeMillis() + timeout;
-				synchronized (waitingList) {
-					while( idx < waitingList.length && wakeUpTime > System.currentTimeMillis()){
-						try {
-							waitingList.wait(wakeUpTime - System.currentTimeMillis());
-						} catch (InterruptedException ignored) {
-						}
-					}
-				}
-			}
-			
-			public void packetRecieved(ZToolPacket packet) {
-				if(packet.isError()) return;
-				if((packet.getCommandId() & 0xFFFF) == waitingList[idx]){
-					logger.info("Recieved packet that was waiting for incresing waitingList");
-					synchronized (waitingList) {
-						if ( packetHistory != null ) {
-							packetHistory[idx] = packet;
-						}
-						idx = idx + 1;
-						if ( idx == waitingList.length ){
-							if ( low != null) {
-								low.removePacketListener(this);
-							}
-							waitingList.notifyAll();
-							return;
-						}
-					}
-				}
-			}
-			
+	private class WaitForAList implements PacketListener{
+
+		final int[] waitingList;
+		final ZToolPacket[] packetHistory;
+		final HWLowLevelDriver hwDriver;
+		int idx = 0;
+
+		/**
+		 * This constructor uses the {@link WaitForAList#WaitForAList(int[], ZToolPacket[], HWLowLevelDriver) constructor<br>
+		 * with the following parameters <code>WaitForAList(list,null,null)</code>
+		 * 
+		 * @see WaitForAList#WaitForAList(int[], ZToolPacket[], HWLowLevelDriver)
+		 * @param list
+		 */
+		public WaitForAList(final int[] list){
+			this(list, null, null);
 		}
-	
-		
+
+		/**
+		 * Create a {@link WaitForAList} that wait for a specified list<br>
+		 * of packet to be received. Furthermore, the {@link WaitForAList}<br>
+		 * while record all the matching packet received, and it will handle<br>
+		 * by itself the registration and unregistration as {@link PacketListener}<br>
+		 * to the specified {@link HWLowLevelDriver}.<br>
+		 * <br>
+		 * <b>NOTE:</b>If the {@link ZToolPacket} array is null no packet will be recorded<br>
+		 * <b>NOTE:</b>If the {@link HWLowLevelDriver} array is null registration and unregistration as<br>
+		 * {@link PacketListener} must be handled by the invoker<br>
+		 * 
+		 * @param list the array of <code>int</code> to listen to
+		 * @param packets {@link ZToolPacket} the array of the same size as <code>list</code> to record the received packet
+		 * @param lowDriver {@link HWLowLevelDriver} to register to, if <code>null</code> to handle registration/unregistration manually
+		 */
+		public WaitForAList(
+				final int[] list, 
+				final ZToolPacket[] packets,
+				final HWLowLevelDriver lowDriver){
+			this.waitingList = list;
+			this.packetHistory = packets;
+			this.hwDriver = lowDriver;
+			if (  hwDriver != null) {
+				hwDriver.addPacketListener(this);				
+			}
+		}			
+
+		public void waitForAll(long timeout){
+			long wakeUpTime = System.currentTimeMillis() + timeout;
+			synchronized (waitingList) {
+				while( idx < waitingList.length && wakeUpTime > System.currentTimeMillis()){
+					try {
+						waitingList.wait(wakeUpTime - System.currentTimeMillis());
+					} catch (InterruptedException ignored) {
+					}
+				}
+			}
+		}
+
+		public void packetReceived(ZToolPacket packet) {
+			if(packet.isError()) return;
+			if((packet.getCommandId() & 0xFFFF) == waitingList[idx]){
+				logger.info("Recieved packet that was waiting for incresing waitingList");
+				synchronized (waitingList) {
+					if ( packetHistory != null ) {
+						packetHistory[idx] = packet;
+					}
+					idx = idx + 1;
+					if ( idx == waitingList.length ){
+						if ( low != null) {
+							low.removePacketListener(this);
+						}
+						waitingList.notifyAll();
+						return;
+					}
+				}
+			}
+		}
+
+	}
+
+
 	private boolean dongleReset(){
 		if( waitForHardware() == false ) return false;
 
 		final WaitForCommand waiter = new WaitForCommand(
 				ZToolCMD.SYS_RESET_RESPONSE,
 				high
-		);
-		
+				);
+
 		WaitForAList waiting = new WaitForAList(new int[]{
 				ZToolCMD.SYS_RESET_RESPONSE,
 				ZToolCMD.ZB_APP_REGISTER_RSP,
 				ZToolCMD.ZB_WRITE_CONFIGURATION_RSP,
 				ZToolCMD.ZB_WRITE_CONFIGURATION_RSP					
 		});
-		
+
 		low.addPacketListener(waiting);
-		
+
 		try {
 			high.sendAsynchrounsCommand(new SYS_RESET(SYS_RESET.RESET_TYPE.TARGET_DEVICE));
 		} catch (IOException e) {
 			logger.error("DongleReset failed", e);
 			return false;
 		}
-		
+
 		SYS_RESET_RESPONSE response = 
-			(SYS_RESET_RESPONSE) waiter.getCommand(TIMEOUT);
-		
+				(SYS_RESET_RESPONSE) waiter.getCommand(TIMEOUT);
+
 		waiting.waitForAll(TIMEOUT*2);		
 		low.removePacketListener(waiting);
 		return response != null;
 	}
-	
+
 	private boolean dongleClearState(){
 		ZB_WRITE_CONFIGURATION_RSP response;
 		response = (ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
@@ -769,33 +771,33 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				new ZB_WRITE_CONFIGURATION( 
 						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_STARTUP_OPTION,
 						new int[]{0x00000002}
-				)
-		);
-		
+						)
+				);
+
 		if( response == null || response.Status != 0) {
 			logger.info("Couldn't set ZCD_NV_STARTUP_OPTION to CLEAN_STATE");
 			return false;
 		}else{
 			logger.info("Set ZCD_NV_STARTUP_OPTION to CLEAN_STATE");
 		}
-		
+
 		boolean result = dongleReset();
-		
+
 		response = (ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
 				high, 
 				new ZB_WRITE_CONFIGURATION( 
 						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_STARTUP_OPTION,
 						new int[]{0x00000000}
-				)
-		);
-		
+						)
+				);
+
 		if( response == null || response.Status != 0) {
 			logger.info("Couldn't set ZCD_NV_STARTUP_OPTION back to DO_NOTHING");
 		}
-		
+
 		return result;
 	}
-	
+
 	static final int[] buildChannelMask(int channel){
 		int channelMask = 1 << channel;
 		int[] mask = new int[4];
@@ -804,74 +806,74 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		}
 		return mask;
 	}
-	
+
 	private boolean dongleSetChannel(int[] channelMask) {
-		
+
 		logger.info(
 				"Setting the channel to {}{}{}{}", new Object[]{ 
-					Integer.toHexString(channelMask[0]), 
-					Integer.toHexString(channelMask[1]),
-					Integer.toHexString(channelMask[2]),
-					Integer.toHexString(channelMask[3])
+						Integer.toHexString(channelMask[0]), 
+						Integer.toHexString(channelMask[1]),
+						Integer.toHexString(channelMask[2]),
+						Integer.toHexString(channelMask[3])
 				}				
-		);
-		
+				);
+
 		ZB_WRITE_CONFIGURATION_RSP response = 
-			(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
-				high, 
-				new ZB_WRITE_CONFIGURATION( 
-						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_CHANLIST,
-						channelMask
-				)
-		);
-		
+				(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
+						high, 
+						new ZB_WRITE_CONFIGURATION( 
+								ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_CHANLIST,
+								channelMask
+								)
+						);
+
 		return response != null && response.Status == 0;
 	}
 
 	private boolean dongleSetChannel(int ch){		
 		int[] channelMask = buildChannelMask(ch);
-		
+
 		return dongleSetChannel(channelMask);
 	}	
-	
+
 	private boolean dongleSetChannel(){		
 		int[] channelMask = buildChannelMask(channel);
-		
+
 		return dongleSetChannel(channelMask);
 	}
-	
+
 	private boolean dongleSetNetworkMode(){
 		logger.info("Changing the Network Mode to {}", mode);
-		
+
 		ZB_WRITE_CONFIGURATION_RSP response = 
-			(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
-				high, 
-				new ZB_WRITE_CONFIGURATION( 
-						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_LOGICAL_TYPE,
-						new int[]{ mode.ordinal() }
-				)
-		);
-		
+				(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
+						high, 
+						new ZB_WRITE_CONFIGURATION( 
+								ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_LOGICAL_TYPE,
+								new int[]{ mode.ordinal() }
+								)
+						);
+
 		return response != null && response.Status == 0;
 	}
-	
+
 	private boolean dongleSetPanId(){				
 		ZB_WRITE_CONFIGURATION_RSP response = 
-			(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
-				high, 
-				new ZB_WRITE_CONFIGURATION( 
-						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_PANID,
-						new int[]{
-								Integers.getByteAsInteger(pan, 0),
-								Integers.getByteAsInteger(pan, 1)
-						}
-				)
-		);
-		
+				(ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
+						high, 
+						new ZB_WRITE_CONFIGURATION( 
+								ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_PANID,
+								new int[]{
+										Integers.getByteAsInteger(pan, 0),
+										Integers.getByteAsInteger(pan, 1)
+								}
+								)
+						);
+
 		return response != null && response.Status == 0;
 	}
-	
-	
+
+
 	private boolean createZigBeeNetwork(boolean reset){
 		/*
 		 * NOTE:The dongle has to be reset all the time to avoid that the endpoints
@@ -886,81 +888,81 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.debug("Dongle has already been reset so no endpoint registered");
 		}
 		switch (mode) {
-			case Coordinator:
-				return doCoordinatorCreateNetwork();			
-			case Router:
-				//TODO Implements start up as Router
-				return false;
-			case EndDevice:
-				return doEndDeviceCreateNetwok();			
+		case Coordinator:
+			return doCoordinatorCreateNetwork();			
+		case Router:
+			//TODO Implements start up as Router
+			return false;
+		case EndDevice:
+			return doEndDeviceCreateNetwok();			
 		}
-		
+
 		/*
 		 * This code is unreachable but compiler can't find this out yet.
 		 * It may introduce a compilation issue of future compilers
 		 */
 		return false;
 	}
-	
+
 	private boolean doEndDeviceCreateNetwok() {
 		logger.debug("Creating network as EndDevice");
-				
+
 		final WaitForAList completeWait  = new WaitForAList(
 				new int[]{
-					ZToolCMD.ZB_START_CONFIRM, 
-					ZToolCMD.ZB_GET_DEVICE_INFO_RSP, 
-					ZToolCMD.ZB_GET_DEVICE_INFO_RSP 	
+						ZToolCMD.ZB_START_CONFIRM, 
+						ZToolCMD.ZB_GET_DEVICE_INFO_RSP, 
+						ZToolCMD.ZB_GET_DEVICE_INFO_RSP 	
 				}, 
 				new ZToolPacket[3], 
 				low
-		);
-		
+				);
+
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZB_START_CONFIRM,high);
-		
+
 		ZB_START_CONFIRM result = null;
 		ZB_START_REQUEST_RSP response = (ZB_START_REQUEST_RSP) sendSynchrouns(
 				high, new ZB_START_REQUEST()
-		);
+				);
 		if ( response == null ) {			
 			waiter.cleanup();
 			return false;
 		} else {
 			result = (ZB_START_CONFIRM) waiter.getCommand(TIMEOUT);
 		}
-		
+
 		completeWait.waitForAll(TIMEOUT * 2);
-		
+
 		return result != null && result.Status == ZB_START_CONFIRM.AF_STATUS.SUCCESS;
 	}
 
 	private boolean doCoordinatorCreateNetwork() {
 		logger.info("Creating network as Coordintator");		
-		
+
 		final WaitForAList completeWait  = new WaitForAList(
 				new int[]{
-					ZToolCMD.ZB_START_CONFIRM, 
-					ZToolCMD.ZB_GET_DEVICE_INFO_RSP, 
-					ZToolCMD.ZB_GET_DEVICE_INFO_RSP 	
+						ZToolCMD.ZB_START_CONFIRM, 
+						ZToolCMD.ZB_GET_DEVICE_INFO_RSP, 
+						ZToolCMD.ZB_GET_DEVICE_INFO_RSP 	
 				}, 
 				new ZToolPacket[3], 
 				low
-		);
-		
+				);
+
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZB_START_CONFIRM,high);
-		
+
 		ZB_START_CONFIRM result = null;
 		ZB_START_REQUEST_RSP response = (ZB_START_REQUEST_RSP) sendSynchrouns(
 				high, new ZB_START_REQUEST()
-		);
+				);
 		if ( response == null ) {			
 			waiter.cleanup();
 			return false;
 		} else {
 			result = (ZB_START_CONFIRM) waiter.getCommand(TIMEOUT);
 		}
-		
+
 		completeWait.waitForAll(TIMEOUT * 2);
-		
+
 		return result != null && result.Status == ZB_START_CONFIRM.AF_STATUS.SUCCESS;
 	}
 
@@ -971,11 +973,11 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		if( cleanStatus ) {
 			return true;
 		}
-		
+
 		createZigBeeNetwork();
-		
+
 		int[] value;
-		
+
 		value = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.CHANNEL);
 		if ( value == null){
 			logger.error("Method getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.CHANNEL) returned null");
@@ -985,7 +987,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 					"Old was = {} while new is {}", value[0], this.channel);
 			return true;
 		}
-		
+
 		value = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.PAN_ID);
 		if ( value == null){
 			logger.error("Method getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.PAN_ID) returned null");
@@ -995,15 +997,15 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 					"Old was = {} while new is {}", Integers.shortFromInts(value, 1, 0), this.pan);
 			return true;
 		}
-		
+
 		dongleReset();
-		
+
 		return false;
 	}
-	*/
-	
+	 */
+
 	private boolean initializeZigBeeNetwork() {
-		
+
 		/*
 		//TODO Fix this peace of code because it is not working
 		The right configuration procedure is:
@@ -1011,9 +1013,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		 - Reboot
 		 - Check the status from getDeviceInfo
 		 - Set the configuration of: Mode, Channel, PanId, etc.
-		 
+
 		boolean cleanNetworkState = mustCleanStatus(); */
-		
+
 		boolean cleanNetworkState = cleanStatus;
 		if( cleanNetworkState ) {
 			if ( doCleanAndSetConfiguration() == false ) {
@@ -1044,31 +1046,31 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		if ( ( value = getCurrentChannel() ) != channel ) {
 			logger.warn(
 					"The channel configuration differ from the channel configuration in use: " +
-					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
-					value, channel
-			);
+							"in use {}, while the configured is {}.\n" +
+							"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+							value, channel
+					);
 			mismatch = true;
 		}
 		if ( ( value = getCurrentPanId() ) != pan ) {
 			logger.warn(
 					"The PanId configuration differ from the channel configuration in use: " +
-					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
-					value, pan
-			);
+							"in use {}, while the configured is {}.\n" +
+							"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+							value, pan
+					);
 			mismatch = true;
 		}
 		if ( ( value = getZigBeeNodeMode() ) != mode.ordinal() ) {
 			logger.warn(
 					"The NetworkMode configuration differ from the channel configuration in use: " +
-					"in use {}, while the configured is {}.\n" +
-					"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
-					value, mode.ordinal()
-			);
+							"in use {}, while the configured is {}.\n" +
+							"The ZigBee Stack should be flushed, try to set "+ConfigurationProperties.NETWORK_FLUSH+" to TRUE",
+							value, mode.ordinal()
+					);
 			mismatch = true;
 		}
-		
+
 		return mismatch;
 	}
 
@@ -1092,7 +1094,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		} else {
 			logger.info("PANID set");				
 		}
-		
+
 		if ( dongleSetNetworkMode() == false ) {
 			logger.error("Unable to set NETWORK_MODE for ZigBee Network");
 			return false;
@@ -1105,11 +1107,11 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private ZToolPacket sendSynchrouns(final HWHighLevelDriver hwDriver, final ZToolPacket request) {
 		final ZToolPacket[] response = new ZToolPacket[]{null};
 		int sending = 1;		
-		
+
 		logger.info("Sending Synchrouns {}", request.getClass().getName());
-		
+
 		SynchrounsCommandListner listener = new SynchrounsCommandListner() {
-		
+
 			public void receivedCommandResponse(ZToolPacket packet) {
 				logger.info("Recieved Synchrouns Response {}", packet.getClass().getName());
 				synchronized (response) {
@@ -1117,9 +1119,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 					response.notify();
 				}
 			}
-		
+
 		};
-		
+
 		while( sending <= RESEND_MAX_RETRY ){
 			try {
 				hwDriver.sendSynchrounsCommand(request, listener, RESEND_TIMEOUT);
@@ -1156,17 +1158,17 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 				sending++;
 			}
 		}
-		
+
 		return response[0];
 	}
-		
+
 	public boolean addAnnunceListener(AnnunceListner listner){		
 		if(annunceListners.isEmpty() && isHardwareReady() ){
 			high.addAsynchrounsCommandListener(annunceListner);
 		}		
 		return annunceListners.add(listner);
 	}
-	
+
 	public boolean removeAnnunceListener(AnnunceListner listner){
 		boolean result = annunceListners.remove(listner);
 		if(annunceListners.isEmpty() && isHardwareReady() ){
@@ -1177,7 +1179,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	public AF_REGISTER_SRSP sendAFRegister(AF_REGISTER request) {
 		if( waitForNetwork() == false ) return null;
-		
+
 		AF_REGISTER_SRSP response = (AF_REGISTER_SRSP) sendSynchrouns(high, request);
 		return response;
 	}
@@ -1188,7 +1190,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 		waitAndLock3WayConversation(request);		
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.AF_DATA_CONFIRM, high);
-		
+
 		AF_DATA_SRSP  response = (AF_DATA_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
@@ -1202,10 +1204,10 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	public ZDO_BIND_RSP sendZDOBind(ZDO_BIND_REQ request) {
 		if( waitForNetwork() == false ) return null;
 		ZDO_BIND_RSP result = null;
-		
+
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_BIND_RSP, high);
-		
+
 		ZDO_BIND_REQ_SRSP  response = (ZDO_BIND_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
@@ -1215,31 +1217,31 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		unLock3WayConversation(request);
 		return result;
 	}
-	
+
 	public ZDO_UNBIND_RSP sendZDOUnbind(ZDO_UNBIND_REQ request) {
 		if( waitForNetwork() == false ) return null;
 		ZDO_UNBIND_RSP result = null;
-		
+
 		waitAndLock3WayConversation(request);
 		final WaitForCommand waiter = new WaitForCommand(ZToolCMD.ZDO_UNBIND_RSP, high);
-		
+
 		ZDO_UNBIND_REQ_SRSP  response = (ZDO_UNBIND_REQ_SRSP) sendSynchrouns(high, request);
 		if ( response == null || response.Status != 0 ) {
 			waiter.cleanup();
 		} else {
 			result = (ZDO_UNBIND_RSP) waiter.getCommand(TIMEOUT);
 		}
-		
+
 		unLock3WayConversation(request);
 		return result;
 	}
-	
+
 	public boolean removeAFMessageListener(AFMessageListner listner){
 		boolean result = false;
 		synchronized (afMessageListners) {
 			result = afMessageListners.remove(listner);
 		}
-		
+
 		if(afMessageListners.isEmpty() && isHardwareReady() ){
 			if ( high.removeAsynchrounsCommandListener(afListner) ) {
 				logger.debug("Removed AsynchrounsCommandListener {} to HWHighLevelDriver", afListner.getClass().getName()); 
@@ -1268,7 +1270,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		synchronized (afMessageListners) {
 			result = afMessageListners.add(listner); 
 		}
-		
+
 		if ( result ) {
 			logger.debug("Added AFMessageListner {}:{}", listner, listner.getClass().getName());
 			return true;
@@ -1277,21 +1279,21 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			return false;
 		}
 	}
-	
+
 	private boolean isNetworkReady() {
 		synchronized (this) {
 			return state.ordinal() >= DriverStatus.NETWORK_READY.ordinal() 
-			&& state.ordinal() < DriverStatus.CLOSED.ordinal();
+					&& state.ordinal() < DriverStatus.CLOSED.ordinal();
 		}
 	}
-	
+
 	private boolean isHardwareReady() {
 		synchronized (this) {
 			return state.ordinal() >= DriverStatus.HARDWARE_READY.ordinal() 
-			&& state.ordinal() < DriverStatus.CLOSED.ordinal();
+					&& state.ordinal() < DriverStatus.CLOSED.ordinal();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -1302,33 +1304,33 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.info("Failed to reach the {} level: getExtendedPanId() failed", DriverStatus.NETWORK_READY);
 			return -1;
 		}
-		
+
 		int[] result = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.EXT_PAN_ID);
-		
+
 		if( result == null ){
 			return -1;
 		} else {
 			return Integers.shortFromInts(result, 7, 0);
 		}	}
-	
+
 	/**
 	 * 
 	 * @return
 	 * @since 0.2.0
 	 */
 	public long getIEEEAddress() {
-		
+
 		if( ieeeAddress != -1 ){
 			return ieeeAddress;
 		}
-		
+
 		if( waitForNetwork() == false ) {
 			logger.info("Failed to reach the {} level: getIEEEAddress() failed", DriverStatus.NETWORK_READY);
 			return -1;
 		}
-		
+
 		int[] result = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.IEEE_ADDR);
-		
+
 		if( result == null ){
 			return -1;
 		} else {
@@ -1347,16 +1349,16 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.info("Failed to reach the {} level: getCurrentPanId() failed", DriverStatus.NETWORK_READY);
 			return -1;
 		}
-		
+
 		int[] result = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.PAN_ID);
-		
+
 		if( result == null ){
 			return -1;
 		} else {
 			return Integers.shortFromInts(result, 1, 0);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -1367,9 +1369,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.info("Failed to reach the {} level: getCurrentChannel() failed", DriverStatus.NETWORK_READY);
 			return -1;
 		}
-		
+
 		int[] result = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.CHANNEL);
-		
+
 		if( result == null ){
 			return -1;
 		} else {
@@ -1387,22 +1389,22 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			logger.info("Failed to reach the {} level: getCurrentChannel() failed", DriverStatus.NETWORK_READY);
 			return -1;
 		}
-		
+
 		int[] result = getDeviceInfo(ZB_GET_DEVICE_INFO.DEV_INFO_TYPE.STATE);
-		
+
 		if( result == null ){
 			return -1;
 		} else {
 			return result[0];
 		}
 	}	
-	
-	
+
+
 	private int[] getDeviceInfo(int type){
 		ZB_GET_DEVICE_INFO_RSP response = (ZB_GET_DEVICE_INFO_RSP) sendSynchrouns(
 				high, new ZB_GET_DEVICE_INFO(type)
-		);
-		
+				);
+
 		if ( response == null ){
 			logger.debug("Failed getDeviceInfo for {} due to null value", type);
 			return null;
@@ -1417,19 +1419,23 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 
 	public int getZigBeeNodeMode(){
 		ZB_READ_CONFIGURATION_RSP response = 
-			(ZB_READ_CONFIGURATION_RSP) sendSynchrouns(
-				high, 
-				new ZB_READ_CONFIGURATION( ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_LOGICAL_TYPE )
-		);
+				(ZB_READ_CONFIGURATION_RSP) sendSynchrouns(
+						high, 
+						new ZB_READ_CONFIGURATION( ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_LOGICAL_TYPE )
+						);
 		if ( response != null && response.Status == 0 ) {
 			return response.Value[0];
 		} else {
 			return -1;
 		}
 	}	
-	
+
 	public DriverStatus getDriverStatus() {
 		return state;
 	}
-	
+
+	public ZDO_MGMT_LQI_RSP sendLQIRequest(ZDO_MGMT_LQI_REQ request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

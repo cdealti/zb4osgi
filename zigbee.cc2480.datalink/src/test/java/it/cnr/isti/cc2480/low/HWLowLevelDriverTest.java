@@ -40,7 +40,7 @@ public class HWLowLevelDriverTest {
 			serial = null;
 		}
 		driver.addPacketListener(new PacketListener(){
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				synchronized (packets) {
 					packets[0] = packet;
 					packets.notify();

@@ -33,6 +33,5 @@ import com.itaca.ztool.api.ZToolPacket;
  */
 public interface PacketListener {
 
-	void packetRecieved(ZToolPacket packet);
-
+	void packetReceived(ZToolPacket packet);
 }

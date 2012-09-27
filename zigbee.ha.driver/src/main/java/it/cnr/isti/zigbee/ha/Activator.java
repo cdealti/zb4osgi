@@ -18,22 +18,26 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha;
 
 import it.cnr.isti.zigbee.ha.cluster.factory.HAClustersFactory;
 import it.cnr.isti.zigbee.ha.device.api.generic.LevelControlSwitch;
+import it.cnr.isti.zigbee.ha.device.api.generic.MainsPowerOutlet;
 import it.cnr.isti.zigbee.ha.device.api.generic.OnOffOutput;
 import it.cnr.isti.zigbee.ha.device.api.generic.OnOffSwitch;
 import it.cnr.isti.zigbee.ha.device.api.hvac.TemperatureSensor;
 import it.cnr.isti.zigbee.ha.device.api.lighting.DimmableLight;
 import it.cnr.isti.zigbee.ha.device.api.lighting.OccupancySensor;
+import it.cnr.isti.zigbee.ha.device.api.lighting.OnOffLight;
 import it.cnr.isti.zigbee.ha.device.api.lighting.OnOffLightSwitch;
 import it.cnr.isti.zigbee.ha.device.factory.OnOffLightFactory;
 import it.cnr.isti.zigbee.ha.device.impl.DimmableLightDevice;
 import it.cnr.isti.zigbee.ha.device.impl.LevelControlSwitchDevice;
+import it.cnr.isti.zigbee.ha.device.impl.MainsPowerOutletDevice;
 import it.cnr.isti.zigbee.ha.device.impl.OccupancySensorDevice;
+import it.cnr.isti.zigbee.ha.device.impl.OnOffLightDevice;
 import it.cnr.isti.zigbee.ha.device.impl.OnOffLightSwitchDevice;
 import it.cnr.isti.zigbee.ha.device.impl.OnOffOutputDevice;
 import it.cnr.isti.zigbee.ha.device.impl.OnOffSwitchDevice;
@@ -64,65 +68,69 @@ public class Activator implements BundleActivator {
 
 	private static final String HA_CONFIG_PID = "it.cnr.isti.zigbee.ha.configuration";
 
-    private HAImporter haImporter;
-    
-    private final ArrayList<HADeviceFactoryBase> factories = new ArrayList<HADeviceFactoryBase>();
+	private HAImporter haImporter;
+
+	private final ArrayList<HADeviceFactoryBase> factories = new ArrayList<HADeviceFactoryBase>();
 
 	private ServiceRegistration configRegistration;
 
-    private static HADriverConfiguration configuration = null;
-    
-    public static HADriverConfiguration getConfiguration(){
-    	return configuration;
-    }
-    
-    private void doRegisterConfigurationService(BundleContext ctx){
+	private static HADriverConfiguration configuration = null;
+
+	public static HADriverConfiguration getConfiguration(){
+		return configuration;
+	}
+
+	private void doRegisterConfigurationService(BundleContext ctx){
 		Properties properties = new Properties();
-		
+
 		properties.setProperty(Constants.SERVICE_PID, HA_CONFIG_PID);
-    	
-    	configuration = new HADriverConfiguration(ctx);
-    	configRegistration = ctx.registerService(
-    			new String[]{ManagedService.class.getName(), ReportingConfiguration.class.getName()}, 
-    			configuration, 
-    			null
-    	);
-    }
-    
-    public void start(BundleContext ctx) throws Exception {
 
-    	doRegisterConfigurationService(ctx);
-    	
+		configuration = new HADriverConfiguration(ctx);
+		configRegistration = ctx.registerService(
+				new String[]{ManagedService.class.getName(), ReportingConfiguration.class.getName()}, 
+				configuration, 
+				null
+				);
+	}
+
+	public void start(BundleContext ctx) throws Exception {
+
+		doRegisterConfigurationService(ctx);
+
 		new HAClustersFactory(ctx).register();
-	
-		factories.add(new OnOffLightFactory(ctx).register());
-		
-		//factories.add(new GenericHADeviceFactory(ctx, HADevice.class, GenericHADevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, DimmableLight.class, DimmableLightDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, LevelControlSwitch.class, LevelControlSwitchDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, OccupancySensor.class, OccupancySensorDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, OnOffLightSwitch.class, OnOffLightSwitchDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, OnOffOutput.class, OnOffOutputDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, OnOffSwitch.class, OnOffSwitchDevice.class).register());
-	
-		factories.add(new GenericHADeviceFactory(ctx, TemperatureSensor.class, TemperatureSensorDevice.class).register());
-		
-		haImporter = new HAImporter(ctx);
-    }
 
-    public void stop(BundleContext context) throws Exception {
-    	haImporter.close();
-	
+		factories.add(new OnOffLightFactory(ctx).register());
+
+		//factories.add(new GenericHADeviceFactory(ctx, HADevice.class, GenericHADevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, DimmableLight.class, DimmableLightDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, LevelControlSwitch.class, LevelControlSwitchDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, MainsPowerOutlet.class, MainsPowerOutletDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, OccupancySensor.class, OccupancySensorDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, OnOffLight.class, OnOffLightDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, OnOffLightSwitch.class, OnOffLightSwitchDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, OnOffOutput.class, OnOffOutputDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, OnOffSwitch.class, OnOffSwitchDevice.class).register());
+
+		factories.add(new GenericHADeviceFactory(ctx, TemperatureSensor.class, TemperatureSensorDevice.class).register());		
+
+		haImporter = new HAImporter(ctx);
+	}
+
+	public void stop(BundleContext context) throws Exception {
+		haImporter.close();
+
 		for (HADeviceFactoryBase factory : factories) {
-		    factory.unregister();
+			factory.unregister();
 		}
-		
-    }
+
+	}
 
 }

@@ -5,6 +5,7 @@
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
     <version>9-SNAPSHOT</version>
+    <relativePath>../../../pom/pom.xml</relativePath>
   </parent>
 
   <properties>

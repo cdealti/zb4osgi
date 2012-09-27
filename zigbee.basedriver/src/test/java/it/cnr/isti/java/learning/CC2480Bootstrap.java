@@ -35,7 +35,7 @@ public class CC2480Bootstrap {
 		
 		HWLowLevelDriver low = new HWLowLevelDriver();
 		low.addPacketListener(new PacketListener(){
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				System.out.println(packet);
 			}
 		});		
@@ -70,7 +70,7 @@ public class CC2480Bootstrap {
 		System.out.println("Phase 3: START");
 		low = new HWLowLevelDriver();
 		low.addPacketListener(new PacketListener(){
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				System.out.println(packet);
 			}
 		});		

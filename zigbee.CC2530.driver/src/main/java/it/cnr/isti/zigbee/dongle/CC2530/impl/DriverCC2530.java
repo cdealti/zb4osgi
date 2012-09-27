@@ -520,7 +520,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 		final int recieved[] = new int[1];
 		final HWLowLevelDriver probingDriver = new HWLowLevelDriver();
 		final PacketListener monitor = new PacketListener(){			
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				logger.debug("Received initializing SYS VERSION candidate");
 				if(packet.getCommandId() == ZToolCMD.SYS_VERSION_RESPONSE){
 					logger.debug("Initializing Hardware: Received correctly SYS_VERSION_RESPONSE");
@@ -713,7 +713,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 				}
 			}
 			
-			public void packetRecieved(ZToolPacket packet) {
+			public void packetReceived(ZToolPacket packet) {
 				if(packet.isError()) return;
 				if((packet.getCommandId() & 0xFFFF) == waitingList[idx]){
 					logger.info("Recieved packet that was waiting for incresing waitingList");

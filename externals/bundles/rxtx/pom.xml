@@ -52,7 +52,7 @@ on the JAR package of this artifact.
             <Bundle-NativeCode>
               Windows/i368-mingw32/rxtxSerial.dll; Windows/i368-mingw32/rxtxParallel.dll; osname=win32; processor=x86, 
               Windows/win64/rxtxSerial.dll; Windows/win64/rxtxParallel.dll; osname=win64; processor=x86-64,
-              Windows/win64/rxtxSerial.dll; Windows/win64/rxtxParallel.dll; osname=win32; processor=x86-64,
+              Windows/i368-mingw32/rxtxSerial.dll; Windows/i368-mingw32/rxtxParallel.dll; osname=win32; processor=x86-64,
               Linux/i686-unknown-linux-gnu/librxtxSerial.so; Linux/i686-unknown-linux-gnu/librxtxParallel.so; osname=linux; processor=x86, 
               Linux/ia64-unkown-linux-gnu/librxtxSerial.so; osname=linux; processor=ia64, 
               Linux/x86_64-unknown-linux-gnu/librxtxSerial.so; osname=linux; processor=x86_64, 

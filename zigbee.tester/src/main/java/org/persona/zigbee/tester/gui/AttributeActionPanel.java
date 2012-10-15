@@ -155,12 +155,36 @@ public class AttributeActionPanel extends JPanel {
 		    public void doSubscribe(ReportListener listener) {
 		        
                 final Subscription sub = attribute.getSubscription();
-                sub.setMaximumReportingInterval( Integer.parseInt( maxText.getText() ) );
-                sub.setMinimumReportingInterval( Integer.parseInt( minText.getText() ) );
+                try{
+                	sub.setMaximumReportingInterval( Integer.parseInt( maxText.getText() ) );
+                }catch(NumberFormatException ex){
+                	LogPanel.log( 
+                		"The value '"+maxText.getText()+"' typed in the Maximum field is not a number" +
+                		"Using default value 60, that means report the value at least once per minute"
+                	);
+                	sub.setMaximumReportingInterval( 60 ); 
+                }
+                try{
+                	sub.setMinimumReportingInterval( Integer.parseInt( minText.getText() ) );
+                }catch(NumberFormatException ex){
+                	LogPanel.log( 
+                		"The value '"+minText.getText()+"' typed in the Minimum field is not a number." +
+                		"Using default value 0, that means reports every time the value of the attribute changes"
+                	);
+                	sub.setMinimumReportingInterval( 0 );
+                }
                 if ( sub instanceof AnalogSubscription ) {
                     AnalogSubscription asub = (AnalogSubscription) sub;
-                    final ZigBeeType type = attribute.getZigBeeType();
-                    asub.setReportableChange( Converter.fromString( changeText.getText(), type ) );
+                    final ZigBeeType type = attribute.getZigBeeType();                    
+                    try{
+                	asub.setReportableChange( Converter.fromString( changeText.getText(), type ) );
+                    }catch(NumberFormatException ex){
+                	LogPanel.log( 
+                		"The value '"+changeText.getText()+"' typed in the Delta field is not a number." +
+                		"Using default value 0, that means reports every changes of the Analog attribute"
+                	);
+                	asub.setReportableChange( Converter.fromString( "0", type ) );
+                    }
                 }
                 
                 if ( attribute.getSubscription().addReportListner(listener) ) {

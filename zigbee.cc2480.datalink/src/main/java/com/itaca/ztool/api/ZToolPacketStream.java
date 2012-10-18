@@ -64,6 +64,7 @@ import com.itaca.ztool.api.system.SYS_RESET_RESPONSE;
 import com.itaca.ztool.api.system.SYS_RPC_ERROR;
 import com.itaca.ztool.api.system.SYS_TEST_LOOPBACK_SRSP;
 import com.itaca.ztool.api.system.SYS_VERSION_RESPONSE;
+import com.itaca.ztool.api.util.UTIL_GET_DEVICE_INFO_RESPONSE;
 import com.itaca.ztool.api.util.UTIL_SET_CHANNELS_RESPONSE;
 import com.itaca.ztool.api.util.UTIL_SET_PANID_RESPONSE;
 import com.itaca.ztool.api.zdo.ZDO_ACTIVE_EP_REQ_SRSP;
@@ -393,6 +394,8 @@ public class ZToolPacketStream
                 return new UTIL_SET_PANID_RESPONSE( payload );
             case ZToolCMD.UTIL_SET_CHANNELS_RESPONSE:
                 return new UTIL_SET_CHANNELS_RESPONSE( payload );
+            case ZToolCMD.UTIL_GET_DEVICE_INFO_RESPONSE:
+            	return new UTIL_GET_DEVICE_INFO_RESPONSE( payload);
             default:
                 return new ZToolPacket( cmdId, payload );
         }

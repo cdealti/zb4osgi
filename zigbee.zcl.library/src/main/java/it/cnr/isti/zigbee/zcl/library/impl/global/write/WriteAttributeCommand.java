@@ -52,7 +52,17 @@ public class WriteAttributeCommand extends AbstractCommand {
 				int len = attributeRecord[i].getAttributeDataType().getLength();
 				if(len == -1){
 					//TODO Use a general method instead of assuming that variable length is applied only for String 
-					length = length + ((String) attributeRecord[i].getAttributeData()).length();
+					switch( attributeRecord[i].getAttributeDataType() ) {
+						case CharacterString : case OctectString :
+							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 1;
+						break;
+						case LongOctectString : case LongCharacterString :
+							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 2;
+						break;
+						default:
+							throw new IllegalArgumentException("Data type "+attributeRecord[i].getAttributeDataType()+" is not supported yet");
+					}
+					
 				} else {
 					length = length + len;
 				}

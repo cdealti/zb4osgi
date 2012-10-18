@@ -63,12 +63,8 @@ public class DefaultSerializer implements ZBSerializer {
 	
 	public void appendString(String str){
 		final byte[] raw = str.getBytes();
-		if ( raw.length > 255 ) {
-			throw new IllegalArgumentException("String give '"+str+"' is too long maxium String size is 255");
-		}
-		index += raw.length + 1;
-		payload[index] = (byte) (raw.length & 0xFF);
-		System.arraycopy(raw, 0, payload, index+1, raw.length);
+		System.arraycopy(raw, 0, payload, index, raw.length);
+		index += raw.length;
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {
@@ -102,10 +98,16 @@ public class DefaultSerializer implements ZBSerializer {
 					append_int(i.intValue());
 				}				
 			break;
-			case CharacterString:
+			case CharacterString: case OctectString: {
 				final String str = (String) data;
+				append_byte( (byte) (str.length() & (0xFF) ));
 				appendString(str);
-			break;
+			} break;
+			case LongCharacterString: case LongOctectString: {
+				final String str = (String) data;
+				append_short((short) (str.length() & (0xFFFF)));
+				appendString(str);
+			} break;
 			default:
 				throw new IllegalArgumentException(
 						"No reader defined by this "+ZBDeserializer.class.getName()+

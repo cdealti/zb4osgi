@@ -76,11 +76,11 @@ public class DefaultSerializer implements ZBSerializer {
 				appendBoolean((Boolean) data);
 			break;
 			case Data8bit: case SignedInteger8bit: case Bitmap8bit: case UnsignedInteger8bit: case Enumeration8bit:
-				final Integer b = (Integer) data;
+				final Number b = (Number) data;
 				append_byte(b.byteValue());
 			break;
 			case Data16bit: case SignedInteger16bit: case Bitmap16bit: case UnsignedInteger16bit: case Enumeration16bit:
-				final Integer s = (Integer) data;
+				final Number s = (Number) data;
 				append_short(s.shortValue());
 			break;
 			case Data24bit: case SignedInteger24bit: case Bitmap24bit: case UnsignedInteger24bit:

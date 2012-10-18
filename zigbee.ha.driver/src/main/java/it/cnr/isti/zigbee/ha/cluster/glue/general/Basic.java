@@ -44,7 +44,7 @@ public interface Basic extends Cluster {
 	public Attribute getDateCode();
 	public Attribute getPowerSource();
 	public String getLocationDescription() throws ZigBeeHAException;
-	public Attribute getPhysicalEnviroment();
+	public Attribute getPhysicalEnvironment();
 	public boolean getDeviceEnabled() throws ZigBeeHAException;
 	public Attribute getAlarmMask();
 	

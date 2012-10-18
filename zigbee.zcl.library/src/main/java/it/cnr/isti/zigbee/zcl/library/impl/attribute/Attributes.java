@@ -113,9 +113,9 @@ public class Attributes  {
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(true);
 	
-	final static public   AttributeDescriptor PHISICAL_ENVIROMENT = new AbstractAttribute()
+	final static public   AttributeDescriptor PHYSICAL_ENVIRONMENT = new AbstractAttribute()
 	.setId(0x0011)
-	.setName("PhysicalEnviroment")
+	.setName("PhysicalEnvironment")
 	.setReportable(false)
 	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)

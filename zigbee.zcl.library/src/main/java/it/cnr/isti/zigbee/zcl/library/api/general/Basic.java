@@ -56,7 +56,7 @@ public interface Basic extends ZCLCluster {
 	public Attribute getPowerSource();
 	
 	public Attribute getAttributeLocationDescription();
-	public Attribute getAttributePhysicalEnviroment();
+	public Attribute getAttributePhysicalEnvironment();
 	public Attribute getAttributeDeviceEnabled();
 	public Attribute getAttributeAlarmMask();
 	

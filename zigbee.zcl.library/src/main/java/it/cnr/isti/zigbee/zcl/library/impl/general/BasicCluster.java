@@ -54,7 +54,7 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	private final AttributeImpl powerSource;
 	
 	private final AttributeImpl locationDescription;
-	private final AttributeImpl physicalEnviroment;
+	private final AttributeImpl physicalEnvironment;
 	private final AttributeImpl deviceEnabled;
 	private final AttributeImpl alarmMask;
 	
@@ -71,12 +71,12 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		dateCode = new AttributeImpl(zbDevice,this,Attributes.DATE_CODE);
 		powerSource = new AttributeImpl(zbDevice,this,Attributes.POWER_SOURCE);
 		locationDescription = new AttributeImpl(zbDevice,this,Attributes.LOCATION_DESCRIPTION);
-		physicalEnviroment = new AttributeImpl(zbDevice,this,Attributes.PHISICAL_ENVIROMENT);
+		physicalEnvironment = new AttributeImpl(zbDevice,this,Attributes.PHYSICAL_ENVIRONMENT);
 		deviceEnabled = new AttributeImpl(zbDevice,this,Attributes.DEVICE_ENABLED);
 		alarmMask = new AttributeImpl(zbDevice,this,Attributes.ALARM_MASK);
 		attributes = new AttributeImpl[]{zclVersion, applicationVersion, stackVersion,
 				hwVersion, manufacturerName, modelIdentifier, dateCode, powerSource,
-				locationDescription, physicalEnviroment, deviceEnabled, alarmMask};
+				locationDescription, physicalEnvironment, deviceEnabled, alarmMask};
 	}
 	
 	private static EmptyPayloadCommand CMD_RESET_TO_FACTORY_DEFAULT = new EmptyPayloadCommand()
@@ -131,9 +131,9 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	public Attribute getAttributeModelIdentifier() {
 		return modelIdentifier;
 	}
-
-	public Attribute getAttributePhysicalEnviroment() {
-		return physicalEnviroment;
+                                 
+	public Attribute getAttributePhysicalEnvironment() {
+		return physicalEnvironment;
 	}
 
 	public Attribute getAttributeStackVersion() {

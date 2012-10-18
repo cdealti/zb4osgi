@@ -67,7 +67,7 @@ public class BasicImpl implements Basic{
 		dateCode = basicCluster.getAttributeDateCode();
 		powerSource = basicCluster.getPowerSource();	
 		locationDescription = basicCluster.getAttributeLocationDescription();
-		physicalEnviroment = basicCluster.getAttributePhysicalEnviroment();
+		physicalEnviroment = basicCluster.getAttributePhysicalEnvironment();
 		deviceEnabled = basicCluster.getAttributeDeviceEnabled();
 		alarmMask = basicCluster.getAttributeAlarmMask();
 	}
@@ -114,7 +114,7 @@ public class BasicImpl implements Basic{
 		return modelIdentifier;
 	}
 
-	public Attribute getPhysicalEnviroment() {
+	public Attribute getPhysicalEnvironment() {
 		return physicalEnviroment;
 	}
 

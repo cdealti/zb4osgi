@@ -108,7 +108,7 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		return alarmMask;
 	}
 
-	public Attribute getAttributeDateCode() {
+	public Attribute getAttributeDataCode() {
 		return dataCode;
 	}
 

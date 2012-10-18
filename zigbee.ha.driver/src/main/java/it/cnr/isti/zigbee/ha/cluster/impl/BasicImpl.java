@@ -64,7 +64,7 @@ public class BasicImpl implements Basic{
 		hwVersion = basicCluster.getAttributeHWVersion();
 		manufacturerName = basicCluster.getAttributeManufacturerName();
 		modelIdentifier = basicCluster.getAttributeModelIdentifier();
-		dataCode = basicCluster.getAttributeDateCode();
+		dataCode = basicCluster.getAttributeDataCode();
 		powerSource = basicCluster.getPowerSource();	
 		locationDescription = basicCluster.getAttributeLocationDescription();
 		physicalEnviroment = basicCluster.getAttributePhysicalEnviroment();
@@ -80,7 +80,7 @@ public class BasicImpl implements Basic{
 		return applicationVersion;
 	}
 
-	public Attribute getDateCode() {
+	public Attribute getDataCode() {
 		return dataCode;
 	}
 

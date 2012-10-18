@@ -100,7 +100,15 @@ public class AttributeActionPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Object newValue = null;
 				try {
-					newValue = Converter.fromString(getInputText().getText(), attribute.getZigBeeType());
+					try{
+						newValue = Converter.fromString(getInputText().getText(), attribute.getZigBeeType());
+					}catch(NumberFormatException ex){
+						LogPanel.log(
+								"Invalid value for " + attribute.getName() + " we where expecting a number." +
+								"\n\tStatus: SKYPPED"
+						);
+						return;
+					}
 					attribute.setValue( newValue );
 					LogPanel.log(
 							"Set Attribute " + attribute.getName() + " to " + newValue  +
@@ -160,31 +168,36 @@ public class AttributeActionPanel extends JPanel {
                 }catch(NumberFormatException ex){
                 	LogPanel.log( 
                 		"The value '"+maxText.getText()+"' typed in the Maximum field is not a number" +
-                		"Using default value 60, that means report the value at least once per minute"
+                		"Using default value " + Subscription.DEFAULT_MAX_REPORTING_INTERVAL + ", " +
+        				"that means report the value at least once every " + Subscription.DEFAULT_MAX_REPORTING_INTERVAL + " seconds"
                 	);
-                	sub.setMaximumReportingInterval( 60 ); 
+                	sub.setMaximumReportingInterval( Subscription.DEFAULT_MAX_REPORTING_INTERVAL ); 
                 }
                 try{
                 	sub.setMinimumReportingInterval( Integer.parseInt( minText.getText() ) );
                 }catch(NumberFormatException ex){
                 	LogPanel.log( 
                 		"The value '"+minText.getText()+"' typed in the Minimum field is not a number." +
-                		"Using default value 0, that means reports every time the value of the attribute changes"
+                		"Using default value " + Subscription.DEFAULT_MIN_REPORTING_INTERVAL + ", " +
+        				"that means reports every time the value of the attribute changes"
                 	);
-                	sub.setMinimumReportingInterval( 0 );
+                	sub.setMinimumReportingInterval( Subscription.DEFAULT_MIN_REPORTING_INTERVAL );
                 }
                 if ( sub instanceof AnalogSubscription ) {
-                    AnalogSubscription asub = (AnalogSubscription) sub;
-                    final ZigBeeType type = attribute.getZigBeeType();                    
-                    try{
-                	asub.setReportableChange( Converter.fromString( changeText.getText(), type ) );
-                    }catch(NumberFormatException ex){
-                	LogPanel.log( 
-                		"The value '"+changeText.getText()+"' typed in the Delta field is not a number." +
-                		"Using default value 0, that means reports every changes of the Analog attribute"
-                	);
-                	asub.setReportableChange( Converter.fromString( "0", type ) );
-                    }
+					AnalogSubscription asub = (AnalogSubscription) sub;
+					final ZigBeeType type = attribute.getZigBeeType();
+					try {
+						asub.setReportableChange(Converter.fromString(
+								changeText.getText(), type));
+					} catch (NumberFormatException ex) {
+						LogPanel.log(
+								"The value '" + changeText.getText() +"' typed in the Delta field is not a number." + 
+								"Using default value " + AnalogSubscription.DEFAULT_REPORTABLE_CHANGE_INTERVAL + ", " +
+								"that means reports every changes of the Analog attribute greter then " +
+								AnalogSubscription.DEFAULT_REPORTABLE_CHANGE_INTERVAL
+						);
+						asub.setReportableChange(AnalogSubscription.DEFAULT_REPORTABLE_CHANGE_INTERVAL);
+					}
                 }
                 
                 if ( attribute.getSubscription().addReportListner(listener) ) {

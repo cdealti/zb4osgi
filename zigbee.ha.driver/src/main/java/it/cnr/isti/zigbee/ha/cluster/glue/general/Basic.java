@@ -41,7 +41,7 @@ public interface Basic extends Cluster {
 	public Attribute getHWVersion();
 	public Attribute getManufacturerName();
 	public Attribute getModelIdentifier();
-	public Attribute getDataCode();
+	public Attribute getDateCode();
 	public Attribute getPowerSource();
 	public String getLocationDescription() throws ZigBeeHAException;
 	public Attribute getPhysicalEnviroment();

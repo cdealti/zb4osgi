@@ -49,7 +49,7 @@ public class BasicImpl implements Basic{
 	private Attribute hwVersion;
 	private Attribute manufacturerName;
 	private Attribute modelIdentifier;
-	private Attribute dataCode;
+	private Attribute dateCode;
 	private Attribute powerSource;	
 	private Attribute locationDescription;
 	private Attribute physicalEnviroment;
@@ -64,7 +64,7 @@ public class BasicImpl implements Basic{
 		hwVersion = basicCluster.getAttributeHWVersion();
 		manufacturerName = basicCluster.getAttributeManufacturerName();
 		modelIdentifier = basicCluster.getAttributeModelIdentifier();
-		dataCode = basicCluster.getAttributeDataCode();
+		dateCode = basicCluster.getAttributeDateCode();
 		powerSource = basicCluster.getPowerSource();	
 		locationDescription = basicCluster.getAttributeLocationDescription();
 		physicalEnviroment = basicCluster.getAttributePhysicalEnviroment();
@@ -80,8 +80,8 @@ public class BasicImpl implements Basic{
 		return applicationVersion;
 	}
 
-	public Attribute getDataCode() {
-		return dataCode;
+	public Attribute getDateCode() {
+		return dateCode;
 	}
 
 	public boolean getDeviceEnabled() throws ZigBeeHAException{

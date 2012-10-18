@@ -50,7 +50,7 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	private final AttributeImpl hwVersion;
 	private final AttributeImpl manufacturerName;
 	private final AttributeImpl modelIdentifier;
-	private final AttributeImpl dataCode;
+	private final AttributeImpl dateCode;
 	private final AttributeImpl powerSource;
 	
 	private final AttributeImpl locationDescription;
@@ -68,14 +68,14 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		hwVersion = new AttributeImpl(zbDevice,this,Attributes.HW_VERSION);
 		manufacturerName = new AttributeImpl(zbDevice,this,Attributes.MANUFACTURER_NAME);
 		modelIdentifier = new AttributeImpl(zbDevice,this,Attributes.MODEL_IDENTIFIER);
-		dataCode = new AttributeImpl(zbDevice,this,Attributes.DATA_CODE);
+		dateCode = new AttributeImpl(zbDevice,this,Attributes.DATE_CODE);
 		powerSource = new AttributeImpl(zbDevice,this,Attributes.POWER_SOURCE);
 		locationDescription = new AttributeImpl(zbDevice,this,Attributes.LOCATION_DESCRIPTION);
 		physicalEnviroment = new AttributeImpl(zbDevice,this,Attributes.PHISICAL_ENVIROMENT);
 		deviceEnabled = new AttributeImpl(zbDevice,this,Attributes.DEVICE_ENABLED);
 		alarmMask = new AttributeImpl(zbDevice,this,Attributes.ALARM_MASK);
 		attributes = new AttributeImpl[]{zclVersion, applicationVersion, stackVersion,
-				hwVersion, manufacturerName, modelIdentifier, dataCode, powerSource,
+				hwVersion, manufacturerName, modelIdentifier, dateCode, powerSource,
 				locationDescription, physicalEnviroment, deviceEnabled, alarmMask};
 	}
 	
@@ -108,8 +108,8 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		return alarmMask;
 	}
 
-	public Attribute getAttributeDataCode() {
-		return dataCode;
+	public Attribute getAttributeDateCode() {
+		return dateCode;
 	}
 
 	public Attribute getAttributeDeviceEnabled() {

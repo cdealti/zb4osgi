@@ -52,7 +52,7 @@ public interface Basic extends ZCLCluster {
 	public Attribute getAttributeHWVersion();
 	public Attribute getAttributeManufacturerName();
 	public Attribute getAttributeModelIdentifier();
-	public Attribute getAttributeDataCode();
+	public Attribute getAttributeDateCode();
 	public Attribute getPowerSource();
 	
 	public Attribute getAttributeLocationDescription();

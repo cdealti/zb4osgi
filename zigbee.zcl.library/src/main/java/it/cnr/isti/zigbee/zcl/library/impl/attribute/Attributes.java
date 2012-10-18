@@ -89,9 +89,9 @@ public class Attributes  {
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(false);
 	
-	final static public   AttributeDescriptor DATA_CODE = new AbstractAttribute()
+	final static public   AttributeDescriptor DATE_CODE = new AbstractAttribute()
 	.setId(0x0006)
-	.setName("DataCode")
+	.setName("DateCode")
 	.setReportable(false)
 	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)

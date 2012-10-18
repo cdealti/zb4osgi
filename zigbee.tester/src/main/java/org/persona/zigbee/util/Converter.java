@@ -52,6 +52,8 @@ public class Converter {
 			newValue =  Float.valueOf(value);
 		} else if( type.getJavaClass() == String.class ) {
 			newValue =  value;
+		} else if( type.getJavaClass() == Boolean.class) {
+			newValue =  Boolean.valueOf(value) || "1".equals(value) || "on".equalsIgnoreCase(value);
 		} else {
 			throw new IllegalArgumentException("Unsupported ZigBee Type: "+ type);
 		}

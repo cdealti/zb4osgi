@@ -25,6 +25,7 @@ package org.persona.zigbee.tester.gui;
 
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -52,7 +53,7 @@ public class Command {
 		return types;
 	}
 	
-	public String invoke(String[] values) throws Exception{
+	public String invoke(String[] values) throws Exception {
 		Class<?>[] params = method.getParameterTypes();
 		Object[] objs = new Object[params.length];
 		for (int i = 0; i < objs.length; i++) {
@@ -62,7 +63,11 @@ public class Command {
 			else if ( params[i].isAssignableFrom( byte.class ) ) objs[i] = Byte.decode(values[i]).byteValue();
 			else if ( params[i].isAssignableFrom( double.class ) ) objs[i] = Double.valueOf(values[i]).doubleValue();
 			else if ( params[i].isAssignableFrom( float.class ) ) objs[i] = Float.valueOf(values[i]).floatValue();
-			else objs[i]=values[i]; 
+			else if ( params[i].isAssignableFrom( boolean.class ) ) objs[i] = Boolean.valueOf(values[i]).booleanValue() || "on".equalsIgnoreCase(values[i]) || "1".equals(values[i]);
+			else if ( params[i].isAssignableFrom( String.class ) ) objs[i] = values[i];
+			//TODO Add an option for ignoring type that we cannot convert
+			//TODO Define a plugin system for enabling data conversion
+			else throw new IllegalArgumentException("No convertion defined from "+String.class+" to argument of type "+params[i]); 
 		}
 		if( method.getReturnType() == void.class ) {
 			method.invoke(cluster, objs);

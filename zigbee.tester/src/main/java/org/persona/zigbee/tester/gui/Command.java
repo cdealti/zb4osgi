@@ -36,6 +36,24 @@ import java.lang.reflect.Method;
  */
 public class Command {
 	
+	public class CommandParsingException extends IllegalArgumentException {
+		public String value;
+		public int index;
+		
+		public CommandParsingException(String v, int i, String msg, Throwable ex){
+			super(msg,ex);
+			index = i;
+			value = v;
+		}
+		
+		public CommandParsingException(String v, int i, String msg){
+			super(msg);
+			index = i;
+			value = v;
+		}
+		
+	}
+	
 	private Method method;
 	private Cluster cluster;
 	
@@ -57,17 +75,22 @@ public class Command {
 		Class<?>[] params = method.getParameterTypes();
 		Object[] objs = new Object[params.length];
 		for (int i = 0; i < objs.length; i++) {
-			if ( params[i].isAssignableFrom( long.class ) ) objs[i] = Long.decode(values[i]).longValue();
-			else if ( params[i].isAssignableFrom( int.class ) )objs[i] = Integer.decode(values[i]).intValue();
-			else if ( params[i].isAssignableFrom( short.class ) ) objs[i] = Short.decode(values[i]).shortValue();
-			else if ( params[i].isAssignableFrom( byte.class ) ) objs[i] = Byte.decode(values[i]).byteValue();
-			else if ( params[i].isAssignableFrom( double.class ) ) objs[i] = Double.valueOf(values[i]).doubleValue();
-			else if ( params[i].isAssignableFrom( float.class ) ) objs[i] = Float.valueOf(values[i]).floatValue();
-			else if ( params[i].isAssignableFrom( boolean.class ) ) objs[i] = Boolean.valueOf(values[i]).booleanValue() || "on".equalsIgnoreCase(values[i]) || "1".equals(values[i]);
+			try {
+				if ( params[i].isAssignableFrom( long.class ) ) objs[i] = Long.decode(values[i]).longValue();
+				else if ( params[i].isAssignableFrom( int.class ) )objs[i] = Integer.decode(values[i]).intValue();
+				else if ( params[i].isAssignableFrom( short.class ) ) objs[i] = Short.decode(values[i]).shortValue();
+				else if ( params[i].isAssignableFrom( byte.class ) ) objs[i] = Byte.decode(values[i]).byteValue();
+				else if ( params[i].isAssignableFrom( double.class ) ) objs[i] = Double.valueOf(values[i]).doubleValue();
+				else if ( params[i].isAssignableFrom( float.class ) ) objs[i] = Float.valueOf(values[i]).floatValue();
+			}catch (NumberFormatException ex){
+				throw new CommandParsingException(values[i],i,"The parameter is a number and "+values[i]+" does not reppresent a number", ex);
+			}
+			
+			if ( params[i].isAssignableFrom( boolean.class ) ) objs[i] = Boolean.valueOf(values[i]).booleanValue() || "on".equalsIgnoreCase(values[i]) || "1".equals(values[i]);
 			else if ( params[i].isAssignableFrom( String.class ) ) objs[i] = values[i];
 			//TODO Add an option for ignoring type that we cannot convert
 			//TODO Define a plugin system for enabling data conversion
-			else throw new IllegalArgumentException("No convertion defined from "+String.class+" to argument of type "+params[i]); 
+			else throw new CommandParsingException(values[i],i,"No convertion defined from "+String.class+" to argument of type "+params[i]); 
 		}
 		if( method.getReturnType() == void.class ) {
 			method.invoke(cluster, objs);

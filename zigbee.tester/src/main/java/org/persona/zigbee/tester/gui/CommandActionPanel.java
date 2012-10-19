@@ -48,6 +48,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
+import org.persona.zigbee.tester.gui.Command.CommandParsingException;
+
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -98,6 +100,17 @@ public class CommandActionPanel extends JPanel {
 					} else {
 						result.setText(returned.toString());
 					}
+				} catch (CommandParsingException ex) {
+					ByteArrayOutputStream bof = new ByteArrayOutputStream();
+					PrintStream ps = new PrintStream(bof);
+					ps.println(
+							"No cluster sent on the, because I was not able to handle the parameter " + 
+							argsModel.getValueAt(ex.index, 0)+" with value '"+ex.value+"' "
+					);
+					ps.println("More dettails on the issue:");
+					ex.printStackTrace(ps);
+					ps.close();
+                    printReport(params,bof.toString());
 				} catch (InvocationTargetException ex){
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);
@@ -113,6 +126,7 @@ public class CommandActionPanel extends JPanel {
                     printReport(params,bof.toString());
 				}
 			}
+			
             private void printReport(String[] params,Object result) {
                 String input = "";
                 String output = "";

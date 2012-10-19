@@ -41,6 +41,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.AddSceneResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.GetSceneMembershipCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.GetSceneMembershipResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RecallSceneCommand;
+import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveAllScenesCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveAllScenesResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveSceneCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveSceneResponseImpl;
@@ -67,13 +68,7 @@ public class ScenesCluster extends ZCLClusterBase implements Scenes {
 	private final AttributeImpl lastConfiguredBy;
 	
 	private final Attribute[] attributes;
-	
-	private static EmptyPayloadCommand CMD_REMOVE_ALL_SCENES = new EmptyPayloadCommand()
-	.setId(Scenes.REMOVE_ALL_SCENES)
-	.setClientServerDirection(true)
-	.setClusterSpecific(true)
-	.setManufacturerExtension(false);
-	
+		
 	public ScenesCluster(ZigBeeDevice zbDevice){
 		super(zbDevice);
 		 sceneCount  = new AttributeImpl(zbDevice,this,Attributes.SCENE_COUNT);
@@ -143,8 +138,9 @@ public class ScenesCluster extends ZCLClusterBase implements Scenes {
 		invoke(recallSceneCmd);
 	}
 
-	public Response removeAllScenes() throws ZigBeeClusterException{
-		Response response = invoke(CMD_REMOVE_ALL_SCENES);
+	public Response removeAllScenes(int groupId) throws ZigBeeClusterException{
+		RemoveAllScenesCommand removeAllScenes = new RemoveAllScenesCommand(groupId);
+		Response response = invoke(removeAllScenes);
 		return new RemoveAllScenesResponseImpl(response);
 		
 	}

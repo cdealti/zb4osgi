@@ -20,13 +20,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package it.cnr.isti.zigbee.zcl.library.impl.global.write;
+package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
 import static org.junit.Assert.*;
-import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.global.WriteAttributeRecord;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.global.write.WriteAttributeCommand;
+import it.cnr.isti.zigbee.zcl.library.impl.global.write.WriteAttributeRecordImpl;
 
 import org.junit.Test;
 
@@ -37,17 +38,18 @@ import org.junit.Test;
  * @since 0.7.1
  *
  */
-public class WriteAttributeCommandTest {
+public class AddGroupIfIdentyfingCommandTest {
 
 	@Test
 	public void testGetPayload() {
-		AttributeImpl attribute = new AttributeImpl(null, null, Attributes.LOCATION_DESCRIPTION);
-		WriteAttributeRecord[] values = new WriteAttributeRecord[]{
-				new WriteAttributeRecordImpl( attribute, "garage" )
-		};
-		WriteAttributeCommand command = new WriteAttributeCommand(values);
+		AddGroupIfIdentyfingCommand command = new AddGroupIfIdentyfingCommand(0x1020,"House");
 		assertArrayEquals(new byte[]{
-				0x10, 0x00, 0x42, 0x06, 0x67, 0x61, 0x72, 0x61, 0x67, 0x65
+				0x20, 0x10, 0x05, 0x48, 0x6f, 0x75, 0x73, 0x65
+		}, command.getPayload()
+		);
+		
+		assertArrayEquals(new byte[]{
+				0x20, 0x10, 0x05, 0x48, 0x6f, 0x75, 0x73, 0x65
 		}, command.getPayload()
 		);
 	}

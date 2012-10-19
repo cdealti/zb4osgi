@@ -26,52 +26,58 @@ import it.cnr.isti.primitvetypes.util.Integers;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * 
- * The defualt implementation of the {@link ZBSerializer} 
+ * The implementation of the {@link ZBSerializer} that will replace the {@link DefaultSerializer}. <br />
+ * In fact, this class does not require the user to build in advance a payload buffer.  
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
- * @since 0.1.0
- * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
+ * @since 0.7.1
  *
  */
-public class DefaultSerializer implements ZBSerializer {
-	int index = 0;
-	private byte[] payload;
+public class ByteArrayOutputStreamSerializer implements ZBSerializer {
+
+	private ByteArrayOutputStream payload;
+	private byte[] buffer = new byte[8];
 	
-	/**
-	 * 
-	 * @param payload the byte array that will used for storing the serialiazed data
-	 * @param index the first empty byte where data will be written
-	 * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
-	 */
-	public DefaultSerializer(byte[] payload, int index ) {
+	public ByteArrayOutputStreamSerializer() {
+		this.payload = new ByteArrayOutputStream();
+	}
+	
+	public ByteArrayOutputStreamSerializer(ByteArrayOutputStream payload) {
 		this.payload = payload;
-		this.index = index;
 	}
 	
 	public void appendBoolean(Boolean data) {
-		index += Integers.writeBooleanObject(payload, index, data);
+		int used = Integers.writeBooleanObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void appendByte(Byte data) {
-		index += Integers.writeByteObject(payload, index, data);
+		int used = Integers.writeByteObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void appendInteger(Integer data) {
-		index += Integers.writeIntObject(payload, index, data);
+		int used = Integers.writeIntObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void appendLong(Long data) {
-		index += Integers.writeLongObject(payload, index, data);
+		int used = Integers.writeLongObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 	
 	public void appendString(String str){
-		final byte[] raw = str.getBytes();
-		System.arraycopy(raw, 0, payload, index, raw.length);
-		index += raw.length;
+		try {
+			payload.write(str.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {
@@ -124,40 +130,47 @@ public class DefaultSerializer implements ZBSerializer {
 	}
 	
 	public void appendObject(Object data) {
-		index += Integers.writeObject(payload, index, data);
+		int used = Integers.writeObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void appendShort(Short data) {
-		index += Integers.writeShortObject(payload, index, data);
+		int used = Integers.writeShortObject(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void append_boolean(boolean data) {
-		index += Integers.writeBoolean(payload, index, data);
+		int used = Integers.writeBoolean(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void append_byte(byte data) {
-		index += Integers.writeByte(payload, index, data);
+		int used = Integers.writeByte(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void append_int(int data) {
-		index += Integers.writeInt(payload, index, data);
+		int used = Integers.writeInt(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 	
 	public void append_int24bit(int data) {
-		index += Integers.writeInt24bit(payload, index, data);
+		int used = Integers.writeInt24bit(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void append_long(long data) {
-		index += Integers.writeLong(payload, index, data);
+		int used = Integers.writeLong(buffer, 0, data);
+		payload.write(buffer,0,used);
 	}
 
 	public void append_short(short data) {
-		index += Integers.writeShort(payload, index, data);
+		int used = Integers.writeShort(buffer, 0, data);
+		payload.write(buffer,0,used);
+	}
+	
+	public byte[] getPayload() {
+		return payload.toByteArray();
 	}
 
-	public byte[] getPayload() {
-		byte[] copy = new byte[index];
-		System.arraycopy(payload, 0, copy, 0, copy.length);
-		return copy;
-	}
 }

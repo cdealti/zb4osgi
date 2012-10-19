@@ -146,9 +146,12 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 				continue;
 			}
 			String methodName = methods[i].getName();
-			if ( methodName.startsWith("get") || methodName.equals("subscribe") || methodName.equals("unsubscribe") ){
+			if ( methodName.equals("subscribe") || methodName.equals("unsubscribe") ){
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
+			} else if ( methodName.startsWith("get") && Attribute.class.isAssignableFrom(methods[i].getReturnType()) ) {
+				//We skip method that are only a way to access method available at level of attribute
+				continue;				
 			} else if ( methodName.startsWith("add") || methodName.startsWith("remove") ) {
 			    Class<?>[] args = methods[i].getParameterTypes();
                if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){

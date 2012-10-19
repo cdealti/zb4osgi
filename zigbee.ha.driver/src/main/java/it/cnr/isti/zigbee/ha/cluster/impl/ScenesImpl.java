@@ -31,7 +31,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.AddScenePayload;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.AddSceneResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.GetSceneMembershipResponse;
-import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveAllSceneResponse;
+import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveAllScenesResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveSceneResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.StoreSceneResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.ViewSceneResponse;
@@ -116,9 +116,9 @@ public class ScenesImpl implements Scenes {
 
 	}
 
-	public RemoveAllSceneResponse removeAllScene() throws ZigBeeHAException{
+	public RemoveAllScenesResponse removeAllScene() throws ZigBeeHAException{
 		try {
-			RemoveAllSceneResponse response = (RemoveAllSceneResponse)scenesCluster.removeAllScene();
+			RemoveAllScenesResponse response = (RemoveAllScenesResponse)scenesCluster.removeAllScenes();
 			return response;
 		} catch (ZigBeeClusterException e) {
 			throw new ZigBeeHAException(e);

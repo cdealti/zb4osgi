@@ -63,7 +63,7 @@ public interface Scenes extends ZCLCluster {
 	public Response addScene(AddScenePayload scenepayload) throws ZigBeeClusterException; //TODO Create proper class
 	public Response viewScene(int groupId, short sceneId) throws ZigBeeClusterException;
 	public Response removeScene(int groupId, short sceneId) throws ZigBeeClusterException;
-	public Response removeAllScene() throws ZigBeeClusterException;
+	public Response removeAllScenes() throws ZigBeeClusterException;
 	public Response storeScene(int groupId, short sceneId) throws ZigBeeClusterException;
 	public void recallScene(int groupId, short sceneId) throws ZigBeeClusterException;
 	public Response getSceneMembership(int groupId) throws ZigBeeClusterException;

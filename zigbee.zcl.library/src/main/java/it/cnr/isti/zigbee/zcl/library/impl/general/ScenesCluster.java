@@ -41,7 +41,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.AddSceneResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.GetSceneMembershipCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.GetSceneMembershipResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RecallSceneCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveAllSceneResponseImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveAllScenesResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveSceneCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.RemoveSceneResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.StoreSceneCommand;
@@ -143,9 +143,9 @@ public class ScenesCluster extends ZCLClusterBase implements Scenes {
 		invoke(recallSceneCmd);
 	}
 
-	public Response removeAllScene() throws ZigBeeClusterException{
+	public Response removeAllScenes() throws ZigBeeClusterException{
 		Response response = invoke(CMD_REMOVE_ALL_SCENES);
-		return new RemoveAllSceneResponseImpl(response);
+		return new RemoveAllScenesResponseImpl(response);
 		
 	}
 

@@ -20,37 +20,42 @@
    limitations under the License.
 */
 
-package it.cnr.isti.zigbee.zcl.library.api.general.scenes;
+package it.cnr.isti.zigbee.zcl.library.impl.general.scenes;
 
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.Status;
-
+import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
+import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
+import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveAllScenesResponse;
+import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 /**
- * 
- * This class represent the <i>Remove All Scene Response</i> as defined by the document:<br>
- * <i>ZigBee Cluster Library</i> public release version 075123r01ZB
- *   
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
- * @since 0.1.0
  *
  */
-public interface RemoveAllSceneResponse extends Response{
+public class RemoveAllScenesResponseImpl extends ResponseImpl implements
+		RemoveAllScenesResponse {
 	
-	public static final byte ID = 0x03;
+	private byte status;
+	private int groupId;
+
+	public RemoveAllScenesResponseImpl(Response response)throws ZigBeeClusterException{
+		super(response);
+		ResponseImpl.checkGeneralCommandFrame(response, RemoveAllScenesResponse.ID);
+		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
+		status =  deserializer.read_byte();
+		groupId = deserializer.read_short();
+	}
 	
-	/**
-	 * 
-	 * @return {@link Status} representing the <i>Status</i> field 
-	 */
-	public Status getStatus();
-	
-	/**
-	 * 
-	 * @return the int representing the <i>Group ID</i> field
-	 */
-	public int getGroupId();
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public Status getStatus() {
+		return Status.getStatus(status);
+	}
 
 }

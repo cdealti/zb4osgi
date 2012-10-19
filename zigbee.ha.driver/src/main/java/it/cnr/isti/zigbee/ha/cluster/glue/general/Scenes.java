@@ -47,7 +47,7 @@ public interface Scenes extends Cluster{
 	
 	public void recallScene(int groupId, short sceneId) throws ZigBeeHAException;
 	
-	public RemoveAllScenesResponse removeAllScene() throws ZigBeeHAException;
+	public RemoveAllScenesResponse removeAllScene(int groupId) throws ZigBeeHAException;
 	
 	public RemoveSceneResponse removeScene(int groupId, short sceneId) throws ZigBeeHAException;
 

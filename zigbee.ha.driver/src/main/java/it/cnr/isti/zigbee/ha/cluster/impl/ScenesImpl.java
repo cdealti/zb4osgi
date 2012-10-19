@@ -116,9 +116,9 @@ public class ScenesImpl implements Scenes {
 
 	}
 
-	public RemoveAllScenesResponse removeAllScene() throws ZigBeeHAException{
+	public RemoveAllScenesResponse removeAllScene(int groupId) throws ZigBeeHAException{
 		try {
-			RemoveAllScenesResponse response = (RemoveAllScenesResponse)scenesCluster.removeAllScenes();
+			RemoveAllScenesResponse response = (RemoveAllScenesResponse)scenesCluster.removeAllScenes(groupId);
 			return response;
 		} catch (ZigBeeClusterException e) {
 			throw new ZigBeeHAException(e);

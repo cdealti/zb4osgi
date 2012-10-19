@@ -43,7 +43,6 @@ public class RemoveAllScenesCommand extends AbstractCommand {
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			payload = new byte[3];
 			ZBSerializer serializer = new ByteArrayOutputStreamSerializer();
 			serializer.append_short((short)groupId);	
 			payload = serializer.getPayload();

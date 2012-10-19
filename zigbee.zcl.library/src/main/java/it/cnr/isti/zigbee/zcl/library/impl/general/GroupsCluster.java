@@ -82,8 +82,8 @@ public class GroupsCluster extends ZCLClusterBase implements Groups {
 		return attributes;
 	}
 
-	public Response addGroup(int groupId) throws ZigBeeClusterException{
-		AddGroupCommand addGroupCmd = new AddGroupCommand(groupId);
+	public Response addGroup(int groupId, String name) throws ZigBeeClusterException{
+		AddGroupCommand addGroupCmd = new AddGroupCommand(groupId, name);
 		Response response = invoke(addGroupCmd);
 		return  new AddGroupResponseImpl(response);
 	}

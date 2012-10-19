@@ -25,7 +25,9 @@ package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
 
 /**
@@ -38,17 +40,20 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 public class AddGroupCommand extends AbstractCommand {
 
 	private int groupId;
+	private String name;
 	
-	public AddGroupCommand(int groupId){
+	public AddGroupCommand(int groupId, String name){
 		super(Groups.ADD_GROUP_ID);
 		this.groupId = groupId;
+		this.name = name;
 	}
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			payload = new byte[2];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			ZBSerializer serializer = new ByteArrayOutputStreamSerializer();
 			serializer.append_short((short)groupId);		
+			serializer.appendZigBeeType(name, ZigBeeType.CharacterString);
+			payload = serializer.getPayload();			
 		}
 		return payload;
 	}

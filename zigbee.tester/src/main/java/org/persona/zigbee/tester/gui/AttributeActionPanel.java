@@ -22,6 +22,9 @@
 
 package org.persona.zigbee.tester.gui;
 
+import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.ha.driver.core.HADevice;
+import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.zcl.library.api.core.AnalogSubscription;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.core.ReportListener;
@@ -72,6 +75,28 @@ public class AttributeActionPanel extends JPanel {
     private JTextField minText;
     private JTextField maxText;
     private JTextField changeText;
+	private HADevice device;
+	
+	class PanelLogReportListener implements ReportListener {
+		
+		final HADevice device;
+		
+		PanelLogReportListener(HADevice d){
+			device = d;
+		}
+		
+		public void receivedReport(Dictionary<Attribute, Object> reports) {
+			Enumeration<Attribute> attributes = reports.keys();
+			while (attributes.hasMoreElements()) {							
+				Attribute a = (Attribute) attributes.nextElement();
+				Object v = reports.get(a);
+				LogPanel.log(
+						"Received Event from device " + device.getName() + "[" + 
+						device.getZBDevice().getUniqueIdenfier() + "] for attribute "+a.getName()+" with value "+v
+				);
+			}
+		}
+	}
 	
 	/**
 	 * 
@@ -236,26 +261,12 @@ public class AttributeActionPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ReportListener listener = subscription.get(attribute);
 				if ( listener == null ){
-					listener = createListener();
+					listener = new PanelLogReportListener(device);
 					doSubscribe( listener );
 				} else {
 				    doUnsubscribe( listener );
 				}
 			}
-
-			private ReportListener createListener() {
-				return new ReportListener() {
-					public void receivedReport(Dictionary<Attribute, Object> reports) {
-						Enumeration<Attribute> attributes = reports.keys();
-						while (attributes.hasMoreElements()) {
-							Attribute a = (Attribute) attributes.nextElement();
-							Object v = reports.get(a);
-							LogPanel.log("Received Event from "+a+" with value "+v);
-						}
-					}
-				};
-			}
-
 			private void updateCategory(String category) {
 				HADeviceTreeNode node = (HADeviceTreeNode) Mediator.getUPnPDeviceTree().getLastSelectedPathComponent();
 			    node.category = category;
@@ -305,7 +316,8 @@ public class AttributeActionPanel extends JPanel {
     	buttonPanel.add( getSubscriptionPanel(), Util.setConstrains( 0, 1, 3, 1, 1, 1 ) );
 	}
 	
-	public void setAttribute(Attribute action){
+	public void setAttribute(HADevice device, Attribute action){
+		this.device = device;
 		this.attribute = action;
 		
 		getWriteButton().setVisible(attribute.isWritable());

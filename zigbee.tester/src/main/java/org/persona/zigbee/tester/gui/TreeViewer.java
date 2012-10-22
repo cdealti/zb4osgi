@@ -201,7 +201,7 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 		        ||node.category.equals(HADeviceTreeNode.SUBSCRIBED_STATE)){
 			Attribute state = (Attribute) node.getUserObject();
 			makeProperties(state);
-			Mediator.getPropertiesViewer().setAttributeAction(state);
+			Mediator.getPropertiesViewer().setAttributeAction(node.getHADevice(), state);
 		}
 		
 	}

@@ -24,6 +24,7 @@ package org.persona.zigbee.tester.gui;
 
 
 
+import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 
 import java.awt.Component;
@@ -153,8 +154,8 @@ public class PropertiesViewer extends JPanel {
 		commandPanel.setCommand(action);
 	}
 	
-	public void setAttributeAction(Attribute action){
-		attributePanel.setAttribute(action);
+	public void setAttributeAction(HADevice device, Attribute action){
+		attributePanel.setAttribute(device, action);
 	}
 	
 	public void showAttrbutePanel(boolean show){

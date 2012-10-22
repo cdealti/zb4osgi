@@ -70,6 +70,7 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 	public final static String SUBSCRIBED_STATE = "ZCLSubcribedAttribute";
 	
 	protected String category;
+	private HADevice device;
 	
 	public HADeviceTreeNode(String obj) {
 		super(obj);
@@ -123,7 +124,7 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 			
 			for (int i=0; i<clusters.length; i++) {
 				if ( clusters[i] != null ) {
-					this.add(new HADeviceTreeNode(clusters[i]));
+					this.add(new HADeviceTreeNode(device, clusters[i]));
 				}
 			}
 		}
@@ -131,13 +132,18 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		Activator.context.ungetService(node.getReference());
 	}
 	
-	public HADeviceTreeNode(Cluster obj) {
+	public HADevice getHADevice() {
+		return device;
+	}
+	
+	public HADeviceTreeNode(HADevice device, Cluster obj) {
 		super(obj);
-		category = SERVICE;
+		this.device = device;
+		category = SERVICE;		
 		Attribute[] variables = obj.getAttributes();
 		if (variables != null) {
 			for (int i=0;i<variables.length;i++)
-				this.add(new HADeviceTreeNode(variables[i]));
+				this.add(new HADeviceTreeNode(device,variables[i]));
 		}
 		Method[] methods = obj.getClass().getMethods();
 		for (int i = 0; i < methods.length; i++) {
@@ -193,7 +199,7 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 		return null;
 	}
 
-	public HADeviceTreeNode(Attribute obj) {
+	public HADeviceTreeNode(HADevice device, Attribute obj) {
 		super(obj);
 		if (obj.isReportable()) category = EVENTED_STATE;
 		else category = ZCL_ATTRIBUTE;

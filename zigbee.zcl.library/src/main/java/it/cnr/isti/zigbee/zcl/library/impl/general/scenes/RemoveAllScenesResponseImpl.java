@@ -44,7 +44,7 @@ public class RemoveAllScenesResponseImpl extends ResponseImpl implements
 
 	public RemoveAllScenesResponseImpl(Response response)throws ZigBeeClusterException{
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, RemoveAllScenesResponse.ID);
+		ResponseImpl.checkSpecificCommandFrame(response, RemoveAllScenesResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status =  deserializer.read_byte();
 		groupId = deserializer.read_short();

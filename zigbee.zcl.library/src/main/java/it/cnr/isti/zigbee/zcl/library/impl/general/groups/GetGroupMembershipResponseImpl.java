@@ -44,7 +44,7 @@ public class GetGroupMembershipResponseImpl extends ResponseImpl implements
 	
 	public GetGroupMembershipResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, GetGroupMembershipResponse.ID);
+		ResponseImpl.checkSpecificCommandFrame(response, GetGroupMembershipResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		capacity =  deserializer.read_short();
 		int count = deserializer.read_short();

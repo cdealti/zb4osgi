@@ -46,7 +46,7 @@ public class ViewGroupResponseImpl extends ResponseImpl implements
 	
 	public ViewGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, ViewGroupResponse.ID);
+		ResponseImpl.checkSpecificCommandFrame(response, ViewGroupResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();

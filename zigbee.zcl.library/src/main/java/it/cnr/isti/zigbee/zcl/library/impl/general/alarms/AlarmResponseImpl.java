@@ -42,7 +42,7 @@ public class AlarmResponseImpl extends ResponseImpl implements AlarmResponse {
 	
 	public AlarmResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, ID);
+		ResponseImpl.checkSpecificCommandFrame(response, ID);
 		
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		alarmCode = deserializer.read_byte();

@@ -74,7 +74,6 @@ public class Command {
 		Class<?>[] params = method.getParameterTypes();
 		Object[] objs = new Object[params.length];
 		for (int i = 0; i < objs.length; i++) {
-			boolean assigned  = true;
 			try {
 				if ( params[i].isAssignableFrom( long.class ) ) objs[i] = Long.decode(values[i]).longValue();
 				else if ( params[i].isAssignableFrom( int.class ) )objs[i] = Integer.decode(values[i]).intValue();
@@ -83,10 +82,9 @@ public class Command {
 				else if ( params[i].isAssignableFrom( double.class ) ) objs[i] = Double.valueOf(values[i]).doubleValue();
 				else if ( params[i].isAssignableFrom( float.class ) ) objs[i] = Float.valueOf(values[i]).floatValue();
 			}catch (NumberFormatException ex){
-				assigned = false;
 				throw new CommandParsingException(values[i],i,"The parameter is a number and "+values[i]+" does not reppresent a number", ex);
-			}
-			if ( assigned ) continue;
+			}			
+			if ( objs[i] != null) continue; //Data already assigned 
 			
 			if ( params[i].isAssignableFrom( boolean.class ) ) objs[i] = Boolean.valueOf(values[i]).booleanValue() || "on".equalsIgnoreCase(values[i]) || "1".equals(values[i]);
 			else if ( params[i].isAssignableFrom( String.class ) ) objs[i] = values[i];

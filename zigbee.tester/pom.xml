@@ -162,6 +162,26 @@
       <groupId>org.aaloa.zb4osgi</groupId>
       <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
     </dependency>
+
+
+    <!-- 
+    	*NOTE*
+    	The following dependencies are used only for JUnit purpose, 
+    	but they will be resolved from OSGi enviroment at run-time 
+   	-->
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>nlog4j</artifactId>
+    	<version>1.2.25</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.aaloa.zb4osgi</groupId>
+    	<artifactId>org.aaloa.zb4osgi.zigbee.common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>    
   </dependencies>
 
   <properties>

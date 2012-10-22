@@ -23,7 +23,6 @@
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
 import it.cnr.isti.zigbee.api.ZigBeeBasedriverException;
-import it.cnr.isti.zigbee.zcl.library.api.global.AttributeReport;
 
 import java.io.IOException;
 

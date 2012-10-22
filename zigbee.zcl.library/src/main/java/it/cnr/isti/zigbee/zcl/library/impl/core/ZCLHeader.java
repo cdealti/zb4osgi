@@ -22,7 +22,6 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
-import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLLayer;
 import it.cnr.isti.zigbee.zcl.library.api.core.Command;
 /**
  * 

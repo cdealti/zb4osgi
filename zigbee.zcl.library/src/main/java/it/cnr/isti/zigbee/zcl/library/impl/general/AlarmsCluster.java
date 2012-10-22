@@ -34,7 +34,6 @@ import it.cnr.isti.zigbee.zcl.library.api.general.Alarms;
 import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmListener;
 import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmResponse;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.EmptyPayloadCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;

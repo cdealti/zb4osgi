@@ -22,16 +22,14 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.ByteOrder;
-
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>

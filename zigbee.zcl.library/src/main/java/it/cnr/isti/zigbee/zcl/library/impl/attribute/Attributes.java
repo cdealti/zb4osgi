@@ -22,7 +22,6 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 
-import it.cnr.isti.zigbee.zcl.library.impl.attribute.AttributeDescriptor;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 /**
  * 

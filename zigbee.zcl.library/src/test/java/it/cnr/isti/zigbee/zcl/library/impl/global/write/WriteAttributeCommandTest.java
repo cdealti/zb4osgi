@@ -22,8 +22,7 @@
 */
 package it.cnr.isti.zigbee.zcl.library.impl.global.write;
 
-import static org.junit.Assert.*;
-import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
+import static org.junit.Assert.assertArrayEquals;
 import it.cnr.isti.zigbee.zcl.library.api.global.WriteAttributeRecord;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;

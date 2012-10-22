@@ -30,7 +30,6 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.Basic;
 import it.cnr.isti.zigbee.zcl.library.api.global.DefaultResponse;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.EmptyPayloadCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;

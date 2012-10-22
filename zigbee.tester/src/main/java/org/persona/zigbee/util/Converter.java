@@ -23,8 +23,6 @@
 
 package org.persona.zigbee.util;
 
-import org.persona.zigbee.tester.gui.LogPanel;
-
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
 /**

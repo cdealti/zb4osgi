@@ -22,12 +22,6 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
 /**

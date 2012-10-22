@@ -22,12 +22,6 @@
 
 package org.persona.zigbee.tester.discovery;
 
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
-import org.persona.zigbee.tester.Activator;
-import org.persona.zigbee.tester.Mediator;
 
 //import org.apache.felix.upnp.basedriver.controller.DevicesInfo;
 //import org.apache.felix.upnp.basedriver.controller.DriverController;

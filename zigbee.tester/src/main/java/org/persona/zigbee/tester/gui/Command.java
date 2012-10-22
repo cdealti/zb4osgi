@@ -25,7 +25,6 @@ package org.persona.zigbee.tester.gui;
 
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**

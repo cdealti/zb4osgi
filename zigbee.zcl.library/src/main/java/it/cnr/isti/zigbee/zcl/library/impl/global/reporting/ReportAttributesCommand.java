@@ -22,19 +22,13 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.global.reporting;
 
-import java.util.ArrayList;
-
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.global.AttributeReport;
-import it.cnr.isti.zigbee.zcl.library.api.global.ReadAttributesResponse;
-import it.cnr.isti.zigbee.zcl.library.api.global.ReadAttributesStatus;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
-import it.cnr.isti.zigbee.zcl.library.impl.global.read.ReadAttributeStatusImpl;
+
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

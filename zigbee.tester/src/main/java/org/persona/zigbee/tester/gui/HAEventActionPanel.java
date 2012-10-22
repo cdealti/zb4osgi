@@ -31,8 +31,6 @@ import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import org.persona.zigbee.tester.event.api.HAGenericListener;
 import org.persona.zigbee.tester.event.api.HAListenerFactoryService;

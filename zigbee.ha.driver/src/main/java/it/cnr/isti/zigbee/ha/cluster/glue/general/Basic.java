@@ -47,6 +47,10 @@ public interface Basic extends Cluster {
 	public Attribute getPhysicalEnvironment();
 	public boolean getDeviceEnabled() throws ZigBeeHAException;
 	public Attribute getAlarmMask();
+	/**
+	 * @since 0.7.0
+	 */
+	public Attribute getDisableLocalConfig();
 	
 	public void resetToFactoryDefault() throws ZigBeeHAException;
 

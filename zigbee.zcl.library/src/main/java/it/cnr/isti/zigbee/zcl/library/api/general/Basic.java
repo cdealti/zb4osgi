@@ -59,6 +59,12 @@ public interface Basic extends ZCLCluster {
 	public Attribute getAttributePhysicalEnvironment();
 	public Attribute getAttributeDeviceEnabled();
 	public Attribute getAttributeAlarmMask();
+
+	/**
+	 * 
+	 * @since 0.7.1
+	 */
+	public Attribute getAttributeDisableLocalConfig();
 	
 		
 	

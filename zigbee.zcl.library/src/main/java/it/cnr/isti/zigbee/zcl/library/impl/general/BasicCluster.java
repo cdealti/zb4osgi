@@ -56,6 +56,7 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	private final AttributeImpl physicalEnvironment;
 	private final AttributeImpl deviceEnabled;
 	private final AttributeImpl alarmMask;
+	private final AttributeImpl disableLocalConfig;
 	
 	private final Attribute[] attributes;
 	
@@ -73,9 +74,10 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		physicalEnvironment = new AttributeImpl(zbDevice,this,Attributes.PHYSICAL_ENVIRONMENT);
 		deviceEnabled = new AttributeImpl(zbDevice,this,Attributes.DEVICE_ENABLED);
 		alarmMask = new AttributeImpl(zbDevice,this,Attributes.ALARM_MASK);
+		disableLocalConfig = new AttributeImpl(zbDevice,this,Attributes.DISABLE_LOCAL_CONFIG);
 		attributes = new AttributeImpl[]{zclVersion, applicationVersion, stackVersion,
 				hwVersion, manufacturerName, modelIdentifier, dateCode, powerSource,
-				locationDescription, physicalEnvironment, deviceEnabled, alarmMask};
+				locationDescription, physicalEnvironment, deviceEnabled, alarmMask, disableLocalConfig};
 	}
 	
 	private static EmptyPayloadCommand CMD_RESET_TO_FACTORY_DEFAULT = new EmptyPayloadCommand()
@@ -147,6 +149,10 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		return powerSource;
 	}
 
+	public Attribute getAttributeDisableLocalConfig() {
+		return disableLocalConfig;
+	}
+	
 	public DefaultResponse resetToFactoryDefault() throws ZigBeeClusterException{
 		enableDefaultResponse();
 		Response response = invoke(CMD_RESET_TO_FACTORY_DEFAULT);

@@ -55,6 +55,7 @@ public class BasicImpl implements Basic{
 	private Attribute physicalEnviroment;
 	private Attribute deviceEnabled;
 	private Attribute alarmMask;
+	private Attribute disableLocalConfig;
 	
 	public BasicImpl(ZigBeeDevice zbDevice){
 		basicCluster = new BasicCluster(zbDevice);
@@ -70,8 +71,13 @@ public class BasicImpl implements Basic{
 		physicalEnviroment = basicCluster.getAttributePhysicalEnvironment();
 		deviceEnabled = basicCluster.getAttributeDeviceEnabled();
 		alarmMask = basicCluster.getAttributeAlarmMask();
+		disableLocalConfig = basicCluster.getAttributeDisableLocalConfig();
 	}
 
+	public Attribute getDisableLocalConfig() {
+		return disableLocalConfig;
+	}
+	
 	public Attribute getAlarmMask() {
 		return alarmMask;
 	}

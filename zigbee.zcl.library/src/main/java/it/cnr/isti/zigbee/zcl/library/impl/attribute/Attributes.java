@@ -136,6 +136,15 @@ public class Attributes  {
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
 	
+	final static public   AttributeDescriptor DISABLE_LOCAL_CONFIG = new AbstractAttribute()
+	.setId(0x0014)
+	.setName("DisableLocalConfig")
+	.setReportable(false)
+	.setType(ZigBeeType.Bitmap8bit.getJavaClass())
+	.setZigBeeType(ZigBeeType.Bitmap8bit)
+	.setWritable(true);
+
+	
 	final static public   AttributeDescriptor IDENTIFY_TIME = new AbstractAttribute()
 	.setId(0x0000)
 	.setName("IdentifyTime")

@@ -161,7 +161,7 @@ public class HWHighLevelDriver {
 					+"Evaluated "+value+" instead of "+0x20+"\nPacket "+packet.getClass().getName()+"\n"+packet
 			);
 		}
-		profiler.info("m_sendSynchrounsCommand(ZToolPacket packet, SynchrounsCommandListner listner): called");
+		profiler.info(" m_sendSynchrounsCommand(ZToolPacket packet, SynchrounsCommandListner listner): called");
 		logger.debug("Preparing to send SynchrounsCommand {} ", packet);
 		cleanExpiredListener();
 		if ( supportMultipleSynchrounsCommand ) {

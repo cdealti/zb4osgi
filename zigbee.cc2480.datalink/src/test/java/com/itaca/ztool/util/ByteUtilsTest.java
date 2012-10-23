@@ -38,6 +38,16 @@ public class ByteUtilsTest {
 	private static final Logger logger = LoggerFactory.getLogger(ByteUtilsTest.class);
 
 	/**
+	 * @since 0.8.0
+	 */
+	@Test
+	public void testToBase16() {
+		assertEquals("0xc8", ByteUtils.toBase16(200) );
+		assertEquals("0xc8", ByteUtils.toBase16((byte)0xc8) );
+		assertEquals("0xc8", ByteUtils.toBase16(0xc8) );
+	}
+
+	/**
 	 * Test methods for coherance among the following group:<br>
 	 * <ul>
 	 * <li>{@link com.itaca.ztool.util.ByteUtils#fromBase16(java.lang.String)}</li>

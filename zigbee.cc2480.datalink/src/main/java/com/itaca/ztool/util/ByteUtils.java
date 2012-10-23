@@ -345,7 +345,7 @@ public class ByteUtils {
 	public static String toBase16(int b) {
 		
 		if (b > 0xff || b < -128) {
-			throw new IllegalArgumentException("Input value is larger than a byte");
+			throw new IllegalArgumentException("Error converting "+b+" input value to hex string it is larger than a byte");
 		}
 		if ( b < 0) {
 			return "0x" + Integer.toHexString(b).substring(6);

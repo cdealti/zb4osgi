@@ -103,7 +103,7 @@ public class ZToolPacketParser implements Runnable {
 						
 						logger.debug("Response is {} -> {}", response.getClass(), response);
 						if ( response.isError() ){
-							logger.error("Recived a BAD PACKET {}", response.getPacket() );
+							logger.error("Received a BAD PACKET {}", response.getPacket() );
 							in.reset();
 							continue;
 						} 
@@ -115,7 +115,7 @@ public class ZToolPacketParser implements Runnable {
 							newPacketNotification.notifyAll();
 						}
 					} else {
-						logger.warn("Discared stream: expected start byte but recieved this {}", ByteUtils.toBase16(val));
+						logger.warn("Discared stream: expected start byte but received this {}", ByteUtils.toBase16(val));
 					}
 				} else {
 					logger.info("No data available, waiting for new data event or timeout");
@@ -132,7 +132,7 @@ public class ZToolPacketParser implements Runnable {
 						this.wait(timeout);
 					}
 										
-					//Looing for deadlock when packet is not recieved
+					//Looking for deadlock when packet is not received
 					synchronized (this.newPacketNotification) {
 						newPacketNotification.notifyAll();						
 					}					

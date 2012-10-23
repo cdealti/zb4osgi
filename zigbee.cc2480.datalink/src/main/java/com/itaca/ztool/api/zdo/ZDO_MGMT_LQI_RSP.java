@@ -188,7 +188,7 @@ public class ZDO_MGMT_LQI_RSP extends ZToolPacket /*implements IRESPONSE_CALLBAC
 
 public int getNeighborLQICount(){ return this.NeighborLQICount; }
 
-public int getNeighborLQIEntries(){ return this. NeighborLQIEntries; }
+public int getNeighborLQIEntries(){ return this.NeighborLQIEntries; }
 
-public NeighborLqiListItemClass[] getNeighborLqiList(){ return this.getNeighborLqiList(); }
+public Object[] getNeighborLqiList(){ return NeighborLqiList; }
 }

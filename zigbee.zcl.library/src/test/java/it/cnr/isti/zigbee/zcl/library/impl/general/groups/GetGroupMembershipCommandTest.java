@@ -19,39 +19,30 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
-import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
-public class GetGroupMembershipCommand extends AbstractCommand {
+public class GetGroupMembershipCommandTest {
 
-	private int[] groupList;
-	
-	public GetGroupMembershipCommand(int[] groupList){
-		super(Groups.GET_GROUP_MEMBERSHIP_ID);
-		this.groupList = groupList;
+	@Test
+	public void testGetPayload() {
+		GetGroupMembershipCommand req = new GetGroupMembershipCommand(new int[]{512, 32768, -512});
+		assertArrayEquals( new byte[]{
+				0x03,
+				0x00, 0x02, 		//   512
+				0x00, (byte) 0x80,	// 32768
+				0x00, (byte) 0xFE 	// - 512
+		},req.getPayload());
 	}
-	
-	public byte[] getPayload(){	
-		if( payload == null){			
-			payload = new byte[groupList.length * 2 + 1];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
-			serializer.append_byte((byte) groupList.length);
-			for (int i = 0; i < groupList.length; i++) {
-				serializer.append_short((short)groupList[i]);
-			}
-		}
-		return payload;
-	}
-	
+
 }

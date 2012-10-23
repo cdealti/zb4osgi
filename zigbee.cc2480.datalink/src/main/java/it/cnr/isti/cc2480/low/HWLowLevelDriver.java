@@ -270,7 +270,7 @@ public class HWLowLevelDriver
                 listener.packetReceived( packet );
             }
             catch ( Throwable e ) {
-                logger.error( "Error genereated by notifyPacketListeners {}", e );
+                logger.error("Error genereated by notifyPacketListeners {}", e );
             }
         }
     }

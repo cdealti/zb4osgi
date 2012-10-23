@@ -388,7 +388,16 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 			Class<?> clz = request.getClass();
 			Thread requestor = null;
 			while(	(requestor = conversation3Way.get(clz) ) != null ){
-				logger.debug("Waiting for {} issued by {} to complete", clz, requestor);
+				if ( requestor.isAlive() == false ) {
+					logger.error("Thread {} whom requested {} DIED before unlocking the conversation");
+					logger.debug("The thread {} who was waiting for {} to complete DIED, so we have to remove the lock");	
+					conversation3Way.put(clz, null);
+					break;
+				} 
+				logger.debug(
+						"{} is waiting for {} to complete which was issued by {} to complete", 
+						new Object[]{Thread.currentThread(), clz, requestor}
+				);
 				try{
 					conversation3Way.wait();
 				}catch(InterruptedException ex){					
@@ -1187,6 +1196,15 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 	}
 
 	private ZToolPacket sendSynchrouns(final HWHighLevelDriver hwDriver, final ZToolPacket request) {
+		try{
+			return uncatcheSendSynchrouns(hwDriver,request);
+		}catch(Exception ex){
+			logger.error("Catched internal exception", ex);
+			return null;
+		}
+	}
+	
+	private ZToolPacket uncatcheSendSynchrouns(final HWHighLevelDriver hwDriver, final ZToolPacket request) {
 		final ZToolPacket[] response = new ZToolPacket[]{null};
 //		final int TIMEOUT = 1000, MAX_SEND = 3;					
 		int sending = 1;		

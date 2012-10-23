@@ -19,51 +19,47 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
+import static org.junit.Assert.*;
+import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
-import it.cnr.isti.zigbee.zcl.library.api.core.Status;
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
+import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
 import it.cnr.isti.zigbee.zcl.library.api.general.groups.ViewGroupResponse;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
+import it.cnr.isti.zigbee.zcl.library.impl.RawClusterImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
+
+import org.junit.Test;
+
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
-public class ViewGroupResponseImpl extends ResponseImpl implements
-		ViewGroupResponse {
-	
-	private int groupId;
-	private String groupName;
-	private byte status;
-	
-	
-	public ViewGroupResponseImpl(Response response) throws ZigBeeClusterException {
-		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, ViewGroupResponse.ID);
-		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
-		status = deserializer.read_byte();
-		groupId = deserializer.read_short();
-		groupName = (String) deserializer.readZigBeeType(ZigBeeType.CharacterString);
-	}
-	
-	public int getGroupId() {
-		return groupId;
-	}
+public class ViewGroupResponseImplTest {
 
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public Status getStatus() {
-		return Status.getStatus(status);
+	@Test
+	public void testResponseImplResponse() {
+		Cluster c = new RawClusterImpl((short) 0x04, new byte[]{
+				0x19,
+				0x15,
+				0x01,
+				0x00, // Status = SUCCESS
+				0x10, 0x00, // GroupId = 16
+				0x03, 0x61, 0x62, 0x63 // GroupName = "abc"
+		});
+		Response r;
+		try {
+			r = new ResponseImpl(c,Groups.ID);
+			ViewGroupResponseImpl aux = new ViewGroupResponseImpl(r);
+			assertEquals(16, aux.getGroupId() );
+			assertEquals("abc", aux.getGroupName() );
+		} catch (ZigBeeClusterException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

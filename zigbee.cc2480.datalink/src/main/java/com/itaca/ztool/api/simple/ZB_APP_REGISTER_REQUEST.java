@@ -86,8 +86,8 @@ public class ZB_APP_REGISTER_REQUEST extends ZToolPacket /*implements IREQUEST,I
         this.InputCommandsList = new ushort[0xff];
         Array.Copy(numArray1, this.InputCommandsList, numArray1.Length);*/
         this.OutputCommandsNum = num7;
-        this.OutputCommandsList = new DoubleByte[numArray1.length];
-        this.OutputCommandsList = numArray1;
+        this.OutputCommandsList = new DoubleByte[numArray2.length];
+        this.OutputCommandsList = numArray2;
     /*if (numArray2.Length > 0xff)
     {
     throw new Exception("Error creating object.");

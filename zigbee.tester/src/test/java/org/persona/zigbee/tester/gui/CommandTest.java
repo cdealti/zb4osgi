@@ -57,5 +57,25 @@ public class CommandTest {
 		assertTrue(ex.getClass() == NullPointerException.class);
 		assertNull("Expecting empty message for standard JRE NPE", ex.getMessage());
 	}
+	
+	@Test
+	public void testInvokeWithArray() {
+		Exception ex = null;
+		try {
+			//TODO We should use Mocking for better error handling rather then using the exception type
+			Command command = new Command(
+					new GroupsImpl(null), 
+					GroupsImpl.class.getMethod("getGroupMembership", int[].class)
+			);
+			command.invoke(new String[]{"100,200;300, 400; 500 "});
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertTrue("Expected exception InvocationTargetException", e.getClass() == InvocationTargetException.class);
+			ex = (Exception) ((InvocationTargetException) e).getTargetException();
+		}
+		assertNotNull(ex);
+		assertTrue(ex.getClass() == NullPointerException.class);
+		assertNull("Expecting empty message for standard JRE NPE", ex.getMessage());
+	}	
 
 }

@@ -154,16 +154,12 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 			}
 			final String methodName = methods[i].getName();
 			final Class<?> returnType = methods[i].getReturnType();
-			if (  returnType == void.class || Response.class.isAssignableFrom( returnType ) ) {
-				this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
-			/*
 			if ( methodName.equals("subscribe") || methodName.equals("unsubscribe") ){
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
-			} else if ( methodName.startsWith("get") && Attribute.class.isAssignableFrom(methods[i].getReturnType()) ) {
+			} else if ( methodName.startsWith("get") && ( !( returnType == void.class || Response.class.isAssignableFrom( returnType ) ) ) ) {
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
-			*/				
 			} else if ( methodName.startsWith("add") || methodName.startsWith("remove") ) {
 			    Class<?>[] args = methods[i].getParameterTypes();
 			    if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
@@ -180,7 +176,9 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 	                if( isDuplicate ) continue;
 	                this.add(new HADeviceTreeNode(new HAEvent(obj, pairName)));
 	                //TODO Add support for Specific Cluster Eventing
+	                continue;
 			    }
+				this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
 			}
 			
 		}

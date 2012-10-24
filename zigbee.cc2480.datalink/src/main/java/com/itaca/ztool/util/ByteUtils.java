@@ -28,6 +28,9 @@ package com.itaca.ztool.util;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 
  * @author <a href="mailto:andrew.rapp@gmail.com">Andrew Rapp</a>
@@ -37,7 +40,7 @@ import java.util.regex.Pattern;
  */
 public class ByteUtils {
 
-
+	private final static Logger logger = LoggerFactory.getLogger(ByteUtils.class);
 	
 	/**
 	 * There is a slight problem with this method that you might have noticed;  a Java int is signed, so we can't make
@@ -341,10 +344,25 @@ public class ByteUtils {
 		
 		return false;		
 	}
+	/**
+	 * 
+	 * @param b the int value to check if it contains a byte representable value
+	 * @return true if the value of the int could be expressed with 8 bits
+	 * @since 0.8.0
+	 */
+	public static boolean isByteValue(int b) {
+		final boolean valid = ( (b & 0xffffff00) == 0 || (b & 0xffffff00) == 0xffffff00);
+		if ( valid && ( b < -128 || b > 127 ) ) {
+			logger.debug(
+					"The value {} ({}) is considered a byte because only the 8 least significant bits are set" +
+					", but its value is outside signed byte that is between -128 and 127", b, Integer.toHexString(b) 
+			);
+		}
+		return valid;
+	}
 	
 	public static String toBase16(int b) {
-		
-		if (b > 0xff || b < -128) {
+		if (! isByteValue(b) ) {
 			throw new IllegalArgumentException("Error converting "+b+" input value to hex string it is larger than a byte");
 		}
 		if ( b < 0) {

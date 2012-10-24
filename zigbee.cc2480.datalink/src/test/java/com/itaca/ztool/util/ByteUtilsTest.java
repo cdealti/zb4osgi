@@ -23,6 +23,7 @@ package com.itaca.ztool.util;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.internal.runners.statements.ExpectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,17 @@ public class ByteUtilsTest {
 	 */
 	@Test
 	public void testToBase16() {
+		assertEquals("0x5f", ByteUtils.toBase16(-161) );
+		try{
+			ByteUtils.toBase16(325);
+			fail("Expected IllegalArgumentException");
+		}catch(IllegalArgumentException ex){			
+		}
+		try{		
+			ByteUtils.toBase16(-257);
+			fail("Expected IllegalArgumentException");
+		}catch(IllegalArgumentException ex){			
+		}
 		assertEquals("0xc8", ByteUtils.toBase16(200) );
 		assertEquals("0xc8", ByteUtils.toBase16((byte)0xc8) );
 		assertEquals("0xc8", ByteUtils.toBase16(0xc8) );

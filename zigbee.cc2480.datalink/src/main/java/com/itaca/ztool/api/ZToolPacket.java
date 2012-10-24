@@ -101,7 +101,7 @@ public class ZToolPacket {
         this.CMD = ApiId;
         //data
         for (int i = 0; i < frameData.length; i++) {
-            if ( ByteUtils.isByteValue( frameData[i] ) ) {
+            if ( ! ByteUtils.isByteValue( frameData[i] ) ) {
                 throw new RuntimeException("Value is greater than one byte: " + frameData[i] +" ("+ Integer.toHexString( frameData[i] ) + ")");
             }
             packet[PAYLOAD_START_INDEX + i] = frameData[i];

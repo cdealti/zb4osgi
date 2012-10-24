@@ -89,7 +89,7 @@ public class CommandActionPanel extends JPanel {
 				if (argsModel.getRowCount()!= 0){
 					if (table.isEditing()) table.getCellEditor().stopCellEditing();
 					params = new String[argsModel.getRowCount()];
-					for (int i =0; i<argsModel.getRowCount(); i++){
+					for (int i = 0; i < argsModel.getRowCount(); i++){
 						params[i] = (String) argsModel.getValueAt(i,1);
 					}
 				}

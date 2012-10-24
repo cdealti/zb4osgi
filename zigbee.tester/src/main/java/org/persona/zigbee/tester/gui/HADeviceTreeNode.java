@@ -26,6 +26,7 @@ import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
+import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -151,16 +152,21 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 			if( declaringClass == Cluster.class || declaringClass == Object.class ) {
 				continue;
 			}
-			String methodName = methods[i].getName();
+			final String methodName = methods[i].getName();
+			final Class<?> returnType = methods[i].getReturnType();
+			if (  returnType == void.class || Response.class.isAssignableFrom( returnType ) ) {
+				this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
+			/*
 			if ( methodName.equals("subscribe") || methodName.equals("unsubscribe") ){
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
 			} else if ( methodName.startsWith("get") && Attribute.class.isAssignableFrom(methods[i].getReturnType()) ) {
 				//We skip method that are only a way to access method available at level of attribute
-				continue;				
+				continue;
+			*/				
 			} else if ( methodName.startsWith("add") || methodName.startsWith("remove") ) {
 			    Class<?>[] args = methods[i].getParameterTypes();
-               if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
+			    if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
 	                String pairName = null;
 	                if ( ( pairName = checkForAddRemoveMethodsPair(methods,i) ) == null ) continue;
 	                int childCount = this.getChildCount();
@@ -176,7 +182,7 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 	                //TODO Add support for Specific Cluster Eventing
 			    }
 			}
-			this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
+			
 		}
 		
 	}

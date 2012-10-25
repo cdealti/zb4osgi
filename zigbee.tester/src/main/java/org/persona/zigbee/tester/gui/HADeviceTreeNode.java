@@ -139,12 +139,11 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 	
 	public HADeviceTreeNode(HADevice device, Cluster obj) {
 		super(obj);
-		this.device = device;
-		category = SERVICE;		
+		category = SERVICE;
 		Attribute[] variables = obj.getAttributes();
 		if (variables != null) {
 			for (int i=0;i<variables.length;i++)
-				this.add(new HADeviceTreeNode(device,variables[i]));
+				this.add(new HADeviceTreeNode(device, variables[i]));
 		}
 		Method[] methods = obj.getClass().getMethods();
 		for (int i = 0; i < methods.length; i++) {
@@ -157,12 +156,12 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 			if ( methodName.equals("subscribe") || methodName.equals("unsubscribe") ){
 				//We skip method that are only a way to access method available at level of attribute
 				continue;
-			} else if ( methodName.startsWith("get") && ( !( returnType == void.class || Response.class.isAssignableFrom( returnType ) ) ) ) {
+			} else if ( methodName.startsWith("get") && ( ! ( Response.class.isAssignableFrom(returnType) || returnType == void.class ) ) ) {
 				//We skip method that are only a way to access method available at level of attribute
-				continue;
+				continue;				
 			} else if ( methodName.startsWith("add") || methodName.startsWith("remove") ) {
 			    Class<?>[] args = methods[i].getParameterTypes();
-			    if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
+               if( args.length == 1 && args[0].getName().endsWith( "Listener" ) ){
 	                String pairName = null;
 	                if ( ( pairName = checkForAddRemoveMethodsPair(methods,i) ) == null ) continue;
 	                int childCount = this.getChildCount();
@@ -174,16 +173,15 @@ public class HADeviceTreeNode extends DefaultMutableTreeNode {
 	                    isDuplicate = event.getName().equals(pairName);
 	                }
 	                if( isDuplicate ) continue;
-	                this.add(new HADeviceTreeNode(new HAEvent(obj, pairName)));
 	                //TODO Add support for Specific Cluster Eventing
+	                this.add(new HADeviceTreeNode(new HAEvent(obj, pairName)));
 	                continue;
 			    }
-				this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
 			}
-			
+			this.add(new HADeviceTreeNode(new Command(obj, methods[i])));
 		}
 		
-	}
+	}	
 	
 	private String checkForAddRemoveMethodsPair(Method[] methods, int i) {
 		String name = methods[i].getName();

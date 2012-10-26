@@ -22,6 +22,9 @@
 */
 package org.persona.zigbee.tester.gui;
 
+import it.cnr.isti.zigbee.zcl.library.api.core.Response;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagLayout;
@@ -49,6 +52,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 import org.persona.zigbee.tester.gui.Command.CommandParsingException;
+
+import com.itaca.ztool.util.ByteUtils;
 
 /**
  * 
@@ -95,11 +100,7 @@ public class CommandActionPanel extends JPanel {
 				}
 				try {
 					Object returned = action.invoke(params);
-					if ( returned == null ) {
-						result.setText("Invokation successed without error, but without return values");
-					} else {
-						result.setText(returned.toString());
-					}
+					showActionResult(returned);
 				} catch (CommandParsingException ex) {
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);
@@ -127,7 +128,37 @@ public class CommandActionPanel extends JPanel {
 				}
 			}
 			
-            private void printReport(String[] params,Object result) {
+            private void showActionResult(Object returned) {
+				if ( returned == null ) {
+					result.setText("Invokation successed without error, but without return values");
+					return;
+				}
+				final Class clz = returned.getClass();
+				if ( clz.isPrimitive() || clz == String.class ){
+					result.setText(returned.toString());
+				} else if ( returned instanceof Response){
+					Response r = (Response) returned;
+					String str = r.toString();
+					try {
+						final Class clzToString = clz.getMethod("toString").getDeclaringClass();
+						if ( clzToString == Object.class || clzToString == ResponseImpl.class) {
+							//TODO A default response to String in a ResponseBase class or Response.stringValueOf(Response) should be provided
+							str = "The response object do not provide any String representation of itself";
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+					result.setText(
+							"Invokation successed, the raw response payload is \n" +
+							ByteUtils.toBase16( r.getPayload() ) + "\n" +
+							"String representaion of the response is:\n" + str
+					);
+				} else { 
+					result.setText("Invokation successed without error, but unknown return type "+returned.getClass()+" ["+returned.toString()+"]");
+				}
+			}
+
+			private void printReport(String[] params,Object result) {
                 String input = "";
                 String output = "";
                 if (params != null) input = Arrays.toString(params);

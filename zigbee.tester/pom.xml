@@ -104,14 +104,17 @@
             </Export-Package>
             <Private-Package>
               org.persona.zigbee.tester.*,
-              org.persona.zigbee.util.*
+              org.persona.zigbee.util.*,
+              com.itaca.ztool.util
             </Private-Package>
             <Import-Package>
+		!com.itaca.ztool.api,
                 javax.swing.*,
                 it.cnr.isti.zigbee.api.*,
                 it.cnr.isti.zigbee.ha.*,
                 it.cnr.isti.zigbee.zcl.*,
-                org.osgi.*
+                org.osgi.*,
+                org.slf4j; provider=paxlogging                
             </Import-Package>
           </instructions>
         </configuration>
@@ -161,6 +164,10 @@
     <dependency>
       <groupId>org.aaloa.zb4osgi</groupId>
       <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
     </dependency>
 
 

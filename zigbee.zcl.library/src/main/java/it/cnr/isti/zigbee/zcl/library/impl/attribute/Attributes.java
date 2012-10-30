@@ -315,7 +315,7 @@ public class Attributes  {
 	
 	final static public   AttributeDescriptor BATTERY_MANUFACTURER = new AbstractAttribute()
 	.setId(0x0030)
-	.setName("BatteryManufaturer")
+	.setName("BatteryManufacturer")
 	.setReportable(false)
 	.setType(ZigBeeType.CharacterString.getJavaClass())
 	.setZigBeeType(ZigBeeType.CharacterString)
@@ -475,7 +475,7 @@ public class Attributes  {
 
 	final static public   AttributeDescriptor ON_OFF_TRANSATION_TIME = new AbstractAttribute()
 	.setId(0x0010)
-	.setName("OnOffTRansationTime")
+	.setName("OnOffTransationTime")
 	.setReportable(false)
 	.setType(ZigBeeType.UnsignedInteger16bit.getJavaClass())
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)

@@ -22,10 +22,9 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.alarms;
 
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.Alarms;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -46,10 +45,10 @@ public class ResetAlarmCommand extends AbstractCommand {
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			payload = new byte[2];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			ByteArrayOutputStreamSerializer serializer = new ByteArrayOutputStreamSerializer();
 			serializer.append_byte(clusterId);		
 			serializer.append_short(attributeId);		
+			payload = serializer.getPayload();
 		}
 		return payload;
 	}    

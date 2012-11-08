@@ -272,7 +272,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		
 		if( response == null){
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
-		} else if (response.getStatus() == 0 ) {
+		} else if (response.getStatus() != 0 ) {
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
 		}		
 	}
@@ -304,7 +304,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		if( response == null){
 			m_removeAFMessageListener();
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
-		} else if (response.getStatus() == 0 ) {
+		} else if (response.getStatus() != 0 ) {
 			m_removeAFMessageListener();
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
 		} else {

@@ -102,7 +102,7 @@ public class AF_DATA_CONFIRM extends ZToolPacket/* implements ICONFIRMATION, IAF
         }
 
 		public byte getStatus() {
-			byte value = (byte) super.packet[ZToolPacket.PAYLOAD_START_INDEX + 1];
+			byte value = (byte) super.packet[ZToolPacket.PAYLOAD_START_INDEX];
 			return value;
 		}
 

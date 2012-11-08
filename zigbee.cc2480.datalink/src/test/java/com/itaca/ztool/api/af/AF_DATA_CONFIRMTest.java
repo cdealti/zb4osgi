@@ -37,6 +37,9 @@ public class AF_DATA_CONFIRMTest {
 	public void testGetStatus() {
 		assertEquals(1, new AF_DATA_CONFIRM(1,1,1).getStatus());
 		assertEquals(1, new AF_DATA_CONFIRM(new int[]{1, 1, 1}).getStatus());
+		
+		assertEquals(1, new AF_DATA_CONFIRM(1,2,3).getStatus());
+		assertEquals(1, new AF_DATA_CONFIRM(new int[]{1, 2, 3}).getStatus());
 	}
 
 }

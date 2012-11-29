@@ -18,17 +18,14 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package it.cnr.isti.zigbee.dongle.CC2530;
 
 import it.cnr.isti.osgi.util.OSGiProperties;
+import it.cnr.isti.zigbee.dongle.CC2530.impl.DriverCC2530;
 import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
-import it.cnr.isti.zigbee.dongle.api.DriverStatus;
 import it.cnr.isti.zigbee.dongle.api.NetworkMode;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
-//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSB;
-//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSBi;
-import it.cnr.isti.zigbee.dongle.CC2530.impl.DriverCC2530;
 
 import java.util.Properties;
 
@@ -47,28 +44,29 @@ public class Activator implements BundleActivator {
 
 	private DriverCC2530 driver;
 	private ServiceRegistration service;
-	
+
 	public void start(BundleContext bc) throws Exception {
+
 		driver = new DriverCC2530(
 				OSGiProperties.getString(bc, ConfigurationProperties.COM_NAME_KEY, ConfigurationProperties.COM_NAME),
-				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, 115200),
-				NetworkMode.valueOf(OSGiProperties.getString(
-						bc, ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE
-				)),
+				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, ConfigurationProperties.COM_BOUDRATE), //115200 manlio
+				NetworkMode.valueOf(OSGiProperties.getString(bc, ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE)),
 				OSGiProperties.getInt(bc, ConfigurationProperties.PAN_ID_KEY, ConfigurationProperties.PAN_ID),
 				OSGiProperties.getInt(bc, ConfigurationProperties.CHANNEL_ID_KEY, ConfigurationProperties.CHANNEL_ID),
-				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH)
-		);
+				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH),
+				OSGiProperties.getLong(bc, ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, ConfigurationProperties.APPLICATION_MSG_TIMEOUT)
+				);
 		Properties properties = new Properties();
 		properties.put("zigbee.driver.id", DriverCC2530.class.getName());
 		properties.put("zigbee.supported.devices", new String[]{"tsb"});
 		properties.put("zigbee.driver.type", "hardware");
 		properties.put("zigbee.driver.mode", "real");
-		service = bc.registerService(SimpleDriver.class.getName(), driver, properties);	}
+		service = bc.registerService(SimpleDriver.class.getName(), driver, properties);	
+	}
 
 	public void stop(BundleContext bc) throws Exception {
+
 		service.unregister();
 		driver.close();
 	}
-
 }

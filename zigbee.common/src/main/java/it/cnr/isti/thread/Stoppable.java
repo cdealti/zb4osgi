@@ -31,6 +31,5 @@ package it.cnr.isti.thread;
  */
 public interface Stoppable extends Runnable {
 	
-	public void end();
-	
+	public void end();	
 }

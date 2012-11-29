@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.global;
 
@@ -38,6 +38,5 @@ public interface AttributeReportingConfigurationRecord {
 	public int getMinimumReportingInterval();
 	public int getMaximumReportinInterval();
 	public Object getReportableChange();
-	public int getTimeoutPeriod();
-	
+	public int getTimeoutPeriod();	
 }

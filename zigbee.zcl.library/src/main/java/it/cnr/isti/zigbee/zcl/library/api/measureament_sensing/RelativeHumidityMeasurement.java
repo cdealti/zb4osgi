@@ -42,10 +42,8 @@ public interface RelativeHumidityMeasurement extends ZCLCluster{
 	static final String NAME = "Relative Humidity Measurement";
 	static final String DESCRIPTION = "Attributes and commands for configuring the measurement of temperature, and reporting relative humidity measurements.";
 
-
 	public Attribute getAttributeMeasuredValue();
 	public Attribute getAttributeMinMeasuredValue();
 	public Attribute getAttributeMaxMeasuredValue();
 	public Attribute getAttributeTolerance();
-	
 }

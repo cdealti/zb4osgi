@@ -35,5 +35,4 @@ public interface AddScenePayload {
 	int getTransitionTime();
 	String getSceneName();
 	ExtensionFieldSetAddScene[] getExtensionFieldSet();
-
 }

@@ -81,7 +81,7 @@ public class AnalogSubscriptionImpl extends SubscriptionBase implements AnalogSu
 		);
 
 		final ZCLFrame frame = new ZCLFrame(cmd, true);
-		final ClusterImpl input = new ClusterImpl(cluster.getId(),frame);
+		final ClusterImpl input = new ClusterImpl(cluster.getId(), frame);
 		Cluster cluster = null;
 		try {
 			cluster = device.invoke(input);
@@ -119,12 +119,10 @@ public class AnalogSubscriptionImpl extends SubscriptionBase implements AnalogSu
 					"the attribute " + attribute.getName() + " ("+attribute.getId()+") of type "+type.toString() +
 					" is not recognized "
 			);
-		}
-		
+		}		
 	}
 	
 	public void setReportableChange(Object value) {
 		setReportableChangeValue((Number) value);
 	}
-
 }

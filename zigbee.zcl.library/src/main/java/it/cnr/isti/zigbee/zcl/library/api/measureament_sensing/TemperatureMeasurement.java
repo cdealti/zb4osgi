@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.measureament_sensing;
 
@@ -37,15 +37,13 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
  *
  */
 public interface TemperatureMeasurement extends ZCLCluster{
-	
-	static final short ID = 0x0402;
-	static final String NAME = "TemperatureMeasurement";
-	static final String DESCRIPTION = "Attributes and commands for configuring the measurement of temperature, and reporting temperature measurements.";
 
+	static final short ID = 0x0402;
+	static final String NAME = "Temperature Measurement";
+	static final String DESCRIPTION = "Attributes and commands for configuring the measurement of temperature, and reporting temperature measurements.";
 
 	public Attribute getAttributeMeasuredValue();
 	public Attribute getAttributeMinMeasuredValue();
 	public Attribute getAttributeMaxMeasuredValue();
 	public Attribute getAttributeTolerance();
-	
 }

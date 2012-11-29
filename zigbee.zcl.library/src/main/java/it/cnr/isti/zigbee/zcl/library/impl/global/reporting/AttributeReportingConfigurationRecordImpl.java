@@ -89,5 +89,4 @@ public class AttributeReportingConfigurationRecordImpl implements
 	public int getTimeoutPeriod() {
 		return timeoutPeriod;
 	}
-
 }

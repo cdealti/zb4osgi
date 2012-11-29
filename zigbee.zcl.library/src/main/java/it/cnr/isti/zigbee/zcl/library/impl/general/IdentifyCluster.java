@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general;
 
@@ -44,23 +44,21 @@ import it.cnr.isti.zigbee.zcl.library.impl.global.DefaultResponseImpl;
 public class IdentifyCluster extends ZCLClusterBase implements Identify {
 
 	private final AttributeImpl identifyTime;
-	
+
 	private final Attribute[] attributes;
-	
-	
-	
+
 	private static EmptyPayloadCommand CMD_IDENTIFY_QUERY = new EmptyPayloadCommand()
-		.setId(Identify.IDENTIFY_QUERY_ID)
-		.setClientServerDirection(true)
-		.setClusterSpecific(true)
-		.setManufacturerExtension(false);
-	
+	.setId(Identify.IDENTIFY_QUERY_ID)
+	.setClientServerDirection(true)
+	.setClusterSpecific(true)
+	.setManufacturerExtension(false);
+
 	public IdentifyCluster(ZigBeeDevice zbDevice){
 		super(zbDevice);
 		identifyTime = new AttributeImpl(zbDevice,this,Attributes.IDENTIFY_TIME);
 		attributes = new AttributeImpl[]{identifyTime}; 
 	}
-	
+
 	@Override
 	public short getId() {
 		return Identify.ID;
@@ -81,15 +79,15 @@ public class IdentifyCluster extends ZCLClusterBase implements Identify {
 	}
 
 	public Response identify(int time) throws ZigBeeClusterException {
+
 		enableDefaultResponse();
 		IdentifyCommand identifyCmd = new IdentifyCommand(time);
 		Response response = invoke(identifyCmd);
-		return  new DefaultResponseImpl(response);
+		return new DefaultResponseImpl(response);
 	}
 
 	public Response identifyQuery() throws ZigBeeClusterException {
 		Response response = invoke(CMD_IDENTIFY_QUERY);
-		return  new IdentifyQueryResponseImpl(response);
+		return new IdentifyQueryResponseImpl(response);
 	}
-
 }

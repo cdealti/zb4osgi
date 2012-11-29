@@ -75,6 +75,4 @@ public class ZCLFrame {
 	public int size(){
 		return toByte().length;
 	}
-
-
 }

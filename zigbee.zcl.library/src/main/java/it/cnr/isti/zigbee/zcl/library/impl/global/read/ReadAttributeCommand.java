@@ -22,12 +22,12 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.global.read;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>

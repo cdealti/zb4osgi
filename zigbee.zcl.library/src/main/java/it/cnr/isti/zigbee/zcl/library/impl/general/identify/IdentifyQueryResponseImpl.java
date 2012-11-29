@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.identify;
 
@@ -35,14 +35,13 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class IdentifyQueryResponseImpl extends ResponseImpl implements
-		IdentifyQueryResponse {
-	
+public class IdentifyQueryResponseImpl extends ResponseImpl implements IdentifyQueryResponse {
+
 	private int timeOut;
-	
+
 	public IdentifyQueryResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		
+
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		timeOut = deserializer.read_short();
 	}
@@ -50,5 +49,4 @@ public class IdentifyQueryResponseImpl extends ResponseImpl implements
 	public int getTimeout() {
 		return timeOut;
 	}
-
 }

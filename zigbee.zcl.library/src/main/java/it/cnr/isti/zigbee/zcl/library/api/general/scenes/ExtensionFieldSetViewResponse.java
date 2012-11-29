@@ -22,6 +22,7 @@
 
 package it.cnr.isti.zigbee.zcl.library.api.general.scenes;
 
+import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone;
 
@@ -32,9 +32,9 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
  */
 public interface ZoneEnrollResponse extends Response {
 
-	public static final short ID = 0x00;
-	
+	public static final byte ID = 0x00;
+
 	public int getEnrollResponseCode();
-	
+
 	public int getZoneID();
 }

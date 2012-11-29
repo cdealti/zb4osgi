@@ -29,7 +29,6 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.groups.ViewGroupResponse;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -47,11 +46,14 @@ public class ViewGroupResponseImpl extends ResponseImpl implements
 	
 	public ViewGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, ViewGroupResponse.ID);
+		ResponseImpl.checkGeneralCommandFrame(response, ViewGroupResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();
-		groupName = (String) deserializer.readZigBeeType(ZigBeeType.CharacterString);
+		//TODO: Variable length?
+		//TODO use the deserializer.readZigBeeType(ZigBeeType)
+		groupName = (String) deserializer.readObject(String.class);
+		//groupName = getPayload()[3]; 
 	}
 	
 	public int getGroupId() {

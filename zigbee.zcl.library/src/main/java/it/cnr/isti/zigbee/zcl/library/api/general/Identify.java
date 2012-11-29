@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.general;
 
@@ -39,17 +39,16 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
  *
  */
 public interface Identify extends ZCLCluster {
-	
+
 	static final short ID = 0x0003;
 	static final String NAME = "Identify";
 	static final String DESCRIPTION = "Attributes and commands for putting a device into Identification mode.";
 
 	static final byte IDENTIFY_ID = 0x00;
 	static final byte IDENTIFY_QUERY_ID = 0x01;
-		
-	
+
 	public Attribute getAttributeIdentifyTime();
-	
+
 	public Response identify(int time) throws ZigBeeClusterException;
 	public Response identifyQuery() throws ZigBeeClusterException;	
 }

@@ -53,6 +53,4 @@ public class DefaultResponseImpl extends ResponseImpl implements DefaultResponse
 	public Status getStatus() {
 		return Status.getStatus(status);
 	}
-
-
 }

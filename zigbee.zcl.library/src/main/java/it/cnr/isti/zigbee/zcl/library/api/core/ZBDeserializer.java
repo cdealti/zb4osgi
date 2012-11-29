@@ -51,10 +51,8 @@ public interface ZBDeserializer {
 	 * 
 	 * @return the parsed {@link String} 
 	 * @since 0.4.0
-	 * @deprecated {@link #readZigBeeType(ZigBeeType)} should be used instead
 	 */
 	public String readString();
-	
 	
 	/**
 	 * Since version <b>0.4.0</b> the method must not used, use {@link #readZigBeeType(ZigBeeType)} instead.<br>

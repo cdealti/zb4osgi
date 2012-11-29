@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing;
 
@@ -44,26 +44,29 @@ public class RelativeHumidityMeasurementCluster extends ZCLClusterBase implement
 	private final AttributeImpl minMeasuredValue;
 	private final AttributeImpl maxMeasuredValue;
 	private final AttributeImpl tolerance;
-	
+
 	private final Attribute[] attributes;
 
 	public RelativeHumidityMeasurementCluster(ZigBeeDevice zbDevice){
+
 		super(zbDevice);
+		
 		measuredValue = new AttributeImpl(zbDevice,this,Attributes.MEASURED_VALUE_UNSIGNED_16_BIT);
 		minMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MIN_MEASURED_VALUE_UNSIGNED_16_BIT);
 		maxMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MAX_MEASURED_VALUE_UNSIGNED_16_BIT);
 		tolerance = new AttributeImpl(zbDevice,this,Attributes.TOLERANCE);
+
 		attributes = new AttributeImpl[]{measuredValue, minMeasuredValue, maxMeasuredValue, tolerance};	
 	}
-	
+
 	@Override
 	public short getId() {
-		return ID;
+		return RelativeHumidityMeasurement.ID;
 	}
 
 	@Override
 	public String getName() {
-		return NAME;
+		return RelativeHumidityMeasurement.NAME;
 	}
 
 	@Override
@@ -86,5 +89,4 @@ public class RelativeHumidityMeasurementCluster extends ZCLClusterBase implement
 	public Attribute getAttributeTolerance() {
 		return tolerance;
 	}
-
 }

@@ -40,8 +40,6 @@ public class AddSceneCommand extends AbstractCommand {
 
 private AddScenePayload scenePayload;
 
-
-
 	public AddSceneCommand(AddScenePayload scenePayload){
 		super(Scenes.ADD_SCENE);
 		this.scenePayload = scenePayload;
@@ -79,5 +77,4 @@ private AddScenePayload scenePayload;
 		}
 		return payload;
 	}
-
 }

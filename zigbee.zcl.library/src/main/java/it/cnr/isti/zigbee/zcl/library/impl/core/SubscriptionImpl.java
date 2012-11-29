@@ -58,7 +58,7 @@ public class SubscriptionImpl extends SubscriptionBase implements Subscription {
 	
 	protected boolean doConfigureServer() throws ZigBeeClusterException {
 		log.debug(
-				"Subscring to discrete attibute {} ( {} )with the following parameter min = {}, max = {} ",
+				"Subscribing to discrete attibute {} ( {} ) with the following parameter min = {}, max = {} ",
 				new Object[]{attribute.getName(), attribute.getId(), min, max}
 		);
 		

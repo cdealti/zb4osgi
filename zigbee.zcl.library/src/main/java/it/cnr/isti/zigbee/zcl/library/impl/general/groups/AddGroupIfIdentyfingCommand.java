@@ -25,11 +25,7 @@ package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -44,21 +40,15 @@ public class AddGroupIfIdentyfingCommand extends AbstractCommand {
 	
 	public AddGroupIfIdentyfingCommand(int groupId, String name){
 		super(Groups.ADD_GROUP_IF_IDENTIFYING_ID);
-		this.groupId = groupId;
-		this.name = name;
 	}
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ZBSerializer serializer = new ByteArrayOutputStreamSerializer(bos);
+			payload = new byte[2 + name.length()];
+			ZBSerializer serializer = new DefaultSerializer(payload,0);
 			serializer.append_short((short)groupId);
-			serializer.appendZigBeeType(name, ZigBeeType.CharacterString);
-			payload = serializer.getPayload();
-			try {
-				bos.close();
-			} catch (IOException ignored) {				
-			}
+			//TODO use the serializer.appendObject(Object, ZigBeeType)
+			serializer.appendObject(name);
 		}
 		return payload;
 	}

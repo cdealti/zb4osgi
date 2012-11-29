@@ -39,7 +39,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
 public interface OccupacySensing extends ZCLCluster {
 	
 	static final short ID = 0x0406;
-	static final String NAME = "OccupacySensing";
+	static final String NAME = "Occupacy Sensing";
 	static final String DESCRIPTION = "Attributes and commands for configuring occupancy sensing, and reporting occupancy status.";
 
 	public Attribute getAttributeOccupancy();
@@ -47,7 +47,9 @@ public interface OccupacySensing extends ZCLCluster {
 	
 	public Attribute getAttributePIROccupiedToUnoccupiedDelay();
 	public Attribute getAttributePIRUnoccupiedToOccupiedDelay();
+	public Attribute getAttributePIRUnoccupiedToOccupiedThreshold();
 	
 	public Attribute getAttributeUltraSonicOccupiedToUnoccupiedDelay();
 	public Attribute getAttributeUltraSonicUnoccupiedToOccupiedDelay();
+	public Attribute getAttributeUltrasonicUnoccupiedToOccupiedThreshold();
 }

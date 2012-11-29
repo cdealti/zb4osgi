@@ -29,8 +29,11 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.ExtensionFieldSetViewResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveSceneResponse;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.ViewSceneResponse;
+import it.cnr.isti.zigbee.zcl.library.impl.attribute.AttributeDescriptor;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.general.scenes.ExtensionFieldSetViewResponseImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.global.read.ReadAttributeStatusImpl;
 
 /**
  * 
@@ -51,7 +54,7 @@ public class ViewSceneResponseImpl extends ResponseImpl implements
 	
 	public ViewSceneResponseImpl(Response response)throws ZigBeeClusterException{
 		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, RemoveSceneResponse.ID);
+		ResponseImpl.checkGeneralCommandFrame(response, RemoveSceneResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();

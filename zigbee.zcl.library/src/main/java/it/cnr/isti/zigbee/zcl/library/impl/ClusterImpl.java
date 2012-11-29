@@ -46,5 +46,4 @@ public class ClusterImpl implements Cluster {
 	public short getId() {
 		return id;
 	}
-
 }

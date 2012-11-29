@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -45,15 +45,12 @@ public class SubscriptionClusterFilter implements ClusterFilter {
 	 * Singelton instance of the filter
 	 */
 	public final static SubscriptionClusterFilter FILTER = new SubscriptionClusterFilter();
-	
-	private SubscriptionClusterFilter() {
-		
-	}
-	
+
+	private SubscriptionClusterFilter() {}
+
 	public boolean match(Cluster cluster) {
 		ZCLFrame frame = new ZCLFrame(cluster);
 		return frame.getHeader().getCommandId() == ReportAttributesCommand.ID
-		&& !frame.getHeader().getFramecontrol().isClusterSpecificCommand();
+				&& !frame.getHeader().getFramecontrol().isClusterSpecificCommand();
 	}
-
 }

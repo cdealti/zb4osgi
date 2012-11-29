@@ -52,24 +52,14 @@ public class WriteAttributeCommand extends AbstractCommand {
 				int len = attributeRecord[i].getAttributeDataType().getLength();
 				if(len == -1){
 					//TODO Use a general method instead of assuming that variable length is applied only for String 
-					switch( attributeRecord[i].getAttributeDataType() ) {
-						case CharacterString : case OctectString :
-							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 1;
-						break;
-						case LongOctectString : case LongCharacterString :
-							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 2;
-						break;
-						default:
-							throw new IllegalArgumentException("Data type "+attributeRecord[i].getAttributeDataType()+" is not supported yet");
-					}
-					
+					length = length + ((String) attributeRecord[i].getAttributeData()).length();
 				} else {
 					length = length + len;
 				}
-				length = length + 2 + 1; //space for attribute id and attribute data type
+				length = length + 2 + 1 + 1; // manlio +1 (a bit for string length field) //space for attribute id and attribute data type
 			}
 			payload = new byte[length];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			ZBSerializer serializer = new DefaultSerializer(payload, 0);
 		
 			for (int i = 0; i < attributeRecord.length; i++) {
 				serializer.append_short( (short) attributeRecord[i].getAttributeId());

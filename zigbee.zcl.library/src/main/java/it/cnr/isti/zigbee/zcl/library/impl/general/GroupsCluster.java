@@ -28,6 +28,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
+import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.EmptyPayloadCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
@@ -81,8 +82,8 @@ public class GroupsCluster extends ZCLClusterBase implements Groups {
 		return attributes;
 	}
 
-	public Response addGroup(int groupId, String name) throws ZigBeeClusterException{
-		AddGroupCommand addGroupCmd = new AddGroupCommand(groupId, name);
+	public Response addGroup(int groupId) throws ZigBeeClusterException{
+		AddGroupCommand addGroupCmd = new AddGroupCommand(groupId);
 		Response response = invoke(addGroupCmd);
 		return  new AddGroupResponseImpl(response);
 	}

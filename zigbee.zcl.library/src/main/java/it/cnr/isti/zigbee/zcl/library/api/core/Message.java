@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
@@ -31,14 +31,14 @@ package it.cnr.isti.zigbee.zcl.library.api.core;
  *
  */
 public interface Message {
-	
-	
+
+
 	/**
 	 * @return the field <i>Command identifier</i> as defined in the <b>ZCL header</b><br>
 	 * 		of the <i>ZigBee Cluster Library</i> specification 
 	 */
 	public byte getHeaderCommandId();
-		
+
 	/**
 	 * 
 	 * @return <code>true</code> if and only if the {@link Message} <i>id</i> refers to<br>
@@ -49,5 +49,4 @@ public interface Message {
 	public boolean isClientServerDirection();
 	public byte[]  getManufacturerId();
 	public byte[] getPayload();
-
 }

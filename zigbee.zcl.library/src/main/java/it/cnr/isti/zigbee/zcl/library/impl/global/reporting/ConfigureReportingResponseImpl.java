@@ -41,13 +41,12 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @since 0.1.0
  *
  */
-public class ConfigureReportingResponseImpl extends ResponseImpl implements
-		ConfigureReportingResponse {
+public class ConfigureReportingResponseImpl extends ResponseImpl implements ConfigureReportingResponse {
 
 	private AttributeStatusRecord[] attributes;
 	
-	public ConfigureReportingResponseImpl(Response response, AttributeDescriptor[] descriptors)
-	throws ZigBeeClusterException{
+	public ConfigureReportingResponseImpl(Response response, AttributeDescriptor[] descriptors)	throws ZigBeeClusterException{
+		
 		super(response);
 		ResponseImpl.checkGeneralCommandFrame(response, ConfigureReportingResponse.ID);
 		attributes = new AttributeStatusRecord[descriptors.length];
@@ -57,8 +56,8 @@ public class ConfigureReportingResponseImpl extends ResponseImpl implements
 		}
 	}
 	
-	public ConfigureReportingResponseImpl(Response response, Attribute[] attribs)
-	throws ZigBeeClusterException{
+	public ConfigureReportingResponseImpl(Response response, Attribute[] attribs) throws ZigBeeClusterException{
+		
 		super(response);
 		ResponseImpl.checkGeneralCommandFrame(response, ConfigureReportingResponse.ID);
 		attributes = new AttributeStatusRecord[attribs.length];

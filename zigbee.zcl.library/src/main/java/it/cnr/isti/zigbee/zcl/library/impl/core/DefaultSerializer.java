@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -34,24 +34,17 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
- * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
  *
  */
 public class DefaultSerializer implements ZBSerializer {
 	int index = 0;
 	private byte[] payload;
-	
-	/**
-	 * 
-	 * @param payload the byte array that will used for storing the serialiazed data
-	 * @param index the first empty byte where data will be written
-	 * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
-	 */
+
 	public DefaultSerializer(byte[] payload, int index ) {
 		this.payload = payload;
 		this.index = index;
 	}
-	
+
 	public void appendBoolean(Boolean data) {
 		index += Integers.writeBooleanObject(payload, index, data);
 	}
@@ -67,62 +60,67 @@ public class DefaultSerializer implements ZBSerializer {
 	public void appendLong(Long data) {
 		index += Integers.writeLongObject(payload, index, data);
 	}
-	
+
 	public void appendString(String str){
 		final byte[] raw = str.getBytes();
-		System.arraycopy(raw, 0, payload, index, raw.length);
-		index += raw.length;
+		if ( raw.length > 255 ) {
+			throw new IllegalArgumentException("Given string '"+str+"' is too long - maximum String size is 255.");
+		}
+		//index += raw.length + 1;
+		payload[index] = (byte) (raw.length & 0xFF);
+		System.arraycopy(raw, 0, payload, index+1, raw.length);
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {
+
 		if ( data == null ) {
 			throw new NullPointerException("You can not append null data to a stream");
 		}
 		switch (type) {
-			case Boolean:
-				appendBoolean((Boolean) data);
+		case Boolean:
+			appendBoolean((Boolean) data);
 			break;
-			case Data8bit: case SignedInteger8bit: case Bitmap8bit: case UnsignedInteger8bit: case Enumeration8bit:
-				final Number b = (Number) data;
-				append_byte(b.byteValue());
+		case Data8bit: case SignedInteger8bit: case Bitmap8bit: case UnsignedInteger8bit: case Enumeration8bit:
+			final Integer b = (Integer) data;
+			append_byte(b.byteValue());
 			break;
-			case Data16bit: case SignedInteger16bit: case Bitmap16bit: case UnsignedInteger16bit: case Enumeration16bit:
-				final Number s = (Number) data;
-				append_short(s.shortValue());
+		case Data16bit: case SignedInteger16bit: case Bitmap16bit: case UnsignedInteger16bit: case Enumeration16bit:
+			final Integer s = (Integer) data;
+			append_short(s.shortValue());
 			break;
-			case Data24bit: case SignedInteger24bit: case Bitmap24bit: case UnsignedInteger24bit:
-				new IllegalArgumentException(
-						"No reader defined by this "+ZBDeserializer.class.getName()+
-						" for "+type.toString()+" ("+type.getId()+")"
-				);
+		case Data24bit: case SignedInteger24bit: case Bitmap24bit: case UnsignedInteger24bit:
+			new IllegalArgumentException(
+					"No reader defined by this "+ZBDeserializer.class.getName()+
+					" for "+type.toString()+" ("+type.getId()+")"
+					);
 			break;
-			case Data32bit: case SignedInteger32bit: case Bitmap32bit: case UnsignedInteger32bit:
-				if(type == ZigBeeType.UnsignedInteger32bit){
-					final Long l = (Long) data;
-					append_int(l.intValue());
-				}else{
-					final Integer i = (Integer) data;
-					append_int(i.intValue());
-				}				
+		case Data32bit: case SignedInteger32bit: case Bitmap32bit: case UnsignedInteger32bit:
+			if(type == ZigBeeType.UnsignedInteger32bit){
+				final Long l = (Long) data;
+				append_int(l.intValue());
+			}else{
+				final Integer i = (Integer) data;
+				append_int(i.intValue());
+			}				
 			break;
-			case CharacterString: case OctectString: {
-				final String str = (String) data;
-				append_byte( (byte) (str.length() & (0xFF) ));
-				appendString(str);
-			} break;
-			case LongCharacterString: case LongOctectString: {
-				final String str = (String) data;
-				append_short((short) (str.length() & (0xFFFF)));
-				appendString(str);
-			} break;
-			default:
-				throw new IllegalArgumentException(
-						"No reader defined by this "+ZBDeserializer.class.getName()+
-						" for "+type.toString()+" ("+type.getId()+")"
-				);				
+			/* 
+		case IEEEAddress:
+			final String ieee = (String) data;
+			appendString(ieee);
+			break;
+			 */
+		case CharacterString: case IEEEAddress:
+			final String str = (String) data;
+			appendString(str);
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"No reader defined by this "+ZBDeserializer.class.getName()+
+					" for "+type.toString()+" ("+type.getId()+")"
+					);				
 		}
 	}
-	
+
 	public void appendObject(Object data) {
 		index += Integers.writeObject(payload, index, data);
 	}
@@ -142,7 +140,7 @@ public class DefaultSerializer implements ZBSerializer {
 	public void append_int(int data) {
 		index += Integers.writeInt(payload, index, data);
 	}
-	
+
 	public void append_int24bit(int data) {
 		index += Integers.writeInt24bit(payload, index, data);
 	}
@@ -153,11 +151,5 @@ public class DefaultSerializer implements ZBSerializer {
 
 	public void append_short(short data) {
 		index += Integers.writeShort(payload, index, data);
-	}
-
-	public byte[] getPayload() {
-		byte[] copy = new byte[index];
-		System.arraycopy(payload, 0, copy, 0, copy.length);
-		return copy;
 	}
 }

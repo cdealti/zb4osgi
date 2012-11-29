@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 
@@ -32,13 +32,13 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  *
  */
 public interface AttributeDescriptor {
+
 	public int getId();
 	public String getName();
 	public Class getType();
-		
+
 	public boolean isWritable();
-	
+
 	public boolean isReportable();
 	public ZigBeeType getZigBeeType();	
-	
 }

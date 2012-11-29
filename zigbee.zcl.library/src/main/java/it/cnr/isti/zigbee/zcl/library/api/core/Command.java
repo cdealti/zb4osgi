@@ -38,7 +38,4 @@ public interface Command extends Message{
 	 * 		to this {@link Command}
 	 */
 	public byte[] getAllowedResponseId();
-
-
-
 }

@@ -18,13 +18,15 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.security_safety;
 
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
-import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
+import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_wd.SquawkPayload;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_wd.StartWarningPayload;
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -37,10 +39,15 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
 public interface IASWD extends ZCLCluster {
 
 	public static final short ID = 0x0502;
-	
+	static final String NAME = "IAS WD";
+	static final String DESCRIPTION = "Attributes and commands for any Warning Device Equipment device.";
+
+	static final byte START_WARNING = 0x00;
+	static final byte SQUAWK = 0x01;
+
 	public Attribute getAttributeMaxDuration();
-	
-	public Response startWaiting(short warningMode, short strobe, long warningDuration);
-	public Response squawk(short squawkMode, short strobe, short squawkLevel);
-	
+
+	public void startWarning(StartWarningPayload payload) throws ZigBeeClusterException;
+
+	public void squawk(SquawkPayload payload) throws ZigBeeClusterException;
 }

@@ -66,5 +66,4 @@ public class AddScenePayloadImpl implements AddScenePayload {
 	public int getTransitionTime() {
 		return transitionTime;
 	}
-
 }

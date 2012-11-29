@@ -32,9 +32,8 @@ package it.cnr.isti.zigbee.zcl.library.impl.core;
 public class ZCLLayer {
 
 	static int transactionId;
-	public synchronized static byte getTranscactionId() {
+	
+	public synchronized static byte getTransactionId() {
 		return (byte) transactionId++;
 	}
-	
-
 }

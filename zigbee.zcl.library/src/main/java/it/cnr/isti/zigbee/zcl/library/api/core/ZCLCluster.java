@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
@@ -35,7 +35,7 @@ import java.io.IOException;
  *
  */
 public interface ZCLCluster {
-	
+
 	/**
 	 * 
 	 * @return <code>true</code> if and only if the <i>Default response</i> command is enabled
@@ -55,7 +55,7 @@ public interface ZCLCluster {
 	 * @return the <i>ClusterId</i>
 	 */
 	public short getId();
-	
+
 	/**
 	 * 
 	 * @return This method returns -1 if and only if no <b>Manufacturer</b> specific extension<br>
@@ -63,7 +63,7 @@ public interface ZCLCluster {
 	 * 
 	 */
 	public int getManufacturerId();
-	
+
 	/**
 	 * 
 	 * @return This method return the {@link String} identifying the human readable name of the cluster.<br>
@@ -71,9 +71,9 @@ public interface ZCLCluster {
 	 * 		or the <i>Profile</i> 
 	 */
 	public String getName();
-	
 
-	
+
+
 	/**
 	 * 
 	 * This method returns an {@link Attribute} array containing the {@link Attribute} that are actually<br> 
@@ -83,7 +83,7 @@ public interface ZCLCluster {
 	 * @return The {@link Attribute} arrays 
 	 */
 	Attribute[] getAvailableAttributes();
-	
+
 	/**
 	 * 
 	 * This method returns an {@link Attribute} array containing the {@link Attribute} defined by<br> 
@@ -94,8 +94,8 @@ public interface ZCLCluster {
 	 * @return The {@link Attribute} arrays 
 	 */
 	Attribute[] getStandardAttributes();
-	
-	
+
+
 	/**
 	 * This method is an alias for {@link #invoke(Command, false)} 
 	 * @throws IOException 
@@ -104,7 +104,7 @@ public interface ZCLCluster {
 	 * @see #invoke(Command, boolean)
 	 */
 	public Response invoke(Command cmd) throws  ZigBeeClusterException;
-	
+
 
 	/**
 	 * This method invokes the {@link Command} on this Cluster and <b>wait</b> for its {@link Response}
@@ -124,5 +124,4 @@ public interface ZCLCluster {
 	 * @since 0.2.0
 	 */
 	public Attribute getAttribute(int id);
-	
 }

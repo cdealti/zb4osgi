@@ -82,10 +82,4 @@ public interface ZBSerializer {
 	public void append_int24bit(int data);
 	public void append_long(long data);
 	
-	/**
-	 * 
-	 * @return a copy of the payload
-	 * @since 0.8.0
-	 */
-	public byte[] getPayload();
 }

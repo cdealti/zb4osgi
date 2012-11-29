@@ -23,6 +23,7 @@
 package it.cnr.isti.zigbee.zcl.library.impl.general.level_control;
 
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
+import it.cnr.isti.zigbee.zcl.library.api.general.Alarms;
 import it.cnr.isti.zigbee.zcl.library.api.general.LevelControl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;

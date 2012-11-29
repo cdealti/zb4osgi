@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
@@ -36,16 +36,14 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class RemoveGroupResponseImpl extends ResponseImpl implements
-		RemoveGroupResponse {
-	
+public class RemoveGroupResponseImpl extends ResponseImpl implements RemoveGroupResponse {
+
 	private byte status;
-	private int groupId;
-	
-	
+	private int groupId;	
+
 	public RemoveGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, RemoveGroupResponse.ID);
+		ResponseImpl.checkGeneralCommandFrame(response, RemoveGroupResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();
@@ -58,5 +56,4 @@ public class RemoveGroupResponseImpl extends ResponseImpl implements
 	public Status getStatus() {
 		return Status.getStatus(status);
 	}
-
 }

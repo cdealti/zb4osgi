@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general;
 
@@ -36,7 +36,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
  *
  */
 public class PowerConfigurationCluster extends ZCLClusterBase implements
-		PowerConfiguration {
+PowerConfiguration {
 
 	private final AttributeImpl mainsVoltage;
 	private final AttributeImpl mainsFrequency;
@@ -52,11 +52,13 @@ public class PowerConfigurationCluster extends ZCLClusterBase implements
 	private final AttributeImpl batteryRatedVoltage;
 	private final AttributeImpl batteryAlarmMask;
 	private final AttributeImpl batteryVoltageMinThreshold;
-	
+
 	private final Attribute[] attributes;
-	
+
 	public PowerConfigurationCluster(ZigBeeDevice zbDevice){
+
 		super(zbDevice);
+
 		mainsVoltage = new AttributeImpl(zbDevice,this,Attributes.MAINS_VOLTAGE);
 		mainsFrequency = new AttributeImpl(zbDevice,this,Attributes.MAINS_FREQUENCY);
 		mainsAlarmMask = new AttributeImpl(zbDevice,this,Attributes.MAINS_ALARM_MASK);
@@ -71,13 +73,13 @@ public class PowerConfigurationCluster extends ZCLClusterBase implements
 		batteryRatedVoltage = new AttributeImpl(zbDevice,this,Attributes.BATTERY_RATED_VOLTAGE);
 		batteryAlarmMask = new AttributeImpl(zbDevice,this,Attributes.BATTERY_ALARM_MASK);
 		batteryVoltageMinThreshold = new AttributeImpl(zbDevice,this,Attributes.BATTERY_VOLTAGE_MIN_THRESHOLD);
-		 
+
 		attributes = new AttributeImpl[]{mainsVoltage, mainsFrequency, mainsAlarmMask ,
 				mainsVoltageMinThreshold, mainsVoltageMaxThreshol, mainsVoltageDwellTripPoint,
 				batteryVoltage, batteryManufaturer, batterySize, batteryAHrRating,
 				batteryQuantity, batteryRatedVoltage, batteryAlarmMask, batteryVoltageMinThreshold};
 	}
-	
+
 	@Override
 	public short getId() {
 		return PowerConfiguration.ID;

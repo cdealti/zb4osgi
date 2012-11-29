@@ -39,10 +39,9 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
 public interface OnOffSwitchConfiguration extends ZCLCluster{
 	
 	static final short ID = 0x0007;
-	static final String NAME = "OnOffSwitchConfiguratio";
+	static final String NAME = "OnOff Switch Configuration";
 	static final String DESCRIPTION = "Attributes and commands for configuring OnOff switching devices.";
 	
 	public Attribute getAttributeSwitchType();
 	public Attribute getAttributeSwitchActions();
-
 }

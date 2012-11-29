@@ -43,5 +43,4 @@ public interface IdentifyQueryResponse extends Response{
 	 * @return the int representing the <i>Timeout</i> field
 	 */
 	public int getTimeout();
-
 }

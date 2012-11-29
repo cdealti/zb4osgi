@@ -40,5 +40,5 @@ public interface ReportListener {
 	/**
 	 *  This is the method invoked by the driver when a report arrives
 	 */
-	public void receivedReport( Dictionary<Attribute, Object> reports);
+	public void receivedReport(Dictionary<Attribute, Object> reports);
 }

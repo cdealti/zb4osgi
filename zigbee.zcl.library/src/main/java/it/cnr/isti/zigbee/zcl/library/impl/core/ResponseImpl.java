@@ -85,29 +85,11 @@ public class ResponseImpl implements Response {
 		return payload;
 	}
 
-	public static void checkSpecificCommandFrame(Response response, byte expectedCommandId) throws ZigBeeClusterException{
-		byte commandId = response.getHeaderCommandId();
-		if (commandId != expectedCommandId) {
-			if (commandId == DefaultResponse.ID){
-				DefaultResponse  defaultResponse = new DefaultResponseImpl(response);
-				throw new ZigBeeClusterException(
-						"Expected SpecificCommandFrame ("+ expectedCommandId +") but received a DefaultResponse" 
-						+ "\nSTATUS:" +defaultResponse.getStatus() +" CMD:"+ defaultResponse.getCommandId()
-						,response);
-			}
-			throw new ZigBeeClusterException(
-					"Expected SpecificCommandFrame ("+ expectedCommandId +") but received:" +commandId
-					,response);
-		}
-
-	}
-	
 	public static void checkGeneralCommandFrame(Response response, byte expectedCommandId) throws ZigBeeClusterException{
 		if (response.getZCLHeader().getFramecontrol().isClusterSpecificCommand()){
 			throw new ZigBeeClusterException(
-					"Received response is not a General Command Frame !");
+					"Received response is not a General Command Frame!");
 		}		
-		
 		byte commandId = response.getHeaderCommandId();
 		if (commandId != expectedCommandId) {
 			if (commandId == DefaultResponse.ID){
@@ -121,7 +103,5 @@ public class ResponseImpl implements Response {
 					"Expected GeneralCommandFrame ("+ expectedCommandId +") but received:" +commandId
 					,response);
 		}
-
-	}
-	
+	}	
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 
@@ -31,21 +31,21 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class AbstractAttribute implements AttributeDescriptor{
-	
+public class AbstractAttribute implements AttributeDescriptor {
+
 	private int id;
 	private String name;
 	private Class clazz;
 	private ZigBeeType zbType;
 	private boolean isReportable;
 	private boolean isWritable;
-	private boolean hasRange;
-	private Object min;
-	private Object max;
-	
+	//private boolean hasRange;
+	//private Object min;
+	//private Object max;
+
 	public AbstractAttribute() {
 	}
-	
+
 	final public int getId() {
 		return id;
 	}
@@ -54,11 +54,11 @@ public class AbstractAttribute implements AttributeDescriptor{
 		this.id=id;
 		return this;	
 	}
-	
+
 	final public String getName() {
 		return name;
 	}
-	
+
 	public AbstractAttribute setName(String name){
 		this.name=name;
 		return this;	
@@ -72,12 +72,12 @@ public class AbstractAttribute implements AttributeDescriptor{
 		this.clazz=clazz;
 		return this;	
 	}
-	
+
 
 	final public boolean isReportable() {
 		return isReportable;
 	}
-	
+
 	public AbstractAttribute setReportable(boolean isReportable){
 		this.isReportable=isReportable;
 		return this;	
@@ -86,7 +86,7 @@ public class AbstractAttribute implements AttributeDescriptor{
 	final public boolean isWritable() {
 		return isWritable;
 	}
-	
+
 	public AbstractAttribute setWritable(boolean isWritable){
 		this.isWritable=isWritable;
 		return this;	
@@ -96,10 +96,8 @@ public class AbstractAttribute implements AttributeDescriptor{
 		this.zbType = type;
 		return this;
 	}
-	
+
 	final public ZigBeeType getZigBeeType() {
 		return zbType;
 	}
-
-
 }

@@ -54,5 +54,4 @@ public interface AnalogSubscription extends Subscription {
 	 * @param value the new value for the <i>ReportableChagne</i>
 	 */
 	public void setReportableChange(Object value);
-
 }

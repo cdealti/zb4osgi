@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general;
 
@@ -35,21 +35,23 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class OnOffSwitchConfigurationCluster extends ZCLClusterBase implements
-		OnOffSwitchConfiguration {
-	
+public class OnOffSwitchConfigurationCluster extends ZCLClusterBase implements OnOffSwitchConfiguration {
+
 	private final AttributeImpl switchType;
 	private final AttributeImpl switchAction;
-	
+
 	private final Attribute[] attributes;
 
 	public OnOffSwitchConfigurationCluster(ZigBeeDevice zbDevice){
+
 		super(zbDevice);
+
 		switchType = new AttributeImpl(zbDevice,this,Attributes.SWITCH_TYPE);
 		switchAction = new AttributeImpl(zbDevice,this,Attributes.SWITCH_ACTIONS); 
+
 		attributes = new Attribute[]{switchType, switchAction};
 	}
-	
+
 	@Override
 	public short getId() {
 		return OnOffSwitchConfiguration.ID;
@@ -72,5 +74,4 @@ public class OnOffSwitchConfigurationCluster extends ZCLClusterBase implements
 	public Attribute getAttributeSwitchType() {
 		return switchType;
 	}
-
 }

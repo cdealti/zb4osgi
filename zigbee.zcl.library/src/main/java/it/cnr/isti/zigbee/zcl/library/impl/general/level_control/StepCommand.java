@@ -25,7 +25,6 @@ package it.cnr.isti.zigbee.zcl.library.impl.general.level_control;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.LevelControl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 /**
  * 
@@ -56,11 +55,11 @@ public class StepCommand extends AbstractCommand {
 
 	public byte[] getPayload(){	
 		if( payload == null){
-			ByteArrayOutputStreamSerializer serializer = new ByteArrayOutputStreamSerializer();
+			payload = new byte[3];
+			ZBSerializer serializer = new DefaultSerializer(payload,0);
 			serializer.append_byte((byte)mode);
 			serializer.append_byte((byte)step);
 			serializer.append_short((short)time); 
-			payload = serializer.getPayload();
 		}
 		return payload;
 	}

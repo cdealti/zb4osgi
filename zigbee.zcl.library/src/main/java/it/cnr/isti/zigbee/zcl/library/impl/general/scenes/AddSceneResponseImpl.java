@@ -36,16 +36,16 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class AddSceneResponseImpl extends ResponseImpl implements
-		AddSceneResponse {
+public class AddSceneResponseImpl extends ResponseImpl implements AddSceneResponse {
 	
 	private byte status;
 	private int groupId;
 	private short sceneId;
 	
 	public AddSceneResponseImpl(Response response) throws ZigBeeClusterException {
+		
 		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, AddSceneResponse.ID);
+		ResponseImpl.checkGeneralCommandFrame(response, AddSceneResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();
@@ -63,5 +63,4 @@ public class AddSceneResponseImpl extends ResponseImpl implements
 	public Status getStatus() {
 		return Status.getStatus(status);
 	}
-
 }

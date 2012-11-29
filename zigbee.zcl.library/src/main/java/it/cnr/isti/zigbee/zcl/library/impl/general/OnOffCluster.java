@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.general;
 
@@ -40,30 +40,29 @@ import it.cnr.isti.zigbee.zcl.library.impl.global.DefaultResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class OnOffCluster extends ZCLClusterBase implements OnOff{
-	
+public class OnOffCluster extends ZCLClusterBase implements OnOff {
+
 	private final AttributeImpl onOff;
-	
+
 	private final Attribute[] attributes;
-	
+
 	private static EmptyPayloadCommand CMD_ON = new EmptyPayloadCommand()
-								.setId(OnOff.ON_ID)
-								.setClientServerDirection(true)
-								.setClusterSpecific(true)
-								.setManufacturerExtension(false);
-	
+	.setId(OnOff.ON_ID)
+	.setClientServerDirection(true)
+	.setClusterSpecific(true)
+	.setManufacturerExtension(false);
+
 	private static EmptyPayloadCommand CMD_OFF = new EmptyPayloadCommand()
-								.setId(OnOff.OFF_ID)
-								.setClientServerDirection(true)
-								.setClusterSpecific(true)
-								.setManufacturerExtension(false);
-	
+	.setId(OnOff.OFF_ID)
+	.setClientServerDirection(true)
+	.setClusterSpecific(true)
+	.setManufacturerExtension(false);
+
 	private static EmptyPayloadCommand CMD_TOGGLE = new EmptyPayloadCommand()
-								.setId(OnOff.TOGGLE_ID)
-								.setClientServerDirection(true)
-								.setClusterSpecific(true)
-								.setManufacturerExtension(false);
-								
+	.setId(OnOff.TOGGLE_ID)
+	.setClientServerDirection(true)
+	.setClusterSpecific(true)
+	.setManufacturerExtension(false);
 
 	public OnOffCluster(ZigBeeDevice zbDevice){
 		super(zbDevice);
@@ -106,9 +105,5 @@ public class OnOffCluster extends ZCLClusterBase implements OnOff{
 		enableDefaultResponse();
 		Response response =  invoke(CMD_TOGGLE);
 		return  new DefaultResponseImpl(response);
-
 	}
-
-
-
 }

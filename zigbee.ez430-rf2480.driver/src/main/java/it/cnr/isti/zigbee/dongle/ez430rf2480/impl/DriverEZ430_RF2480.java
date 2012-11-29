@@ -1438,4 +1438,11 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void addCustomDevice(String endpointNumber, String profileID,
+			String deviceID, String version, String inputClusters,
+			String outputCluster) {
+		// TODO Auto-generated method stub
+		
+	}
 }

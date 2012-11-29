@@ -25,9 +25,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package com.itaca.ztool.api;
+
+import com.itaca.ztool.util.ByteUtils;
 
 /**
  * 
@@ -37,11 +39,11 @@ package com.itaca.ztool.api;
  *
  */
 public class Checksum {
-	
-	//private final static Logger log = Logger.getLogger(Checksum.class);
-	
+
+	//private final static Logger log = LoggerFactory.getLogger(Checksum.class);
+
 	public int checksum = 0;
-	
+
 	/**
 	 * Don't add Checksum byte when computing checksum!!
 	 * 
@@ -51,21 +53,21 @@ public class Checksum {
 		//checksum+= val;
 		checksum = checksum ^ val;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public void compute() {
-		
+
 		// discard values > 1 byte
 		//checksum = 0xff & checksum;
 		// perform 2s complement
 		//checksum = 0xff - checksum;
-		
+
 		//log.debug("computed checksum is " + ByteUtils.formatByte(checksum));
 	}
-	
+
 	/**
 	 * First add all relevant bytes, including checksum
 	 * 
@@ -76,11 +78,11 @@ public class Checksum {
 		//log.debug("verify checksum is " + checksum);
 		return 0xff == checksum;
 	}
-	
+
 	public int getChecksum() {
 		return checksum;
 	}
-	
+
 	/*public static void main(String[] args) {
 		//83 56 78 24 00 01 02 00 03 ff 85
 		Checksum ck = new Checksum();
@@ -97,11 +99,11 @@ public class Checksum {
 		ck.addByte(0xff);
 		// checksum
 		ck.addByte(0x83);
-		
+
 		// checksum is 0x83
 		//ck.compute();
 		ck.verify();
-		
+
 		System.out.println("checksum is " + ByteUtils.formatByte(ck.getChecksum()));
 	}*/
 }

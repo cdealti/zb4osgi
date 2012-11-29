@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.device.factory;
 
@@ -40,10 +40,10 @@ import org.osgi.framework.BundleContext;
  * @version $LastChangedRevision$ ($LastChangedDate$) *
  */
 public class OnOffLightFactory extends HADeviceFactoryBase {
-	
+
 
 	public OnOffLightFactory(BundleContext ctx) {
-		super(ctx,OnOffLight.class);
+		super(ctx, OnOffLight.class);
 	}
 
 	private String[] clusters;
@@ -55,18 +55,16 @@ public class OnOffLightFactory extends HADeviceFactoryBase {
 
 	@Override
 	public String getDeviceId() {		
-		return String.valueOf(OnOffLightDevice.DEVICE_ID);
+		return String.valueOf(OnOffLight.DEVICE_ID);
 	}
 
 	@Override
 	public String[] getRefinedInterfaces() {
 		return implementedInterfaces;
 	}
-	
+
 	@Override
 	public HADeviceBase getInstance(ZigBeeDevice zbDevice) throws ZigBeeHAException {
-		return new OnOffLightDevice(ctx,zbDevice);
+		return new OnOffLightDevice(ctx, zbDevice);
 	}
-
-
 }

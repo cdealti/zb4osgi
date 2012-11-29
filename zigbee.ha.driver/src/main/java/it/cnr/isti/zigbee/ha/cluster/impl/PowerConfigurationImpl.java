@@ -54,7 +54,9 @@ public class PowerConfigurationImpl implements PowerConfiguration{
 	private final Attribute mainsVMin;
 	
 	public PowerConfigurationImpl(ZigBeeDevice zbDevice){
+		
 		cluster = new PowerConfigurationCluster(zbDevice);
+		
 		batteryRating = cluster.getAttributeBatteryAHrRating();
 		batteryAlarm = cluster.getAttributeBatteryAlarmMask();
 		batteryManufacturer = cluster.getAttributeBatteryManufacturer();
@@ -151,5 +153,4 @@ public class PowerConfigurationImpl implements PowerConfiguration{
 	public Attribute getMainsVoltageMinThreshold() {
 	    return mainsVMin;
 	}
-
 }

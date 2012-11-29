@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.glue.general;
 
@@ -34,19 +34,15 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
  */
 public interface OnOffSwitch extends Cluster {
 
-public Attribute getAttributeOnOff();
-	
+	public Attribute getAttributeOnOff();
+
 	public Response on(boolean disableDefatultResponse);
 	public Response off(boolean disableDefatultResponse);
 	public Response toggle(boolean disableDefatultResponse);
 
-	
-	public void on();
-	
-	
+	public void on();	
+
 	public void off();
-	
-	
+
 	public void toggle();
-	
 }

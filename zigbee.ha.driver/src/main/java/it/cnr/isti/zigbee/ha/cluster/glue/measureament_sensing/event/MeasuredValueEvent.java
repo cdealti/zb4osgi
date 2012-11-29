@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.event;
 
@@ -32,9 +32,8 @@ import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
  *
  */
 public interface MeasuredValueEvent {
-	
+
 	public int getEvent();
-	
+
 	public Cluster getSource();
-	
 }

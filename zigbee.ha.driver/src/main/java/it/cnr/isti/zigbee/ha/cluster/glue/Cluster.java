@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.glue;
 
@@ -32,7 +32,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Subscription;
  *
  */
 public interface Cluster {
-	
+
 	String PROFILE_CLUSTER_IDs = "zigbee.profile.cluster.ids";
 
 	/**
@@ -42,7 +42,7 @@ public interface Cluster {
 	 * @return the <i>ClusterId</i>
 	 */
 	public int getId();
-	
+
 	/**
 	 * 
 	 * @return This method return the {@link String} identifying the human readable name of the cluster.<br>
@@ -58,14 +58,14 @@ public interface Cluster {
 	 * @return an array of {@link Subscription}
 	 */
 	public Subscription[] getActiveSubscriptions();
-	
+
 	/**
 	 * 
 	 * @return {@link Attribute} array with all the attribute implemented by the {@link Cluster}
 	 * @since 0.2.0
 	 */
 	public Attribute[] getAttributes();
-	
+
 	/**
 	 * 
 	 * @param id the <code>int</code> value identifying an attribute of the {@link Cluster}
@@ -73,5 +73,4 @@ public interface Cluster {
 	 * @since 0.2.0
 	 */
 	public Attribute getAttribute(int id);
-
 }

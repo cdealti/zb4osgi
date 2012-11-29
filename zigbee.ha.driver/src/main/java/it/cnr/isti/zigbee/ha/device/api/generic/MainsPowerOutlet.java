@@ -2,6 +2,7 @@ package it.cnr.isti.zigbee.ha.device.api.generic;
 
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOff;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOffSwitchConfiguration;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Scenes;
 import it.cnr.isti.zigbee.ha.driver.ArraysUtil;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
@@ -18,9 +19,15 @@ public interface MainsPowerOutlet extends HADevice {
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
 	public static final int[] CUSTOM = {};
 
+
+	/**
+	 * Access method for the <b>Mandatory</b> cluster: {@link OnOffSwitchConfiguration} 
+	 *  
+	 * @return the {@link OnOffSwitchConfiguration} cluster object
+	 */
 	public OnOff getOnOff();
-
+	
 	public Scenes getScenes();
-
+	
 	public Groups getGroups();
 }

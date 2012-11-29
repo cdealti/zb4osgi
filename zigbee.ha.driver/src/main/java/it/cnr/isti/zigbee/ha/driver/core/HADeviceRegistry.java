@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
@@ -30,8 +30,6 @@ import java.util.HashMap;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +56,7 @@ public class HADeviceRegistry {
 	public HADeviceRegistry(BundleContext ctx){
 		this.ctx = ctx ; 
 		registry = new HashMap<String, HADeviceFactory>();
-		
+
 		try {
 			ServiceReference[] zbDeviceSRs = ctx.getAllServiceReferences(HADeviceFactory.class.getName(), ANY_ZBDEVICE_FACTORY_FILTER);
 			if (zbDeviceSRs!= null){
@@ -72,9 +70,10 @@ public class HADeviceRegistry {
 	}
 
 	public void addHADeviceFactory(ServiceReference zbDeviceFactorySR) {
+		
 		HADeviceFactory factory = (HADeviceFactory) ctx.getService(zbDeviceFactorySR);
 		String key = factory.getDeviceId();
-		
+
 		HADeviceFactory value;
 		synchronized (REGISTRY) {
 			value = registry.put(key, factory);			
@@ -105,9 +104,9 @@ public class HADeviceRegistry {
 	/*
 	public HADeviceFactory[] getDeviceFactories(ZigBeeDevice zbDevice) throws ZigBeeHAException {
 	    	//TODO follow the javadoc
-	    
+
 		final String deviceId = String.valueOf(zbDevice.getDeviceId());
-		
+
 		synchronized (REGISTRY) {
 			HADeviceFactory factory = registry.get(deviceId);
 			if (factory != null)
@@ -116,23 +115,22 @@ public class HADeviceRegistry {
 				return null;
 		}
 	}
-	*/
-	
+	 */
+
 	public HADeviceFactory getFactory(ZigBeeDevice zbDevice) {
 		final String deviceId = String.valueOf(zbDevice.getDeviceId());
-		
+
 		synchronized (REGISTRY) {
 			return registry.get(deviceId);
 		}
 	}
-	
-	public HADeviceBase getInstance(ZigBeeDevice zbDevice) throws ZigBeeHAException{
-	    final HADeviceFactory factory = getFactory(zbDevice);
-	    if (factory != null) {
-		return factory.getInstance(zbDevice);
-	    } else { 
-		return null;
-	    }
-	}
 
+	public HADeviceBase getInstance(ZigBeeDevice zbDevice) throws ZigBeeHAException{
+		final HADeviceFactory factory = getFactory(zbDevice);
+		if (factory != null) {
+			return factory.getInstance(zbDevice);
+		} else { 
+			return null;
+		}
+	}
 }

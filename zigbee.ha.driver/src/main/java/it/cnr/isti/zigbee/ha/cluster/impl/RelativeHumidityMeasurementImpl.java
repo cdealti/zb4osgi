@@ -120,6 +120,5 @@ public class RelativeHumidityMeasurementImpl implements RelativeHumidityMeasurem
 
 	public boolean unsubscribe(ToleranceListener listener) {
 		return toleranceBridge.unsubscribe(listener);
-	}
-	
+	}	
 }

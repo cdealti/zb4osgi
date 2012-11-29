@@ -18,13 +18,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.device.impl;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.ha.driver.core.HADeviceBase;
-import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
 import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.ha.driver.core.reflection.AbstractDeviceDescription;
 import it.cnr.isti.zigbee.ha.driver.core.reflection.DeviceDescription;
@@ -44,26 +43,27 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class GenericHADevice extends HADeviceBase {
-	
+
 	private int[] mandatory;
 	private int[] optional;
 	private int[] standard;
 	private int[] custom;
+	
 	public GenericHADevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException{
 		super(ctx,zbDevice);
-		
+
 		mandatory = new int[0]; // we don't know the device so we cannot distinuish
 		optional = new int[0];
-		
+
 		int[] clusterIDs = zbDevice.getInputClusters();
 		ArrayList<Integer> standardList = new ArrayList<Integer>();
 		ArrayList<Integer> customList = new ArrayList<Integer>();
 		for (int i = 0; i < clusterIDs.length; i++) {
-//			if (HAProfile.clusters.containsKey(clusterIDs[i])){
-//				standardList.add(clusterIDs[i]);
-//			} else {
-//				customList.add(clusterIDs[i]);
-//			}
+			//			if (HAProfile.clusters.containsKey(clusterIDs[i])){
+			//				standardList.add(clusterIDs[i]);
+			//			} else {
+			//				customList.add(clusterIDs[i]);
+			//			}
 		}
 		standard = new int[standardList.size()];
 		for (int i = 0; i < standard.length; i++) {
@@ -73,13 +73,13 @@ public class GenericHADevice extends HADeviceBase {
 		for (int i = 0; i < custom.length; i++) {
 			custom[i] = customList.get(i).intValue();
 		}
-		
+
 		for (int i = 0; i < standard.length; i++) {
 			addCluster(standard[i]);
 		}
 	}
-	
-	
+
+
 	final DeviceDescription descriptor =  new AbstractDeviceDescription(){
 
 		public int[] getCustomClusters() {
@@ -97,9 +97,8 @@ public class GenericHADevice extends HADeviceBase {
 		public int[] getStandardClusters() {
 			return standard;
 		}
-		
 	};
-	
+
 	@Override
 	public DeviceDescription getDescription() {
 		return descriptor;
@@ -107,7 +106,6 @@ public class GenericHADevice extends HADeviceBase {
 
 	@Override
 	public String getName() {
-		return "Geniric HA Device";
+		return "Generic HA Device";
 	}
-
 }

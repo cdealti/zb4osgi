@@ -18,16 +18,18 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.glue.security_safety;
 
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
+import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
-import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmListener;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneEnrollRequestPayload;
 import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneEnrollResponse;
 import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusChangeNotificationListener;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusChangeNotificationPayload;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
@@ -42,9 +44,11 @@ public interface IASZone extends Cluster {
 	public Attribute getZoneStatus();
 	public Attribute getIASCIEAddress();
 
-	public ZoneEnrollResponse ZoneEnrollRequest(byte zoneType, byte manufacturerCode);
+	public ZoneEnrollResponse zoneEnrollRequest(ZoneEnrollRequestPayload payload) throws ZigBeeHAException;
+
+	public Response zoneStatusChangeNotification(ZoneStatusChangeNotificationPayload payload) throws ZigBeeHAException;
 
 	public boolean addZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 
-    public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
+	public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 }

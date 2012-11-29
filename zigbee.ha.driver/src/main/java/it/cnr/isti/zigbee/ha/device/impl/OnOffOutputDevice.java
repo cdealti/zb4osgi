@@ -58,7 +58,6 @@ public class OnOffOutputDevice extends HADeviceBase implements OnOffOutput {
 		scenes = (Scenes) addCluster(HAProfile.SCENES);
 	}
 
-
 	public Groups getGroups() {
 		return groups;
 	}
@@ -69,9 +68,7 @@ public class OnOffOutputDevice extends HADeviceBase implements OnOffOutput {
 
 	public Scenes getScenes() {
 		return scenes;
-	}
-
-	
+	}	
 
 	@Override
 	public String getName() {
@@ -102,6 +99,4 @@ public class OnOffOutputDevice extends HADeviceBase implements OnOffOutput {
 	public DeviceDescription getDescription() {
 		return DEVICE_DESCRIPTOR;
 	}
-
-
 }

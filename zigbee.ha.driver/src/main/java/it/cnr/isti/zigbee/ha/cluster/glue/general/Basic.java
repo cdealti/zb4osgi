@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.glue.general;
 
@@ -34,7 +34,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
  *
  */
 public interface Basic extends Cluster {
-	
+
 	public Attribute getZCLVersion();
 	public Attribute getApplicationVersion();
 	public Attribute getStackVersion();
@@ -44,14 +44,10 @@ public interface Basic extends Cluster {
 	public Attribute getDateCode();
 	public Attribute getPowerSource();
 	public String getLocationDescription() throws ZigBeeHAException;
-	public Attribute getPhysicalEnvironment();
+	public Attribute getPhysicalEnviroment();
 	public boolean getDeviceEnabled() throws ZigBeeHAException;
 	public Attribute getAlarmMask();
-	/**
-	 * @since 0.7.0
-	 */
-	public Attribute getDisableLocalConfig();
-	
+
 	public void resetToFactoryDefault() throws ZigBeeHAException;
 
 }

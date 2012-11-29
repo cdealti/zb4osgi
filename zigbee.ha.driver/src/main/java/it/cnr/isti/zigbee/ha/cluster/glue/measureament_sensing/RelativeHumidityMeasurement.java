@@ -69,6 +69,5 @@ public interface RelativeHumidityMeasurement extends Cluster {
 	 * @param mvl The {@link MeasuredValueListener} to unsubscribe
 	 * @since 0.6.0
 	 */
-	public boolean unsubscribe(MeasuredValueListener mvl);
-	
+	public boolean unsubscribe(MeasuredValueListener mvl);	
 }

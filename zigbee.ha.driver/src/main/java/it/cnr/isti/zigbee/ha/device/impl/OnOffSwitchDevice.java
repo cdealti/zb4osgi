@@ -18,15 +18,19 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.device.impl;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.Identify;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOff;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOffSwitchConfiguration;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Scenes;
 import it.cnr.isti.zigbee.ha.device.api.generic.OnOffSwitch;
 import it.cnr.isti.zigbee.ha.driver.core.HADeviceBase;
+import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
 import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.ha.driver.core.reflection.AbstractDeviceDescription;
 import it.cnr.isti.zigbee.ha.driver.core.reflection.DeviceDescription;
@@ -42,11 +46,20 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class OnOffSwitchDevice extends HADeviceBase implements OnOffSwitch {
-	
+
 	private OnOffSwitchConfiguration onOffSwitchConfiguration;
-	
-	public OnOffSwitchDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException{
-		super(ctx,zbDevice);
+	private OnOff onOff;
+	private Scenes scenes;
+	private Groups groups;
+
+	public OnOffSwitchDevice(BundleContext ctx, ZigBeeDevice zbDevice) throws ZigBeeHAException{
+
+		super(ctx, zbDevice);
+
+		onOffSwitchConfiguration = (OnOffSwitchConfiguration) addCluster(HAProfile.ON_OFF_SWITCH_CONFIGURATION);
+		onOff = (OnOff) addCluster(HAProfile.ON_OFF);
+		scenes = (Scenes) addCluster(HAProfile.SCENES);
+		groups = (Groups) addCluster(HAProfile.GROUPS);
 	}
 
 	final static DeviceDescription DEVICE_DESCRIPTOR =  new AbstractDeviceDescription(){
@@ -66,9 +79,8 @@ public class OnOffSwitchDevice extends HADeviceBase implements OnOffSwitch {
 		public int[] getStandardClusters() {
 			return OnOffSwitch.STANDARD;
 		}
-		
 	};
-	
+
 	@Override
 	public DeviceDescription getDescription() {
 		return DEVICE_DESCRIPTOR;
@@ -87,4 +99,15 @@ public class OnOffSwitchDevice extends HADeviceBase implements OnOffSwitch {
 		return identify;
 	}
 
+	public OnOff getOnOff() {
+		return onOff;
+	}
+
+	public Scenes getScenes() {
+		return scenes;
+	}
+
+	public Groups getGroups() {
+		return groups;
+	}
 }

@@ -91,6 +91,7 @@ public class OccupancyBridgeListeners implements ReportListener {
 	}
 
 	public boolean subscribe(OccupancyListener listener) {
+		
 		synchronized (listeners) {
 			if ( listeners.size() == 0 ) {
 				Subscription subscription = bridged.getSubscription();

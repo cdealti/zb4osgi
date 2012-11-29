@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.driver;
 
@@ -32,18 +32,17 @@ package it.cnr.isti.zigbee.ha.driver;
  */
 public class ArraysUtil {
 
-    /**
-     * Create a new <code>int[]</code> by concatenating prefix and postfix
-     *   
-     * @param prefix the first the <code>int[]</code> to join
-     * @param postfix the second the <code>int[]</code> to join
-     * @return the new <code>int[]</code> obtained by concatenating prefix and postfix
-     */
-    public static final int[] append(int[] prefix, int[] postfix){
-	int[] result = new int[prefix.length+postfix.length];
-	System.arraycopy(prefix, 0, result, 0, prefix.length);
-	System.arraycopy(postfix, 0, result, prefix.length, postfix.length);
-	return result;
-    }
-    
+	/**
+	 * Create a new <code>int[]</code> by concatenating prefix and postfix
+	 *   
+	 * @param prefix the first the <code>int[]</code> to join
+	 * @param postfix the second the <code>int[]</code> to join
+	 * @return the new <code>int[]</code> obtained by concatenating prefix and postfix
+	 */
+	public static final int[] append(int[] prefix, int[] postfix){
+		int[] result = new int[prefix.length+postfix.length];
+		System.arraycopy(prefix, 0, result, 0, prefix.length);
+		System.arraycopy(postfix, 0, result, prefix.length, postfix.length);
+		return result;
+	}    
 }

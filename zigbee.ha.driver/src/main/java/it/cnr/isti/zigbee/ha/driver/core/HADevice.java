@@ -49,10 +49,9 @@ public interface HADevice {
 	public static final String HA_DEVICE_GROUP = "zigbee.ha.group";
 	public static final String HA_DEVICE_STANDARD = "zigbee.ha.standard";
 	
-	public static final int[] MANDATORY = {HAProfile.BASIC,HAProfile.IDENTIFY};
+	public static final int[] MANDATORY = {HAProfile.BASIC, HAProfile.IDENTIFY};
 	public static final int[] OPTIONAL = {HAProfile.POWER_CONFIGURATION, HAProfile.DEVICE_TEMPERATURE_CONFIGURATION, HAProfile.ALARMS};
-	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
-	
+	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);	
 	
 	public String getName();	
 	/**
@@ -62,8 +61,7 @@ public interface HADevice {
 	 */
 	public int getDeviceType();
 	public int getEndPointId();
-	public int getProfileId();
-	
+	public int getProfileId();	
 	
 	/**
 	 * Access method for the <b>Mandatory</b> cluster: {@link Basic} 
@@ -135,7 +133,5 @@ public interface HADevice {
 	 * @since 0.2.0
 	 * @deprecated The method should be avoided because it cause Service Reference Leak
 	 */
-	public ZigBeeDevice getZBDevice(); 
-	
-	
+	public ZigBeeDevice getZBDevice(); 	
 }

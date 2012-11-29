@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.cluster.impl;
 
@@ -40,28 +40,34 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.OccupacySensingC
  *
  */
 public class OccupacySensingImpl implements OccupacySensing {
-			
+
 	private OccupacySensingCluster occupacySensingCluster;
+
 	private Attribute occupancy;
 	private Attribute occupancySensorType;
 	private Attribute pirOccupiedToUnoccupiedDelay;
 	private Attribute pirUnoccupiedToOccupiedDelay;
+	private Attribute pirUnoccupiedToOccupiedThreshold;
 	private Attribute ultraSonicOccupiedToUnoccupiedDelay;
 	private Attribute ultraSonicUnoccupiedToOccupiedDelay;
+	private Attribute ultrasonicUnoccupiedToOccupiedThreshold;
+
 	private OccupancyBridgeListeners eventBridge;
-	
-	public OccupacySensingImpl(ZigBeeDevice zbDevice){
-		
-		
+
+	public OccupacySensingImpl(ZigBeeDevice zbDevice){		
+
 		occupacySensingCluster = new OccupacySensingCluster(zbDevice);
+
 		occupancy = occupacySensingCluster.getAttributeOccupancy();
 		occupancySensorType = occupacySensingCluster.getAttributeOccupancySensorType();
 		pirOccupiedToUnoccupiedDelay = occupacySensingCluster.getAttributePIROccupiedToUnoccupiedDelay();
 		pirUnoccupiedToOccupiedDelay = occupacySensingCluster.getAttributePIRUnoccupiedToOccupiedDelay();
 		ultraSonicOccupiedToUnoccupiedDelay = occupacySensingCluster.getAttributeUltraSonicOccupiedToUnoccupiedDelay();
 		ultraSonicUnoccupiedToOccupiedDelay = occupacySensingCluster.getAttributeUltraSonicUnoccupiedToOccupiedDelay();
-		eventBridge = new OccupancyBridgeListeners(Activator.getConfiguration(), occupancy, this);
-		
+		pirUnoccupiedToOccupiedThreshold = occupacySensingCluster.getAttributePIRUnoccupiedToOccupiedThreshold();
+		ultrasonicUnoccupiedToOccupiedThreshold = occupacySensingCluster.getAttributeUltrasonicUnoccupiedToOccupiedThreshold();
+
+		eventBridge = new OccupancyBridgeListeners(Activator.getConfiguration(), occupancy, this);		
 	}
 
 	public Attribute getOccupancy() {
@@ -107,7 +113,7 @@ public class OccupacySensingImpl implements OccupacySensing {
 	public void unsubscribe(OccupancyListener listener) {
 		eventBridge.unsubscribe(listener);
 	}
-	
+
 	public Attribute getAttribute(int id) {		
 		Attribute[] attributes = occupacySensingCluster.getAvailableAttributes();
 		for (int i = 0; i < attributes.length; i++) {
@@ -120,5 +126,12 @@ public class OccupacySensingImpl implements OccupacySensing {
 	public Attribute[] getAttributes() {
 		return occupacySensingCluster.getAvailableAttributes();
 	}
-	
+
+	public Attribute getPIRUnoccupiedToOccupiedThreshold() {
+		return pirUnoccupiedToOccupiedThreshold;
+	}
+
+	public Attribute getUltraSonicUnoccupiedToOccupiedThreshold() {
+		return ultrasonicUnoccupiedToOccupiedThreshold;
+	}	
 }

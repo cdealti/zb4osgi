@@ -23,6 +23,7 @@
 package it.cnr.isti.zigbee.ha.device.impl;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
 import it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.TemperatureMeasurement;
 import it.cnr.isti.zigbee.ha.device.api.hvac.TemperatureSensor;
 import it.cnr.isti.zigbee.ha.driver.core.HADeviceBase;
@@ -43,11 +44,15 @@ import org.osgi.framework.BundleContext;
  */
 public class TemperatureSensorDevice extends HADeviceBase implements TemperatureSensor {
 	
-	private final TemperatureMeasurement temperature;
+	private TemperatureMeasurement temperature;
+	private Groups groups;
 
 	public TemperatureSensorDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException {
+		
 		super(ctx,zbDevice);
+		
 		temperature = (TemperatureMeasurement) addCluster(HAProfile.TEMPERATURE_MEASUREMENT);
+		groups = (Groups) addCluster(HAProfile.GROUPS);
 	}
 
 	public String getName() {
@@ -82,4 +87,7 @@ public class TemperatureSensorDevice extends HADeviceBase implements Temperature
 		return DEVICE_DESCRIPTOR;
 	}
 
+	public Groups getGroups() {
+		return groups;
+	}
 }

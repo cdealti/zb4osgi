@@ -46,19 +46,19 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.OnOffCluster;
  */
 public class OnOffImpl implements OnOff{
 	
-	private final Attribute attribute;
+	private final Attribute onOff;
 	private final OnOffCluster onOffCluster;
 	private OnOffBridgeListeners eventBridge;
 		
 	public OnOffImpl(ZigBeeDevice zbDevice){
 		onOffCluster = new OnOffCluster(zbDevice);
-		attribute = onOffCluster.getAttributeOnOff();
-		eventBridge = new OnOffBridgeListeners(Activator.getConfiguration(), attribute, this);
+		onOff = onOffCluster.getAttributeOnOff();
+		eventBridge = new OnOffBridgeListeners(Activator.getConfiguration(), onOff, this);
 	}
 
 	public boolean getOnOff() throws ZigBeeHAException {
 		try {
-			Boolean value = (Boolean) attribute.getValue();
+			Boolean value = (Boolean) onOff.getValue();
 			return value.booleanValue();
 		} catch (ZigBeeClusterException e) {
 			throw new ZigBeeHAException(e);
@@ -71,8 +71,7 @@ public class OnOffImpl implements OnOff{
 
 	public boolean unsubscribe(OnOffListener listener) {
 		return eventBridge.unsubscribe(listener);
-	}
-	
+	}	
 	
 	public void off() throws ZigBeeHAException {
 		try {

@@ -59,7 +59,9 @@ public interface OccupacySensing extends Cluster {
 	
 	public Attribute getPIROccupiedToUnoccupiedDelay();
 	public Attribute getPIRUnoccupiedToOccupiedDelay();
+	public Attribute getPIRUnoccupiedToOccupiedThreshold();
 	
 	public Attribute getUltraSonicOccupiedToUnoccupiedDelay();
 	public Attribute getUltraSonicUnoccupiedToOccupiedDelay();
+	public Attribute getUltraSonicUnoccupiedToOccupiedThreshold();
 }

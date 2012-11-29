@@ -18,11 +18,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.device.impl;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
 import it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.OccupacySensing;
 import it.cnr.isti.zigbee.ha.device.api.lighting.OccupancySensor;
 import it.cnr.isti.zigbee.ha.driver.core.HADeviceBase;
@@ -43,18 +44,21 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class OccupancySensorDevice extends HADeviceBase implements OccupancySensor {
-	
+
 	private OccupacySensing occupancySensing;
-	
+	private Groups groups;
+
 	public  OccupancySensorDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException {
+
 		super(ctx,zbDevice);
+
 		occupancySensing = (OccupacySensing) addCluster(HAProfile.OCCUPANCY_SENSING);
+		groups = (Groups) addCluster(HAProfile.GROUPS);
 	}
 
 	public OccupacySensing getOccupacySensing() {
 		return occupancySensing;
 	}
-	
 
 	@Override
 	public String getName() {
@@ -78,7 +82,6 @@ public class OccupancySensorDevice extends HADeviceBase implements OccupancySens
 		public int[] getStandardClusters() {
 			return OccupancySensor.STANDARD;
 		}
-		
 	};
 
 	@Override
@@ -86,5 +89,7 @@ public class OccupancySensorDevice extends HADeviceBase implements OccupancySens
 		return DEVICE_DESCRIPTOR;
 	}
 
-
+	public Groups getGroups() {
+		return groups;
+	}
 }

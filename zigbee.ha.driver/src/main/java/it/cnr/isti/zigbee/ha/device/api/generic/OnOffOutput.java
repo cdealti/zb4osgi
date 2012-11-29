@@ -47,7 +47,7 @@ public interface OnOffOutput extends HADevice{
 	public static final String NAME = "On/Off Output";
 	
 	public static final int[] MANDATORY = ArraysUtil.append(HADevice.MANDATORY, new int[]{
-		HAProfile.BASIC,HAProfile.IDENTIFY,HAProfile.ON_OFF,HAProfile.GROUPS,HAProfile.SCENES
+		HAProfile.ON_OFF,HAProfile.GROUPS,HAProfile.SCENES
 	});
 	public static final int[] OPTIONAL = HADevice.OPTIONAL;
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
@@ -73,5 +73,4 @@ public interface OnOffOutput extends HADevice{
 	 * @return the {@link Groups} cluster object
 	 */
 	public Groups getGroups();
-
 }

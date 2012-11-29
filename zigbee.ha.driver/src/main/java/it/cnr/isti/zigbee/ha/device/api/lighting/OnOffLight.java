@@ -84,5 +84,4 @@ public interface OnOffLight extends HADevice{
 	 * @return the {@link OccupacySensing} cluster object if implemented by the device, otherwise <code>null</code>
 	 */
 	public OccupacySensing getOccupacySensing();	
-	
 }

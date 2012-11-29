@@ -49,5 +49,4 @@ public interface Alarms extends Cluster {
     public boolean addAlarmListerner(AlarmListener listener);
 
     public boolean removeAlarmListerner(AlarmListener listener);
-
 }

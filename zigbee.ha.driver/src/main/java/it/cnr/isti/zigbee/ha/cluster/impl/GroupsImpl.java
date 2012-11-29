@@ -54,9 +54,9 @@ public class GroupsImpl implements Groups {
 		nameSupport = groupCluster.getAttributeNameSupport();
 	}
 
-	public AddGroupResponse addGroup(int groupId, String name) throws ZigBeeHAException{
+	public AddGroupResponse addGroup(int groupId) throws ZigBeeHAException{
 		try {
-			AddGroupResponse response = (AddGroupResponse)groupCluster.addGroup(groupId, name);
+			AddGroupResponse response = (AddGroupResponse)groupCluster.addGroup(groupId);
 			return response;
 		} catch (ZigBeeClusterException e) {
 			throw new ZigBeeHAException(e);
@@ -138,6 +138,5 @@ public class GroupsImpl implements Groups {
 
 	public Attribute[] getAttributes() {
 		return groupCluster.getAvailableAttributes();
-	}
-	
+	}	
 }

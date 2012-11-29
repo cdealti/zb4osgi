@@ -49,13 +49,12 @@ public class BasicImpl implements Basic{
 	private Attribute hwVersion;
 	private Attribute manufacturerName;
 	private Attribute modelIdentifier;
-	private Attribute dateCode;
+	private Attribute dataCode;
 	private Attribute powerSource;	
 	private Attribute locationDescription;
 	private Attribute physicalEnviroment;
 	private Attribute deviceEnabled;
 	private Attribute alarmMask;
-	private Attribute disableLocalConfig;
 	
 	public BasicImpl(ZigBeeDevice zbDevice){
 		basicCluster = new BasicCluster(zbDevice);
@@ -65,19 +64,14 @@ public class BasicImpl implements Basic{
 		hwVersion = basicCluster.getAttributeHWVersion();
 		manufacturerName = basicCluster.getAttributeManufacturerName();
 		modelIdentifier = basicCluster.getAttributeModelIdentifier();
-		dateCode = basicCluster.getAttributeDateCode();
+		dataCode = basicCluster.getAttributeDateCode();
 		powerSource = basicCluster.getPowerSource();	
 		locationDescription = basicCluster.getAttributeLocationDescription();
-		physicalEnviroment = basicCluster.getAttributePhysicalEnvironment();
+		physicalEnviroment = basicCluster.getAttributePhysicalEnviroment();
 		deviceEnabled = basicCluster.getAttributeDeviceEnabled();
 		alarmMask = basicCluster.getAttributeAlarmMask();
-		disableLocalConfig = basicCluster.getAttributeDisableLocalConfig();
 	}
 
-	public Attribute getDisableLocalConfig() {
-		return disableLocalConfig;
-	}
-	
 	public Attribute getAlarmMask() {
 		return alarmMask;
 	}
@@ -87,7 +81,7 @@ public class BasicImpl implements Basic{
 	}
 
 	public Attribute getDateCode() {
-		return dateCode;
+		return dataCode;
 	}
 
 	public boolean getDeviceEnabled() throws ZigBeeHAException{
@@ -120,7 +114,7 @@ public class BasicImpl implements Basic{
 		return modelIdentifier;
 	}
 
-	public Attribute getPhysicalEnvironment() {
+	public Attribute getPhysicalEnviroment() {
 		return physicalEnviroment;
 	}
 
@@ -170,5 +164,4 @@ public class BasicImpl implements Basic{
 	public Attribute[] getAttributes() {
 		return basicCluster.getAvailableAttributes();
 	}
-
 }

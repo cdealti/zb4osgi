@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
@@ -51,21 +51,18 @@ public class ClusterFactoryBase implements ClusterFactory{
 	private Dictionary dictionary;
 	private Hashtable<String, Class> clusters;
 
-	
-    public ClusterFactoryBase(BundleContext ctx){
-    	this.ctx = ctx;
-    	dictionary = new Properties();
-    	clusters = new Hashtable<String, Class>();
-    }
-    
-
-	
-	public void addProperty(String key, Object value){
-    	dictionary.put(key, value);
+	public ClusterFactoryBase(BundleContext ctx){
+		this.ctx = ctx;
+		dictionary = new Properties();
+		clusters = new Hashtable<String, Class>();
 	}
 
-	
+	public void addProperty(String key, Object value){
+		dictionary.put(key, value);
+	}
+
 	public void register(){
+	
 		Enumeration<String> keys = clusters.keys();
 		String[] clusterIDs = new String[clusters.size()];
 		int i =0;
@@ -73,21 +70,21 @@ public class ClusterFactoryBase implements ClusterFactory{
 			String key = (String) keys.nextElement();
 			clusterIDs[i++]=key;
 		}
-			
+
 		dictionary.put(Cluster.PROFILE_CLUSTER_IDs,clusterIDs);
 		registration = ctx.registerService(ClusterFactory.class.getName(), this, dictionary);
 	}
-	
+
 	public void unregister(){
 		registration.unregister();
 	}
 
-	
 	protected void addCluster(String key, Class clazz) {
 		clusters.put(key,clazz);		
 	}
 
 	public Cluster getInstance(String key, ZigBeeDevice zbDevice) {
+	
 		Class clazz = clusters.get(key);	
 		if (clazz != null) {
 			try {
@@ -116,5 +113,4 @@ public class ClusterFactoryBase implements ClusterFactory{
 		}
 		return null;
 	}
-
 }

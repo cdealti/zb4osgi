@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.ha.device.impl;
 
@@ -45,9 +45,8 @@ import org.osgi.framework.BundleContext;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class LevelControlSwitchDevice extends HADeviceBase implements
-		LevelControlSwitch {
-	
+public class LevelControlSwitchDevice extends HADeviceBase implements LevelControlSwitch {
+
 	private OnOff onOff;
 	private OnOffSwitchConfiguration onOffSwitchConfiguration;
 	private Groups groups;
@@ -55,16 +54,17 @@ public class LevelControlSwitchDevice extends HADeviceBase implements
 	private LevelControl levelControl;
 	private Identify identify;
 
-	
 	public LevelControlSwitchDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException{
+
 		super(ctx, zbDevice);
+
 		onOffSwitchConfiguration = (OnOffSwitchConfiguration) addCluster(HAProfile.ON_OFF_SWITCH_CONFIGURATION);
 		onOff = (OnOff) addCluster(HAProfile.ON_OFF);
 		groups = (Groups) addCluster(HAProfile.GROUPS);
 		scenes = (Scenes) addCluster(HAProfile.SCENES);
 		identify = (Identify) addCluster(HAProfile.IDENTIFY);
 	}
-	
+
 	final static DeviceDescription DEVICE_DESCRIPTOR =  new AbstractDeviceDescription(){
 
 		public int[] getCustomClusters() {
@@ -81,10 +81,9 @@ public class LevelControlSwitchDevice extends HADeviceBase implements
 
 		public int[] getStandardClusters() {
 			return LevelControlSwitch.STANDARD;
-		}
-		
+		}		
 	};
-	
+
 	@Override
 	public DeviceDescription getDescription() {
 		return DEVICE_DESCRIPTOR;
@@ -114,9 +113,8 @@ public class LevelControlSwitchDevice extends HADeviceBase implements
 	public Scenes getScenes() {
 		return scenes;
 	}
-	
-	public Identify getIdentify() {
-		return identify;
-	}
 
+	/*public Identify getIdentify() {
+		return identify;
+	}*/
 }

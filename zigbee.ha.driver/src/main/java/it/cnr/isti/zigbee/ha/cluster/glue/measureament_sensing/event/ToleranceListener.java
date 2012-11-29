@@ -31,6 +31,5 @@ package it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.event;
  */
 public interface ToleranceListener {
 	
-	public void changedTolerance(ToleranceEvent event);
-	
+	public void changedTolerance(ToleranceEvent event);	
 }

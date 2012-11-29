@@ -41,6 +41,5 @@ public interface OnOffEvent {
 	 * 			generated the event
 	 * @since 0.6.0
 	 */
-	public Cluster getSource();
-	
+	public Cluster getSource();	
 }

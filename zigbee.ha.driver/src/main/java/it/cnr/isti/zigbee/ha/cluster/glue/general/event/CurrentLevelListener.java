@@ -31,6 +31,5 @@ package it.cnr.isti.zigbee.ha.cluster.glue.general.event;
  */
 public interface CurrentLevelListener {
 	
-	public void changedCurrentLevel(CurrentLevelEvent event);
-	
+	public void changedCurrentLevel(CurrentLevelEvent event);	
 }

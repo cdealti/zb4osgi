@@ -34,12 +34,19 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
+ * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
  *
  */
 public class DefaultSerializer implements ZBSerializer {
 	int index = 0;
 	private byte[] payload;
 
+	/**
+	 * 
+	 * @param payload the byte array that will used for storing the serialiazed data
+	 * @param index the first empty byte where data will be written
+	 * @deprecated From version 0.7.0 please use the {@link ByteArrayOutputStreamSerializer} instead
+	 */
 	public DefaultSerializer(byte[] payload, int index ) {
 		this.payload = payload;
 		this.index = index;
@@ -63,16 +70,11 @@ public class DefaultSerializer implements ZBSerializer {
 
 	public void appendString(String str){
 		final byte[] raw = str.getBytes();
-		if ( raw.length > 255 ) {
-			throw new IllegalArgumentException("Given string '"+str+"' is too long - maximum String size is 255.");
-		}
-		//index += raw.length + 1;
-		payload[index] = (byte) (raw.length & 0xFF);
-		System.arraycopy(raw, 0, payload, index+1, raw.length);
+		System.arraycopy(raw, 0, payload, index, raw.length);
+		index += raw.length;
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {
-
 		if ( data == null ) {
 			throw new NullPointerException("You can not append null data to a stream");
 		}
@@ -81,11 +83,11 @@ public class DefaultSerializer implements ZBSerializer {
 			appendBoolean((Boolean) data);
 			break;
 		case Data8bit: case SignedInteger8bit: case Bitmap8bit: case UnsignedInteger8bit: case Enumeration8bit:
-			final Integer b = (Integer) data;
+			final Number b = (Number) data;
 			append_byte(b.byteValue());
 			break;
 		case Data16bit: case SignedInteger16bit: case Bitmap16bit: case UnsignedInteger16bit: case Enumeration16bit:
-			final Integer s = (Integer) data;
+			final Number s = (Number) data;
 			append_short(s.shortValue());
 			break;
 		case Data24bit: case SignedInteger24bit: case Bitmap24bit: case UnsignedInteger24bit:
@@ -103,16 +105,16 @@ public class DefaultSerializer implements ZBSerializer {
 				append_int(i.intValue());
 			}				
 			break;
-			/* 
-		case IEEEAddress:
-			final String ieee = (String) data;
-			appendString(ieee);
-			break;
-			 */
-		case CharacterString: case IEEEAddress:
+		case CharacterString: case OctectString: {
 			final String str = (String) data;
+			append_byte( (byte) (str.length() & (0xFF) ));
 			appendString(str);
-			break;
+		} break;
+		case LongCharacterString: case LongOctectString: {
+			final String str = (String) data;
+			append_short((short) (str.length() & (0xFFFF)));
+			appendString(str);
+		} break;
 		default:
 			throw new IllegalArgumentException(
 					"No reader defined by this "+ZBDeserializer.class.getName()+
@@ -151,5 +153,11 @@ public class DefaultSerializer implements ZBSerializer {
 
 	public void append_short(short data) {
 		index += Integers.writeShort(payload, index, data);
+	}
+
+	public byte[] getPayload() {
+		byte[] copy = new byte[index];
+		System.arraycopy(payload, 0, copy, 0, copy.length);
+		return copy;
 	}
 }

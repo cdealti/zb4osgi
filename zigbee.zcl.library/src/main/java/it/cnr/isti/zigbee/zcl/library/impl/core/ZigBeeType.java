@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -32,7 +32,9 @@ import java.util.Hashtable;
  *
  */
 public enum ZigBeeType {
-	
+
+	//TODO Add missing data types
+
 	Boolean(0x10, 1, false, Boolean.class),
 	Data8bit(0x08, 1, false, Integer.class),
 	Data16bit(0x09, 2, false, Integer.class),
@@ -46,18 +48,21 @@ public enum ZigBeeType {
 	UnsignedInteger16bit(0x21, 2, true, Integer.class),
 	UnsignedInteger24bit(0x22, 3, true, Integer.class),
 	UnsignedInteger32bit(0x23, 4, true, Long.class),
+	OctectString(0x41, -1, false, String.class),
 	CharacterString(0x42, -1, false, String.class),
+	LongOctectString(0x43, -1, false, String.class),
+	LongCharacterString(0x44, -1, false, String.class),
 	Enumeration8bit(0x30, 1, false, Byte.class),
 	Enumeration16bit(0x31, 2, false, Byte.class),
-	IEEEAddress(0xf0, -1, false, String.class), // TODO: Check 
+	IEEEAddress(0xf0, 8, false, String.class), 
 	SignedInteger8bit(0x28, 1, true, Integer.class),
 	SignedInteger16bit(0x29, 2, true, Integer.class),
 	SignedInteger24bit(0x2a, 3, true, Integer.class),
 	SignedInteger32bit(0x2b, 4, true, Integer.class);
-	
-	
+
+
 	static Hashtable<Byte, ZigBeeType> MAP;
-	
+
 	private int id;
 	private int length;
 	private boolean analog;
@@ -88,7 +93,7 @@ public enum ZigBeeType {
 	public boolean isAnalog() {
 		return analog;
 	}
-	
+
 	public Class getJavaClass() {
 		return javaClass;
 	}
@@ -96,12 +101,14 @@ public enum ZigBeeType {
 	public static ZigBeeType getType(byte b){
 		return MAP.get(Byte.valueOf(b));
 	}
-	
+
 	private static Hashtable<Byte, ZigBeeType> getMap(){
 		return MAP;
 	}
-	
+
 	private static void setMap(){
-		 MAP = new Hashtable<Byte, ZigBeeType>();
-	}	
+		MAP = new Hashtable<Byte, ZigBeeType>();
+	}
+
+
 }

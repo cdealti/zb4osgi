@@ -37,31 +37,25 @@ import org.osgi.framework.ServiceRegistration;
  * @since 0.1.0
  *
  */
-public class Activtor
-    implements BundleActivator {
+public class Activator implements BundleActivator {
 	
 	public static ZigBeeDiscoveryMonitorImpl service;
 	public static BundleContext context;
 
     private ServiceRegistration registration;
     
-	public void start( BundleContext bc )
-        throws Exception {
+	public void start( BundleContext bc ) throws Exception {
 		
     	context = bc;
     	NetworkGraph gui = new NetworkGraph();
     	service = new ZigBeeDiscoveryMonitorImpl(gui.getGraph());
     	registration = bc.registerService(ZigBeeDiscoveryMonitor.class.getName(), service, null);
-
     }
 
-    public void stop( BundleContext bc )
-        throws Exception {
-    	
-    	
+    public void stop( BundleContext bc ) throws Exception {
+    	    	
     	registration.unregister();
     	service = null;
     	context = null;
     }
-
 }

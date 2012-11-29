@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.api;
 
@@ -34,67 +34,67 @@ import java.util.Dictionary;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  */
 public interface ZigBeeDevice {
-	
+
 	/**
 	 * Key of the {@link String} profile id implemented by the device.
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String PROFILE_ID = "zigbee.device.profile.id";
-	
+
 	/**
 	 * Key of the {@link String} profile implemented by the device
 	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String PROFILE_NAME = "zigbee.device.profile.name";
-	
+
 	/**
 	 * Key of the {@link String} containing the DeviceId of the device
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String DEVICE_ID = "zigbee.device.device.id";
-	
+
 	/**
 	 * Key of the {@link String} containing the DeviceVersion of the device
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String DEVICE_VERSION = "zigbee.device.device.version";
-	
+
 	/**
 	 * Key of the {@link String} containing the name of the device
 	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String DEVICE_NAME = "zigbee.device.device.name";
-	
+
 	/**
 	 * Key of the int array of containing the ids of each input cluster 
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String CLUSTERS_INPUT_ID = "zigbee.device.clusters.input.id";
-	
+
 	/**
 	 * Key of the {@link String} array of containing the names of input cluster
 	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String CLUSTERS_INPUT_NAME = "zigbee.device.clusters.input.name";
-	
+
 	/**
 	 * Key of the int array of containing the ids of each output cluster 
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String CLUSTERS_OUTPUT_ID = "zigbee.device.clusters.output.id";
-	
+
 	/**
 	 * Key of the {@link String} array of containing the names of output cluster
 	 * <br>It is <b>optional</b> property for this service
 	 */
 	public final String CLUSTERS_OUTPUT_NAME = "zigbee.device.clusters.output.name";
-	
+
 	/**
 	 * Key of the {@link String} containing the EndPoint Address of the device
 	 * <br>It is <b>mandatory</b> property for this service
 	 */
 	public final String ENDPOINT = "zigbee.device.endpoint";
-	
+
 	/**
 	 * Key of the {@link String} containing an unique identifier that represent an unique identifier 
 	 * for the device composed by: <br>
@@ -117,8 +117,8 @@ public interface ZigBeeDevice {
 	 * This property identify which <code>SimpleDriver</code> has been used for discovering
 	 * the ZigBee device
 	 */
-    public final String ZIGBEE_IMPORT = "zigbee.import.id";
-	
+	public final String ZIGBEE_IMPORT = "zigbee.import.id";
+
 	/**
 	 * Constant for the ZigBee device match scale, indicating a match with the ProfileId. Value is 1024.
 	 */
@@ -135,33 +135,33 @@ public interface ZigBeeDevice {
 	 * and the DeviceId. Value is 4096.
 	 */
 	public static final int MATCH_DEVICE_ID = 4096;
-	
+
 
 	/**
 	 * 
 	 * @return Address of the EndPoint represented by this object, value ranges from 1 to 240. 
 	 */
 	public short getId();
-	
+
 	/**
 	 * 
 	 * @return the profile Id implemented by this EndPoint
 	 */
 	public int getProfileId();
-	
+
 	/**
 	 * 
 	 * @return the device id implemented by this EndPoint
 	 */
 	public int getDeviceId();
-	
+
 	/**
 	 * 
 	 * @return the {@link ZigBeeNode} containing this EndPoint
 	 * @since 0.2.0  
 	 */
 	public ZigBeeNode getPhysicalNode();
-	
+
 	/**
 	 * 
 	 * @return a {@link String} the represent an URI of device. The same as property {@link #UUID}
@@ -174,13 +174,13 @@ public interface ZigBeeDevice {
 	 * @return the device version implemented by this EndPoint
 	 */
 	public short getDeviceVersion();
-	
+
 	/**
 	 * 
 	 * @return the list of Input Cluster identifies implemented by this EndPoint
 	 */
 	public int[] getInputClusters();
-	
+
 	/**
 	 * 
 	 * @param id the Cluster identifier
@@ -188,13 +188,13 @@ public interface ZigBeeDevice {
 	 * 		 as Input Cluster
 	 */
 	public boolean providesInputCluster(int id);
-	
+
 	/**
 	 * 
 	 * @return the list of Output Cluster identifies implemented by this EndPoint
 	 */
 	public int[] getOutputClusters();
-	
+
 	/**
 	 * 
 	 * @param id the Cluster identifier
@@ -202,7 +202,7 @@ public interface ZigBeeDevice {
 	 * 		 as Output Cluster
 	 */
 	public boolean providesOutputCluster(int id);	
-	
+
 	/**
 	 * Invoke the given {@link Cluster} (which is supposed to part of the Input Cluster) of this EndPoint,<br>
 	 * and wait for the a response from.
@@ -213,11 +213,11 @@ public interface ZigBeeDevice {
 	 * 		
 	 */
 	public Cluster invoke(Cluster input) throws ZigBeeBasedriverException;
-	
+
 	/**
 	 * Send the given {@link Cluster} (which is supposed to be Input Cluster) to this EndPoint,<br>
 	 * on the contrary than the {@link #invoke(Cluster)} this method doesn't wait for nor requires<br>
-	 * an answer from the EndPoin 
+	 * an answer from the EndPoint 
 	 * 
 	 * @param input the {@link Cluster} containing the id of the Cluster to send to the cluster message 
 	 * 		
@@ -238,7 +238,7 @@ public interface ZigBeeDevice {
 	 * @since 0.5.0
 	 */
 	public boolean bindTo(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException;
-	
+
 	/**
 	 * This method modify the <i>Binding Table</i> of physical device by removing the entry if exists 
 	 * <pre>
@@ -253,7 +253,7 @@ public interface ZigBeeDevice {
 	 * @since 0.5.0
 	 */
 	public boolean unbindFrom(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException;
-	
+
 	/**
 	 * 
 	 * @param clusterId
@@ -261,7 +261,7 @@ public interface ZigBeeDevice {
 	 * @throws ZigBeeBasedriverException
 	 */
 	public boolean bind(int clusterId) throws ZigBeeBasedriverException;
-	
+
 	/**
 	 * 
 	 * @param clusterId
@@ -269,7 +269,7 @@ public interface ZigBeeDevice {
 	 * @throws ZigBeeBasedriverException
 	 */
 	public boolean unbind(int clusterId) throws ZigBeeBasedriverException;
-	
+
 	/**
 	 * Add a {@link ClusterListner} to this EndPoint. The same instance of a {@link ClusterListner} will<br>
 	 * registered only once.
@@ -278,7 +278,7 @@ public interface ZigBeeDevice {
 	 * @return true if and only if the {@link ClusterListner} has been registered
 	 */
 	public boolean addClusterListener(ClusterListner listener);
-	
+
 	/**
 	 * Remove a {@link ClusterListner} to this EndPoint. 
 	 * 
@@ -286,7 +286,7 @@ public interface ZigBeeDevice {
 	 * @return true if and only if the {@link ClusterListner} has been unregistered
 	 */
 	public boolean removeClusterListener(ClusterListner listener);
-	
+
 	/**
 	 * This method returns a {@link Dictionary} object which contains at least<br>
 	 * all the information used for registering the service on the OSGi Framework
@@ -296,4 +296,3 @@ public interface ZigBeeDevice {
 	 */
 	public Dictionary getDescription();
 }
-	

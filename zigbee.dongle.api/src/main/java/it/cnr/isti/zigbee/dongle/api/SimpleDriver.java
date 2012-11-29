@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.dongle.api;
 
@@ -32,6 +32,8 @@ import com.itaca.ztool.api.zdo.ZDO_BIND_REQ;
 import com.itaca.ztool.api.zdo.ZDO_BIND_RSP;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_REQ;
 import com.itaca.ztool.api.zdo.ZDO_IEEE_ADDR_RSP;
+import com.itaca.ztool.api.zdo.ZDO_MGMT_LQI_REQ;
+import com.itaca.ztool.api.zdo.ZDO_MGMT_LQI_RSP;
 import com.itaca.ztool.api.zdo.ZDO_NODE_DESC_REQ;
 import com.itaca.ztool.api.zdo.ZDO_NODE_DESC_RSP;
 import com.itaca.ztool.api.zdo.ZDO_SIMPLE_DESC_REQ;
@@ -84,6 +86,10 @@ public interface SimpleDriver {
 
 	public abstract boolean addAFMessageListner(AFMessageListner listner);
 
+	public abstract ZDO_MGMT_LQI_RSP sendLQIRequest(ZDO_MGMT_LQI_REQ request);
+
+	public abstract void addCustomDevice(String endpointNumber, String profileID, String deviceID, String version, String inputClusters, String outputCluster);
+
 	/**
 	 * <b>WARNING</b>: This method may have to wait for the initialization of the ZigBee network<br>
 	 * thus, it may be quite slow or end up in a deadlock of the application
@@ -129,7 +135,7 @@ public interface SimpleDriver {
 	 * @deprecated
 	 */
 	public abstract int getCurrentState();
-	
+
 	/**
 	 * <b>WARNING</b>: This method may have to wait for the initialization of the ZigBee network<br>
 	 * thus, it may be quite slow or end up in a deadlock of the application
@@ -138,12 +144,11 @@ public interface SimpleDriver {
 	 * @since 0.6.0
 	 */
 	public abstract int getZigBeeNodeMode();
-	
+
 	/**
 	 * 
 	 * @return The current status of the driver
 	 * @see 0.6.0
 	 */
-	public abstract DriverStatus getDriverStatus();
-	
+	public abstract DriverStatus getDriverStatus();	
 }

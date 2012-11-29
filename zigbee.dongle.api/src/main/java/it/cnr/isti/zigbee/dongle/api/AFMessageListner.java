@@ -43,6 +43,4 @@ public interface AFMessageListner {
 	 * @param msg the {@link AF_INCOMING_MSG} arrived that has to be handled
 	 */
 	void notify(AF_INCOMING_MSG msg);
-	
-
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.configuration;
 
@@ -27,6 +27,7 @@ import it.cnr.isti.osgi.util.OSGiProperties;
 import it.cnr.isti.zigbee.api.Constants;
 import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
+import it.cnr.isti.zigbee.dongle.api.CustomDevices;
 import it.cnr.isti.zigbee.dongle.api.DriverStatus;
 import it.cnr.isti.zigbee.dongle.api.NetworkMode;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
@@ -50,12 +51,12 @@ import org.slf4j.LoggerFactory;
 public class ConfigurationService implements ManagedService {
 
 	public static final String PID = Constants.MANAGED_SERVICE_PID;	
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
-		
+
 	private final HashMap<String, Object> configuration = new HashMap<String, Object>();
 	private SimpleDriver driver;
-	
+
 	public ConfigurationService(){
 		synchronized (configuration) {
 			configuration.put(ConfigurationProperties.PAN_ID_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.PAN_ID_KEY, ConfigurationProperties.PAN_ID) );
@@ -64,71 +65,86 @@ public class ConfigurationService implements ManagedService {
 			configuration.put(ConfigurationProperties.COM_NAME_KEY, OSGiProperties.getString(Activator.getBundleContext(), ConfigurationProperties.COM_NAME_KEY, ConfigurationProperties.COM_NAME) );
 			configuration.put(ConfigurationProperties.NETWORK_MODE_KEY, NetworkMode.valueOf(OSGiProperties.getString(Activator.getBundleContext(), ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE)) );
 			configuration.put(ConfigurationProperties.NETWORK_FLUSH_KEY, OSGiProperties.getBoolean(Activator.getBundleContext(), ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH) );
-			
+
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT) );
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY) );
 			configuration.put(ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, ConfigurationProperties.APPLICATION_MSG_TIMEOUT) );
-			
-            configuration.put(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, ConfigurationProperties.NETWORK_BROWSING_PERIOD) );
-            configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, ConfigurationProperties.DEVICE_INSPECTION_PERIOD) );
-            
-            configuration.put(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
-            configuration.put(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
+
+			configuration.put(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, ConfigurationProperties.NETWORK_BROWSING_PERIOD) );
+			configuration.put(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, OSGiProperties.getLong(Activator.getBundleContext(), ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, ConfigurationProperties.DEVICE_INSPECTION_PERIOD) );
+
+			configuration.put(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
+			configuration.put(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
+
+			// EVENTUALLY CUSTOM DEVICES THAT WILL BE CREATED ON DONGLE
+			configuration.put(CustomDevices.ENDPOINT_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.ENDPOINT_KEY, CustomDevices.ENDPOINT));
+			configuration.put(CustomDevices.PROFILE_ID_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.PROFILE_ID_KEY, CustomDevices.PROFILE_ID));
+			configuration.put(CustomDevices.DEVICE_ID_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.DEVICE_ID_KEY, CustomDevices.DEVICE_ID));
+			configuration.put(CustomDevices.VERSION_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.VERSION_KEY, CustomDevices.VERSION));
+			configuration.put(CustomDevices.INPUT_CLUSTERS_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.INPUT_CLUSTERS_KEY, CustomDevices.INPUT_CLUSTERS));
+			configuration.put(CustomDevices.OUTPUT_CLUSTERS_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.OUTPUT_CLUSTERS_KEY, CustomDevices.OUTPUT_CLUSTERS));
 		}
-		
+
 		logger.debug("Initialized {} with {}", this, configuration);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void updated(Dictionary newConfig) throws ConfigurationException {
-		
+
 		logger.info("Updating configuration with {}", newConfig);
-		
+
 		if( newConfig == null ){
 			logger.debug("New configuration is null, avoiding to update it");
 			return;
 		}
-		
+
 		DictionaryHelper helper = new DictionaryHelper(newConfig);
-		boolean isChanged = false;
+		//boolean isChanged = false;
 		synchronized (this) {
-			isChanged = setInteger( ConfigurationProperties.PAN_ID_KEY, helper.getInt(ConfigurationProperties.PAN_ID_KEY, getPanId() ) );			
-			isChanged = setInteger( ConfigurationProperties.CHANNEL_ID_KEY, helper.getInt(ConfigurationProperties.CHANNEL_ID_KEY, getChannelId() ) );
-			isChanged = setInteger( ConfigurationProperties.COM_BOUDRATE_KEY, helper.getInt(ConfigurationProperties.COM_BOUDRATE_KEY, getSerialBoudRate() ) );
-			isChanged = setStringCaseSensitve( ConfigurationProperties.COM_NAME_KEY, helper.getString(ConfigurationProperties.COM_NAME_KEY, getSerialPortName() ) );
-			isChanged = setNetworkMode( ConfigurationProperties.NETWORK_MODE_KEY, NetworkMode.valueOf(helper.getString(ConfigurationProperties.NETWORK_MODE_KEY, getNetworkMode().toString()) ) );
-			isChanged = setBoolean( ConfigurationProperties.NETWORK_FLUSH_KEY ,helper.getBoolean(ConfigurationProperties.NETWORK_FLUSH_KEY, getForceNetworkCleaning() ) );			
-			isChanged = setInteger( ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, helper.getInt(ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, getMessageRetryCount() ) );
-			isChanged = setInteger( ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, helper.getInt(ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, getMessageRetryDelay() ) );
-			isChanged = setLong( ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, helper.getLong(ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, getZigBeeTimeout() ) );
-			
-            setLong( ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, helper.getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, getNetworkBrowingPeriod() ) );
-            setLong( ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, helper.getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, getDeviceInspectionPeriod() ) );
-            
-            setInteger( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, helper.getInt( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, getAutomaticFreeEndPointRetry() ) );
-            setInteger( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, helper.getInt( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, getFirstFreeEndPoint() ) );
+			/*isChanged = */setInteger( ConfigurationProperties.PAN_ID_KEY, helper.getInt(ConfigurationProperties.PAN_ID_KEY, getPanId() ) );			
+			/*isChanged = */ setInteger( ConfigurationProperties.CHANNEL_ID_KEY, helper.getInt(ConfigurationProperties.CHANNEL_ID_KEY, getChannelId() ) );
+			/*isChanged = */ setInteger( ConfigurationProperties.COM_BOUDRATE_KEY, helper.getInt(ConfigurationProperties.COM_BOUDRATE_KEY, getSerialBoudRate() ) );
+			/*isChanged = */ setStringCaseSensitve( ConfigurationProperties.COM_NAME_KEY, helper.getString(ConfigurationProperties.COM_NAME_KEY, getSerialPortName() ) );
+			/*isChanged = */ setNetworkMode( ConfigurationProperties.NETWORK_MODE_KEY, NetworkMode.valueOf(helper.getString(ConfigurationProperties.NETWORK_MODE_KEY, getNetworkMode().toString()) ) );
+			/*isChanged = */ setBoolean( ConfigurationProperties.NETWORK_FLUSH_KEY ,helper.getBoolean(ConfigurationProperties.NETWORK_FLUSH_KEY, getForceNetworkCleaning() ) );			
+
+			/*isChanged = */ setInteger( ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, helper.getInt(ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY, getMessageRetryCount() ) );
+			/*isChanged = */ setInteger( ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, helper.getInt(ConfigurationProperties.APPLICATION_MSG_RETRY_DELAY_KEY, getMessageRetryDelay() ) );
+			/*isChanged = */ setLong( ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, helper.getLong(ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, getZigBeeTimeout() ) );
+
+			/*isChanged = */  setLong( ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, helper.getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY, getNetworkBrowsingPeriod() ) );
+			/*isChanged = */  setLong( ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, helper.getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY, getDeviceInspectionPeriod() ) );
+
+			/*isChanged = */  setInteger( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, helper.getInt( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, getAutomaticFreeEndPointRetry() ) );
+			/*isChanged = */  setInteger( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, helper.getInt( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, getFirstFreeEndPoint() ) );
+
+
+			setStringCaseInsensitve(CustomDevices.ENDPOINT_KEY, helper.getString(CustomDevices.ENDPOINT_KEY, getString(CustomDevices.ENDPOINT_KEY)));
+			setStringCaseInsensitve(CustomDevices.PROFILE_ID_KEY, helper.getString(CustomDevices.PROFILE_ID_KEY, getString(CustomDevices.PROFILE_ID_KEY)));
+			setStringCaseInsensitve(CustomDevices.DEVICE_ID_KEY, helper.getString(CustomDevices.DEVICE_ID_KEY, getString(CustomDevices.DEVICE_ID_KEY)));
+			setStringCaseInsensitve(CustomDevices.VERSION_KEY, helper.getString(CustomDevices.VERSION_KEY, getString(CustomDevices.VERSION_KEY)));
+			setStringCaseInsensitve(CustomDevices.INPUT_CLUSTERS_KEY, helper.getString(CustomDevices.INPUT_CLUSTERS_KEY, getString(CustomDevices.INPUT_CLUSTERS_KEY)));
+			setStringCaseInsensitve(CustomDevices.OUTPUT_CLUSTERS_KEY, helper.getString(CustomDevices.OUTPUT_CLUSTERS_KEY, getString(CustomDevices.OUTPUT_CLUSTERS_KEY)));
 		}
-		
+
 		logger.debug("Current configuration after applying new configuration is {}", configuration);
-		
-		if(isChanged) {
-			logger.info("Configuration related to the dongle changed, updating it");
-			updateDriverConfiguration();
-		}
+
+		logger.info("Configuration related to the dongle changed, updating it.ss");
+		updateDriverConfiguration();
 	}
 
 	private int getInt(String key){
 		return ((Integer) configuration.get(key)).intValue();
 	}
-	
+
 	private long getLong(String key){
 		return ((Long) configuration.get(key)).longValue();
 	}
-	
+
 	private boolean getBoolean(String key){
 		return ((Boolean) configuration.get(key)).booleanValue();
 	}
-	
+
 	private String getString(String key){
 		return (String) configuration.get(key);
 	}	
@@ -136,13 +152,13 @@ public class ConfigurationService implements ManagedService {
 	private NetworkMode getNetworkMode(String key){
 		return (NetworkMode) configuration.get(key);
 	}		
-	
+
 	private boolean setStringCaseInsensitve(String key, String value){
 		if( getString(key).equalsIgnoreCase(value) ) return false;
 		configuration.put(key, value);
 		return true;
 	}
-	
+
 	private boolean setStringCaseSensitve(String key, String value){
 		if( getString(key).compareTo(value) == 0) return false;
 		configuration.put(key, value);
@@ -166,13 +182,13 @@ public class ConfigurationService implements ManagedService {
 		configuration.put(key, value);
 		return true;
 	}
-	
+
 	private boolean setNetworkMode(String key, NetworkMode value){
 		if( getNetworkMode(key) == value ) return false;
 		configuration.put(key, value);
 		return true;
 	}	
-	
+
 	public synchronized short getPanId(){
 		return (short) getInt(ConfigurationProperties.PAN_ID_KEY);
 	}
@@ -188,7 +204,7 @@ public class ConfigurationService implements ManagedService {
 	public synchronized int getSerialBoudRate() {
 		return getInt(ConfigurationProperties.COM_BOUDRATE_KEY);
 	}		
-	
+
 	public synchronized NetworkMode getNetworkMode() {
 		return getNetworkMode(ConfigurationProperties.NETWORK_MODE_KEY);
 	}
@@ -196,7 +212,7 @@ public class ConfigurationService implements ManagedService {
 	public synchronized boolean getForceNetworkCleaning() {
 		return getBoolean(ConfigurationProperties.NETWORK_FLUSH_KEY);
 	}
-	
+
 	public synchronized int getMessageRetryCount() {
 		return getInt(ConfigurationProperties.APPLICATION_MSG_RETRY_COUNT_KEY);
 	}
@@ -225,7 +241,7 @@ public class ConfigurationService implements ManagedService {
 	}
 
 	private void updateDriverConfiguration() {
-		if ( driver.getDriverStatus() != DriverStatus.CLOSED ){
+		if ( driver != null && driver.getDriverStatus() != DriverStatus.CLOSED ){
 			logger.info("{} not configured nor started because its status is not equal to CLOSED", driver);
 			return;
 		}
@@ -233,33 +249,35 @@ public class ConfigurationService implements ManagedService {
 		driver.setSerialPort(getSerialPortName(), getSerialBoudRate());
 		driver.setZigBeeNetwork(getChannelId(), (short) getPanId());
 		driver.setZigBeeNodeMode(getNetworkMode());
+		driver.addCustomDevice((String)configuration.get(CustomDevices.ENDPOINT_KEY), (String)configuration.get(CustomDevices.PROFILE_ID_KEY), 
+				(String)configuration.get(CustomDevices.DEVICE_ID_KEY), (String)configuration.get(CustomDevices.VERSION_KEY), 
+				(String)configuration.get(CustomDevices.INPUT_CLUSTERS_KEY), (String)configuration.get(CustomDevices.OUTPUT_CLUSTERS_KEY));
 		driver.open(Activator.getCurrentConfiguration().getForceNetworkCleaning());
 	}
 
-    public synchronized long getDeviceInspectionPeriod() {
-        return getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY);
-    }
-    
-    public synchronized long getNetworkBrowingPeriod() {
-        return getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY);
-    }
+	public synchronized long getDeviceInspectionPeriod() {
+		return getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY);
+	}
 
-    /**
-     * 
-     * @return
-     * @since 0.6.0 - Revision 81
-     */
+	public synchronized long getNetworkBrowsingPeriod() {
+		return getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY);
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @since 0.6.0 - Revision 81
+	 */
 	public synchronized int getAutomaticFreeEndPointRetry() {
-        return getInt(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY);
+		return getInt(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY);
 	}
 
-    /**
-     * 
-     * @return
-     * @since 0.6.0 - Revision 86
-     */
+	/**
+	 * 
+	 * @return
+	 * @since 0.6.0 - Revision 86
+	 */
 	public synchronized int getFirstFreeEndPoint() {
-        return getInt(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY);
+		return getInt(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY);
 	}
-    
 }

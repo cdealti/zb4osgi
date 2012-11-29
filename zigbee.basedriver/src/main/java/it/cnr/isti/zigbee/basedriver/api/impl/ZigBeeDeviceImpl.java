@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.api.impl;
 
@@ -67,34 +67,34 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
  */
 public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessageProducer {
 
-	private static final long TIMEOUT = 5000;
+	private static long TIMEOUT; // manlio final 5000;
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeDeviceImpl.class);
-	
+
 	private final int[] inputs;
 	private final int[] outputs;
 	private final short deviceId;
 	private final short profileId;
 	private final byte deviceVersion;		
-	
+
 	private ZigBeeNode node = null;
 	private final Properties properties = new Properties();
 	private final SimpleDriver driver; 
 	private final byte endPointAddress;
-	
+
 	private final TIntHashSet boundCluster = new TIntHashSet();
 	private final HashSet<ClusterListner> listeners = new HashSet<ClusterListner>();
 	private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
 	private String uuid = null;	
-	
-	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n,  byte ep) throws ZigBeeBasedriverException	
-	{
-        if ( drv == null || n == null) {
-            logger.error( "Creating {} with some nulls parameters {}", new Object[]{ ZigBeeDevice.class, drv, n, ep } );
-            throw new NullPointerException("Cannont create a device with a null SimpleDriver or a null ZigBeeNode");
-        }
+
+	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n, byte ep) throws ZigBeeBasedriverException{
+
+		if ( drv == null || n == null) {
+			logger.error( "Creating {} with some nulls parameters {}", new Object[]{ ZigBeeDevice.class, drv, n, ep } );
+			throw new NullPointerException("Cannot create a device with a null SimpleDriver or a null ZigBeeNode");
+		}
 		driver = drv;
 		endPointAddress = ep;	   
-        
+
 		final ZDO_SIMPLE_DESC_RSP result = doRetrieveSimpleDescription( n );
 		short[] ins = result.getInputClustersList();
 		inputs = new int[ins.length];
@@ -108,12 +108,12 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 			outputs[i] = outs[i];
 		}
 		Arrays.sort(outputs);
-		
+
 		deviceId = result.getDeviceId();
 		profileId = result.getProfileId();
 		deviceVersion = result.getDeviceVersion();
-			
-        setPhysicalNode( n );
+
+		setPhysicalNode( n );
 
 		properties.put(ZigBeeDevice.PROFILE_ID, Integer.toString((profileId & 0xFFFF)));
 		properties.put(ZigBeeDevice.DEVICE_ID, Integer.toString((deviceId & 0xFFFF)));
@@ -121,78 +121,91 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		properties.put(ZigBeeDevice.ENDPOINT, Integer.toString((endPointAddress & 0xFF)));
 		properties.put(ZigBeeDevice.CLUSTERS_INPUT_ID, inputs);
 		properties.put(ZigBeeDevice.CLUSTERS_OUTPUT_ID, outputs);
-        properties.put(ZigBeeDevice.ZIGBEE_IMPORT, drv.getClass());
-        
-		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
-		
-	}
-	
-    /**
-     * Generates the UUID from the actual value of the variables
-     */
-    private String generateUUID() {
-        StringBuffer sb_uuid = new StringBuffer()
-            .append(profileId).append(":")
-            .append(deviceId).append(":")
-            .append(deviceVersion).append("@")
-            .append(node.getIEEEAddress()).append(":")
-            .append(endPointAddress);
-        return sb_uuid.toString();
-    }
+		properties.put(ZigBeeDevice.ZIGBEE_IMPORT, drv.getClass());
 
-        
-    /**
-     * This method set the ZigBeeNode for the device, it updates the linked variable as need.<br>
-     * It updates the node only if it differs from the old node.
-     * 
-     * @param n the new {@link ZigBeeNode} for the device
-     * @return <code>true</code> if and only if the {@link ZigBeeNode} has been updated
-     * @since 0.6.0 - Revision 72
-     * 
-     */
-    public boolean setPhysicalNode(ZigBeeNode n) {
-        if ( node == null && n != null || node != n && node.equals( n ) == false ) {
-            node = n;
-            uuid = generateUUID();      
-            properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
-            properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
-            properties.put(ZigBeeDevice.UUID, uuid);
-            
-            properties.put(Constants.DEVICE_SERIAL, uuid);
-            return true;
-        }else if ( node == n || node != null && node.equals( n ) ){
-            return false;
-        }else if( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
-            node = n;
-            uuid = generateUUID();      
-            properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
-            properties.put(ZigBeeDevice.UUID, uuid);
-            
-            properties.put(Constants.DEVICE_SERIAL, uuid);
-            return true;
-        } else if ( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
-            node = n;
-            properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
-            return true;
-        }
-        return false;
-    }
-	
+		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
+
+		try{
+			TIMEOUT = Long.parseLong(Activator.getBundleContext().getProperty("org.aaloa.zb4osgi.zigbee.basedriver.timeout")); 
+		}
+		catch(Exception ex){
+			TIMEOUT = 5000;
+			//ex.printStackTrace();
+			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to 5000 ms.");
+		}
+
+		/*if(Activator.getEventingService() != null){
+			Activator.getEventingService().announce(this, deviceId, inputs);
+		}*/
+	}
+
+	/**
+	 * Generates the UUID from the actual value of the variables
+	 */
+	private String generateUUID() {
+		StringBuffer sb_uuid = new StringBuffer()
+		.append(profileId).append(":")
+		.append(deviceId).append(":")
+		.append(deviceVersion).append("@")
+		.append(node.getIEEEAddress()).append(":")
+		.append(endPointAddress);
+		return sb_uuid.toString();
+	}
+
+	/**
+	 * This method set the ZigBeeNode for the device, it updates the linked variable as need.<br>
+	 * It updates the node only if it differs from the old node.
+	 * 
+	 * @param n the new {@link ZigBeeNode} for the device
+	 * @return <code>true</code> if and only if the {@link ZigBeeNode} has been updated
+	 * @since 0.6.0 - Revision 72
+	 * 
+	 */
+	public boolean setPhysicalNode(ZigBeeNode n) {
+
+		if ( node == null && n != null || node != n && node.equals( n ) == false ) {
+			node = n;
+			uuid = generateUUID();      
+			properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
+			properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
+			properties.put(ZigBeeDevice.UUID, uuid);
+
+			properties.put(Constants.DEVICE_SERIAL, uuid);
+			return true;
+		}else if ( node == n || node != null && node.equals( n ) ){
+			return false;
+		}else if( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
+			node = n;
+			uuid = generateUUID();      
+			properties.put(ZigBeeNode.IEEE_ADDRESS, node.getIEEEAddress());
+			properties.put(ZigBeeDevice.UUID, uuid);
+
+			properties.put(Constants.DEVICE_SERIAL, uuid);
+			return true;
+		} else if ( node != null && !node.getIEEEAddress().equals( n.getIEEEAddress() ) ) {
+			node = n;
+			properties.put(ZigBeeNode.NWK_ADDRESS, node.getNetworkAddress());
+			return true;
+		}
+		return false;
+	}
+
 	private ZDO_SIMPLE_DESC_RSP doRetrieveSimpleDescription(ZigBeeNode n) throws ZigBeeBasedriverException {
+
 		//TODO Move into SimpleDriver?!?!?
 		final short nwk = (short) n.getNetworkAddress();
 		int i = 0;
 		final String nwkAddress = NetworkAddress.toString(nwk);
 		ZDO_SIMPLE_DESC_RSP result = null;
-		
+
 		while (i < Activator.getCurrentConfiguration().getMessageRetryCount()) {
 			logger.info(
 					"Inspecting ZigBee EndPoint <{},{}>", nwkAddress, endPointAddress
-			);
-		
+					);
+
 			result = driver.sendZDOSimpleDescriptionRequest(
 					new ZDO_SIMPLE_DESC_REQ( nwk, endPointAddress )
-			);
+					);
 			if( result == null) {
 				//long waiting = (long) (Math.random() * (double) Activator.getCurrentConfiguration().getMessageRetryDelay())
 				final long waiting = Activator.getCurrentConfiguration().getMessageRetryDelay();
@@ -200,24 +213,305 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 				i++;
 				logger.debug(
 						"Inspecting ZigBee EndPoint <{},{}> failed during it {}-th attempts. " +
-						"Waiting for {}ms before retrying",
-						new Object[]{nwkAddress, endPointAddress, i, waiting}
-				);
-				
+								"Waiting for {}ms before retrying",
+								new Object[]{nwkAddress, endPointAddress, i, waiting}
+						);
 			} else {
 				break;
 			}
 		}
-		
+
 		if( result == null ){	
 			logger.error(
-					"Unable to recieve a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
+					"Unable to receive a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
 					NetworkAddress.toString(nwk),endPointAddress
-			);
-			throw new ZigBeeBasedriverException("Unable to recieve a ZDO_SIMPLE_DESC_RSP from endpoint");
+					);
+			throw new ZigBeeBasedriverException("Unable to receive a ZDO_SIMPLE_DESC_RSP from endpoint");
 		}
-		
+
 		return result;
+	}
+
+	public void send(Cluster input) throws ZigBeeBasedriverException {
+
+		final AFLayer af = AFLayer.getAFLayer(driver);
+		final byte sender = af.getSendingEndpoint(this, input);
+		final byte transaction = af.getNextTransactionId(sender);
+		final byte[] msg = input.getClusterMsg();
+
+		//TODO Create radius and options according to the current configuration
+		AF_DATA_CONFIRM response =  driver.sendAFDataRequest(new AF_DATA_REQUEST(
+				(short) node.getNetworkAddress(),(byte) endPointAddress, sender, input.getId(),
+				transaction, (byte) 0 /*options*/, (byte) 0 /*radius*/, msg 
+				));
+
+		if( response == null){
+			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
+		} else if (response.getStatus() != 0 ) {
+			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
+		}		
+	}
+
+	public Cluster invoke(Cluster input) throws ZigBeeBasedriverException {
+
+		final AFLayer af = AFLayer.getAFLayer(driver);
+		final byte sender = af.getSendingEndpoint(this, input);
+		/*
+		//FIX Removed because transaction is always 0 for the response due to a bug of CC2480		
+		final byte transaction = af.getNextTransactionId(sender);
+		the next line is a workaround for the problem
+		 */
+		final byte transaction = 0;
+		final byte[] msg = input.getClusterMsg();
+
+		m_addAFMessageListener();
+
+		//Registering the waiter before sending the message, so that they will be captured
+		WaitForClusterResponse waiter = new WaitForClusterResponse(
+				this, transaction, input.getId(), TIMEOUT
+				);		
+
+		//TODO Create radius and options according to the current configuration
+		AF_DATA_CONFIRM response =  driver.sendAFDataRequest(new AF_DATA_REQUEST(
+				(short) node.getNetworkAddress(),(byte) endPointAddress, sender, input.getId(),
+				transaction, (byte) 0 /*options*/, (byte) 0 /*radius*/, msg 
+				));
+
+		if(response == null){
+			m_removeAFMessageListener();
+			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error - is the device sleeping?");
+		} else if (response.getStatus() != 0 ) {
+			m_removeAFMessageListener();
+			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
+		} else {
+			//FIX Can't be singleton because only the invoke method can be invoked by multiple-thread
+			AF_INCOMING_MSG incoming = waiter.getResponse();
+			m_removeAFMessageListener();
+			if(incoming == null){
+				//TODO Add a timeout exception
+				throw new ZigBeeBasedriverException("Timeout expired before receiving an answer");
+			}
+			Cluster result = new ClusterImpl(incoming.getData(), incoming.getClusterId()); 
+			return result;
+		}
+	}
+
+	public boolean providesInputCluster(int id) {
+
+		for (int i = 0; i < inputs.length; i++) {
+			if(inputs[i] == id) return true;
+		}
+		return false;
+	}
+
+	public boolean providesOutputCluster(int id) {
+
+		for (int i = 0; i < outputs.length; i++) {
+			if(outputs[i] == id) return true;
+		}
+		return false;
+	}
+
+	public boolean bindTo(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException {
+
+		logger.debug("Binding from device {} to {} for cluster {}", new Object[]{
+				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
+		});
+
+		/*
+		 * //THINK Should you we deny the possibility to have duplicate entry inside the binding table?
+		 * The ZigBee specification see page 63, seems to allow duplicate entry inside the binding table.
+		 */
+
+		final ZDO_BIND_RSP response = driver.sendZDOBind(new ZDO_BIND_REQ(
+				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
+				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
+				IEEEAddress.fromColonNotation(device.getPhysicalNode().getIEEEAddress()), (byte) device.getDeviceId()
+				));
+		if( response == null || response.Status != 0){
+			logger.debug("ZDO_BIND_REQ failed, unable to bind from device {} to {} for cluster {}", new Object[]{
+					getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
+			});
+			return false;
+		}
+		//Activator.pub.publish("device "+deviceId+" bounded to device "+device.getDeviceId()+" on cluster "+clusterId, Activator.getBundleContext());
+		return true;
+	}
+
+	public boolean unbindFrom(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException {
+
+		logger.debug("Un-binding from device {} to {} for cluster {}", new Object[]{
+				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
+		});
+
+		final ZDO_UNBIND_RSP response = driver.sendZDOUnbind(new ZDO_UNBIND_REQ(
+				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
+				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
+				IEEEAddress.fromColonNotation(device.getPhysicalNode().getIEEEAddress()), (byte) device.getDeviceId()
+				));
+		if( response == null || response.Status != 0){
+			logger.debug("ZDO_BIND_REQ failed, unable to un-bind from device {} to {} for cluster {}", new Object[]{
+					getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
+			});
+			return false;
+		}
+		//Activator.pub.publish("device "+deviceId+" unbounded from device "+device.getDeviceId()+" on cluster "+clusterId, Activator.getBundleContext());
+		return true;
+	}
+
+	public boolean bind(int clusterId) throws ZigBeeBasedriverException {				
+
+		logger.debug("Binding from cluster {} of device {}", clusterId, getUniqueIdenfier());
+		if( boundCluster.contains(clusterId) ) {
+			logger.debug("Cluster already bound");
+			return true;
+		}
+
+		byte dstEP = AFLayer.getAFLayer(driver).getSendingEndpoint(this, clusterId);
+		final ZDO_BIND_RSP response = driver.sendZDOBind(new ZDO_BIND_REQ(
+				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
+				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
+				driver.getIEEEAddress(), (byte) dstEP
+				));
+		if( response == null || response.Status != 0){
+			logger.debug("ZDO_BIND_REQ failed, unable to bind");
+			return false;
+		}
+		boundCluster.add(clusterId);
+		//Activator.pub.publish("device "+deviceId+" bounded to cluster "+clusterId, Activator.getBundleContext());
+		return true;
+	}
+
+	public boolean unbind(int clusterId) throws ZigBeeBasedriverException {
+
+		logger.debug("Unbinding from cluster {} of device {}", clusterId, getUniqueIdenfier());
+		if( ! boundCluster.contains(clusterId) ) {
+			logger.debug("Cluster already unbound");
+			return true;
+		}
+
+		byte dstEP = AFLayer.getAFLayer(driver).getSendingEndpoint(this, clusterId);
+
+		final ZDO_UNBIND_RSP response = driver.sendZDOUnbind(new ZDO_UNBIND_REQ(
+				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
+				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
+				driver.getIEEEAddress(), (byte) dstEP
+				));			
+		if( response == null || response.Status != 0){
+			logger.debug("ZDO_BIND_REQ failed, unable to unbind");
+			return false;
+		}
+		boundCluster.remove(clusterId);
+		//Activator.pub.publish("device "+deviceId+" unbounded from cluster "+clusterId, Activator.getBundleContext());
+		return true;
+	}
+
+	private void m_addAFMessageListener() {
+
+		if(listeners.isEmpty() && consumers.size() == 0){
+			logger.debug( "Registered {} as {}", this, AFMessageListner.class.getName() );
+			driver.addAFMessageListner(this);
+		}
+		else{
+			logger.debug( "Skipped to registered {} as {}", this, AFMessageListner.class.getName() );
+			logger.debug( 
+					"Skipped registration due to: listeners.isEmpty() = {}  or consumers.size() = {}", 
+					listeners.isEmpty(), consumers.size() 
+					);
+		}
+	}
+
+	private void m_removeAFMessageListener() {
+
+		if(listeners.isEmpty() && consumers.size() == 0){
+			logger.debug( "Unregistered {} as {}", this, AFMessageListner.class.getName() );
+			driver.removeAFMessageListener(this);
+		}else{
+			logger.debug( "Skipped unregistration of {} as {}", this, AFMessageListner.class.getName() );
+			logger.debug( 
+					"Skipped unregistration due to: listeners.isEmpty() = {}  or consumers.size() = {}", 
+					listeners.isEmpty(), consumers.size() 
+					);
+		}
+	}
+
+	public boolean addClusterListener(ClusterListner listener){
+		m_addAFMessageListener();
+
+		return listeners.add(listener);
+	}
+
+	public boolean removeClusterListener(ClusterListner listener){
+		boolean result = listeners.remove(listener);
+		m_removeAFMessageListener();
+		return result;
+	}
+
+	private void notifyClusterListner(Cluster c){
+
+		ArrayList<ClusterListner> localCopy;
+		synchronized (listeners) {
+			localCopy = new ArrayList<ClusterListner>(listeners);
+		}
+		if(localCopy.size() > 0){
+			logger.debug("Notifying {} ClusterListner of {}", localCopy.size(), c.getClusterMsg());
+
+			for (ClusterListner listner : localCopy) {			
+				try{
+					final ClusterFilter filter = listner.getClusterFilter();
+					if ( filter == null ) 
+						listner.handleCluster(this, c);
+					else  if ( filter.match(c) == true )
+						listner.handleCluster(this, c);
+				}
+				catch( Throwable t ){
+					logger.error("Error during dispatching of Cluster <{},{}>", c.getId(), c.getClusterMsg());
+					logger.error("Error caused by:", t);
+				}
+			}
+		}
+	}
+
+	public void notify(AF_INCOMING_MSG msg) {
+		//THINK Do the notification in a separated Thread?
+		//THINK Should consume messages only if they were sent from this device?!?!
+		if ( msg.isError() ) return;
+		logger.debug("AF_INCOMING_MSG arrived for {} message is {}", uuid, msg);
+
+		/* 
+		if(Activator.getEventingService() != null)
+			Activator.getEventingService().event(msg.getClusterId(), msg.getData());*/
+
+		ArrayList<AFMessageConsumer> localConsumers = null;
+		synchronized (consumers) {
+			localConsumers = new ArrayList<AFMessageConsumer>(consumers);
+		}
+		logger.debug("Notifying {} AFMessageConsumer", localConsumers.size()); 
+		for (AFMessageConsumer consumer : localConsumers) {
+			if ( consumer.consume(msg) ) {
+				logger.debug("AF_INCOMING_MSG Consumed by {}", consumer.getClass().getName());
+				return;
+			} else {
+				logger.debug("AF_INCOMING_MSG Ignored by {}", consumer.getClass().getName());
+			}
+		}
+
+		if ( msg.getSrcAddr() != node.getNetworkAddress() ) return;
+		if ( msg.getSrcEndpoint() != endPointAddress ) return;
+		logger.debug("Notifying cluster listener for received by {}", uuid);
+		notifyClusterListner(new ClusterImpl(msg.getData(), msg.getClusterId()));
+	}
+
+	public boolean addAFMessageConsumer(AFMessageConsumer consumer) {
+		synchronized (consumers) {			
+			return consumers.add(consumer);
+		}
+	}
+
+	public boolean removeAFMessageConsumer(AFMessageConsumer consumer) {
+		synchronized (consumers) {
+			return consumers.remove(consumer);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -232,7 +526,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	public short getDeviceVersion() {
 		return deviceVersion;
 	}
-	
+
 	public String getUniqueIdenfier() {
 		return uuid;
 	}
@@ -252,277 +546,15 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	public int getProfileId() {
 		return profileId;
 	}
-	
+
 	public ZigBeeNode getPhysicalNode(){
 		return node;
-	}	
-
-	public void send(Cluster input)
-			throws ZigBeeBasedriverException {
-		final AFLayer af = AFLayer.getAFLayer(driver);
-		final byte sender = af.getSendingEndpoint(this, input);
-		final byte transaction = af.getNextTransactionId(sender);
-		final byte[] msg = input.getClusterMsg();
-		
-		//TODO Create radius and options according to the current configuration
-		AF_DATA_CONFIRM response =  driver.sendAFDataRequest(new AF_DATA_REQUEST(
-				(short) node.getNetworkAddress(),(byte) endPointAddress, sender, input.getId(),
-				transaction, (byte) 0 /*options*/, (byte) 0 /*radius*/, msg 
-		));
-		
-		if( response == null){
-			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
-		} else if (response.getStatus() != 0 ) {
-			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
-		}		
 	}
 
-	public Cluster invoke(Cluster input) throws ZigBeeBasedriverException {
-		final AFLayer af = AFLayer.getAFLayer(driver);
-		final byte sender = af.getSendingEndpoint(this, input);
-		/*
-		//FIX Removed because transaction is always 0 for the response due to a bug of CC2480		
-		final byte transaction = af.getNextTransactionId(sender);
-		the next line is a workaround for the problem
-		*/
-		final byte transaction = 0;
-		final byte[] msg = input.getClusterMsg();
-				
-		m_addAFMessageListener();
-		
-		//Registering the waiter before sending the message, so that they will be captured
-		WaitForClusterResponse waiter = new WaitForClusterResponse(
-				this, transaction, input.getId(), TIMEOUT
-		);		
-		
-		//TODO Create radius and options according to the current configuration
-		AF_DATA_CONFIRM response =  driver.sendAFDataRequest(new AF_DATA_REQUEST(
-				(short) node.getNetworkAddress(),(byte) endPointAddress, sender, input.getId(),
-				transaction, (byte) 0 /*options*/, (byte) 0 /*radius*/, msg 
-		));
-		
-		if( response == null){
-			m_removeAFMessageListener();
-			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
-		} else if (response.getStatus() != 0 ) {
-			m_removeAFMessageListener();
-			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
-		} else {
-			//FIX Can't be singelton because only a the invoke method can be invoked by multiple-thread
-			AF_INCOMING_MSG incoming = waiter.getResponse();
-			m_removeAFMessageListener();
-			if(incoming == null){
-				//TODO Add a timeout exception
-				throw new ZigBeeBasedriverException("Timeout expired before recieving an answer");
-			}
-			Cluster result = new ClusterImpl(incoming.getData(), incoming.getClusterId());
-			return result;
-		}
-	}
-
-	public boolean providesInputCluster(int id) {
-		for (int i = 0; i < inputs.length; i++) {
-			if(inputs[i] == id) return true;
-		}
-		return false;
-	}
-
-	public boolean providesOutputCluster(int id) {
-		for (int i = 0; i < outputs.length; i++) {
-			if(outputs[i] == id) return true;
-		}
-		return false;
-	}
-
-	public boolean bindTo(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException {
-		logger.debug("Binding from device {} to {} for cluster {}", new Object[]{
-				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
-		});
-				
-		/*
-		 * //THINK Should you we deny the possibility to have duplicate entry inside the binding table?
-		 * The ZigBee specification see page 63, seems to allow duplicate entry inside the binding table.
-		 */
-		
-		final ZDO_BIND_RSP response = driver.sendZDOBind(new ZDO_BIND_REQ(
-				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
-				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
-				IEEEAddress.fromColonNotation(device.getPhysicalNode().getIEEEAddress()), (byte) device.getDeviceId()
-		));
-		if( response == null || response.Status != 0){
-			logger.debug("ZDO_BIND_REQ failed, unable to bind from device {} to {} for cluster {}", new Object[]{
-				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
-			});
-			return false;
-		}
-		return true;
-	}
-
-	public boolean unbindFrom(ZigBeeDevice device, int clusterId) throws ZigBeeBasedriverException {
-		logger.debug("Un-binding from device {} to {} for cluster {}", new Object[]{
-				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
-		});
-		
-		final ZDO_UNBIND_RSP response = driver.sendZDOUnbind(new ZDO_UNBIND_REQ(
-				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
-				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
-				IEEEAddress.fromColonNotation(device.getPhysicalNode().getIEEEAddress()), (byte) device.getDeviceId()
-		));
-		if( response == null || response.Status != 0){
-			logger.debug("ZDO_BIND_REQ failed, unable to un-bind from device {} to {} for cluster {}", new Object[]{
-				getUniqueIdenfier(), device.getUniqueIdenfier(), new Integer(clusterId)
-			});
-			return false;
-		}
-		return true;
-	}
-	
-	
-	public boolean bind(int clusterId) throws ZigBeeBasedriverException {				
-		logger.debug("Binding from cluster {} of device {}", clusterId, getUniqueIdenfier());
-		if( boundCluster.contains(clusterId) ) {
-			logger.debug("Cluster already bound");
-			return true;
-		}
-		
-		byte dstEP = AFLayer.getAFLayer(driver).getSendingEndpoint(this, clusterId);
-		final ZDO_BIND_RSP response = driver.sendZDOBind(new ZDO_BIND_REQ(
-				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
-				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
-				driver.getIEEEAddress(), (byte) dstEP
-		));
-		if( response == null || response.Status != 0){
-			logger.debug("ZDO_BIND_REQ failed, unable to bind");
-			return false;
-		}
-		boundCluster.add(clusterId);
-		return true;
-	}
-
-	public boolean unbind(int clusterId) throws ZigBeeBasedriverException {
-		logger.debug("Unbinding from cluster {} of device {}", clusterId, getUniqueIdenfier());
-		if( ! boundCluster.contains(clusterId) ) {
-			logger.debug("Cluster already unbound");
-			return true;
-		}
-		
-		byte dstEP = AFLayer.getAFLayer(driver).getSendingEndpoint(this, clusterId);
-		
-		final ZDO_UNBIND_RSP response = driver.sendZDOUnbind(new ZDO_UNBIND_REQ(
-				(short) getPhysicalNode().getNetworkAddress(), (short) clusterId, 
-				IEEEAddress.fromColonNotation(getPhysicalNode().getIEEEAddress()), (byte) endPointAddress,
-				driver.getIEEEAddress(), (byte) dstEP
-		));			
-		if( response == null || response.Status != 0){
-			logger.debug("ZDO_BIND_REQ failed, unable to unbind");
-			return false;
-		}
-		boundCluster.remove(clusterId);
-		return true;
-	}
-	
-	private void m_addAFMessageListener() {
-		if(listeners.isEmpty() && consumers.size() == 0){
-			logger.debug( "Registered {} as {}", this, AFMessageListner.class.getName() );
-			driver.addAFMessageListner(this);
-		}else{
-			logger.debug( "Skipped to registered {} as {}", this, AFMessageListner.class.getName() );
-			logger.trace( 
-					"Skipped registration due to: listeners.isEmpty() = {}  or consumers.size() = {}", 
-					listeners.isEmpty(), consumers.size() 
-			);
-		}
-	}
-	
-	private void m_removeAFMessageListener() {
-		if(listeners.isEmpty() && consumers.size() == 0){
-			logger.debug( "Unregistered {} as {}", this, AFMessageListner.class.getName() );
-			driver.removeAFMessageListener(this);
-		}else{
-			logger.debug( "Skipped unregistration of {} as {}", this, AFMessageListner.class.getName() );
-			logger.trace( 
-					"Skipped unregistration due to: listeners.isEmpty() = {}  or consumers.size() = {}", 
-					listeners.isEmpty(), consumers.size() 
-			);
-		}
-	}
-	
-	public boolean addClusterListener(ClusterListner listener){
-		m_addAFMessageListener();
-		
-		return listeners.add(listener);
-	}
-	
-	public boolean removeClusterListener(ClusterListner listener){
-		boolean result = listeners.remove(listener);
-		m_removeAFMessageListener();
-		return result;
-	}
-	
-	private void notifyClusterListner(Cluster c){
-		ArrayList<ClusterListner> localCopy;
-		synchronized (listeners) {
-			localCopy = new ArrayList<ClusterListner>(listeners);
-		}
-		logger.debug("Notifying {} ClusterListner", localCopy.size());
-		for (ClusterListner listner : localCopy) {			
-			try{
-				final ClusterFilter filter = listner.getClusterFilter();
-				if ( filter == null ) {
-					listner.handleCluster(this, c);
-				} else  if ( filter.match(c) == true ){
-					listner.handleCluster(this, c);
-				}
-				
-			}catch( Throwable t ){
-				logger.error("Error during dispatching of Cluster <{},{}>",c.getId(),c.getClusterMsg());
-				logger.error("Error caused by:",t);
-			}
-		}
-	}
-
-	public void notify(AF_INCOMING_MSG msg) {
-		//THINK Do the notification in a separated Thread?
-		//THINK Should consume messages only if they was sent from this device?!?!
-		if ( msg.isError() ) return;
-		logger.debug("AF_INCOMIN_MSG arrived for {} message is {}", uuid, msg);
-		ArrayList<AFMessageConsumer> localConsumers = null;
-		synchronized (consumers) {
-			localConsumers = new ArrayList<AFMessageConsumer>(consumers);
-		}
-		logger.debug("Notifying {} AFMessageConsumer", localConsumers.size());
-		for (AFMessageConsumer consumer : localConsumers) {
-			if ( consumer.consume(msg) ) {
-				logger.debug("AF_INCOMIN_MSG Consumed by {}", consumer.getClass().getName());
-				return;
-			} else {
-				logger.debug("AF_INCOMIN_MSG Ignored by {}", consumer.getClass().getName());
-			}
-		}
-		
-		if ( msg.getSrcAddr() != node.getNetworkAddress() ) return;
-		if ( msg.getSrcEndpoint() != endPointAddress ) return;
-		logger.debug("Notifying cluster listerner for recived by {}", uuid);
-		notifyClusterListner(new ClusterImpl(msg.getData(), msg.getClusterId()));
-	}
-
-	public boolean addAFMessageConsumer(AFMessageConsumer consumer) {
-		synchronized (consumers) {
-			return consumers.add(consumer);
-		}
-	}
-
-	public boolean removeAFMessageConsumer(AFMessageConsumer consumer) {
-		synchronized (consumers) {
-			return consumers.remove(consumer);
-		}
-	}
-	
 	/**
 	 * @since 0.4.0
 	 */
 	public String toString(){
 		return getUniqueIdenfier();
 	}
-
 }

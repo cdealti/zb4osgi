@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.communication;
 
@@ -34,8 +34,6 @@ import it.cnr.isti.zigbee.basedriver.discovery.ZigBeeNetwork;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.Collection;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +58,12 @@ public class AFLayer {
 
 	private final static Object LOCK = new Object();
 	private final static Logger logger = LoggerFactory.getLogger(AFLayer.class);
-	
-	class SenderIdentifier{
+
+	public class SenderIdentifier{
 		short profileId;
 		short clusterId;
-		
-		public SenderIdentifier(short profileId, short clusterId) {
+
+		SenderIdentifier(short profileId, short clusterId) {
 			this.profileId = profileId;
 			this.clusterId = clusterId;
 		}
@@ -84,25 +82,24 @@ public class AFLayer {
 			}
 		}
 	}
-	
+
 	private static AFLayer singelton;
-	
+
 	final TObjectByteHashMap<SenderIdentifier> sender2EndPoint = new TObjectByteHashMap<SenderIdentifier>();
 	final TShortObjectHashMap<TShortArrayList> profile2Cluster = new TShortObjectHashMap<TShortArrayList>();
 	final TByteByteHashMap endPoint2Transaction = new TByteByteHashMap();
-	
+
 	private final SimpleDriver driver;
 	private final ZigBeeNetwork network;
-	
+
 	private byte firstFreeEndPoint;
 
-	
 	private AFLayer(SimpleDriver driver){
 		this.driver = driver;
 		firstFreeEndPoint = (byte) Activator.getCurrentConfiguration().getFirstFreeEndPoint();
 		network = new ZigBeeNetwork();
 	}
-		
+
 	public static AFLayer getAFLayer(SimpleDriver driver){
 		synchronized (LOCK) {
 			if( singelton == null ){
@@ -117,25 +114,25 @@ public class AFLayer {
 			return singelton;
 		}
 	}
-	
-	
+
+
 	public byte getSendingEndpoint(ZigBeeDevice device, int clusterId) {
 		SenderIdentifier si = new SenderIdentifier(
 				(short) device.getProfileId(), (short) clusterId
-		);		
-		logger.info("Looking for a registered enpoint among {}", sender2EndPoint.size());
+				);		
+		logger.info("Looking for a registered endpoint among {}", sender2EndPoint.size());
 		synchronized (sender2EndPoint) {
 			if(sender2EndPoint.containsKey(si)){
-				logger.debug("An enpoint already registered for <profileId,clusterId>=<{},{}>", si.profileId, si.clusterId);
+				logger.debug("An endpoint already registered for <profileId,clusterId>=<{},{}>", si.profileId, si.clusterId);
 				return sender2EndPoint.get(si);
 			}else {
-				logger.debug("NO endpoint registered for <profileId,clusterId>=<{},{}>", si.profileId, si.clusterId);
+				logger.debug("No endpoint registered for <profileId,clusterId>=<{},{}>", si.profileId, si.clusterId);
 				final byte ep = createEndPoint(si);
 				return ep;
 			}
 		}
 	}
-	
+
 	public byte getSendingEndpoint(ZigBeeDevice device, Cluster input) {
 		return getSendingEndpoint(device, input.getId());
 	}
@@ -143,9 +140,9 @@ public class AFLayer {
 	private byte createEndPoint(SenderIdentifier si) {
 		byte endPoint = getFreeEndPoint();
 		logger.debug("Registering a new endpoint for <profileId,clusterId>  <{},{}>", si.profileId, si.clusterId);		
-		
+
 		short[] clusters = collectClusterForProfile(si.profileId);
-		
+
 		/*
 		 * //XXX Registering clusters only as input or output would increase the number of controllable clusters  
 		 * It could be possible that the device doesn't take into account if the cluster is registered as input
@@ -155,8 +152,8 @@ public class AFLayer {
 		if(clusters.length > 33){
 			logger.warn(
 					"We found too many cluster to implement for a single endpoint " +
-					"(maxium is 32), so we are filtering out the extra {}", clusters 
-			);
+							"(maximum is 32), so we are filtering out the extra {}", clusters 
+					);
 			/*
 			 * Too many cluster to implement for this profile we must use the first 31
 			 * plus the cluster that we are trying to create as 32nd value 
@@ -172,9 +169,9 @@ public class AFLayer {
 		int retry = 0;
 		do {
 			result = driver.sendAFRegister(new AF_REGISTER(
-				endPoint, si.profileId, (short)0, (byte)0,
-				clusters,clusters						
-			));
+					endPoint, si.profileId, (short)0, (byte)0,
+					clusters,clusters						
+					));
 			//FIX We should retry only when Status != 0xb8  ( ZApsDuplicateEntry )
 			if( result.getStatus() != 0 ){
 				if ( retry < Activator.getCurrentConfiguration().getAutomaticFreeEndPointRetry() ) {
@@ -186,9 +183,9 @@ public class AFLayer {
 					 */			
 					throw new IllegalStateException("Unable create a new Endpoint. AF_REGISTER command failed with "+result.getStatus()+":"+result.getErrorMsg());			
 				}
-			} else {
+			} else 
 				break;
-			}
+
 		} while( true );
 		logger.debug("Registered endpoint {} with clusters: {}", endPoint, clusters);
 		final TShortArrayList list;
@@ -224,7 +221,7 @@ public class AFLayer {
 			logger.debug(
 					"Device {} provides the following cluster as input {}", 
 					device.getUniqueIdenfier(), ids
-			);
+					);
 			for (int i = 0; i < ids.length; i++) {
 				clusters.add((short) ids[i]);
 			}
@@ -232,12 +229,12 @@ public class AFLayer {
 			logger.debug(
 					"Device {} provides the following cluster as input {}", 
 					device.getUniqueIdenfier(), ids
-			);
+					);
 			for (int i = 0; i < ids.length; i++) {
 				clusters.add((short) ids[i]);
 			}
 		}
-		
+
 		final TShortArrayList implementedCluster = profile2Cluster.get(profileId);
 		if (implementedCluster != null){
 			final short[] implemented = implementedCluster.toNativeArray();
@@ -246,7 +243,7 @@ public class AFLayer {
 		}else{
 			logger.debug("No previus clusters registered on any endpoint of the dongle for the profile {}", profileId);
 		}
-		
+
 		return clusters.toArray();
 	}
 
@@ -258,36 +255,35 @@ public class AFLayer {
 		if(endPoint2Transaction.containsKey(endPoint)){
 			byte value = endPoint2Transaction.get(endPoint);
 			switch (value) {
-				case 127:{
-					endPoint2Transaction.put(endPoint, (byte) -128);
-					return 127;
-				}
-				default:{
-					endPoint2Transaction.put(endPoint, (byte) (value + 1) );
-					return value;				
-				}
+			case 127:{
+				endPoint2Transaction.put(endPoint, (byte) -128);
+				return 127;
+			}
+			default:{
+				endPoint2Transaction.put(endPoint, (byte) (value + 1) );
+				return value;				
+			}
 			}
 		}else{
 			endPoint2Transaction.put(endPoint, (byte) 0 );
 			return 0;
 		}
-		
-	}
-	
-	private byte getFreeEndPoint() {
-		switch (firstFreeEndPoint){
-			case 127:{
-				firstFreeEndPoint = -128;
-				return 127;
-			}
-			case -15:{
-				throw new IllegalStateException("No more end point free");
-			}
-			default:{
-				firstFreeEndPoint+=1;
-				return (byte) (firstFreeEndPoint - 1);				
-			}				
-		}
+
 	}
 
+	private byte getFreeEndPoint() {
+		switch (firstFreeEndPoint){
+		case 127:{
+			firstFreeEndPoint = -128;
+			return 127;
+		}
+		case -15:{
+			throw new IllegalStateException("No more end point free");
+		}
+		default:{
+			firstFreeEndPoint+=1;
+			return (byte) (firstFreeEndPoint - 1);				
+		}				
+		}
+	}
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.api.impl;
 
@@ -42,9 +42,9 @@ import com.itaca.ztool.api.ZToolAddress64;
 public class ZigBeeNodeImpl implements ZigBeeNode {
 
 	private int nwkAddress;
-    final private String ieeeAddress;
+	final private String ieeeAddress;
 	final private Properties description;
-	
+
 	/**
 	 * 
 	 * @param nwk
@@ -52,37 +52,37 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	 * @param pan
 	 * @since 0.6.0 - Revision 67
 	 */
-    public ZigBeeNodeImpl(int nwk, String ieee, short pan){     
-        this.nwkAddress = nwk;
-        this.ieeeAddress = ieee;
-        IEEEAddress.fromColonNotation( ieee ); //Only for checking the IEEE format
+	public ZigBeeNodeImpl(int nwk, String ieee, short pan){     
+		this.nwkAddress = nwk;
+		this.ieeeAddress = ieee;
+		IEEEAddress.fromColonNotation( ieee ); //Only for checking the IEEE format
 
-        description  = new Properties();        
-        description.put( ZigBeeNode.IEEE_ADDRESS, ieee );
-        description.put( ZigBeeNode.NWK_ADDRESS, nwk );
-        description.put( ZigBeeNode.PAN_ID, pan );
-    }
-    
-    /**
-     * 
-     * @param nwk
-     * @param ieee
-     * @param pan
-     * @since 0.6.0 - Revision 67
-     */
-	public ZigBeeNodeImpl(int nwk, String ieee){		
-	    this( nwk, ieee, Activator.getCurrentConfiguration().getPanId() );
+		description  = new Properties();        
+		description.put( ZigBeeNode.IEEE_ADDRESS, ieee );
+		description.put( ZigBeeNode.NWK_ADDRESS, nwk );
+		description.put( ZigBeeNode.PAN_ID, pan );
 	}
 
-	
-    public ZigBeeNodeImpl(int nwk, ZToolAddress64 ieee){      
-        this.ieeeAddress = IEEEAddress.toString(ieee.getLong());
-        description  = new Properties();
-        description.put( ZigBeeNode.IEEE_ADDRESS, ieee );
-        description.put( ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId() );
-        setNetworkAddress( nwk );
-    }
-	
+	/**
+	 * 
+	 * @param nwk
+	 * @param ieee
+	 * @param pan
+	 * @since 0.6.0 - Revision 67
+	 */
+	public ZigBeeNodeImpl(int nwk, String ieee){		
+		this( nwk, ieee, Activator.getCurrentConfiguration().getPanId() );
+	}
+
+
+	public ZigBeeNodeImpl(int nwk, ZToolAddress64 ieee){      
+		this.ieeeAddress = IEEEAddress.toString(ieee.getLong());
+		description  = new Properties();
+		description.put( ZigBeeNode.IEEE_ADDRESS, ieee );
+		description.put( ZigBeeNode.PAN_ID, Activator.getCurrentConfiguration().getPanId() );
+		setNetworkAddress( nwk );
+	}
+
 
 	@SuppressWarnings("unchecked")
 	public Dictionary getDescription() {
@@ -99,32 +99,31 @@ public class ZigBeeNodeImpl implements ZigBeeNode {
 	 * 
 	 * @since 0.6.0 - Revision 74
 	 */
-    public void setNetworkAddress(int nwk) {
-        nwkAddress = nwk;
-        description.put( ZigBeeNode.NWK_ADDRESS, nwk );
-    }   
-    
+	public void setNetworkAddress(int nwk) {
+		nwkAddress = nwk;
+		description.put( ZigBeeNode.NWK_ADDRESS, nwk );
+	}   
+
 	public int getNetworkAddress() {
 		return nwkAddress;
 	}	
-	
+
 	public String toString() {
-	    return nwkAddress + "(" + ieeeAddress + ") ";
-	}
-	
-	public boolean equals(Object obj) {
-	    if ( obj == this ) {
-	        return true;
-	    }else if ( obj instanceof ZigBeeNode ){
-	        ZigBeeNode node = (ZigBeeNode) obj;
-	        return nwkAddress == node.getNetworkAddress() && ieeeAddress.equals( node.getIEEEAddress() );
-	    }else{
-	        return false;
-	    }
-	}
-	
-	public int hashCode() {
-	    return ieeeAddress.hashCode();
+		return nwkAddress + "(" + ieeeAddress + ") ";
 	}
 
+	public boolean equals(Object obj) {
+		if ( obj == this ) {
+			return true;
+		}else if ( obj instanceof ZigBeeNode ){
+			ZigBeeNode node = (ZigBeeNode) obj;
+			return nwkAddress == node.getNetworkAddress() && ieeeAddress.equals( node.getIEEEAddress() );
+		}else{
+			return false;
+		}
+	}
+
+	public int hashCode() {
+		return ieeeAddress.hashCode();
+	}
 }

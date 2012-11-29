@@ -70,12 +70,9 @@ public class AnnunceListnerThread implements AnnunceListner{
 			ZToolAddress64 ieeeAddress, ZToolAddress16 destinationAddress,
 			int capabilitiesBitmask) {
 		
-		
-		logger.info("Recieved an ANNUNCE from {} {}", senderAddress, ieeeAddress);		
+		logger.info("received an ANNUNCE from {} {}", senderAddress, ieeeAddress);		
 		queue.push(senderAddress, ieeeAddress);	
-		annuncedNode( new ZigBeeNodeImpl( senderAddress.get16BitValue(), ieeeAddress ) );
-		
-		
+		annuncedNode( new ZigBeeNodeImpl( senderAddress.get16BitValue(), ieeeAddress ) );		
 	}
 
 	private void annuncedNode(ZigBeeNode node) {
@@ -98,6 +95,5 @@ public class AnnunceListnerThread implements AnnunceListner{
 				logger.error("Handled excepetion during notification", ex);
 			}
 		}
-	}
-	
+	}	
 }

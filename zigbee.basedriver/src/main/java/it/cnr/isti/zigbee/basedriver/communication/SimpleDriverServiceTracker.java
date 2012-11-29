@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.communication;
 
@@ -27,7 +27,6 @@ import it.cnr.isti.zigbee.basedriver.discovery.AnnunceListnerThread;
 import it.cnr.isti.zigbee.basedriver.discovery.DeviceBuilderThread;
 import it.cnr.isti.zigbee.basedriver.discovery.ImportingQueue;
 import it.cnr.isti.zigbee.basedriver.discovery.NetworkBrowserThread;
-import it.cnr.isti.zigbee.dongle.api.DriverStatus;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import org.osgi.framework.ServiceEvent;
@@ -49,9 +48,9 @@ import org.slf4j.LoggerFactory;
 public class SimpleDriverServiceTracker implements ServiceListener{
 
 	private final static Logger logger = LoggerFactory.getLogger(SimpleDriverServiceTracker.class);
-	
+
 	private final Object driverLock = new Object();
-	
+
 	private ServiceReference driverReference;
 	private SimpleDriver driverService;
 	private final AnnunceListnerThread annunceListener;
@@ -60,34 +59,40 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 	private final ImportingQueue importingQueue;
 	
 	public SimpleDriverServiceTracker(){
+
 		importingQueue = new ImportingQueue();
 		annunceListener = new AnnunceListnerThread(importingQueue);	
-		
+
 		ServiceReference ref = Activator.getBundleContext().getServiceReference(SimpleDriver.class.getName());
 		if(ref != null) addingSimpleDriver(ref);
 	}
-	
+
 	public void serviceChanged(ServiceEvent se) {
+
 		switch (se.getType()) {
-			case ServiceEvent.REGISTERED:{
-				addingSimpleDriver(se.getServiceReference());
-			}break;
-			case ServiceEvent.UNREGISTERING:{
-				removingSimpleDriver(se.getServiceReference());
-			}break;
+		case ServiceEvent.REGISTERED:{
+			addingSimpleDriver(se.getServiceReference());
+		}
+		break;
+		case ServiceEvent.UNREGISTERING:{
+			removingSimpleDriver(se.getServiceReference());
+		}
+		break;
 		}
 	}
 
 	private void setDownZigBeeImporter() {
+		
 		logger.info("Driver used left:clean up all the data and closing all the threads");
-	
+
 		Activator.getCurrentConfiguration().setDriver(null);
 		networkBrowser.end();
 		deviceBuilder.end();
 		Activator.unregisterAllDeviceService();
 	}
-	
+
 	private void removingSimpleDriver(ServiceReference sr) {
+		
 		logger.info("A service of {} is leaving", SimpleDriver.class);
 		synchronized (driverLock) {
 			if ( driverReference == sr ) {
@@ -101,17 +106,16 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 		driverService = null;
 		setDownZigBeeImporter();
 	}
-	
-	
-	
+
 	private void setUpZigBeeImporter() {		
+		
 		logger.info("Setting up all the importer data and threads");	
 		Activator.getCurrentConfiguration().setDriver(driverService);
 		importingQueue.clear();
 		AFLayer.getAFLayer(driverService);
 		driverService.addAnnunceListener(annunceListener);
 		networkBrowser = new NetworkBrowserThread(importingQueue,  driverService );
-		
+
 		deviceBuilder = new DeviceBuilderThread( importingQueue, driverService); 
 		Thread[] importing = new Thread[]{
 				new Thread(networkBrowser, "NetworkBrowser["+driverService+"]"),
@@ -121,8 +125,9 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 			importing[i].start();
 		}
 	}
-	
+
 	private void addingSimpleDriver(ServiceReference sr) {
+		
 		logger.info("New {} service found", SimpleDriver.class);
 		synchronized (driverLock) {
 			if ( driverReference == null ) {
@@ -134,5 +139,4 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 		driverService = (SimpleDriver) Activator.getBundleContext().getService(driverReference);
 		setUpZigBeeImporter();
 	}
-	
 }

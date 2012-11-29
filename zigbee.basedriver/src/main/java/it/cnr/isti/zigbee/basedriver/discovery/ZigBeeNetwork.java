@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
@@ -43,15 +43,13 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class ZigBeeNetwork {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeNetwork.class);
-	
+
 	private final Hashtable<String, ZigBeeNodeImpl> nodes = new Hashtable<String, ZigBeeNodeImpl>();	
-	private final Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> > devices = 
-		new Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> >();
-	
-	private final TIntObjectHashMap<ArrayList<ZigBeeDevice>> profiles = 
-		new TIntObjectHashMap<ArrayList<ZigBeeDevice>>();
+	private final Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> > devices = new Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice> >();
+
+	private final TIntObjectHashMap<ArrayList<ZigBeeDevice>> profiles = new TIntObjectHashMap<ArrayList<ZigBeeDevice>>();
 
 	/**
 	 * 
@@ -59,8 +57,8 @@ public class ZigBeeNetwork {
 	 * This method is require for implementing issues:
 	 * <ul>
 	 * <li><a href="http://zb4osgi.aaloa.org/redmine/issues/35">Blacklisting of device (#35)</a></li>
-     * <li><a href="http://zb4osgi.aaloa.org/redmine/issues/64">Base Driver should monitor the health status of device (#64)</a></li>
-     * </ul>
+	 * <li><a href="http://zb4osgi.aaloa.org/redmine/issues/64">Base Driver should monitor the health status of device (#64)</a></li>
+	 * </ul>
 	 * 
 	 * 
 	 * @param node
@@ -68,38 +66,49 @@ public class ZigBeeNetwork {
 	 */
 	public synchronized boolean removeNode(ZigBeeNode node){
 		final String ieee = node.getIEEEAddress();
-		
+
 		if( !nodes.containsKey(ieee) ){
 			return false;
 		}
 		TShortObjectHashMap<ZigBeeDevice> toRemove = devices.get(node);
-		for (TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator(); i.hasNext(); i.advance()) {
+		if(toRemove != null){
+			TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator();
+			if(i != null)
+				while(i.hasNext()){
+					i.advance();
+					if(i.value() != null){
+						ZigBeeDevice device = i.value();
+						i.remove();
+						removeDeviceFromProfiles(device);
+					}
+				}
+			/*for (TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator(); i.hasNext(); i.advance()) {
 			ZigBeeDevice device = i.value();
 			i.remove();
 			removeDeviceFromProfiles(device);
-			
+		}*/
 		}
 		nodes.remove(ieee);
 		return true;
 	}
-	
-	public  synchronized boolean  addNode(ZigBeeNodeImpl node){
+
+	public synchronized boolean addNode(ZigBeeNodeImpl node){
 		final String ieee = node.getIEEEAddress();
-		
+
 		if( nodes.containsKey(ieee) ){
-		    logger.debug( "Node {} already present on the network", node );
+			logger.debug( "Node {} already present on the network", node );
 			return false;
 		}
-		
+
 		logger.debug( "Adding node {} to the network", node );
 		nodes.put(ieee, node);
 		devices.put(node, new TShortObjectHashMap<ZigBeeDevice>());
 		return true;
 	}
-	
+
 	public synchronized boolean removeDevice(ZigBeeDevice device){
 		final String ieee = device.getPhysicalNode().getIEEEAddress();
-		
+
 		ZigBeeNode node = null;
 		node = nodes.get(ieee);
 		if( node == null ){
@@ -110,31 +119,32 @@ public class ZigBeeNetwork {
 		final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
 		endPoints.remove(device.getId());
 		removeDeviceFromProfiles(device);
-		
+
 		return true;
 	}
-	
+
 	public synchronized boolean addDevice(ZigBeeDevice device){
-	    final ZigBeeNode deviceNode = device.getPhysicalNode();
+
+		final ZigBeeNode deviceNode = device.getPhysicalNode();
 		final String ieee = deviceNode.getIEEEAddress();
 		final short endPoint = device.getId();
-		logger.debug( "Addind device {} on node {} the network", endPoint, device.getPhysicalNode() );
+		logger.debug( "Adding device {} on node {} the network", endPoint, device.getPhysicalNode() );
 		final ZigBeeNode node = nodes.get(ieee);
 		if( node == null ){
-		    logger.debug( "No node {} found" );
+			logger.debug( "No node {} found" );
 			return false;
 		} else if ( node.getNetworkAddress() != deviceNode.getNetworkAddress() ){
-		    logger.debug( "Node ieee collision, stored is {} and new one is {}", node, deviceNode );
-		    return false;
+			logger.debug( "Node ieee collision, stored is {} and new one is {}", node, deviceNode );
+			return false;
 		}
 
 		TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
 		if(endPoints.containsKey(endPoint)){
-            logger.debug( "Device {} on node {} already registered", endPoint, node );
+			logger.debug( "Device {} on node {} already registered", endPoint, node );
 			return false;
 		}
 		endPoints.put(endPoint, device);
-		
+
 		final int profileId = device.getProfileId();
 		ArrayList<ZigBeeDevice> list;
 		list  = profiles.get(profileId);
@@ -143,16 +153,16 @@ public class ZigBeeNetwork {
 			profiles.put(profileId, list);
 		}
 		list.add(device);
-		
+
 		return true;
 	}
-	
+
 	private synchronized boolean removeDeviceFromProfiles(final ZigBeeDevice device){		
-		
+
 		final int profileId = device.getProfileId();
 		ArrayList<ZigBeeDevice> list = profiles.get(profileId);
 		if( list == null ){
-			logger.error("Trying to remove a device from a give profile but the profile doesn't exist");
+			logger.error("Trying to remove a device from a given profile but the profile doesn't exist");
 			//XXX It should never happen, we should throw an IllegalStateException
 			return true;
 		}
@@ -160,19 +170,17 @@ public class ZigBeeNetwork {
 		if( list.remove(device) == false){
 			logger.error("Device to remove not found in the given profile");
 		}
-		
-		return true;
-		
-	}
-	
-	
+
+		return true;		
+	}	
+
 	public synchronized Collection<ZigBeeDevice> getDevices(int profileId){
 		final ArrayList<ZigBeeDevice> result = new ArrayList<ZigBeeDevice>();		
 		final ArrayList<ZigBeeDevice> values = profiles.get(profileId);
 		if ( values == null ) {
 			logger.warn("No devices found implemting the profile={}", profileId);
 		} else {
-			logger.error("We found {} implemting the profile={}", values.size(), profileId);
+			logger.error("We found {} implementing the profile={}", values.size(), profileId);
 			result.addAll(values);
 		}				
 		return result;
@@ -193,9 +201,8 @@ public class ZigBeeNetwork {
 		}
 		return endPoints.containsKey(endPoint);
 	}
-    
+
 	public ZigBeeNodeImpl containsNode(String ieeeAddress) {
 		return nodes.get(ieeeAddress);
 	}
-
 }

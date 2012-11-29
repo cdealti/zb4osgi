@@ -22,12 +22,13 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
-import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 
 import org.junit.Before;

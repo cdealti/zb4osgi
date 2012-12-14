@@ -61,7 +61,7 @@ public class NetworkBrowserThread implements Stoppable {
 	private static final Logger logger = LoggerFactory.getLogger(NetworkBrowserThread.class);
 
 	private static final short COORDINATOR_NWK_ADDRESS = 0;
-	private static final short LQI_START_INDEX = 0;
+	private static final short ZDO_MGMT_LQI_REQ_START_INDEX = 0;
 
 	private final ImportingQueue queue;
 	final SimpleDriver driver;
@@ -99,7 +99,7 @@ public class NetworkBrowserThread implements Stoppable {
 
 		NetworkAddressNodeItem node = new NetworkAddressNodeItem(null, nwkAddress);
 		ZDO_IEEE_ADDR_RSP ieee_addr_resp = driver.sendZDOIEEEAddressRequest(
-				new ZDO_IEEE_ADDR_REQ(nwkAddress, ZDO_IEEE_ADDR_REQ.REQ_TYPE.EXTENDED,(byte) 0)						
+				new ZDO_IEEE_ADDR_REQ(nwkAddress, ZDO_IEEE_ADDR_REQ.REQ_TYPE.SINGLE_DEVICE_RESPONSE,(byte) 0)						
 				);
 
 		if( ieee_addr_resp == null) {
@@ -108,8 +108,8 @@ public class NetworkBrowserThread implements Stoppable {
 		} 
 		else {
 			logger.debug(
-					"ZDO_IEEE_ADDR_RSP from {} with {} associated", 
-					ieee_addr_resp.getIEEEAddress(), ieee_addr_resp.getAssociatedDeviceCount()
+					"ZDO_IEEE_ADDR_RSP from {} ",//with {} associated", 
+					ieee_addr_resp.getIEEEAddress()//, ieee_addr_resp.getAssociatedDeviceCount()
 					);
 
 			node.node = new ZigBeeNodeImpl(node.address, ieee_addr_resp.getIEEEAddress());
@@ -212,7 +212,7 @@ public class NetworkBrowserThread implements Stoppable {
 			List<NetworkAddressNodeItem> children = new ArrayList<NetworkAddressNodeItem>();
 			NetworkAddressNodeItem node = toInspect.get(i);
 			if(node != null){
-				children = lqiRequestToNode(node, LQI_START_INDEX);
+				children = lqiRequestToNode(node, ZDO_MGMT_LQI_REQ_START_INDEX);
 				if(children != null){
 					toInspectTemp.addAll(children);
 					announceNodes(children);
@@ -236,7 +236,7 @@ public class NetworkBrowserThread implements Stoppable {
 				NetworkAddressNodeItem coordinator = getIEEEAddress(COORDINATOR_NWK_ADDRESS);
 				if(coordinator != null){
 
-					List<NetworkAddressNodeItem> coordinatorChildren = lqiRequestToNode(coordinator, LQI_START_INDEX);
+					List<NetworkAddressNodeItem> coordinatorChildren = lqiRequestToNode(coordinator, ZDO_MGMT_LQI_REQ_START_INDEX);
 					if(coordinatorChildren != null)
 						toInspect.addAll(coordinatorChildren);
 

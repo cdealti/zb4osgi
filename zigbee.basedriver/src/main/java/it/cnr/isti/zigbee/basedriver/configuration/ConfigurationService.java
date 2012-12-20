@@ -76,6 +76,8 @@ public class ConfigurationService implements ManagedService {
 			configuration.put(ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY) );
 			configuration.put(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, ConfigurationProperties.FIRST_ENDPOINT_ADDRESS) );
 
+			configuration.put(ConfigurationProperties.DEVICE_MSG_TIMEOUT_KEY, OSGiProperties.getInt(Activator.getBundleContext(), ConfigurationProperties.DEVICE_MSG_TIMEOUT_KEY, ConfigurationProperties.DEVICE_MSG_TIMEOUT) );
+
 			// EVENTUALLY CUSTOM DEVICES THAT WILL BE CREATED ON DONGLE
 			configuration.put(CustomDevices.ENDPOINT_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.ENDPOINT_KEY, CustomDevices.ENDPOINT));
 			configuration.put(CustomDevices.PROFILE_ID_KEY, OSGiProperties.getString(Activator.getBundleContext(), CustomDevices.PROFILE_ID_KEY, CustomDevices.PROFILE_ID));
@@ -101,7 +103,7 @@ public class ConfigurationService implements ManagedService {
 		DictionaryHelper helper = new DictionaryHelper(newConfig);
 		//boolean isChanged = false;
 		synchronized (this) {
-			/*isChanged = */setInteger( ConfigurationProperties.PAN_ID_KEY, helper.getInt(ConfigurationProperties.PAN_ID_KEY, getPanId() ) );			
+			/*isChanged = */ setInteger( ConfigurationProperties.PAN_ID_KEY, helper.getInt(ConfigurationProperties.PAN_ID_KEY, getPanId() ) );			
 			/*isChanged = */ setInteger( ConfigurationProperties.CHANNEL_ID_KEY, helper.getInt(ConfigurationProperties.CHANNEL_ID_KEY, getChannelId() ) );
 			/*isChanged = */ setInteger( ConfigurationProperties.COM_BOUDRATE_KEY, helper.getInt(ConfigurationProperties.COM_BOUDRATE_KEY, getSerialBoudRate() ) );
 			/*isChanged = */ setStringCaseSensitve( ConfigurationProperties.COM_NAME_KEY, helper.getString(ConfigurationProperties.COM_NAME_KEY, getSerialPortName() ) );
@@ -117,7 +119,7 @@ public class ConfigurationService implements ManagedService {
 
 			/*isChanged = */  setInteger( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, helper.getInt( ConfigurationProperties.AUTOMATIC_ENDPOINT_ADDRESS_RETRY_KEY, getAutomaticFreeEndPointRetry() ) );
 			/*isChanged = */  setInteger( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, helper.getInt( ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY, getFirstFreeEndPoint() ) );
-
+			/*isChanged = */  setInteger( ConfigurationProperties.DEVICE_MSG_TIMEOUT_KEY, helper.getInt( ConfigurationProperties.DEVICE_MSG_TIMEOUT_KEY, getMsgTimeout() ) );
 
 			setStringCaseInsensitve(CustomDevices.ENDPOINT_KEY, helper.getString(CustomDevices.ENDPOINT_KEY, getString(CustomDevices.ENDPOINT_KEY)));
 			setStringCaseInsensitve(CustomDevices.PROFILE_ID_KEY, helper.getString(CustomDevices.PROFILE_ID_KEY, getString(CustomDevices.PROFILE_ID_KEY)));
@@ -129,7 +131,7 @@ public class ConfigurationService implements ManagedService {
 
 		logger.debug("Current configuration after applying new configuration is {}", configuration);
 
-		logger.info("Configuration related to the dongle changed, updating it.ss");
+		logger.info("Configuration related to the dongle changed, updating it");
 		updateDriverConfiguration();
 	}
 
@@ -279,5 +281,9 @@ public class ConfigurationService implements ManagedService {
 	 */
 	public synchronized int getFirstFreeEndPoint() {
 		return getInt(ConfigurationProperties.FIRST_ENDPOINT_ADDRESS_KEY);
+	}
+
+	public synchronized int getMsgTimeout() {
+		return getInt(ConfigurationProperties.DEVICE_MSG_TIMEOUT_KEY);
 	}
 }

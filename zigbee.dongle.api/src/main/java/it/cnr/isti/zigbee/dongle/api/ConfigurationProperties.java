@@ -138,6 +138,10 @@ public interface ConfigurationProperties {
 	 * when timeout is fired it is considered as a failed communication even if the message arrives later on
 	 */
 	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timeout";
+	
+	public final static int DEVICE_MSG_TIMEOUT = 5000;
+	
+	public final static String DEVICE_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.message.timeout";
 
 
 	/**

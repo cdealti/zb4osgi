@@ -72,7 +72,7 @@ public class OnOffOutputDevice extends HADeviceBase implements OnOffOutput {
 
 	@Override
 	public String getName() {
-		return OnOffLight.NAME;
+		return OnOffOutput.NAME;
 	}
 
 	public final static DeviceDescription DEVICE_DESCRIPTOR =  new AbstractDeviceDescription(){

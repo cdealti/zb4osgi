@@ -44,8 +44,9 @@ public class GetGroupMembershipCommand extends AbstractCommand {
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			payload = new byte[groupList.length * 2];
+			payload = new byte[groupList.length * 2 + 1];
 			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			serializer.append_byte((byte) groupList.length);
 			for (int i = 0; i < groupList.length; i++) {
 				serializer.append_short((short)groupList[i]);
 			}

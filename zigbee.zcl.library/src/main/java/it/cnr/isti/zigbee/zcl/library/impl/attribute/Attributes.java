@@ -110,7 +110,7 @@ public class Attributes  {
 	.setReportable(false)
 	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
-	.setWritable(false);
+	.setWritable(true);
 
 	final static public   AttributeDescriptor PHISICAL_ENVIROMENT = new AbstractAttribute()
 	.setId(0x0011)
@@ -118,7 +118,7 @@ public class Attributes  {
 	.setReportable(false)
 	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
-	.setWritable(false);
+	.setWritable(true);
 
 	final static public   AttributeDescriptor DEVICE_ENABLED = new AbstractAttribute()
 	.setId(0x0012)
@@ -126,7 +126,7 @@ public class Attributes  {
 	.setReportable(false)
 	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Boolean)
-	.setWritable(false);
+	.setWritable(true);
 
 	final static public   AttributeDescriptor ALARM_MASK = new AbstractAttribute()
 	.setId(0x0013)
@@ -134,7 +134,7 @@ public class Attributes  {
 	.setReportable(false)
 	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
-	.setWritable(false);
+	.setWritable(true);
 
 	final static public   AttributeDescriptor IDENTIFY_TIME = new AbstractAttribute()
 	.setId(0x0000)

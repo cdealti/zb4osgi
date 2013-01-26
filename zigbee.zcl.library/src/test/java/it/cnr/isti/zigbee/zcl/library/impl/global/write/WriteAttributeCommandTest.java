@@ -39,7 +39,7 @@ import org.junit.Test;
 public class WriteAttributeCommandTest {
 
 	@Test
-	public void testGetPayload() {
+	public void testGetPayloadWithString() {
 		AttributeImpl attribute = new AttributeImpl(null, null, Attributes.LOCATION_DESCRIPTION);
 		WriteAttributeRecord[] values = new WriteAttributeRecord[]{
 				new WriteAttributeRecordImpl( attribute, "garage" )
@@ -47,6 +47,19 @@ public class WriteAttributeCommandTest {
 		WriteAttributeCommand command = new WriteAttributeCommand(values);
 		assertArrayEquals(new byte[]{
 				0x10, 0x00, 0x42, 0x06, 0x67, 0x61, 0x72, 0x61, 0x67, 0x65
+		}, command.getPayload()
+		);
+	}
+
+	@Test
+	public void testGetPayloadWithInteger() {
+		AttributeImpl attribute = new AttributeImpl(null, null, Attributes.IDENTIFY_TIME);
+		WriteAttributeRecord[] values = new WriteAttributeRecord[]{
+				new WriteAttributeRecordImpl( attribute, new Integer(10) )
+		};
+		WriteAttributeCommand command = new WriteAttributeCommand(values);
+		assertArrayEquals(new byte[]{
+				0x00, 0x00, 0x21, 0x0a, 0x00
 		}, command.getPayload()
 		);
 	}

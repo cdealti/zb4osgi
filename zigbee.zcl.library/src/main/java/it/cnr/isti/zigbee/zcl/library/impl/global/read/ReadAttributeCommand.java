@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 /**
  * 
@@ -51,11 +52,11 @@ public class ReadAttributeCommand extends AbstractCommand {
 	public byte[] getPayload(){	
 		if( payload == null){
 			logger.debug("Creating Payload for command");
-			payload = new byte[attributeIds.length*2];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			ZBSerializer serializer = new ByteArrayOutputStreamSerializer();
 			for (int i = 0; i < attributeIds.length; i++) {
 				serializer.append_short((short) attributeIds[i]);
 			}
+			payload = serializer.getPayload();
 		}
 		return payload;
 	}

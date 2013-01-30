@@ -110,7 +110,7 @@ public class ResponseImpl implements Response {
 			}
 			throw new ZigBeeClusterException(
 				"Expected SpecificCommandFrame (" + expectedCommandId +") but Received:" 
-					+ commandId + " ZCLFrame was " +response,
+					+ commandId + " ZCLFrame was " + toString(response),
 				response
 			);
 		}

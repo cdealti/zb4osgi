@@ -45,7 +45,7 @@ public class AddSceneResponseImpl extends ResponseImpl implements AddSceneRespon
 	public AddSceneResponseImpl(Response response) throws ZigBeeClusterException {
 		
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, AddSceneResponse.ID);
+		ResponseImpl.checkSpecificCommandFrame(response, AddSceneResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();

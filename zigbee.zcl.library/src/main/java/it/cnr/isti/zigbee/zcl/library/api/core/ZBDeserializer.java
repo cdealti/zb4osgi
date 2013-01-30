@@ -77,6 +77,12 @@ public interface ZBDeserializer {
 	
 	/**
 	 * 
+	 * @return the 8bit unsigned
+	 * @since 0.8.0
+	 */
+	public short read_uint8bit();
+	/**
+	 * 
 	 * @return the 24bit parsed
 	 * @since 0.4.0
 	 */
@@ -96,5 +102,13 @@ public interface ZBDeserializer {
 	 * @since 0.2.0
 	 */
 	public void skip(int n);
+
+
+	/**
+	 * 
+	 * @return an integer read from a 16bit
+	 * @since 0.8.0
+	 */
+	public int read_uint16bit();
 	
 }

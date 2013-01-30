@@ -43,7 +43,7 @@ public class RemoveGroupResponseImpl extends ResponseImpl implements RemoveGroup
 
 	public RemoveGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
-		ResponseImpl.checkGeneralCommandFrame(response, RemoveGroupResponse.ID);
+		ResponseImpl.checkSpecificCommandFrame(response, RemoveGroupResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();

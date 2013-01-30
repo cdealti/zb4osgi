@@ -1,4 +1,5 @@
 /*
+
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
    Institute of Information Science and Technologies 
    of the Italian National Research Council 
@@ -19,44 +20,46 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
-import it.cnr.isti.zigbee.zcl.library.api.core.Response;
+import static org.junit.Assert.*;
 import it.cnr.isti.zigbee.zcl.library.api.core.Status;
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
-import it.cnr.isti.zigbee.zcl.library.api.general.groups.AddGroupResponse;
-import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
+import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
+import it.cnr.isti.zigbee.zcl.library.impl.ClusterImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.RawClusterImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLFrame;
+
+import org.junit.Test;
+
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
-public class AddGroupResponseImpl extends ResponseImpl implements
-		AddGroupResponse {
+public class AddGroupResponseImplTest {
 
-	private int groupId;
-	private byte status;
-	
-	
-	public AddGroupResponseImpl(Response response) throws ZigBeeClusterException {
-		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, AddGroupResponse.ID);
-		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
-		status = deserializer.read_byte();
-		groupId = deserializer.read_uint16bit();		
-	}
-	
-	public int getGroupId() {
-		return groupId;
-	}
-
-	public Status getStatus() {
-		return Status.getStatus(status);
+	@Test
+	public void testAddGroupResponseImpl() {
+		try {
+			AddGroupResponseImpl response = new AddGroupResponseImpl(
+				new ResponseImpl(
+						new RawClusterImpl(
+								Groups.ID, 
+								new byte[]{0x09, 0x18, 0x00, 0x00, 0x00, (byte) 0xf0 }
+						), 
+						Groups.ID 
+				)
+			);
+			assertEquals( Status.SUCCESS, response.getStatus() );
+			assertEquals( 0xf000, response.getGroupId() );
+		} catch (ZigBeeClusterException e) {
+			e.printStackTrace();
+			fail("Exception thrwon "+e.getMessage());
+		}
 	}
 
 }

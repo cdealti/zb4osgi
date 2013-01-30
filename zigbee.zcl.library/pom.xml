@@ -91,6 +91,10 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
 	<dependencies>
 		<dependency>
 			<groupId>org.aaloa.zb4osgi</groupId>
+			<artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aaloa.zb4osgi</groupId>
 			<artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
 		</dependency>
 		<dependency>
@@ -148,6 +152,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
 						</Private-Package>
 						<Import-Package>
 							it.cnr.isti.primitvetypes.util,
+							com.itaca.ztool.util,
 							it.cnr.isti.zigbee.api,
 							org.slf4j; provider=paxlogging
 						</Import-Package>

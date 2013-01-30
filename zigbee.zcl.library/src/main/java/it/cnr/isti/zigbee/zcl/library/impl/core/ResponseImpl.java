@@ -22,6 +22,8 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
+import com.itaca.ztool.util.ByteUtils;
+
 import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
@@ -85,6 +87,17 @@ public class ResponseImpl implements Response {
 		return payload;
 	}
 
+	public static String toString(Response r){
+		return 
+		"[ ZCL Header: " + ByteUtils.toBase16( r.getZCLHeader().toByte() ) 
+				+ ", ZCL Payload: " + ByteUtils.toBase16(r.getPayload()) 
+		+ "]";
+	}
+	
+	public String toString(){
+		return toString(this);
+	}
+
 	public static void checkSpecificCommandFrame(Response response, byte expectedCommandId) throws ZigBeeClusterException{
 		byte commandId = response.getHeaderCommandId();
 		if (commandId != expectedCommandId) {
@@ -96,8 +109,10 @@ public class ResponseImpl implements Response {
 						,response);
 			}
 			throw new ZigBeeClusterException(
-					"Expected SpecificCommandFrame ("+ expectedCommandId +") but Received:" +commandId
-					,response);
+				"Expected SpecificCommandFrame (" + expectedCommandId +") but Received:" 
+					+ commandId + " ZCLFrame was " +response,
+				response
+			);
 		}
 
 	}

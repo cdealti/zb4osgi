@@ -480,9 +480,9 @@ public class Attributes  {
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
-	final static public   AttributeDescriptor ON_OFF_TRANSATION_TIME = new AbstractAttribute()
+	final static public   AttributeDescriptor ON_OFF_TRANSITION_TIME = new AbstractAttribute()
 	.setId(0x0010)
-	.setName("OnOffTRansationTime")
+	.setName("OnOffTransitionTime")
 	.setReportable(false)
 	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)

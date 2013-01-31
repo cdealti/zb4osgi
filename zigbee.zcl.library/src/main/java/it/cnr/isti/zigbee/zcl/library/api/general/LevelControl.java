@@ -56,7 +56,7 @@ public interface LevelControl extends ZCLCluster {
 	
 	public Attribute getAttributeCurrentLevel();
 	public Attribute getAttributeRemainingTime();
-	public Attribute getAttributeOnOffTransactionTime();
+	public Attribute getAttributeOnOffTransitionTime();
 	public Attribute getAttributeOnLevel();
 	
 	public Response moveToLevel(short level, int time) throws ZigBeeClusterException;

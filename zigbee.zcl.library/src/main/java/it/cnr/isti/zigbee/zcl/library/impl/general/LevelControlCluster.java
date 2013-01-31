@@ -71,7 +71,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		super(zbDevice);
 		currentLevel = new AttributeImpl(zbDevice,this,Attributes.CURRENT_LEVEL);
 		remainingTime = new AttributeImpl(zbDevice,this,Attributes.REMAINING_TIME);
-		onOffTransactionTime = new AttributeImpl(zbDevice,this,Attributes.ON_OFF_TRANSATION_TIME);
+		onOffTransactionTime = new AttributeImpl(zbDevice,this,Attributes.ON_OFF_TRANSITION_TIME);
 		onLevel = new AttributeImpl(zbDevice,this,Attributes.ON_LEVEL);
 		attributes = new AttributeImpl[]{currentLevel, remainingTime, onOffTransactionTime, onLevel};
 	}
@@ -99,7 +99,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		return onLevel;
 	}
 
-	public Attribute getAttributeOnOffTransactionTime() {
+	public Attribute getAttributeOnOffTransitionTime() {
 		return onOffTransactionTime;
 	}
 

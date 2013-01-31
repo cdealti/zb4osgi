@@ -14,7 +14,7 @@ public class ArmResponseImpl extends ResponseImpl implements ArmResponse {
 	public ArmResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
 
-		ResponseImpl.checkGeneralCommandFrame(response, ID);
+		ResponseImpl.checkSpecificCommandFrame(response, ID);
 
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		armNotification = deserializer.read_byte();

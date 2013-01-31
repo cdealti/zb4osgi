@@ -39,7 +39,7 @@ public interface LevelControl extends Cluster {
 
 	public Attribute getCurrentLevel();
 	public Attribute getRemainingTime();
-	public Attribute getOnOffTransactionTime();
+	public Attribute getOnOffTransitionTime();
 	public Attribute getOnLevel();
 	
 	/**

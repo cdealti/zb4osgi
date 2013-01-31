@@ -49,7 +49,6 @@ public class CommandTest {
 			);
 			command.invoke(new String[]{"100","test"});
 		} catch (Exception e) {
-			e.printStackTrace();
 			assertTrue("Expected exception InvocationTargetException", e.getClass() == InvocationTargetException.class);
 			ex = (Exception) ((InvocationTargetException) e).getTargetException();
 		}
@@ -69,7 +68,6 @@ public class CommandTest {
 			);
 			command.invoke(new String[]{"100,200;300, 400; 500 "});
 		} catch (Exception e) {
-			e.printStackTrace();
 			assertTrue("Expected exception InvocationTargetException", e.getClass() == InvocationTargetException.class);
 			ex = (Exception) ((InvocationTargetException) e).getTargetException();
 		}

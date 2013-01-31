@@ -22,6 +22,8 @@
 */
 package org.persona.zigbee.tester.gui;
 
+import it.cnr.isti.zigbee.api.ZigBeeBasedriverTimeOutException;
+import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 
@@ -120,10 +122,19 @@ public class CommandActionPanel extends JPanel {
 				} catch (InvocationTargetException ex){
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);
-					ex.getTargetException().printStackTrace(ps);
+					if( ex.getTargetException() instanceof ZigBeeHAException) {
+						ZigBeeHAException haex = (ZigBeeHAException) ex.getTargetException();
+						if ( haex.getCause() instanceof ZigBeeBasedriverTimeOutException ) {
+							ps.println("Command cluster sent correctly but no answer from the device");
+							ps.println("More dettails on the issue:");
+							ex.getTargetException().printStackTrace(ps);
+						}							
+					} else {
+						ex.getTargetException().printStackTrace(ps);
+					}
 					ps.flush();
 					ps.close();
-                    printReport(params,bof.toString());
+                    printReport(params,bof.toString());                   
 				} catch (Exception ex){
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);

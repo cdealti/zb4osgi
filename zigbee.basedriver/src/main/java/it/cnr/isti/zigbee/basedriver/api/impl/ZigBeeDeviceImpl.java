@@ -28,6 +28,7 @@ import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.api.ClusterFilter;
 import it.cnr.isti.zigbee.api.ClusterListner;
 import it.cnr.isti.zigbee.api.ZigBeeBasedriverException;
+import it.cnr.isti.zigbee.api.ZigBeeBasedriverTimeOutException;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.Activator;
@@ -288,8 +289,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 			AF_INCOMING_MSG incoming = waiter.getResponse();
 			m_removeAFMessageListener();
 			if(incoming == null){
-				//TODO Add a timeout exception
-				throw new ZigBeeBasedriverException("Timeout expired before receiving an answer");
+				throw new ZigBeeBasedriverTimeOutException();
 			}
 			Cluster result = new ClusterImpl(incoming.getData(), incoming.getClusterId()); 
 			return result;

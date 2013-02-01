@@ -53,7 +53,7 @@ public interface Groups extends ZCLCluster {
 	
 	public Attribute getAttributeNameSupport();
 	
-	public Response addGroup(int groupId) throws ZigBeeClusterException;
+	public Response addGroup(int groupId, String name) throws ZigBeeClusterException;
 	public Response viewGroup(int groupId) throws ZigBeeClusterException;
 	public Response getGroupMembership(int[] groupList) throws ZigBeeClusterException;
 	public Response removeGroup(int groupId) throws ZigBeeClusterException;

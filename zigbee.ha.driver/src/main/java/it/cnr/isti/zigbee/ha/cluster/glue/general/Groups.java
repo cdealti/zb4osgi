@@ -39,7 +39,7 @@ import it.cnr.isti.zigbee.zcl.library.api.general.groups.ViewGroupResponse;
  */
 public interface Groups extends Cluster{
 
-	public AddGroupResponse addGroup(int groupId) throws ZigBeeHAException;
+	public AddGroupResponse addGroup(int groupId,String name) throws ZigBeeHAException;
 
 	public void addGroupIfIdentifying(int groupId, String name) throws ZigBeeHAException;
 

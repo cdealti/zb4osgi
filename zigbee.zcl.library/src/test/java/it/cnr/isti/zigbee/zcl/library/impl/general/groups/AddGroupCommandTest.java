@@ -1,4 +1,5 @@
 /*
+
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
    Institute of Information Science and Technologies 
    of the Italian National Research Council 
@@ -19,42 +20,29 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
-import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
-import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
+import static org.junit.Assert.*;
 
+import org.junit.Test;
 
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
-public class AddGroupCommand extends AbstractCommand {
+public class AddGroupCommandTest {
 
-	private int groupId;
-	private String name;
-	
-	public AddGroupCommand(int groupId, String name){
-		super(Groups.ADD_GROUP_ID);
-		this.groupId = groupId;
-		this.name = name;
+	@Test
+	public void testGetPayload() {
+		AddGroupCommand cmd = new AddGroupCommand(0xFF00,"hello world!");
+		assertArrayEquals(new byte[]{
+				0x00, (byte) 0xFF, // GroupId
+				0x0C, //String length
+				0x68, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21 //hello world!
+		}, cmd.getPayload() );
 	}
-	
-	public byte[] getPayload(){	
-		if( payload == null){			
-			ZBSerializer serializer = new ByteArrayOutputStreamSerializer();
-			serializer.append_short((short)groupId);		
-			serializer.appendZigBeeType(name, ZigBeeType.CharacterString);
-			payload = serializer.getPayload();			
-		}
-		return payload;
-	}
-	
+
 }

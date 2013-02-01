@@ -68,7 +68,8 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
  */
 public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessageProducer {
 
-	private static long TIMEOUT; // manlio final 5000;
+	private static long TIMEOUT;
+	private static final long DEFAULT_TIMEOUT = 5000;
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeDeviceImpl.class);
 
 	private final int[] inputs;
@@ -128,11 +129,9 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 
 		try{
 			TIMEOUT = Long.parseLong(Activator.getBundleContext().getProperty("org.aaloa.zb4osgi.zigbee.basedriver.timeout")); 
-		}
-		catch(Exception ex){
-			TIMEOUT = 5000;
-			//ex.printStackTrace();
-			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to 5000 ms.");
+		}catch(Exception ex){
+			TIMEOUT = DEFAULT_TIMEOUT;
+			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to default value {}ms", DEFAULT_TIMEOUT);
 		}
 
 		/*if(Activator.getEventingService() != null){
@@ -285,7 +284,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 			m_removeAFMessageListener();
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
 		} else {
-			//FIX Can't be singleton because only the invoke method can be invoked by multiple-thread
+			//FIX Can't be singleton because the invoke method can be invoked by multiple-thread
 			AF_INCOMING_MSG incoming = waiter.getResponse();
 			m_removeAFMessageListener();
 			if(incoming == null){

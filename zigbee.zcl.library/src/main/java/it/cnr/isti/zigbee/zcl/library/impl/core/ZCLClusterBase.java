@@ -62,7 +62,7 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 	public abstract short getId();
 	public abstract String getName();
 	public abstract Attribute[] getStandardAttributes() ;
-
+	
 	protected ZigBeeDevice getZigBeeDevice() {
 		return zbDevice;
 	}
@@ -105,7 +105,7 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 		Cluster input = new ClusterImpl(getId(),inFrame);
 		if (suppressResponse) {
 			try {
-				logger.debug("Sending ZCLCluster {} without expecting an answer", cmd);
+				logger.debug("Sending ZCLFrame {} without expecting an answer", inFrame);
 				zbDevice.send(input);
 				return null;
 			} catch (ZigBeeBasedriverException e) {
@@ -114,10 +114,10 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 		} else{
 			Cluster cluster;
 			try {
-				logger.debug("Sending ZCLCluster {} and waiting for response", cmd);
+				logger.debug("Sending ZCLFrame {} and waiting for response", inFrame);
 				cluster = zbDevice.invoke(input);
 				Response response = new ResponseImpl(cluster,getId());
-				logger.debug("Received response {} to request {}", response, cmd);
+				logger.debug("Received response {} to request {}", response, inFrame);
 				return response;
 			} catch (ZigBeeBasedriverException e) {
 				throw new ZigBeeClusterException(e);

@@ -47,6 +47,7 @@ public class GroupsClusterTest {
 
 	private ZigBeeDevice createMockDevice() throws ZigBeeBasedriverException {
 		ZigBeeDevice mock = createMock(ZigBeeDevice.class);
+		
 		expect(mock.invoke( (Cluster) anyObject()))
 			.andReturn( new RawClusterImpl(
 							Groups.ID, 

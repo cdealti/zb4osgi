@@ -22,6 +22,8 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
+import com.itaca.ztool.util.ByteUtils;
+
 import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.zcl.library.api.core.Command;
  /**
@@ -74,5 +76,12 @@ public class ZCLFrame {
 	
 	public int size(){
 		return toByte().length;
+	}
+	
+	public String toString() {
+		return 
+		"[ ZCL Header: " + ByteUtils.toBase16( getHeader().toByte() ) 
+				+ ", ZCL Payload: " + ByteUtils.toBase16(getPayload()) 
+		+ "]";
 	}
 }

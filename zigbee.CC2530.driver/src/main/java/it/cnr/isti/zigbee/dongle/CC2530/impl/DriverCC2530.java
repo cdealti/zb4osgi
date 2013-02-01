@@ -99,6 +99,7 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision: 229 $ ($LastChangedDate: 2011-05-20 11:42:58 +0200 (ven, 20 mag 2011) $)
  * @since 0.1.0
  *
@@ -118,6 +119,10 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 	public  static final boolean RESEND_ONLY_EXCEPTION_DEFAULT = true;
 	public  static final String RESEND_ONLY_EXCEPTION_KEY = "zigbee.driver.tsb.resend.exceptionally";
 
+	private final int TIMEOUT; 
+	public static final int DEFAULT_TIMEOUT = 5000;
+	public static final String TIMEOUT_KEY = "zigbee.driver.tsb.timeout";
+
 	private Thread driver;
 
 	private HWHighLevelDriver high;
@@ -130,8 +135,6 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 	private byte channel;
 	private boolean cleanStatus;
 
-	private long TIMEOUT; 
-	private static long TIMEOUT_S;
 
 	private final int RESEND_TIMEOUT; 
 	private final int RESEND_MAX_RETRY;
@@ -282,12 +285,15 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 		}		
 		RESEND_TIMEOUT = aux;
 
-		/* */
-		if(timeout > 0)
-			TIMEOUT_S = TIMEOUT = timeout;
-		else
-			TIMEOUT_S = TIMEOUT = 5000;
-		/* */
+		aux = (int) Math.max(DEFAULT_TIMEOUT, timeout);
+		try{
+			aux = Integer.parseInt(System.getProperty(TIMEOUT_KEY)); 
+			logger.debug("Using TIMEOUT set from enviroment {}", aux);
+		}
+		catch(NumberFormatException ex){
+			logger.debug("Using TIMEOUT set as DEFAULT {}ms", aux);
+		}		
+		TIMEOUT = aux;
 
 		aux = RESEND_MAX_RESEND_DEFAULT;
 		try{
@@ -562,7 +568,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 			Enumeration<CommPortIdentifier> ports = CommPortIdentifier.getPortIdentifiers();
 			while(ports.hasMoreElements()){
 				CommPortIdentifier com = ports.nextElement();
-				if(DriverCC2530.initializeHardware(com.getName(), rate)){
+				if(initializeHardware(com.getName(), rate)){
 					portToOpen=com.getName();
 					Thread.currentThread().setName(buildDriverThreadName(portToOpen, rate,channel));					
 					break;
@@ -574,7 +580,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 			}
 		}
 		else{
-			if( DriverCC2530.initializeHardware(port, rate) == true ){
+			if( initializeHardware(port, rate) == true ){
 				portToOpen = port;
 			} else {
 				logger.error("Failed to intialize the dongle on port {} at rate {}", port, rate);
@@ -613,7 +619,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 		}
 	}
 
-	static boolean initializeHardware(String portName, int boudRate) {
+	boolean initializeHardware(String portName, int boudRate) {
 
 		boolean result = false;
 		final int received[] = new int[1];
@@ -643,7 +649,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 		try {
 			probingDriver.open(portName,boudRate);
 			probingDriver.sendPacket(new SYS_VERSION());
-			final long ready = System.currentTimeMillis() + TIMEOUT_S; // manlio 5000;
+			final long ready = System.currentTimeMillis() + TIMEOUT; // manlio 5000;
 			while(ready > System.currentTimeMillis()){
 				synchronized (received) {
 					if( received[0] == 3 ){

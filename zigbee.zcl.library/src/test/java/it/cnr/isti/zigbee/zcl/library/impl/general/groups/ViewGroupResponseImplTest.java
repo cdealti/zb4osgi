@@ -43,7 +43,9 @@ public class ViewGroupResponseImplTest {
 
 	@Test
 	public void testViewGroupResponseImpl() {
-		Cluster c = new RawClusterImpl((short) 0x04, new byte[]{
+		Cluster c;
+		Response r;
+		c = new RawClusterImpl((short) 0x04, new byte[]{
 				0x19,
 				0x15,
 				0x01,
@@ -51,13 +53,31 @@ public class ViewGroupResponseImplTest {
 				0x10, 0x00, // GroupId = 16
 				0x03, 0x61, 0x62, 0x63 // GroupName = "abc"
 		});
-		Response r;
 		try {
 			r = new ResponseImpl(c,Groups.ID);
 			ViewGroupResponseImpl aux = new ViewGroupResponseImpl(r);
 			assertEquals(16, aux.getGroupId() );
 			assertEquals("abc", aux.getGroupName() );
 		} catch (ZigBeeClusterException e) {
+			fail("Exception thrown " + e.getMessage() );
+			e.printStackTrace();
+		}
+
+		
+		c = new RawClusterImpl((short) 0x04, new byte[]{
+				0x19,
+				0x29,
+				0x01,
+				(byte) 0x8b, // Status != SUCCESS
+				0x05, 0x00, // GroupId = 5
+		});
+		try {
+			r = new ResponseImpl(c,Groups.ID);
+			ViewGroupResponseImpl aux = new ViewGroupResponseImpl(r);
+			assertEquals(5, aux.getGroupId() );
+			assertEquals(null, aux.getGroupName() );
+		} catch (ZigBeeClusterException e) {
+			fail("Exception thrown " + e.getMessage() );
 			e.printStackTrace();
 		}
 	}

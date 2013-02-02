@@ -43,6 +43,10 @@ public class DefaultDeserializer implements ZBDeserializer {
 		this.payload = payload;
 		this.index = index;
 	}
+
+	public boolean endOfStream() {
+		return index >= payload.length;
+	}
 	
 	public Boolean readBoolean() {
 		Object value = Integers.readBooleanObject(payload, index);

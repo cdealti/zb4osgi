@@ -51,7 +51,11 @@ public class ViewGroupResponseImpl extends ResponseImpl implements
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		status = deserializer.read_byte();
 		groupId = deserializer.read_short();
-		groupName = (String) deserializer.readZigBeeType(ZigBeeType.CharacterString);
+		if ( deserializer.endOfStream() ) {
+			groupName = null;
+		} else {
+			groupName = (String) deserializer.readZigBeeType(ZigBeeType.CharacterString);
+		}
 	}
 	
 	public int getGroupId() {

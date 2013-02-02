@@ -35,6 +35,13 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  *
  */
 public interface ZBDeserializer {
+
+	/**
+	 * 
+	 * @return true if and only if no byte left to read from the payload
+	 * @since 0.8.0
+	*/
+	public boolean endOfStream();
 	
 	/**
 	 * 

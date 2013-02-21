@@ -47,5 +47,4 @@ public interface RelativeHumidityMeasurement extends ZCLCluster{
 	public Attribute getAttributeMinMeasuredValue();
 	public Attribute getAttributeMaxMeasuredValue();
 	public Attribute getAttributeTolerance();
-	
 }

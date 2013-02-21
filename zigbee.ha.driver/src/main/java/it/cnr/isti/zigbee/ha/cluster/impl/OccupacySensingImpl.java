@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.OccupacySensingC
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -46,12 +47,14 @@ public class OccupacySensingImpl implements OccupacySensing {
 	private Attribute occupancySensorType;
 	private Attribute pirOccupiedToUnoccupiedDelay;
 	private Attribute pirUnoccupiedToOccupiedDelay;
+	private Attribute pirUnoccupiedToOccupiedThreshold;
 	private Attribute ultraSonicOccupiedToUnoccupiedDelay;
 	private Attribute ultraSonicUnoccupiedToOccupiedDelay;
+	private Attribute ultrasonicUnoccupiedToOccupiedThreshold;
+
 	private OccupancyBridgeListeners eventBridge;
 	
 	public OccupacySensingImpl(ZigBeeDevice zbDevice){
-		
 		
 		occupacySensingCluster = new OccupacySensingCluster(zbDevice);
 		occupancy = occupacySensingCluster.getAttributeOccupancy();
@@ -60,8 +63,10 @@ public class OccupacySensingImpl implements OccupacySensing {
 		pirUnoccupiedToOccupiedDelay = occupacySensingCluster.getAttributePIRUnoccupiedToOccupiedDelay();
 		ultraSonicOccupiedToUnoccupiedDelay = occupacySensingCluster.getAttributeUltraSonicOccupiedToUnoccupiedDelay();
 		ultraSonicUnoccupiedToOccupiedDelay = occupacySensingCluster.getAttributeUltraSonicUnoccupiedToOccupiedDelay();
-		eventBridge = new OccupancyBridgeListeners(Activator.getConfiguration(), occupancy, this);
-		
+		pirUnoccupiedToOccupiedThreshold = occupacySensingCluster.getAttributePIRUnoccupiedToOccupiedThreshold();
+		ultrasonicUnoccupiedToOccupiedThreshold = occupacySensingCluster.getAttributeUltrasonicUnoccupiedToOccupiedThreshold();
+
+		eventBridge = new OccupancyBridgeListeners(Activator.getConfiguration(), occupancy, this);		
 	}
 
 	public Attribute getOccupancy() {
@@ -121,4 +126,11 @@ public class OccupacySensingImpl implements OccupacySensing {
 		return occupacySensingCluster.getAvailableAttributes();
 	}
 	
+	public Attribute getPIRUnoccupiedToOccupiedThreshold() {
+		return pirUnoccupiedToOccupiedThreshold;
+	}
+
+	public Attribute getUltraSonicUnoccupiedToOccupiedThreshold() {
+		return ultrasonicUnoccupiedToOccupiedThreshold;
+	}	
 }

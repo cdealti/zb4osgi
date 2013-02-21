@@ -46,10 +46,8 @@ public class SubscriptionClusterFilter implements ClusterFilter {
 	 */
 	public final static SubscriptionClusterFilter FILTER = new SubscriptionClusterFilter();
 	
-	private SubscriptionClusterFilter() {
+	private SubscriptionClusterFilter() {}
 		
-	}
-	
 	public boolean match(Cluster cluster) {
 		ZCLFrame frame = new ZCLFrame(cluster);
 		return frame.getHeader().getCommandId() == ReportAttributesCommand.ID

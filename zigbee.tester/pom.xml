@@ -57,7 +57,7 @@
   
   <developers>
     <developer>
-      <id>slenzi</id>
+      <id>stefano.lenzi</id>
       <name>Stefano "Kismet" Lenzi</name>
       <email>stefano.lenzi@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
@@ -65,9 +65,17 @@
       <timezone>+1</timezone>
     </developer>
     <developer>
-      <id>ffurfari</id>
+      <id>francesco.furfari</id>
       <name>Francesco Furfari</name>
       <email>francesco.furfari@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>manlio.bacco</id>
+      <name>Manlio Bacco</name>
+      <email>manlio.bacco@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>
@@ -108,7 +116,7 @@
               com.itaca.ztool.util
             </Private-Package>
             <Import-Package>
-		!com.itaca.ztool.api,
+                !com.itaca.ztool.api,
                 javax.swing.*,
                 it.cnr.isti.zigbee.api.*,
                 it.cnr.isti.zigbee.ha.*,

@@ -47,8 +47,6 @@ public class IdentifyCluster extends ZCLClusterBase implements Identify {
 	
 	private final Attribute[] attributes;
 	
-	
-	
 	private static EmptyPayloadCommand CMD_IDENTIFY_QUERY = new EmptyPayloadCommand()
 		.setId(Identify.IDENTIFY_QUERY_ID)
 		.setClientServerDirection(true)

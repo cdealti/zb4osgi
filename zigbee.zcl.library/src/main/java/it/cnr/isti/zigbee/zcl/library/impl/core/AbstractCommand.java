@@ -53,13 +53,11 @@ public class AbstractCommand implements Command {
 		this(id, manufacturerId, isClientServerDirection, true, null);
 	}
 	
-	public AbstractCommand(byte id, byte[] manufacturerId,
-			boolean isClientServerDirection, boolean isClusterSpecific) {
+	public AbstractCommand(byte id, byte[] manufacturerId, boolean isClientServerDirection, boolean isClusterSpecific) {
 		this(id, manufacturerId, isClientServerDirection, isClusterSpecific, null);
 	}
 	
-	public AbstractCommand(byte id, byte[] manufacturerId,
-			boolean isClientServerDirection, boolean isClusterSpecific,
+	public AbstractCommand(byte id, byte[] manufacturerId, boolean isClientServerDirection, boolean isClusterSpecific,
 			byte[] allowedResponseIds) {
 		super();
 		this.id = id;

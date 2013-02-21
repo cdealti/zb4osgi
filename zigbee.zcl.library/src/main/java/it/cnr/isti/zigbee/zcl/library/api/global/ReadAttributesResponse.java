@@ -36,6 +36,4 @@ public interface ReadAttributesResponse extends Response {
 
 
 	public ReadAttributesStatus[] getReadAttributeStatus();
-	
-	
 }

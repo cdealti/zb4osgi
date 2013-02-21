@@ -109,6 +109,4 @@ public enum ZigBeeType {
 	private static void setMap(){
 		 MAP = new Hashtable<Byte, ZigBeeType>();
 	}
-
-	
 }

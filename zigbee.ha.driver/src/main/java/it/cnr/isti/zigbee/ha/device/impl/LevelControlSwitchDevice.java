@@ -45,8 +45,7 @@ import org.osgi.framework.BundleContext;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class LevelControlSwitchDevice extends HADeviceBase implements
-		LevelControlSwitch {
+public class LevelControlSwitchDevice extends HADeviceBase implements LevelControlSwitch {
 	
 	private OnOff onOff;
 	private OnOffSwitchConfiguration onOffSwitchConfiguration;
@@ -55,7 +54,6 @@ public class LevelControlSwitchDevice extends HADeviceBase implements
 	private LevelControl levelControl;
 	private Identify identify;
 
-	
 	public LevelControlSwitchDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException{
 		super(ctx, zbDevice);
 		onOffSwitchConfiguration = (OnOffSwitchConfiguration) addCluster(HAProfile.ON_OFF_SWITCH_CONFIGURATION);
@@ -114,9 +112,4 @@ public class LevelControlSwitchDevice extends HADeviceBase implements
 	public Scenes getScenes() {
 		return scenes;
 	}
-	
-	public Identify getIdentify() {
-		return identify;
-	}
-
 }

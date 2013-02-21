@@ -22,9 +22,8 @@
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
-import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration.ProvidedClusterMode;
-
 import org.osgi.framework.Constants;
+import org.osgi.service.cm.ManagedService;
 
 /**
  * 
@@ -37,16 +36,16 @@ import org.osgi.framework.Constants;
  * 
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.6.0
  *
  */
-public interface ReportingConfiguration {
+public interface ReportingConfiguration extends ManagedService {
 	
 	public final static String SERVICE_FILTER = "( " + Constants.OBJECTCLASS + "=" + ReportingConfiguration.class.getName() + ")";
 
-	
     /**
      * The key to {@link Integer} property that set the default value for the <b>Minimum Rerporting Interval</b> field 
      * of the <br>
@@ -91,6 +90,26 @@ public interface ReportingConfiguration {
      */
     public static final boolean DEFAULT_CONFIGURE_REPORTING_OVERWRITE = true;   
 
+    /**
+     * How discovery should be perfomed by the Home Automation driver
+     * @since 0.7.0
+     */
+	public static final String CLUSTER_DISCOVERY_MODE_KEY = "it.isti.cnr.zigbee.ha.driver.cluster.discovery.mode";
+
+    /**
+     * The default value for the property {@link #CLUSTER_DISCOVERY_MODE_KEY}, that is true
+     * @since 0.7.0
+     */
+	public static final String DEFAULT_CLUSTER_DISCOVERY_MODE = "HomeAutomationProfileStrict";   
+
+	//public static final String FORCE_DEVICE_COMPLIANCE_KEY = "it.isti.cnr.zigbee.ha.driver.device.compliance";
+
+	//public static final String DEFAULT_FORCE_DEVICE_COMPLIANCE = "OnlyCompliantDevices";   
+
+	public abstract String getClusterDiscoveryMode();
+
+	//public abstract String getDeviceCompliance();
+	/* */
 	
 	public abstract int getReportingMinimum();
 

@@ -22,13 +22,10 @@
 package it.cnr.isti.zigbee.dongle.CC2530;
 
 import it.cnr.isti.osgi.util.OSGiProperties;
+import it.cnr.isti.zigbee.dongle.CC2530.impl.DriverCC2530;
 import it.cnr.isti.zigbee.dongle.api.ConfigurationProperties;
-import it.cnr.isti.zigbee.dongle.api.DriverStatus;
 import it.cnr.isti.zigbee.dongle.api.NetworkMode;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
-//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSB;
-//import it.cnr.isti.zigbee.dongle.tsb.impl.DriverTSBi;
-import it.cnr.isti.zigbee.dongle.CC2530.impl.DriverCC2530;
 
 import java.util.Properties;
 
@@ -38,7 +35,8 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  * 
- * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco - ISTI-CNR</a>
  * @version $LastChangedRevision: 229 $ ($LastChangedDate: 2011-05-20 11:42:58 +0200 (ven, 20 mag 2011) $)
  * @since 0.1.0
  *
@@ -51,13 +49,14 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bc) throws Exception {
 		driver = new DriverCC2530(
 				OSGiProperties.getString(bc, ConfigurationProperties.COM_NAME_KEY, ConfigurationProperties.COM_NAME),
-				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, 115200),
+				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, ConfigurationProperties.COM_BOUDRATE), //115200 manlio
 				NetworkMode.valueOf(OSGiProperties.getString(
 						bc, ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE
 				)),
 				OSGiProperties.getInt(bc, ConfigurationProperties.PAN_ID_KEY, ConfigurationProperties.PAN_ID),
 				OSGiProperties.getInt(bc, ConfigurationProperties.CHANNEL_ID_KEY, ConfigurationProperties.CHANNEL_ID),
 				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH)
+				OSGiProperties.getLong(bc, ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, ConfigurationProperties.APPLICATION_MSG_TIMEOUT)
 		);
 		Properties properties = new Properties();
 		properties.put("zigbee.driver.id", DriverCC2530.class.getName());

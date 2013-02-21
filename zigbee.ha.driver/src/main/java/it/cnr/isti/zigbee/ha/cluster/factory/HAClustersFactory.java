@@ -26,7 +26,11 @@ import it.cnr.isti.zigbee.ha.cluster.impl.AlarmsImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.BasicImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.DeviceTemperatureConfigurationImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.GroupsImpl;
+import it.cnr.isti.zigbee.ha.cluster.impl.IASACEImpl;
+import it.cnr.isti.zigbee.ha.cluster.impl.IASWDImpl;
+import it.cnr.isti.zigbee.ha.cluster.impl.IASZoneImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.IdentifyImpl;
+import it.cnr.isti.zigbee.ha.cluster.impl.IlluminanceMeasurementImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.LevelControlImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.OccupacySensingImpl;
 import it.cnr.isti.zigbee.ha.cluster.impl.OnOffImpl;
@@ -63,8 +67,11 @@ public class HAClustersFactory extends ClusterFactoryBase {
 	final static String LEVEL_CONTROL_KEY = HAProfile.ID + ":"+ HAProfile.LEVEL_CONTROL;
 	final static String ALARMS_KEY = HAProfile.ID + ":"+ HAProfile.ALARMS;
 	final static String TIME_KEY = HAProfile.ID + ":"+ HAProfile.TIME;
+	// final static String RSSI_LOCATION
+	final static String COMMISSIONING_KEY = HAProfile.ID + ":"+ HAProfile.COMMISSIONING;
 	
 	//Measurement and Sensing
+	final static String ILLUMINANCE_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.ILLUMINANCE_MEASUREMENT; // new
 	final static String TEMPERATURE_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.TEMPERATURE_MEASUREMENT;
 	final static String RELATIVE_HUMIDITY_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.RELATIVE_HUMIDITY_MEASUREMENT;
 	final static String OCCUPANCY_SENSING_KEY = HAProfile.ID + ":"+ HAProfile.OCCUPANCY_SENSING;
@@ -72,7 +79,7 @@ public class HAClustersFactory extends ClusterFactoryBase {
 	//Security and Safety
 	final static String IAS_ZONE_KEY = HAProfile.ID + ":"+ HAProfile.IAS_ZONE;
 	final static String IAS_WD_KEY = HAProfile.ID + ":"+ HAProfile.IAS_WD;
-	
+	final static String IAS_ACE_KEY = HAProfile.ID + ":"+ HAProfile.IAS_ACE;
 	
 	public HAClustersFactory(BundleContext ctx){
 		super(ctx);
@@ -89,15 +96,18 @@ public class HAClustersFactory extends ClusterFactoryBase {
 		addCluster(LEVEL_CONTROL_KEY, LevelControlImpl.class);
 		addCluster(ALARMS_KEY, AlarmsImpl.class);
 		addCluster(TIME_KEY, TimeImpl.class);
+		addCluster(COMMISSIONING_KEY, TimeImpl.class); // new
 		
 		//Measurement and Sensing
+		addCluster(ILLUMINANCE_MEASUREMENT_KEY, IlluminanceMeasurementImpl.class); // new
 		addCluster(TEMPERATURE_MEASUREMENT_KEY, TemperatureMeasurementImpl.class);
 		addCluster(RELATIVE_HUMIDITY_MEASUREMENT_KEY, RelativeHumidityMeasurementImpl.class);
 		addCluster(OCCUPANCY_SENSING_KEY, OccupacySensingImpl.class);
 		
 		//Security and Safety
-		//TODO the glue class addCluster(IAS_ZONE_KEY, IASZoneImpl.class);
-		//TODO the glue class addCluster(IAS_WD_KEY, IASWDImpl.class);
+		addCluster(IAS_ZONE_KEY, IASZoneImpl.class);
+		addCluster(IAS_WD_KEY, IASWDImpl.class);
+		addCluster(IAS_ACE_KEY, IASACEImpl.class);
 	}
 
 }

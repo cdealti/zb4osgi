@@ -22,12 +22,13 @@
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.scenes;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
 import it.cnr.isti.zigbee.zcl.library.api.general.scenes.ExtensionFieldSetAddScene;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
+import it.cnr.isti.zigbee.zcl.library.impl.attribute.AttributeDescriptor;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>

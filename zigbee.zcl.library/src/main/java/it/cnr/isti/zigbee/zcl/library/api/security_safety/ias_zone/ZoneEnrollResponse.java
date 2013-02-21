@@ -27,12 +27,13 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public interface ZoneEnrollResponse extends Response {
 
-	public static final short ID = 0x00;
+	public static final byte ID = 0x00;
 	
 	public int getEnrollResponseCode();
 	

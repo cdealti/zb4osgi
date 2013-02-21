@@ -52,5 +52,4 @@ public interface DefaultResponse extends Response{
 	 */
 	
 	public Status getStatus();
-	
 }

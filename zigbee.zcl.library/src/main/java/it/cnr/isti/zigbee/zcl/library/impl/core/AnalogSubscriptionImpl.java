@@ -120,7 +120,6 @@ public class AnalogSubscriptionImpl extends SubscriptionBase implements AnalogSu
 					" is not recognized "
 			);
 		}
-		
 	}
 	
 	public void setReportableChange(Object value) {

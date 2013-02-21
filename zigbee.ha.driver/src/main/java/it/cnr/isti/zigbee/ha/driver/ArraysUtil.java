@@ -40,10 +40,10 @@ public class ArraysUtil {
      * @return the new <code>int[]</code> obtained by concatenating prefix and postfix
      */
     public static final int[] append(int[] prefix, int[] postfix){
-	int[] result = new int[prefix.length+postfix.length];
-	System.arraycopy(prefix, 0, result, 0, prefix.length);
-	System.arraycopy(postfix, 0, result, prefix.length, postfix.length);
-	return result;
+		int[] result = new int[prefix.length+postfix.length];
+		System.arraycopy(prefix, 0, result, 0, prefix.length);
+		System.arraycopy(postfix, 0, result, prefix.length, postfix.length);
+		return result;
     }
     
 }

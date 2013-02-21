@@ -47,5 +47,4 @@ public interface TemperatureMeasurement extends ZCLCluster{
 	public Attribute getAttributeMinMeasuredValue();
 	public Attribute getAttributeMaxMeasuredValue();
 	public Attribute getAttributeTolerance();
-	
 }

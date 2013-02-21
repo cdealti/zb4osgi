@@ -36,12 +36,10 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class RemoveGroupResponseImpl extends ResponseImpl implements
-		RemoveGroupResponse {
+public class RemoveGroupResponseImpl extends ResponseImpl implements RemoveGroupResponse {
 	
 	private byte status;
 	private int groupId;
-	
 	
 	public RemoveGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);

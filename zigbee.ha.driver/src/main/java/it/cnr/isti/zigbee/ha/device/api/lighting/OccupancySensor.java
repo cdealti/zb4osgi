@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
  * <i>ZigBee Cluster Library</i> public release version 075123r01ZB
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.2.0
@@ -44,7 +45,7 @@ public interface OccupancySensor extends HADevice{
 	public static final String NAME = "Occupancy Sensor";
 	
 	public static final int[] MANDATORY = ArraysUtil.append(HADevice.MANDATORY, new int[]{
-		HAProfile.BASIC,HAProfile.IDENTIFY,HAProfile.OCCUPANCY_SENSING
+			HAProfile.OCCUPANCY_SENSING
 	});
 	public static final int[] OPTIONAL = HADevice.OPTIONAL;
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);

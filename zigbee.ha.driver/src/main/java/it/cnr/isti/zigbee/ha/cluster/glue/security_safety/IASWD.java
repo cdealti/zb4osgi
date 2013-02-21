@@ -23,19 +23,23 @@
 package it.cnr.isti.zigbee.ha.cluster.glue.security_safety;
 
 import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
+import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
-import it.cnr.isti.zigbee.zcl.library.api.core.Response;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_wd.SquawkPayload;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_wd.StartWarningPayload;
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public interface IASWD extends Cluster {
 
 	public Attribute getMaxDuration();
-	public Response startWaiting(short warningMode, short strobe, long warningDuration);
-	public Response squawk(short squawkMode, short strobe, short squawkLevel);
 	
+	public void startWarning(StartWarningPayload payload) throws ZigBeeHAException;
+
+	public void squawk(SquawkPayload payload) throws ZigBeeHAException;	
 }

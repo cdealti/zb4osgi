@@ -27,7 +27,8 @@ package it.cnr.isti.zigbee.dongle.api;
  * 
  * This class contains all the system property that <b>SHOULD</b> affect the behavior of a {@link SimpleDriver}
  * 
- * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco - ISTI-CNR</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.6.0
  *
@@ -137,7 +138,7 @@ public interface ConfigurationProperties {
      * Key to use to control the how much time to wait for waiting an response to a request,<br>
      * when timeout is fired it is considered as a failed communication even if the message arrives later on
      */
-	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timout";
+	public final static String APPLICATION_MSG_TIMEOUT_KEY = "it.cnr.isti.zigbee.driver.communication.timeout";
 	
 
     /**

@@ -53,6 +53,4 @@ public class WriteAttributeRecordImpl implements WriteAttributeRecord {
 	public int getAttributeId() {
 		return attribute.getId();
 	}
-	
-	
 }

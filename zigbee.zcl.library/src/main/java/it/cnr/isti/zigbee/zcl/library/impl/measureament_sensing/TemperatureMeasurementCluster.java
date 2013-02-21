@@ -53,6 +53,7 @@ public class TemperatureMeasurementCluster extends ZCLClusterBase implements Tem
 		minMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MIN_MEASURED_VALUE_SIGNED_16_BIT);
 		maxMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MAX_MEASURED_VALUE_SIGNED_16_BIT);
 		tolerance = new AttributeImpl(zbDevice,this,Attributes.TOLERANCE);
+		
 		attributes = new AttributeImpl[]{measuredValue, minMeasuredValue, maxMeasuredValue, tolerance};	
 	}
 	

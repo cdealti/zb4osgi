@@ -61,6 +61,7 @@ import org.persona.zigbee.tester.discovery.DeviceNodeListener;
  * 
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
@@ -282,6 +283,8 @@ public class TreeViewer extends JPanel 	implements DeviceNodeListener
 			}
 		}
 		
+		dict.put(ZigBeeNode.NWK_ADDRESS, zb.getPhysicalNode().getNetworkAddress());
+
 		makeProperties(dict);
 	}
 	/*

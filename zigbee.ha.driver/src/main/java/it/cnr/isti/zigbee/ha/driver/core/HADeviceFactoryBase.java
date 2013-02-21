@@ -72,6 +72,7 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
     public abstract String getDeviceId();
 
     public int[] getDeviceClusters() {
+		
 	synchronized (this) {
 	    if (clusters == null) {
 		try {
@@ -80,10 +81,10 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
 		    clusters = ArraysUtil.append(standard, custom);
 		} catch (Exception e) {
 		    logger.error(
-			    "Unable to retrive the implemented clusters by means of the reflection, "
+				"Unable to retrieve the implemented clusters by means of the reflection, "
 			    + "the class {} does not provide the static field STANDARD or CUSTOM.\n"
 			    + "Please modify the source code of the class by adding such static field or"
-			    + "ovveride the getDeviceClusters() method",refinement.getName()
+			    + "overide the getDeviceClusters() method ",refinement.getName()
 		    );
 		    logger.debug("Stack exception of the getDeviceClusters() error", e);
 		}
@@ -100,7 +101,6 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
     	dictionary.put(key, value);
     }
 
-    
     public int hasMatch(ServiceReference ref) {
 		int[] inclusterIds = (int[]) ref.getProperty(ZigBeeDevice.CLUSTERS_INPUT_ID);
 		int[] refinedClusterIds = (int[]) getDeviceClusters();
@@ -121,7 +121,7 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
 		return score;
     }
     
-    public HADeviceFactoryBase register() {
+    public HADeviceFactoryBase register() {		
 		dictionary.put(ZigBeeDevice.DEVICE_ID, getDeviceId());
 		dictionary.put(ZigBeeDevice.CLUSTERS_INPUT_ID, getDeviceClusters());
 		if( logger.isInfoEnabled() ) {

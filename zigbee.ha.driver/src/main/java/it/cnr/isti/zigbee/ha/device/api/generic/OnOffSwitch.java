@@ -22,7 +22,10 @@
 
 package it.cnr.isti.zigbee.ha.device.api.generic;
 
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOff;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOffSwitchConfiguration;
+import it.cnr.isti.zigbee.ha.cluster.glue.general.Scenes;
 import it.cnr.isti.zigbee.ha.driver.ArraysUtil;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
@@ -39,10 +42,10 @@ public interface OnOffSwitch extends HADevice{
 
 	public static final int DEVICE_ID = 0x0000;
 	public static final String NAME = "OnOff Switch";
-	public static final int[] MANDATORY = ArraysUtil.append(HADevice.MANDATORY, new int[]{
+	public static final int[] MANDATORY = HADevice.MANDATORY;
+	public static final int[] OPTIONAL = ArraysUtil.append(HADevice.OPTIONAL, new int[]{
 		HAProfile.ON_OFF_SWITCH_CONFIGURATION
 	});
-	public static final int[] OPTIONAL = HADevice.OPTIONAL;
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
 	public static final int[] CUSTOM = {};
 

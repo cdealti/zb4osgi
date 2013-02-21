@@ -33,5 +33,4 @@ package it.cnr.isti.zigbee.zcl.library.api.general.alarms;
 public interface AlarmListener {
 	
 	public void alarm(int code, int clusterId);
-	
 }

@@ -36,8 +36,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class AddSceneResponseImpl extends ResponseImpl implements
-		AddSceneResponse {
+public class AddSceneResponseImpl extends ResponseImpl implements AddSceneResponse {
 	
 	private byte status;
 	private int groupId;

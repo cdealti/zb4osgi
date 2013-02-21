@@ -37,5 +37,4 @@ public interface WriteAttributeRecord {
 	public ZigBeeType getAttributeDataType();
 	
 	public Object getAttributeData();
-	
 }

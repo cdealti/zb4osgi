@@ -54,9 +54,17 @@
   
   <developers>
     <developer>
-      <id>slenzi</id>
+      <id>stefano.lenzi</id>
       <name>Stefano "Kismet" Lenzi</name>
       <email>stefano.lenzi@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>manlio.bacco</id>
+      <name>Manlio Bacco</name>
+      <email>manlio.bacco@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>

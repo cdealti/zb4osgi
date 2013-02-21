@@ -53,7 +53,6 @@ public interface HADevice {
 	public static final int[] OPTIONAL = {HAProfile.POWER_CONFIGURATION, HAProfile.DEVICE_TEMPERATURE_CONFIGURATION, HAProfile.ALARMS};
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
 	
-	
 	public String getName();	
 	/**
 	 * 
@@ -63,7 +62,6 @@ public interface HADevice {
 	public int getDeviceType();
 	public int getEndPointId();
 	public int getProfileId();
-	
 	
 	/**
 	 * Access method for the <b>Mandatory</b> cluster: {@link Basic} 
@@ -136,6 +134,4 @@ public interface HADevice {
 	 * @deprecated The method should be avoided because it cause Service Reference Leak
 	 */
 	public ZigBeeDevice getZBDevice(); 
-	
-	
 }

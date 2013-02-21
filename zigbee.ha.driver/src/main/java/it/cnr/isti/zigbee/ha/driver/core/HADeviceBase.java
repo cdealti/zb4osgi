@@ -177,7 +177,7 @@ public abstract class HADeviceBase implements HADevice  {
 			} else if (getDescription().isCustom(clusterId)){
 				// check if exists custom add-on
 				// by using ProfileModule interface
-				logger.warn("[WARNING] Custom Cluster not instantiated");
+				logger.warn("[WARNING] Custom Cluster not instantiated (not supported now).");
 				return null;
 			}
 		}

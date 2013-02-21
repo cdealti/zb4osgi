@@ -99,7 +99,6 @@ public class AttributeImpl implements Attribute{
 		return descriptor.isWritable();
 	}
 	
-	
 	public void setValue(Object o) throws ZigBeeClusterException {
 		if( isWritable() == false ) {
 			throw new ZigBeeClusterException(
@@ -107,7 +106,6 @@ public class AttributeImpl implements Attribute{
 			);
 		}
 		doClusterWideWrite(o);
-		
 	}
 	public Object getValue() throws ZigBeeClusterException {
 		return doClusterWideRead();
@@ -141,9 +139,9 @@ public class AttributeImpl implements Attribute{
 			Response response = new ResponseImpl(cluster,zclCluster.getId());
 			if ( response.getZCLHeader().getTransactionId() != frame.getHeader().getTransactionId() ){
 				logger.error(
-						"Recived mismatching transaction response, " +
-						"we have to change heuristic for dispatching. Recieved {} while sent {}"
-						,response.getZCLHeader().getTransactionId(),frame.getHeader().getTransactionId()
+						"Received mismatching transaction response, " +
+						"we have to change heuristic for dispatching. Received {} while sent {}", 
+						response.getZCLHeader().getTransactionId(),frame.getHeader().getTransactionId()
 				);
 				return null;
 			}
@@ -206,5 +204,8 @@ public class AttributeImpl implements Attribute{
 		return ;
 	}
 
-
+	public Object getDefaultValue() throws ZigBeeClusterException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

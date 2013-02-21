@@ -39,9 +39,6 @@ public class AbstractAttribute implements AttributeDescriptor{
 	private ZigBeeType zbType;
 	private boolean isReportable;
 	private boolean isWritable;
-	private boolean hasRange;
-	private Object min;
-	private Object max;
 	
 	public AbstractAttribute() {
 	}
@@ -94,6 +91,7 @@ public class AbstractAttribute implements AttributeDescriptor{
 
 	public AbstractAttribute setZigBeeType(ZigBeeType type){
 		this.zbType = type;
+		//TODO Automatically set the Java Type
 		return this;
 	}
 	

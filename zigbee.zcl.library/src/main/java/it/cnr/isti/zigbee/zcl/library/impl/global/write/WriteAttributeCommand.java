@@ -66,7 +66,7 @@ public class WriteAttributeCommand extends AbstractCommand {
 				} else {
 					length = length + len;
 				}
-				length = length + 2 + 1; //space for attribute id and attribute data type
+				length = length + 2 + 1; 
 			}
 			payload = new byte[length];
 			ZBSerializer serializer = new DefaultSerializer(payload,0);

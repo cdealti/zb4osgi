@@ -70,8 +70,13 @@ public class DefaultSerializer implements ZBSerializer {
 	
 	public void appendString(String str){
 		final byte[] raw = str.getBytes();
-		System.arraycopy(raw, 0, payload, index, raw.length);
-		index += raw.length;
+		if ( raw.length > 255 ) {
+			throw new IllegalArgumentException("Given string '"+str+"' is too long - maximum String size is 255.");
+		}
+
+		payload[index] = (byte) (raw.length & 0xFF);
+		System.arraycopy(raw, 0, payload, index+1, raw.length);
+		index += raw.length + 1
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {

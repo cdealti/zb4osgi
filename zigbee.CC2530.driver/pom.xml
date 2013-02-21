@@ -60,7 +60,7 @@
   
   <developers>
     <developer>
-      <id>slenzi</id>
+      <id>stefano.lenzi</id>
       <name>Stefano "Kismet" Lenzi</name>
       <email>stefano.lenzi@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
@@ -83,10 +83,10 @@
       <organizationUrl>http://www.itaca.upv.es//</organizationUrl>
       <timezone>+1</timezone>
     </developer>
-        <developer>
-      <id>michele</id>
-      <name>Michele Girolami</name>
-      <email>michele.girolami@isti.cnr.it</email>
+    <developer>
+      <id>manlio.bacco</id>
+      <name>Manlio Bacco</name>
+      <email>manlio.bacco@isti.cnr.it</email>
       <organization>Instituto Tecnologico de Aplicaciones de Comunicacion Avanzadas - Grupo Tecnologias para la Salud y el Bienestar (TSB)</organization>
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>

@@ -39,5 +39,4 @@ public interface AttributeReportingConfigurationRecord {
 	public int getMaximumReportinInterval();
 	public Object getReportableChange();
 	public int getTimeoutPeriod();
-	
 }

@@ -122,7 +122,6 @@ public class AlarmsCluster extends ZCLClusterBase implements Alarms{
 		
 	}
 	
-	
 	public AlarmsCluster(ZigBeeDevice zbDevice){
 		super(zbDevice);
 		alarmCount = new AttributeImpl(zbDevice,this,Attributes.ALLARM_COUNT);

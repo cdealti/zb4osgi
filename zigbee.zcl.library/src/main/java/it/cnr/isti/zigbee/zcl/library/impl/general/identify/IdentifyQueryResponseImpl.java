@@ -35,8 +35,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class IdentifyQueryResponseImpl extends ResponseImpl implements
-		IdentifyQueryResponse {
+public class IdentifyQueryResponseImpl extends ResponseImpl implements IdentifyQueryResponse {
 	
 	private int timeOut;
 	

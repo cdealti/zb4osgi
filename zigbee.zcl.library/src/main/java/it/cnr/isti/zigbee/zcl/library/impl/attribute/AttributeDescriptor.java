@@ -40,5 +40,4 @@ public interface AttributeDescriptor {
 	
 	public boolean isReportable();
 	public ZigBeeType getZigBeeType();	
-	
 }

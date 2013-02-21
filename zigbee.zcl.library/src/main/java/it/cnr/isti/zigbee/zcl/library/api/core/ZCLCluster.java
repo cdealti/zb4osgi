@@ -124,5 +124,4 @@ public interface ZCLCluster {
 	 * @since 0.2.0
 	 */
 	public Attribute getAttribute(int id);
-	
 }

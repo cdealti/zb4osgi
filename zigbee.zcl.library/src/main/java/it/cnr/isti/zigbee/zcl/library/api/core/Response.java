@@ -37,6 +37,4 @@ public interface Response extends Message{
 	public boolean isDefaultResponseEnabled();
 	
 	public ZCLHeader getZCLHeader();
-	
-	
 }

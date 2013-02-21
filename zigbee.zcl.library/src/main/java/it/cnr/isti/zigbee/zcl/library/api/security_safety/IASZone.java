@@ -25,11 +25,16 @@ package it.cnr.isti.zigbee.zcl.library.api.security_safety;
 import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
+import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneEnrollRequestPayload;
 import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneEnrollResponse;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusChangeNotificationListener;
+import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusChangeNotificationPayload;
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  *         
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
@@ -38,14 +43,36 @@ import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneEnrollRes
 public interface IASZone extends ZCLCluster{
 
 	public static final short ID = 0x0500;
+	static final String NAME = "IAS Zone";
+	static final String DESCRIPTION = "Attributes and commands for IAS security zone device.";
 	
+	//received
+	static final byte ZONE_ENROLL_RESPONSE_ID = 0x00;
+	
+	//generated
+	static final byte ZONE_STATUS_CHANGE_NOTIFICATION_ID = 0x00;
+	static final byte ZONE_ENROLL_REQUEST_ID = 0x01;
+
+	// zone information attribute set
 	public Attribute getAttributeZoneState();
 	public Attribute getAttributeZoneType();
 	public Attribute getAttributeZoneStatus();
+
+	// zone settings attribute set
 	public Attribute getAttributeIASCIEAddress();
 
-	public Response ZoneStatusChangeNotification(byte zoneStatus, byte extendedStatus);
-	public ZoneEnrollResponse ZoneEnrollRequest(byte zoneType, byte manufacturerCode);
+	// commands generated
+	public Response zoneStatusChangeNotification(ZoneStatusChangeNotificationPayload payload) throws ZigBeeClusterException;
 	
+	public ZoneEnrollResponse zoneEnrollRequest(ZoneEnrollRequestPayload payload) throws ZigBeeClusterException;
 
+	/*
+	 * @since 0.8.0
+	 */
+	public boolean addZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
+
+	/*
+	 * @since 0.8.0
+	 */
+	public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 }

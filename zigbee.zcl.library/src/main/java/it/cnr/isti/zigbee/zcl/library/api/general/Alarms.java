@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmListener;
  * <i>ZigBee Cluster Library</i> public release version 075123r01ZB
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
@@ -40,7 +41,7 @@ import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmListener;
  */
 public interface Alarms extends ZCLCluster {
 	
-	static final byte ID = 0x09;
+	static final short ID = 0x0009;
 	static final String NAME = "Alarms";
 	static final String DESCRIPTION = "Attributes and commands for sending notifications and configuring alarm functionaly";
 

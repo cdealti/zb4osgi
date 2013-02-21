@@ -35,8 +35,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
-public class OnOffSwitchConfigurationCluster extends ZCLClusterBase implements
-		OnOffSwitchConfiguration {
+public class OnOffSwitchConfigurationCluster extends ZCLClusterBase implements OnOffSwitchConfiguration {
 	
 	private final AttributeImpl switchType;
 	private final AttributeImpl switchAction;

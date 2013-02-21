@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @since 0.4.0
  * @version $LastChangedRevision$ ($LastChangedDate$) *
  */
@@ -87,7 +88,7 @@ public class GenericHADeviceFactory extends HADeviceFactoryBase {
 		    );
 		    logger.debug("Stack exception of the GenericHADeviceFactory() error", e);
 		    
-		    throw new ZigBeeHAException("Unable to retrive DEVICE_ID by means of reflection", e);
+			throw new ZigBeeHAException("Unable to retrieve DEVICE_ID by means of reflection", e);
 		}
     }
 

@@ -55,7 +55,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
   
   <developers>
     <developer>
-      <id>slenzi</id>
+      <id>stefano.lenzi</id>
       <name>Stefano "Kismet" Lenzi</name>
       <email>stefano.lenzi@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
@@ -63,7 +63,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
       <timezone>+1</timezone>
     </developer>
     <developer>
-      <id>ffurfari</id>
+      <id>francesco.furfari</id>
       <name>Francesco Furfari</name>
       <email>francesco.furfari@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
@@ -74,6 +74,14 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
       <id>alessandro</id>
       <name>Alessandro Giari</name>
       <email>alessandro.giari@isti.cnr.it</email>
+      <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
+      <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>manlio.bacco</id>
+      <name>Manlio Bacco</name>
+      <email>manlio.bacco@isti.cnr.it</email>
       <organization>Institute of Information Science and Technologies of the Italian National Research Council</organization>
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>

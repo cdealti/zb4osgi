@@ -76,7 +76,7 @@ public class DefaultSerializer implements ZBSerializer {
 
 		payload[index] = (byte) (raw.length & 0xFF);
 		System.arraycopy(raw, 0, payload, index+1, raw.length);
-		index += raw.length + 1
+		index += raw.length + 1;
 	}
 
 	public void appendZigBeeType(Object data, ZigBeeType type) {

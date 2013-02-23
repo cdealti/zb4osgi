@@ -106,7 +106,7 @@ public interface ReportingConfiguration extends ManagedService {
 
 	//public static final String DEFAULT_FORCE_DEVICE_COMPLIANCE = "OnlyCompliantDevices";   
 
-	public abstract String getClusterDiscoveryMode();
+	//public abstract String getClusterDiscoveryMode();
 
 	//public abstract String getDeviceCompliance();
 	/* */

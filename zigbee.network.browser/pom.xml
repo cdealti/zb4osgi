@@ -31,7 +31,7 @@
   <artifactId>org.aaloa.zb4osgi.zigbee.network.browser</artifactId>
   <packaging>bundle</packaging>
   <name>Zigbee Network Browser</name>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0-PREMERGE-SNAPSHOT</version>
   
   <inceptionYear>2010</inceptionYear>
   <organization>

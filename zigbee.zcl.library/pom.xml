@@ -30,7 +30,7 @@
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.zcl.library</artifactId>
   <packaging>bundle</packaging>  
-  <version>0.8.0-SNAPSHOT</version>
+  <version>0.8.0-PREMERGE-SNAPSHOT</version>
 
   <name>ZigBee Common Cluster Library</name>
   <url>http://zb4osgi.aaloa.org/</url>

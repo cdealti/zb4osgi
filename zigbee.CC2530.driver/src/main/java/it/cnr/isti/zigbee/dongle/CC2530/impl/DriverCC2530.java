@@ -1258,7 +1258,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 				WaitForCommand waiter3 = new WaitForCommand(ZToolCMD.ZDO_MGMT_LEAVE_RSP, high);
 				
 				ZDO_MGMT_LEAVE_REQ_SRSP response = (ZDO_MGMT_LEAVE_REQ_SRSP) sendSynchrouns(high, new ZDO_MGMT_LEAVE_REQ(addresses[k], longAddresses[k], 3));
-				if ((System.currentTimeMillis() - start) > TIMEOUT) // manlio 5000) {
+				if ((System.currentTimeMillis() - start) > TIMEOUT) { 
 					logger.error("Reset seq: Failed LEAVE");
 					return false;
 				}
@@ -1267,19 +1267,22 @@ public class DriverCC2530 implements Runnable, SimpleDriver{
 					logger.error("Reset seq: Failed LEAVE");
 					return false;
 				} else {
-					if ((System.currentTimeMillis() - start) > TIMEOUT) // manlio 5000) {
+					if ( (System.currentTimeMillis() - start) > TIMEOUT) {  
 						logger.error("Reset seq: Failed LEAVE");
 						return false;
 					}
 					ZDO_MGMT_LEAVE_RSP responseA5 = (ZDO_MGMT_LEAVE_RSP) waiter3.getCommand(TIMEOUT);
-					if ((System.currentTimeMillis() - start) > TIMEOUT) // manlio 5000) {
+					if ( (System.currentTimeMillis() - start) > TIMEOUT) {  
 						logger.error("Reset seq: Failed LEAVE");
 						return false;
 					}
-					if(responseA5==null || responseA5.Status!=ZDO_MGMT_LEAVE_RSP.ZDO_STATUS.ZDP_SUCCESS){logger.error("Reset seq: Failed LEAVE");return false;}
+					if( responseA5 == null || responseA5.Status != ZDO_MGMT_LEAVE_RSP.ZDO_STATUS.ZDP_SUCCESS ) { 
+					    logger.error("Reset seq: Failed LEAVE");
+					    return false;
+					}
 				}
 			}
-			if ((System.currentTimeMillis() - start) > TIMEOUT) // manlio 5000) {
+			if ( (System.currentTimeMillis() - start) > TIMEOUT) { 
 				logger.error("Reset seq: Failed LEAVE");
 				return false;
 			}

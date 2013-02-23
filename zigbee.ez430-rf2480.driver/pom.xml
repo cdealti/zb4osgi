@@ -29,7 +29,7 @@
 
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.ez430-rf2480.driver</artifactId>
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.7.0-PREMERGE-SNAPSHOT</version>
   <packaging>bundle</packaging>  
 
   <name>ZIC for EZ430-RF2480 dongle</name>

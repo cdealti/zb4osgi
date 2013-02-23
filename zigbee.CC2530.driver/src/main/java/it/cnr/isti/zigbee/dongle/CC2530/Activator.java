@@ -49,13 +49,13 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bc) throws Exception {
 		driver = new DriverCC2530(
 				OSGiProperties.getString(bc, ConfigurationProperties.COM_NAME_KEY, ConfigurationProperties.COM_NAME),
-				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, ConfigurationProperties.COM_BOUDRATE), //115200 manlio
+				OSGiProperties.getInt(bc, ConfigurationProperties.COM_BOUDRATE_KEY, ConfigurationProperties.COM_BOUDRATE), 
 				NetworkMode.valueOf(OSGiProperties.getString(
 						bc, ConfigurationProperties.NETWORK_MODE_KEY, ConfigurationProperties.NETWORK_MODE
 				)),
 				OSGiProperties.getInt(bc, ConfigurationProperties.PAN_ID_KEY, ConfigurationProperties.PAN_ID),
 				OSGiProperties.getInt(bc, ConfigurationProperties.CHANNEL_ID_KEY, ConfigurationProperties.CHANNEL_ID),
-				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH)
+				OSGiProperties.getBoolean(bc, ConfigurationProperties.NETWORK_FLUSH_KEY, ConfigurationProperties.NETWORK_FLUSH),
 				OSGiProperties.getLong(bc, ConfigurationProperties.APPLICATION_MSG_TIMEOUT_KEY, ConfigurationProperties.APPLICATION_MSG_TIMEOUT)
 		);
 		Properties properties = new Properties();

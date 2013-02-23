@@ -30,7 +30,7 @@
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.ha.driver</artifactId>
   <packaging>bundle</packaging>  
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.7.0-PREMERGE-SNAPSHOT</version>
 
   <name>ZigBee Home Automation Profile Driver</name>
   <url>http://zb4osgi.aaloa.org/</url>
@@ -172,7 +172,8 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
             <Bundle-Author><![CDATA[
 	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>, 
 	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
-	    Alessandro Giari <alessandro.giari@isti.cnr.it>
+	    Alessandro Giari <alessandro.giari@isti.cnr.it>,
+	    Manlio Bacco <manlio.bacco@isti.cnr.it>
             ]]></Bundle-Author>
             <Bundle-Name>${project.name}</Bundle-Name>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>

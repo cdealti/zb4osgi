@@ -29,7 +29,7 @@
 
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.CC2530.driver</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.2.0-PREMERGE-SNAPSHOT</version>
   <packaging>bundle</packaging>  
 
   <name>ZIC CC2530 dongle</name>
@@ -168,7 +168,8 @@
             <Bundle-Author><![CDATA[
               Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>,
               Álvaro Fides Valero <alfiva@aaa.upv.es>,
-              Michele Girolami <michele.girolami@isti.cnr.it>
+              Michele Girolami <michele.girolami@isti.cnr.it>,
+              Manlio Bacco <manlio.bacco@isti.cnr.it>
             ]]></Bundle-Author>
             <Bundle-Name>${pom.name}</Bundle-Name>
             <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>

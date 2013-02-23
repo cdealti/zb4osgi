@@ -80,7 +80,6 @@ public class  HAProfile {
 	public static final int SCENES = Scenes.ID;
 	public static final int ON_OFF = OnOff.ID;
 	public static final int TIME = Time.ID;
-	public static final int LEVEL_CONTROL = LevelControl.ID;
 	public static final int ON_OFF_SWITCH_CONFIGURATION = OnOffSwitchConfiguration.ID;
 	public static final int LEVEL_CONTROL = LevelControl.ID;
 	public static final int ALARMS = Alarms.ID;

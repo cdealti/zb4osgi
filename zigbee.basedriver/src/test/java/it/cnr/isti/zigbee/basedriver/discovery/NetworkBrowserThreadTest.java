@@ -80,7 +80,7 @@ public class NetworkBrowserThreadTest {
 	public ConfigurationService createConfigurationServiceStub() {		
 		ConfigurationService stub = createMock(ConfigurationService.class);
 		
-		expect(stub.getNetworkBrowingPeriod())
+		expect(stub.getNetworkBrowsingPeriod())
 			.andReturn( new Long(5 * 1000) )
 			.anyTimes();
 		

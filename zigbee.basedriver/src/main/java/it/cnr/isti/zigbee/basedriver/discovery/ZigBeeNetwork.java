@@ -73,7 +73,18 @@ public class ZigBeeNetwork {
 			return false;
 		}
 		TShortObjectHashMap<ZigBeeDevice> toRemove = devices.get(node);
-		for (TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator(); i.hasNext(); i.advance()) {
+		if(toRemove != null){
+			TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator();
+			if(i != null)
+				while(i.hasNext()){
+					i.advance();
+					if(i.value() != null){
+						ZigBeeDevice device = i.value();
+						i.remove();
+						removeDeviceFromProfiles(device);
+					}
+				}
+
 			ZigBeeDevice device = i.value();
 			i.remove();
 			removeDeviceFromProfiles(device);
@@ -118,7 +129,7 @@ public class ZigBeeNetwork {
 	    final ZigBeeNode deviceNode = device.getPhysicalNode();
 		final String ieee = deviceNode.getIEEEAddress();
 		final short endPoint = device.getId();
-		logger.debug( "Addind device {} on node {} the network", endPoint, device.getPhysicalNode() );
+		logger.debug( "Adding device {} on node {} the network", endPoint, device.getPhysicalNode() );
 		final ZigBeeNode node = nodes.get(ieee);
 		if( node == null ){
 		    logger.debug( "No node {} found" );
@@ -152,7 +163,7 @@ public class ZigBeeNetwork {
 		final int profileId = device.getProfileId();
 		ArrayList<ZigBeeDevice> list = profiles.get(profileId);
 		if( list == null ){
-			logger.error("Trying to remove a device from a give profile but the profile doesn't exist");
+			logger.error("Trying to remove a device from a given profile but the profile doesn't exist");
 			//XXX It should never happen, we should throw an IllegalStateException
 			return true;
 		}
@@ -172,7 +183,7 @@ public class ZigBeeNetwork {
 		if ( values == null ) {
 			logger.warn("No devices found implemting the profile={}", profileId);
 		} else {
-			logger.error("We found {} implemting the profile={}", values.size(), profileId);
+			logger.error("We found {} implementing the profile={}", values.size(), profileId);
 			result.addAll(values);
 		}				
 		return result;

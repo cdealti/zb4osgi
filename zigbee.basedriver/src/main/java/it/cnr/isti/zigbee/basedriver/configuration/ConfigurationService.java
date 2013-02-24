@@ -225,7 +225,7 @@ public class ConfigurationService implements ManagedService {
 	}
 
 	private void updateDriverConfiguration() {
-		if ( driver.getDriverStatus() != DriverStatus.CLOSED ){
+		if ( driver != null && driver.getDriverStatus() != DriverStatus.CLOSED ){
 			logger.info("{} not configured nor started because its status is not equal to CLOSED", driver);
 			return;
 		}
@@ -240,7 +240,7 @@ public class ConfigurationService implements ManagedService {
         return getLong(ConfigurationProperties.DEVICE_INSPECTION_PERIOD_KEY);
     }
     
-    public synchronized long getNetworkBrowingPeriod() {
+	public synchronized long getNetworkBrowsingPeriod() {
         return getLong(ConfigurationProperties.NETWORK_BROWSING_PERIOD_KEY);
     }
 

@@ -27,7 +27,6 @@ import it.cnr.isti.zigbee.basedriver.discovery.AnnunceListnerThread;
 import it.cnr.isti.zigbee.basedriver.discovery.DeviceBuilderThread;
 import it.cnr.isti.zigbee.basedriver.discovery.ImportingQueue;
 import it.cnr.isti.zigbee.basedriver.discovery.NetworkBrowserThread;
-import it.cnr.isti.zigbee.dongle.api.DriverStatus;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import org.osgi.framework.ServiceEvent;
@@ -101,8 +100,6 @@ public class SimpleDriverServiceTracker implements ServiceListener{
 		driverService = null;
 		setDownZigBeeImporter();
 	}
-	
-	
 	
 	private void setUpZigBeeImporter() {		
 		logger.info("Setting up all the importer data and threads");	

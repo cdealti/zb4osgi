@@ -67,7 +67,7 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
  */
 public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessageProducer {
 
-	private static final long TIMEOUT = 5000;
+	private static long TIMEOUT; // manlio final 5000;
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeDeviceImpl.class);
 	
 	private final int[] inputs;
@@ -86,11 +86,10 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 	private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
 	private String uuid = null;	
 	
-	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n,  byte ep) throws ZigBeeBasedriverException	
-	{
+	public ZigBeeDeviceImpl(final SimpleDriver drv, final ZigBeeNode n, byte ep) throws ZigBeeBasedriverException{
         if ( drv == null || n == null) {
             logger.error( "Creating {} with some nulls parameters {}", new Object[]{ ZigBeeDevice.class, drv, n, ep } );
-            throw new NullPointerException("Cannont create a device with a null SimpleDriver or a null ZigBeeNode");
+			throw new NullPointerException("Cannot create a device with a null SimpleDriver or a null ZigBeeNode");
         }
 		driver = drv;
 		endPointAddress = ep;	   
@@ -125,6 +124,18 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
         
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
 		
+		try{
+			TIMEOUT = Long.parseLong(Activator.getBundleContext().getProperty("org.aaloa.zb4osgi.zigbee.basedriver.timeout")); 
+		}
+		catch(Exception ex){
+			TIMEOUT = 5000;
+			//ex.printStackTrace();
+			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to 5000 ms.");
+		}
+
+		if(Activator.getEventingService() != null){
+			Activator.getEventingService().announce(this, deviceId, inputs);
+		}
 	}
 	
     /**
@@ -214,7 +225,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 					"Unable to recieve a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
 					NetworkAddress.toString(nwk),endPointAddress
 			);
-			throw new ZigBeeBasedriverException("Unable to recieve a ZDO_SIMPLE_DESC_RSP from endpoint");
+			throw new ZigBeeBasedriverException("Unable to receive a ZDO_SIMPLE_DESC_RSP from endpoint");
 		}
 		
 		return result;
@@ -257,8 +268,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		return node;
 	}	
 
-	public void send(Cluster input)
-			throws ZigBeeBasedriverException {
+	public void send(Cluster input) throws ZigBeeBasedriverException {
 		final AFLayer af = AFLayer.getAFLayer(driver);
 		final byte sender = af.getSendingEndpoint(this, input);
 		final byte transaction = af.getNextTransactionId(sender);
@@ -313,7 +323,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 			m_removeAFMessageListener();
 			if(incoming == null){
 				//TODO Add a timeout exception
-				throw new ZigBeeBasedriverException("Timeout expired before recieving an answer");
+				throw new ZigBeeBasedriverException("Timeout expired before receiving an answer");
 			}
 			Cluster result = new ClusterImpl(incoming.getData(), incoming.getClusterId());
 			return result;
@@ -502,7 +512,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		
 		if ( msg.getSrcAddr() != node.getNetworkAddress() ) return;
 		if ( msg.getSrcEndpoint() != endPointAddress ) return;
-		logger.debug("Notifying cluster listerner for recived by {}", uuid);
+		logger.debug("Notifying cluster listener for received by {}", uuid);
 		notifyClusterListner(new ClusterImpl(msg.getData(), msg.getClusterId()));
 	}
 

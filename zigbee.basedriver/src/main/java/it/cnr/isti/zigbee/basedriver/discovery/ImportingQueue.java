@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import com.itaca.ztool.api.ZToolAddress16;
 import com.itaca.ztool.api.ZToolAddress64;
 
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -39,19 +39,19 @@ import com.itaca.ztool.api.ZToolAddress64;
  *
  */
 public class ImportingQueue {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ImportingQueue.class);
-	
+
 	public class ZigBeeNodeAddress {
-		
+
 		private final ZToolAddress16 networkAddress;
 		private final ZToolAddress64 ieeeAddress;
-		
-		public ZigBeeNodeAddress(final ZToolAddress16 networkAddress, final ZToolAddress64 ieeeAddress) {			
+
+		public ZigBeeNodeAddress(final ZToolAddress16 networkAddress, final ZToolAddress64 ieeeAddress) {
 			this.networkAddress = networkAddress;
 			this.ieeeAddress = ieeeAddress;
 		}
-		
+
 		public final ZToolAddress16 getNetworkAddress() {
 			return networkAddress;
 		}
@@ -59,15 +59,15 @@ public class ImportingQueue {
 			return ieeeAddress;
 		}
 	}
-	
-	private final ArrayList<ZigBeeNodeAddress> addresses = new ArrayList<ZigBeeNodeAddress>();		
-	
+
+	private final ArrayList<ZigBeeNodeAddress> addresses = new ArrayList<ZigBeeNodeAddress>();
+
 	public void clear() {
 		synchronized (addresses) {
 			addresses.clear();
 		}
 	}
-	
+
 	public boolean isEmpty() {
 		synchronized (addresses) {
 			return addresses.size() == 0;
@@ -79,15 +79,15 @@ public class ImportingQueue {
 			return addresses.size();
 		}
 	}
-	
-	
+
+
 	public void push(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress){
 		ZigBeeNodeAddress inserting = new ZigBeeNodeAddress(nwkAddress, ieeeAddress);
 		logger.debug("Adding {} ({})",nwkAddress,ieeeAddress);
 		synchronized (addresses) {
 			addresses.add(inserting);
 			addresses.notify();
-		}		
+		}
 		logger.debug("Added {} ({})",nwkAddress,ieeeAddress);
 	}
 
@@ -103,9 +103,7 @@ public class ImportingQueue {
 			}
 			result = addresses.remove(addresses.size() - 1);
 		}
-		logger.debug("Removed {} {}", result.networkAddress, result.ieeeAddress);		
+		logger.debug("Removed {} {}", result.networkAddress, result.ieeeAddress);
 		return result;
 	}
-	
-	
 }

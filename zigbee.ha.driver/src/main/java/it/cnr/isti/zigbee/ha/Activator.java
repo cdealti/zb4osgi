@@ -23,28 +23,27 @@
 package it.cnr.isti.zigbee.ha;
 
 import it.cnr.isti.zigbee.ha.cluster.factory.HAClustersFactory;
-import it.cnr.isti.zigbee.ha.device.api.generic.LevelControlSwitch;
-import it.cnr.isti.zigbee.ha.device.api.generic.MainsPowerOutlet;
-import it.cnr.isti.zigbee.ha.device.api.generic.OnOffOutput;
-import it.cnr.isti.zigbee.ha.device.api.generic.OnOffSwitch;
-import it.cnr.isti.zigbee.ha.device.api.hvac.TemperatureSensor;
-import it.cnr.isti.zigbee.ha.device.api.lighting.DimmableLight;
-import it.cnr.isti.zigbee.ha.device.api.lighting.OccupancySensor;
-import it.cnr.isti.zigbee.ha.device.api.lighting.OnOffLight;
-import it.cnr.isti.zigbee.ha.device.api.lighting.OnOffLightSwitch;
+import it.cnr.isti.zigbee.ha.device.factory.ColorDimmableLightFactory;
+import it.cnr.isti.zigbee.ha.device.factory.DimmableLightFactory;
+import it.cnr.isti.zigbee.ha.device.factory.IASAncillaryControlEquipmentFactory;
+import it.cnr.isti.zigbee.ha.device.factory.IASControlAndIndicatingEquipmentFactory;
+import it.cnr.isti.zigbee.ha.device.factory.IASWarningDeviceFactory;
+import it.cnr.isti.zigbee.ha.device.factory.IAS_ZoneFactory;
+import it.cnr.isti.zigbee.ha.device.factory.LevelControlSwitchFactory;
+import it.cnr.isti.zigbee.ha.device.factory.LightSensorFactory;
+import it.cnr.isti.zigbee.ha.device.factory.MainsPowerOutletFactory;
+import it.cnr.isti.zigbee.ha.device.factory.OccupancySensorFactory;
 import it.cnr.isti.zigbee.ha.device.factory.OnOffLightFactory;
-import it.cnr.isti.zigbee.ha.device.impl.DimmableLightDevice;
-import it.cnr.isti.zigbee.ha.device.impl.LevelControlSwitchDevice;
-import it.cnr.isti.zigbee.ha.device.impl.MainsPowerOutletDevice;
-import it.cnr.isti.zigbee.ha.device.impl.OccupancySensorDevice;
-import it.cnr.isti.zigbee.ha.device.impl.OnOffLightDevice;
-import it.cnr.isti.zigbee.ha.device.impl.OnOffLightSwitchDevice;
-import it.cnr.isti.zigbee.ha.device.impl.OnOffOutputDevice;
-import it.cnr.isti.zigbee.ha.device.impl.OnOffSwitchDevice;
-import it.cnr.isti.zigbee.ha.device.impl.TemperatureSensorDevice;
+import it.cnr.isti.zigbee.ha.device.factory.OnOffLightSwitchFactory;
+import it.cnr.isti.zigbee.ha.device.factory.OnOffOutputFactory;
+import it.cnr.isti.zigbee.ha.device.factory.OnOffSwitchFactory;
+import it.cnr.isti.zigbee.ha.device.factory.PumpFactory;
+import it.cnr.isti.zigbee.ha.device.factory.TemperatureSensorFactory;
+import it.cnr.isti.zigbee.ha.device.impl.GenericHADevice;
 import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration;
 import it.cnr.isti.zigbee.ha.driver.HAImporter;
 import it.cnr.isti.zigbee.ha.driver.core.GenericHADeviceFactory;
+import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import it.cnr.isti.zigbee.ha.driver.core.HADeviceFactoryBase;
 import it.cnr.isti.zigbee.ha.driver.core.ReportingConfiguration;
 
@@ -76,9 +75,6 @@ public class Activator implements BundleActivator {
 
 	private static HADriverConfiguration configuration = null;
 
-	public static HADriverConfiguration getConfiguration(){
-		return configuration;
-	}
 
 	private void doRegisterConfigurationService(BundleContext ctx){
 		Properties properties = new Properties();
@@ -98,28 +94,40 @@ public class Activator implements BundleActivator {
 		doRegisterConfigurationService(ctx);
 
 		new HAClustersFactory(ctx).register();
-
-		factories.add(new OnOffLightFactory(ctx).register());
-
+        //TODO Replace all specific Factory with GenericHADeviceFactory
 		//factories.add(new GenericHADeviceFactory(ctx, HADevice.class, GenericHADevice.class).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, DimmableLight.class, DimmableLightDevice.class).register());
+		factories.add(new ColorDimmableLightFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, LevelControlSwitch.class, LevelControlSwitchDevice.class).register());
+		factories.add(new DimmableLightFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, MainsPowerOutlet.class, MainsPowerOutletDevice.class).register());
+		factories.add(new IAS_ZoneFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, OccupancySensor.class, OccupancySensorDevice.class).register());
+		factories.add(new IASAncillaryControlEquipmentFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, OnOffLight.class, OnOffLightDevice.class).register());
+		factories.add(new IASControlAndIndicatingEquipmentFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, OnOffLightSwitch.class, OnOffLightSwitchDevice.class).register());
+		factories.add(new IASWarningDeviceFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, OnOffOutput.class, OnOffOutputDevice.class).register());
+		factories.add(new LevelControlSwitchFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, OnOffSwitch.class, OnOffSwitchDevice.class).register());
+		factories.add(new LightSensorFactory(ctx).register());
 
-		factories.add(new GenericHADeviceFactory(ctx, TemperatureSensor.class, TemperatureSensorDevice.class).register());		
+		factories.add(new MainsPowerOutletFactory(ctx).register());
+
+		factories.add(new OccupancySensorFactory(ctx).register());
+
+		factories.add(new OnOffLightFactory(ctx).register());		
+
+		factories.add(new OnOffLightSwitchFactory(ctx).register());
+
+		factories.add(new OnOffOutputFactory(ctx).register());
+
+		factories.add(new OnOffSwitchFactory(ctx).register());
+
+		factories.add(new PumpFactory(ctx).register());	
+
+		factories.add(new TemperatureSensorFactory(ctx).register());
 
 		haImporter = new HAImporter(ctx);
 	}
@@ -133,4 +141,7 @@ public class Activator implements BundleActivator {
 
 	}
 
+	public static HADriverConfiguration getConfiguration(){
+		return configuration;
+    }
 }

@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,8 @@
 */
 
 package it.cnr.isti.zigbee.ha.driver.core;
+
+import java.util.Arrays;
 
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.ha.Activator;
@@ -50,27 +52,27 @@ import org.slf4j.LoggerFactory;
  * <b>NOTE</b>: In general the mapping between <b>ClusterId</b> and <b>Cluster</b> is defined<br>
  * by the profile, while the mapping between <b><i>Name</i></b> and <b>Cluster</b> is defined where the<br>
  * <b>Cluster</b> is defined: usually inside a <i>Cluster Library</i>
- * 
- * 
+ *
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- *         
+ *
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */
 public abstract class HADeviceBase implements HADevice  {
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(HADeviceBase.class);
-	
+
 	protected ZigBeeDevice zbDevice;
 	private BundleContext ctx;
-	
-	
+
+
 	private Cluster[] clusters;
 	private int index;
-	
-	
+
+
 	/*
 	 * Mandatory clusters common to all Home Automation devices
 	 */
@@ -82,35 +84,35 @@ public abstract class HADeviceBase implements HADevice  {
 	protected Alarms alarms;
 	protected DeviceTemperatureConfiguration deviceTemperature;
 	protected PowerConfiguration powerConfiguration;
-	
-			 
-	
+
+
+
 	public HADeviceBase(BundleContext ctx, ZigBeeDevice zbDevice ) throws ZigBeeHAException{
 		this.zbDevice = zbDevice;
 		this.ctx = ctx;
-		
-		final int size;		
+
+		final int size;
 		if( Activator.getConfiguration().getClusterMode() == ProvidedClusterMode.HomeAutomationProfileStrict ){
 			size = zbDevice.getInputClusters().length;
 		}else{
 			size = zbDevice.getInputClusters().length + zbDevice.getOutputClusters().length;
 		}
 		clusters = new Cluster[size];
-		
+
 		basic = (Basic) addCluster(HAProfile.BASIC);
 		identify = (Identify) addCluster(HAProfile.IDENTIFY);
-		
+
     	powerConfiguration = (PowerConfiguration) addCluster(HAProfile.POWER_CONFIGURATION);
     	deviceTemperature = (DeviceTemperatureConfiguration) addCluster(HAProfile.DEVICE_TEMPERATURE_CONFIGURATION);
     	alarms = (Alarms) addCluster(HAProfile.ALARMS);
 	}
-	
+
 	public  int getDeviceType(){
 		return zbDevice.getDeviceId();
 	}
-	
+
 	public abstract  String getName();
-	
+
 	public  int getEndPointId(){
 		return zbDevice.getId();
 	}
@@ -118,8 +120,19 @@ public abstract class HADeviceBase implements HADevice  {
 		return zbDevice.getProfileId();
 	}
 
-		
+
 	protected Cluster addCluster(int clusterId) throws ZigBeeHAException {
+		for (int i = 0; i < clusters.length; i++) {
+			if ( clusters[i] == null ) break;
+			if ( clusters[i].getId() == clusterId ) {
+				logger.warn(
+						"Cluster {}/{} already added to this device. " +
+						"It may identifies an error in the definition of the device description",
+						clusters[i].getName(), Integer.toHexString(clusterId)
+				);
+				return null;
+			}
+		}
 		if ( ! zbDevice.providesInputCluster(clusterId) ){
 			if (getDescription().isMandatory(clusterId)){
 				logger.warn(
@@ -131,7 +144,7 @@ public abstract class HADeviceBase implements HADevice  {
 							"ZigBeeDevice with DeviceId={} of Home Automation profile " +
 							"implements the mandatory cluster {} as output instead of as input " +
 							"it may identify an error either on the Driver description or in " +
-							"in the implementation of firmware of the physical device", 
+							"in the implementation of firmware of the physical device",
 							zbDevice.getDeviceId(), clusterId
 					);
 					if( Activator.getConfiguration().getClusterMode() == ProvidedClusterMode.HomeAutomationProfileStrict ) {
@@ -139,9 +152,9 @@ public abstract class HADeviceBase implements HADevice  {
 								"The cluster {} of the device {} is PROVIDED AS OUTPUT instead of AS INPUT, " +
 								"if you want to add it anyway please change the value of the property {} " +
 								" from {} to {}", new Object[]{
-										clusterId, 
-										zbDevice.getDeviceId(), 
-										HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY, 
+										clusterId,
+										zbDevice.getDeviceId(),
+										HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY,
 										ProvidedClusterMode.HomeAutomationProfileStrict,
 										ProvidedClusterMode.EitherInputAndOutput
 								}
@@ -151,14 +164,14 @@ public abstract class HADeviceBase implements HADevice  {
 						logger.warn(
 								"The cluster {} of the device {} is PROVIDED AS OUTPUT instead of AS INPUT, " +
 								"it will be added anyway to the device due to value of the property {} " +
-								", if you want to disable this change the value from {} to {}", 
+								", if you want to disable this change the value from {} to {}",
 								new Object[]{
-									clusterId, 
-									zbDevice.getDeviceId(), 
-									HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY, 
+									clusterId,
+									zbDevice.getDeviceId(),
+									HADriverConfiguration.PROVIDED_CLUSTER_MODE_KEY,
 									ProvidedClusterMode.EitherInputAndOutput,
 									ProvidedClusterMode.HomeAutomationProfileStrict
-								}										
+								}
 						);
 					}
 				} else {
@@ -167,7 +180,7 @@ public abstract class HADeviceBase implements HADevice  {
 							"doesn't implements the mandatory cluster {} neither as output " +
 							"nor as input it may identify an error either on the Driver " +
 							"description or in in the implementation of firmware of the " +
-							"physical device", 
+							"physical device",
 							zbDevice.getDeviceId(), clusterId
 					);
 					return null;
@@ -181,7 +194,7 @@ public abstract class HADeviceBase implements HADevice  {
 				return null;
 			}
 		}
-		
+
 
 		try {
 			String key = HAProfile.ID + ":"+String.valueOf(clusterId);
@@ -190,29 +203,28 @@ public abstract class HADeviceBase implements HADevice  {
 			if( srClusterFactory == null ) {
 				logger.error("No class found implementing the requested cluster {}", clusterId);
 				return null;
-			}
-			else {
+			} else {
 				ClusterFactory factory = (ClusterFactory) ctx.getService(srClusterFactory[0]);
 				Cluster cluster = factory.getInstance(key,zbDevice);
-				clusters[index++] = cluster;	
+				clusters[index++] = cluster;
 				return cluster;
 			}
 		} catch (InvalidSyntaxException e) {
 			logger.error("Modified the value of ANY_HADEVICE_FILTER and recompile",e);
 		}
 		return null;
-		
+
 
 	}
 
 	public Basic getBasic(){
 		return basic;
 	}
-	
+
 
 	public Identify getIdentify(){
 		return identify;
-	}		
+	}
 
 	public PowerConfiguration getPowerConfiguration() {
 	    return powerConfiguration;
@@ -224,11 +236,11 @@ public abstract class HADeviceBase implements HADevice  {
 
 	public Alarms getAlarms(){
 	    return alarms;
-	}	
-	
+	}
+
 
 	public abstract DeviceDescription getDescription();
-	
+
 	public Cluster getCluster(int id){
 		for (int i = 0; i < clusters.length; i++) {
 			if (clusters[i] != null && clusters[i].getId()==id)
@@ -236,10 +248,10 @@ public abstract class HADeviceBase implements HADevice  {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
-	 * @param name the {@link String} representing the name associated to <b>ClusterId</b> 
+	 *
+	 * @param name the {@link String} representing the name associated to <b>ClusterId</b>
 	 * @return the {@link ZCLCluster} identified by the given name if this device implements<br>
 	 * 		otherwise <code>null</code>
 	 */
@@ -250,7 +262,7 @@ public abstract class HADeviceBase implements HADevice  {
 		}
 		return null;
 	}
-	
+
 	public  Cluster[] getAvailableCluster(){
 		return clusters;
 	}
@@ -258,20 +270,20 @@ public abstract class HADeviceBase implements HADevice  {
 	public void stop() {
 		for (int i = 0; i < clusters.length; i++) {
 			if ( clusters[i] == null ) continue;
-			
+
 			Subscription[] subscriptions = clusters[i].getActiveSubscriptions();
 			if ( subscriptions == null ) continue;
-			
+
 			for (int j = 0; j < subscriptions.length; j++) {
 				if ( subscriptions[j] == null ) continue;
 				subscriptions[j].clear();
 			}
 		}
 	}
-	
+
 	public ZigBeeDevice getZBDevice(){
 		return zbDevice;
 	}
-	
+
 
 }

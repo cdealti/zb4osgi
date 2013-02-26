@@ -23,13 +23,13 @@
   <parent>
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
-    <version>9-SNAPSHOT</version>
+    <version>9-PREMERGE-SNAPSHOT</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.ha.driver</artifactId>
-  <packaging>bundle</packaging>  
+  <packaging>bundle</packaging>
   <version>0.7.0-PREMERGE-SNAPSHOT</version>
 
   <name>ZigBee Home Automation Profile Driver</name>
@@ -43,8 +43,8 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
   <organization>
     <name>Institute of Information Science and Technologies of the Italian National Research Council</name>
     <url>http://isti.cnr.it/</url>
-  </organization> 
-  
+  </organization>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -52,7 +52,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <developers>
     <developer>
       <id>stefano.lenzi</id>
@@ -101,7 +101,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
   </repositories>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.aaloa.zb4osgi</groupId>
@@ -118,7 +118,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
     <dependency>
       <groupId>org.ops4j.pax.logging</groupId>
       <artifactId>pax-logging-service</artifactId>
-    </dependency>  
+    </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.osgi.core</artifactId>
@@ -134,7 +134,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
   </dependencies>
 
   <build>
-    <plugins>  
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -163,15 +163,15 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
 	</groups>
         </configuration>
       </plugin>
-      <plugin>    
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
           <instructions>
             <Bundle-Author><![CDATA[
-	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>, 
-	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
+	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>,
+	    Francesco Furfari <francesco.furfari@isti.cnr.it>,
 	    Alessandro Giari <alessandro.giari@isti.cnr.it>,
 	    Manlio Bacco <manlio.bacco@isti.cnr.it>
             ]]></Bundle-Author>
@@ -190,10 +190,10 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
               !com.itaca.ztool.api.*,
               it.cnr.isti.zigbee.zcl.*,
               it.cnr.isti.zigbee.api.*,
-              it.cnr.isti.osgi.util, 
+              it.cnr.isti.osgi.util,
               org.osgi.*,
-              org.slf4j; provider=paxlogging                
-            </Import-Package>                        
+              org.slf4j; provider=paxlogging
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

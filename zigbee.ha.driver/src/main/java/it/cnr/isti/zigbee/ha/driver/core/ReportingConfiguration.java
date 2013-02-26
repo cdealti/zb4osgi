@@ -22,6 +22,8 @@
 
 package it.cnr.isti.zigbee.ha.driver.core;
 
+import it.cnr.isti.zigbee.ha.driver.HADriverConfiguration;
+
 import org.osgi.framework.Constants;
 import org.osgi.service.cm.ManagedService;
 
@@ -90,10 +92,8 @@ public interface ReportingConfiguration extends ManagedService {
      */
     public static final boolean DEFAULT_CONFIGURE_REPORTING_OVERWRITE = true;   
 
-    /**
-     * How discovery should be perfomed by the Home Automation driver
-     * @since 0.7.0
-     */
+	/**  //TODO Delete the next two declaration because they are duplicates of @link {@link HADriverConfiguration#PROVIDED_CLUSTER_MODE_KEY
+	/* */
 	public static final String CLUSTER_DISCOVERY_MODE_KEY = "it.isti.cnr.zigbee.ha.driver.cluster.discovery.mode";
 
     /**

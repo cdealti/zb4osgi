@@ -84,7 +84,7 @@ public abstract class HADeviceFactoryBase implements HADeviceFactory {
 				"Unable to retrieve the implemented clusters by means of the reflection, "
 			    + "the class {} does not provide the static field STANDARD or CUSTOM.\n"
 			    + "Please modify the source code of the class by adding such static field or"
-			    + "overide the getDeviceClusters() method ",refinement.getName()
+									+ "override the getDeviceClusters() method ", refinement.getName()
 		    );
 		    logger.debug("Stack exception of the getDeviceClusters() error", e);
 		}

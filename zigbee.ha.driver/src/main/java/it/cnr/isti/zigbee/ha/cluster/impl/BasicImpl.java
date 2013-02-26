@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,32 +41,32 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.BasicCluster;
  *
  */
 public class BasicImpl implements Basic{
-	
+
 	private BasicCluster basicCluster;
-	private Attribute zclVersion;  
+	private Attribute zclVersion;
 	private Attribute applicationVersion;
 	private Attribute stackVersion;
 	private Attribute hwVersion;
 	private Attribute manufacturerName;
 	private Attribute modelIdentifier;
 	private Attribute dateCode;
-	private Attribute powerSource;	
+	private Attribute powerSource;
 	private Attribute locationDescription;
 	private Attribute physicalEnviroment;
 	private Attribute deviceEnabled;
 	private Attribute alarmMask;
 	private Attribute disableLocalConfig;
-	
+
 	public BasicImpl(ZigBeeDevice zbDevice){
 		basicCluster = new BasicCluster(zbDevice);
-		zclVersion = basicCluster.getAttributeZCLVersion();  
+		zclVersion = basicCluster.getAttributeZCLVersion();
 		applicationVersion = basicCluster.getAttributeApplicationVersion();
 		stackVersion = basicCluster.getAttributeStackVersion();
 		hwVersion = basicCluster.getAttributeHWVersion();
 		manufacturerName = basicCluster.getAttributeManufacturerName();
 		modelIdentifier = basicCluster.getAttributeModelIdentifier();
 		dateCode = basicCluster.getAttributeDateCode();
-		powerSource = basicCluster.getPowerSource();	
+		powerSource = basicCluster.getPowerSource();
 		locationDescription = basicCluster.getAttributeLocationDescription();
 		physicalEnviroment = basicCluster.getAttributePhysicalEnvironment();
 		deviceEnabled = basicCluster.getAttributeDeviceEnabled();
@@ -77,7 +77,7 @@ public class BasicImpl implements Basic{
 	public Attribute getDisableLocalConfig() {
 		return disableLocalConfig;
 	}
-	
+
 	public Attribute getAlarmMask() {
 		return alarmMask;
 	}
@@ -158,10 +158,10 @@ public class BasicImpl implements Basic{
 		return basicCluster.getName();
 	}
 
-	public Attribute getAttribute(int id) {		
+	public Attribute getAttribute(int id) {
 		Attribute[] attributes = basicCluster.getAvailableAttributes();
 		for (int i = 0; i < attributes.length; i++) {
-			if( attributes[i].getId() == id ) 
+			if( attributes[i].getId() == id )
 				return attributes[i];
 		}
 		return null;

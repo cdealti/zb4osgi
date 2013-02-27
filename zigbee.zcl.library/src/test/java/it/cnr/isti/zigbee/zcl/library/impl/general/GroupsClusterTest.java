@@ -1,4 +1,5 @@
 /*
+
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
    Institute of Information Science and Technologies 
    of the Italian National Research Council 
@@ -19,16 +20,19 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
+package it.cnr.isti.zigbee.zcl.library.impl.general;
+
+import static org.easymock.EasyMock.*;
 
 import static org.junit.Assert.*;
 import it.cnr.isti.zigbee.api.Cluster;
-import it.cnr.isti.zigbee.zcl.library.api.core.Response;
+import it.cnr.isti.zigbee.api.ZigBeeBasedriverException;
+import it.cnr.isti.zigbee.api.ZigBeeDevice;
+import it.cnr.isti.zigbee.zcl.library.api.core.Status;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.Groups;
-import it.cnr.isti.zigbee.zcl.library.api.general.groups.ViewGroupResponse;
+import it.cnr.isti.zigbee.zcl.library.api.general.groups.AddGroupResponse;
 import it.cnr.isti.zigbee.zcl.library.impl.RawClusterImpl;
-import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 
 import org.junit.Test;
 
@@ -39,46 +43,36 @@ import org.junit.Test;
  * @since 0.8.0
  *
  */
-public class ViewGroupResponseImplTest {
+public class GroupsClusterTest {
 
-	@Test
-	public void testViewGroupResponseImpl() {
-		Cluster c;
-		Response r;
-		c = new RawClusterImpl((short) 0x04, new byte[]{
-				0x19,
-				0x15,
-				0x01,
-				0x00, // Status = SUCCESS
-				0x10, 0x00, // GroupId = 16
-				0x03, 0x61, 0x62, 0x63 // GroupName = "abc"
-		});
-		try {
-			r = new ResponseImpl(c,Groups.ID);
-			ViewGroupResponseImpl aux = new ViewGroupResponseImpl(r);
-			assertEquals(16, aux.getGroupId() );
-			assertEquals("abc", aux.getGroupName() );
-		} catch (ZigBeeClusterException e) {
-			fail("Exception thrown " + e.getMessage() );
-			e.printStackTrace();
-		}
-
+	private ZigBeeDevice createMockDevice() throws ZigBeeBasedriverException {
+		ZigBeeDevice mock = createMock(ZigBeeDevice.class);
 		
-		c = new RawClusterImpl((short) 0x04, new byte[]{
-				0x19,
-				0x29,
-				0x01,
-				(byte) 0x8b, // Status != SUCCESS
-				0x05, 0x00, // GroupId = 5
-		});
+		expect(mock.invoke( (Cluster) anyObject()))
+			.andReturn( new RawClusterImpl(
+							Groups.ID, 
+							new byte[]{0x09, 0x18, 0x00, 0x00, 0x00, (byte) 0xf0 }
+			) );
+		replay( mock );
+		return mock;
+	}
+	
+	@Test
+	public void testAddGroup() {
+		GroupsCluster cluster = null;
+		ZigBeeDevice device = null;
 		try {
-			r = new ResponseImpl(c,Groups.ID);
-			ViewGroupResponseImpl aux = new ViewGroupResponseImpl(r);
-			assertEquals(5, aux.getGroupId() );
-			assertEquals(null, aux.getGroupName() );
-		} catch (ZigBeeClusterException e) {
-			fail("Exception thrown " + e.getMessage() );
-			e.printStackTrace();
+			device = createMockDevice();
+			cluster = new GroupsCluster(device);
+		} catch (ZigBeeBasedriverException ignored) {
+		}
+		try {
+			AddGroupResponse response = (AddGroupResponse) cluster.addGroup(0xFF00,"hello world!");
+			assertEquals( Status.SUCCESS, response.getStatus() );
+			assertEquals( 0xf000, response.getGroupId() );
+		} catch (ZigBeeClusterException ex) {
+			fail("Unexpected exception "+ex);
+			ex.printStackTrace();
 		}
 	}
 

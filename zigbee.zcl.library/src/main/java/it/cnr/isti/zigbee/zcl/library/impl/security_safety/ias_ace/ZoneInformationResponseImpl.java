@@ -16,7 +16,7 @@ public class ZoneInformationResponseImpl extends ResponseImpl implements ZoneInf
 	public ZoneInformationResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
 
-		ResponseImpl.checkGeneralCommandFrame(response, ID);
+		ResponseImpl.checkSpecificCommandFrame(response, ID);
 
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 		zoneID = deserializer.read_int();

@@ -165,14 +165,15 @@ public class AttributeImpl implements Attribute{
 					final DefaultResponse result = new DefaultResponseImpl(response);
 					Status state = result.getStatus();
 					throw new ZigBeeClusterException(
-							"Read Attribute of "+getId()+" failed because command is not supported." +
-							"Due to "+state+" that means "+state.description 
+						"Read Attribute of "+getId()+" failed because command is not supported." 
+								+ "Due to "+state+" that means "+state.description 
+								+ " Follows the ZCLFrame recieved "+ ResponseImpl.toString( response )
 					);
 					
 				default:
 					throw new ZigBeeClusterException(
-							"Read Attribute of "+getId()+" failed." +
-							"Due to: Unsupported answer: "+response
+						"Read Attribute of "+getId()+" failed due to: Unsupported answer: " + response
+							+ " Follows the ZCLFrame recieved "+ ResponseImpl.toString( response )
 					);
 			}
 		} catch (ZigBeeBasedriverException e) {
@@ -194,8 +195,9 @@ public class AttributeImpl implements Attribute{
 			if( attributeStatus.getStatus() != Status.SUCCESS.id ){
 				Status state = Status.getStatus(attributeStatus.getStatus());
 				throw new ZigBeeClusterException(
-						"Unable to write value " + o.toString() + 
-						". It failed with error "+state+"("+state.id+"):"+state.description
+						"Unable to write value " + o.toString() 
+						+ ". It failed with error "+state+"("+state.id+"):"+state.description
+						+ ". Follows the ZCLFrame recieved "+ ResponseImpl.toString( writeResposne )
 				);
 			}
 		}  catch (ZigBeeBasedriverException e) {

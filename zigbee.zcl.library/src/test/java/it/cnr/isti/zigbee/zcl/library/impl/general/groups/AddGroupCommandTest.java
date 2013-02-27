@@ -1,4 +1,5 @@
 /*
+
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
    Institute of Information Science and Technologies 
    of the Italian National Research Council 
@@ -19,9 +20,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-package it.cnr.isti.zigbee.zcl.library.impl.general.alarms;
+package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -32,15 +33,16 @@ import org.junit.Test;
  * @since 0.8.0
  *
  */
-public class ResetAlarmCommandTest {
+public class AddGroupCommandTest {
 
 	@Test
 	public void testGetPayload() {
-		ResetAlarmCommand command = new ResetAlarmCommand( (byte)0x10, (short) 0x2030);
+		AddGroupCommand cmd = new AddGroupCommand(0xFF00,"hello world!");
 		assertArrayEquals(new byte[]{
-				0x10, 0x30, 0x20
-		}, command.getPayload()
-		);
+				0x00, (byte) 0xFF, // GroupId
+				0x0C, //String length
+				0x68, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21 //hello world!
+		}, cmd.getPayload() );
 	}
 
 }

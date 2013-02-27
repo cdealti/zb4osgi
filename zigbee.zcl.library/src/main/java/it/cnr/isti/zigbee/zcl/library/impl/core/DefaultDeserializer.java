@@ -43,6 +43,10 @@ public class DefaultDeserializer implements ZBDeserializer {
 		this.payload = payload;
 		this.index = index;
 	}
+
+	public boolean endOfStream() {
+		return index >= payload.length;
+	}
 	
 	public Boolean readBoolean() {
 		Object value = Integers.readBooleanObject(payload, index);
@@ -88,6 +92,20 @@ public class DefaultDeserializer implements ZBDeserializer {
 		return value;
 	}
 
+	public short read_uint8bit() {
+		short value = Integers.readByte(payload, index);
+		value = (short) (value & 0x000000FF);
+		index+=1;
+		return value;
+	}
+	
+	public int read_uint16bit() {
+		int value = Integers.readShort(payload, index);
+		value = value & 0x0000FFFF;
+		index += 2;
+		return value;
+	}	
+	
 	public byte read_byte() {
 		byte value = Integers.readByte(payload, index);
 		index+=1;

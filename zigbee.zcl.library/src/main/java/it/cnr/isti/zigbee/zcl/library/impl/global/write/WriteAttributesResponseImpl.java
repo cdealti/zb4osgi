@@ -49,12 +49,12 @@ public class WriteAttributesResponseImpl extends ResponseImpl implements
 		attributes = new WriteAttributesStatus[descriptors.length];
 		if( getPayload().length == 1 && getPayload()[0] == Status.SUCCESS.id ) {
 			for (int i = 0; i < descriptors.length; i++) {
-				attributes[i]= new WriteAttributeStatusImpl(descriptors[i]);
+				attributes[i] = new WriteAttributeStatusImpl(descriptors[i]);
 			}
 		}else{
 			ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
 			for (int i = 0; i < descriptors.length; i++) {
-				attributes[i]= new WriteAttributeStatusImpl(descriptors[i], deserializer);
+				attributes[i] = new WriteAttributeStatusImpl(descriptors[i], deserializer);
 			}
 		}
 	}

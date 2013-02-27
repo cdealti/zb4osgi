@@ -100,7 +100,7 @@ public class AbstractCommand implements Command {
 	protected void setId(byte id) {
 		this.id = id;
 	}
-		
+	
 	public  byte[] getPayload() {
 		if( payload == null ) {
 			payload = new byte[0];

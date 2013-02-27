@@ -19,7 +19,7 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.aaloa.zb4osgi</groupId>
     <artifactId>org.aaloa.zb4osgi.pom</artifactId>
@@ -27,9 +27,8 @@
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.zcl.library</artifactId>
-  <packaging>bundle</packaging>  
+  <packaging>bundle</packaging>
   <version>0.8.0-PREMERGE-SNAPSHOT</version>
 
   <name>ZigBee Common Cluster Library</name>
@@ -37,13 +36,13 @@
   <description><![CDATA[
 A set of Java classes reppresenting the ZigBee Common Cluster library
   ]]></description>
-  
+
   <inceptionYear>2008</inceptionYear>
   <organization>
     <name>Institute of Information Science and Technologies of the Italian National Research Council</name>
     <url>http://isti.cnr.it/</url>
-  </organization> 
-  
+  </organization>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -51,7 +50,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <developers>
     <developer>
       <id>slenzi</id>
@@ -77,7 +76,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
       <organizationUrl>http://www.isti.cnr.it/</organizationUrl>
       <timezone>+1</timezone>
     </developer>
-  </developers>  
+  </developers>
 
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.zcl.library</connection>
@@ -96,6 +95,10 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
   <dependencies>
     <dependency>
       <groupId>org.aaloa.zb4osgi</groupId>
+      <artifactId>org.aaloa.zb4osgi.zigbee.cc2480.datalink</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aaloa.zb4osgi</groupId>
       <artifactId>org.aaloa.zb4osgi.zigbee.basedriver.api</artifactId>
     </dependency>
     <dependency>
@@ -110,14 +113,23 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
       <groupId>org.ops4j.pax.logging</groupId>
       <artifactId>pax-logging-service</artifactId>
     </dependency>
+	<!-- TESTING -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>    
+    </dependency>
+	  <dependency>
+		<groupId>org.easymock</groupId>
+		<artifactId>easymockclassextension</artifactId>
+	  </dependency>
+	  <dependency>
+		<groupId>org.easymock</groupId>
+		<artifactId>easymock</artifactId>
+	  </dependency>
   </dependencies>
 
   <build>
-    <plugins>   
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -134,7 +146,7 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
 	</groups>
         </configuration>
       </plugin>
-      <plugin>    
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <version>1.4.3</version>
@@ -142,8 +154,8 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
         <configuration>
           <instructions>
             <Bundle-Author><![CDATA[
-	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>, 
-	    Francesco Furfari <francesco.furfari@isti.cnr.it>, 
+	    Stefano "Kismet" Lenzi <stefano.lenzi@isti.cnr.it>,
+	    Francesco Furfari <francesco.furfari@isti.cnr.it>,
 	    Alessandro Giari <alessandro.giari@isti.cnr.it>
             ]]></Bundle-Author>
             <Bundle-Name>${project.name}</Bundle-Name>
@@ -153,8 +165,9 @@ A set of Java classes reppresenting the ZigBee Common Cluster library
             </Private-Package>
             <Import-Package>
               it.cnr.isti.primitvetypes.util,
+              com.itaca.ztool.util,
               it.cnr.isti.zigbee.api,
-              org.slf4j; provider=paxlogging                
+              org.slf4j; provider=paxlogging
             </Import-Package>
             <Export-Package>
               it.cnr.isti.zigbee.zcl.*;version=${pom.version}

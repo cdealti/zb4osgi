@@ -36,6 +36,9 @@ import it.cnr.isti.zigbee.zcl.library.impl.ClusterImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
@@ -45,6 +48,8 @@ import java.util.HashMap;
  *
  */
 public abstract class ZCLClusterBase implements ZCLCluster {
+	
+	final public static Logger logger = LoggerFactory.getLogger(ZCLClusterBase.class);
 	
 	private ZigBeeDevice zbDevice;
 	private boolean isDefaultResponseEnabled;
@@ -57,7 +62,7 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 	public abstract short getId();
 	public abstract String getName();
 	public abstract Attribute[] getStandardAttributes() ;
-
+	
 	protected ZigBeeDevice getZigBeeDevice() {
 	    return zbDevice;
 	}
@@ -100,6 +105,7 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 		Cluster input = new ClusterImpl(getId(),inFrame);
 		if (suppressResponse) {
 			try {
+				logger.debug("Sending ZCLFrame {} without expecting an answer", inFrame);
 				zbDevice.send(input);
 				return null;
 			} catch (ZigBeeBasedriverException e) {
@@ -108,8 +114,10 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 		} else{
 			Cluster cluster;
 			try {
+				logger.debug("Sending ZCLFrame {} and waiting for response", inFrame);
 				cluster = zbDevice.invoke(input);
 				Response response = new ResponseImpl(cluster,getId());
+				logger.debug("Received response {} to request {}", response, inFrame);
 				return response;
 			} catch (ZigBeeBasedriverException e) {
 				throw new ZigBeeClusterException(e);

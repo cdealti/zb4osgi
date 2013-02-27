@@ -25,6 +25,7 @@ package it.cnr.isti.zigbee.zcl.library.impl.global.write;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBSerializer;
 import it.cnr.isti.zigbee.zcl.library.api.global.WriteAttributeRecord;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
+import it.cnr.isti.zigbee.zcl.library.impl.core.ByteArrayOutputStreamSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 /**
@@ -46,30 +47,7 @@ public class WriteAttributeCommand extends AbstractCommand {
 	
 	public byte[] getPayload(){	
 		if( payload == null){			
-			int length = 0;
-			for (int i = 0; i < attributeRecord.length; i++){
-
-				int len = attributeRecord[i].getAttributeDataType().getLength();
-				if(len == -1){
-					//TODO Use a general method instead of assuming that variable length is applied only for String 
-					switch( attributeRecord[i].getAttributeDataType() ) {
-						case CharacterString : case OctectString :
-							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 1;
-						break;
-						case LongOctectString : case LongCharacterString :
-							length = length + ((String) attributeRecord[i].getAttributeData()).length() + 2;
-						break;
-						default:
-							throw new IllegalArgumentException("Data type "+attributeRecord[i].getAttributeDataType()+" is not supported yet");
-					}
-					
-				} else {
-					length = length + len;
-				}
-				length = length + 2 + 1; 
-			}
-			payload = new byte[length];
-			ZBSerializer serializer = new DefaultSerializer(payload,0);
+			ZBSerializer serializer = new ByteArrayOutputStreamSerializer();
 		
 			for (int i = 0; i < attributeRecord.length; i++) {
 				serializer.append_short( (short) attributeRecord[i].getAttributeId());
@@ -77,6 +55,7 @@ public class WriteAttributeCommand extends AbstractCommand {
 				serializer.append_byte((byte) type.getId());
 				serializer.appendZigBeeType(attributeRecord[i].getAttributeData(), type);
 			}
+			payload = serializer.getPayload();
 		}
 		return payload;
 	}

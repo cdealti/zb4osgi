@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,76 +25,76 @@ package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class AbstractAttribute implements AttributeDescriptor{
-	
+
 	private int id;
 	private String name;
 	private Class clazz;
 	private ZigBeeType zbType;
 	private boolean isReportable;
 	private boolean isWritable;
-	
+
 	public AbstractAttribute() {
 	}
-	
+
 	final public int getId() {
 		return id;
 	}
 
 	public AbstractAttribute setId(int id){
 		this.id=id;
-		return this;	
+		return this;
 	}
-	
+
 	final public String getName() {
 		return name;
 	}
-	
+
 	public AbstractAttribute setName(String name){
 		this.name=name;
-		return this;	
+		return this;
 	}
 
 	final public Class getType() {
 		return clazz;
 	}
 
-	public AbstractAttribute setType(Class clazz){
+	private AbstractAttribute setType(Class clazz){
 		this.clazz=clazz;
-		return this;	
+		return this;
 	}
-	
+
 
 	final public boolean isReportable() {
 		return isReportable;
 	}
-	
+
 	public AbstractAttribute setReportable(boolean isReportable){
 		this.isReportable=isReportable;
-		return this;	
+		return this;
 	}
 
 	final public boolean isWritable() {
 		return isWritable;
 	}
-	
+
 	public AbstractAttribute setWritable(boolean isWritable){
 		this.isWritable=isWritable;
-		return this;	
+		return this;
 	}
 
 	public AbstractAttribute setZigBeeType(ZigBeeType type){
 		this.zbType = type;
-		//TODO Automatically set the Java Type
+		setType(type.getJavaClass());
 		return this;
 	}
-	
+
 	final public ZigBeeType getZigBeeType() {
 		return zbType;
 	}

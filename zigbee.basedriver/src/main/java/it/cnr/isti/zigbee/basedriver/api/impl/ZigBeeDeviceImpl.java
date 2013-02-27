@@ -28,6 +28,7 @@ import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.api.ClusterFilter;
 import it.cnr.isti.zigbee.api.ClusterListner;
 import it.cnr.isti.zigbee.api.ZigBeeBasedriverException;
+import it.cnr.isti.zigbee.api.ZigBeeBasedriverTimeOutException;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.Activator;
@@ -67,7 +68,8 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
  */
 public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessageProducer {
 
-	private static long TIMEOUT; // manlio final 5000;
+	private static long TIMEOUT;
+	private static final long DEFAULT_TIMEOUT = 5000;
 	private static final Logger logger = LoggerFactory.getLogger(ZigBeeDeviceImpl.class);
 
 	private final int[] inputs;
@@ -125,12 +127,10 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		properties.put(Constants.DEVICE_CATEGORY, new String[]{ZigBeeDevice.DEVICE_CATEGORY});
 
 		try{
-			TIMEOUT = Long.parseLong(Activator.getBundleContext().getProperty("org.aaloa.zb4osgi.zigbee.basedriver.timeout"));
-		}
-		catch(Exception ex){
-			TIMEOUT = 5000;
-			//ex.printStackTrace();
-			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to 5000 ms.");
+			TIMEOUT = Long.parseLong(Activator.getBundleContext().getProperty("org.aaloa.zb4osgi.zigbee.basedriver.timeout")); 
+		}catch(Exception ex){
+			TIMEOUT = DEFAULT_TIMEOUT;
+			logger.debug("Unable to read org.aaloa.zb4osgi.zigbee.basedriver.timeout - setting to default value {}ms", DEFAULT_TIMEOUT);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 
 		if( result == null ){
 			logger.error(
-					"Unable to recieve a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
+					"Unable to receive a ZDO_SIMPLE_DESC_RSP for endpoint {} on node {}",
 					NetworkAddress.toString(nwk),endPointAddress
 			);
 			throw new ZigBeeBasedriverException("Unable to receive a ZDO_SIMPLE_DESC_RSP from endpoint");
@@ -309,17 +309,17 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 
 		if( response == null){
 			m_removeAFMessageListener();
-			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error");
+			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network due to general error - is the device sleeping?");
 		} else if (response.getStatus() != 0 ) {
 			m_removeAFMessageListener();
 			throw new ZigBeeBasedriverException("Unable to send cluster on the ZigBee network:"+response.getErrorMsg());
 		} else {
 			//FIX Can't be singelton because only a the invoke method can be invoked by multiple-thread
+			//FIX Can't be singleton because the invoke method can be invoked by multiple-thread
 			AF_INCOMING_MSG incoming = waiter.getResponse();
 			m_removeAFMessageListener();
 			if(incoming == null){
-				//TODO Add a timeout exception
-				throw new ZigBeeBasedriverException("Timeout expired before receiving an answer");
+				throw new ZigBeeBasedriverTimeOutException();
 			}
 			Cluster result = new ClusterImpl(incoming.getData(), incoming.getClusterId());
 			return result;
@@ -470,28 +470,30 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		synchronized (listeners) {
 			localCopy = new ArrayList<ClusterListner>(listeners);
 		}
-		logger.debug("Notifying {} ClusterListner", localCopy.size());
-		for (ClusterListner listner : localCopy) {
-			try{
-				final ClusterFilter filter = listner.getClusterFilter();
-				if ( filter == null ) {
-					listner.handleCluster(this, c);
-				} else  if ( filter.match(c) == true ){
-					listner.handleCluster(this, c);
-				}
+		if(localCopy.size() > 0){
+			logger.debug("Notifying {} ClusterListner of {}", localCopy.size(), c.getClusterMsg());
 
-			}catch( Throwable t ){
-				logger.error("Error during dispatching of Cluster <{},{}>",c.getId(),c.getClusterMsg());
-				logger.error("Error caused by:",t);
+			for (ClusterListner listner : localCopy) {			
+				try{
+					final ClusterFilter filter = listner.getClusterFilter();
+					if ( filter == null ) 
+						listner.handleCluster(this, c);
+					else  if ( filter.match(c) == true )
+						listner.handleCluster(this, c);
+				}
+				catch( Throwable t ){
+					logger.error("Error during dispatching of Cluster <{},{}>", c.getId(), c.getClusterMsg());
+					logger.error("Error caused by:", t);
+				}
 			}
 		}
 	}
 
 	public void notify(AF_INCOMING_MSG msg) {
 		//THINK Do the notification in a separated Thread?
-		//THINK Should consume messages only if they was sent from this device?!?!
+		//THINK Should consume messages only if they were sent from this device?!?!
 		if ( msg.isError() ) return;
-		logger.debug("AF_INCOMIN_MSG arrived for {} message is {}", uuid, msg);
+		logger.debug("AF_INCOMING_MSG arrived for {} message is {}", uuid, msg);
 		ArrayList<AFMessageConsumer> localConsumers = null;
 		synchronized (consumers) {
 			localConsumers = new ArrayList<AFMessageConsumer>(consumers);
@@ -499,10 +501,10 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
 		logger.debug("Notifying {} AFMessageConsumer", localConsumers.size());
 		for (AFMessageConsumer consumer : localConsumers) {
 			if ( consumer.consume(msg) ) {
-				logger.debug("AF_INCOMIN_MSG Consumed by {}", consumer.getClass().getName());
+				logger.debug("AF_INCOMING_MSG Consumed by {}", consumer.getClass().getName());
 				return;
 			} else {
-				logger.debug("AF_INCOMIN_MSG Ignored by {}", consumer.getClass().getName());
+				logger.debug("AF_INCOMING_MSG Ignored by {}", consumer.getClass().getName());
 			}
 		}
 

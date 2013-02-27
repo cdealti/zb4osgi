@@ -55,7 +55,7 @@ public class LevelControlImpl implements LevelControl {
 		levelControlCluster = new LevelControlCluster(zbDevice);
 		currentLevel = levelControlCluster.getAttributeCurrentLevel();
 		remainingTime = levelControlCluster.getAttributeRemainingTime();
-		onOffTransitionTime = levelControlCluster.getAttributeOnOffTransactionTime();
+		onOffTransitionTime = levelControlCluster.getAttributeOnOffTransitionTime();
 		onLevel = levelControlCluster.getAttributeOnLevel();
 		eventBridge = new CurrentLevelBridgeListeners(Activator.getConfiguration(),currentLevel, this);
 	}
@@ -69,7 +69,7 @@ public class LevelControlImpl implements LevelControl {
 		return onLevel;
 	}
 
-	public Attribute getOnOffTransactionTime() {
+	public Attribute getOnOffTransitionTime() {
 		return onOffTransitionTime;
 	}
 

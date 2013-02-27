@@ -24,6 +24,7 @@ package it.cnr.isti.zigbee.util;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.itaca.ztool.api.ZToolAddress64;

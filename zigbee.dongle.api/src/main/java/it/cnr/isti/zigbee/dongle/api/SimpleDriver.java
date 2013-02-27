@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.dongle.api;
 
@@ -43,7 +43,8 @@ import com.itaca.ztool.api.zdo.ZDO_UNBIND_RSP;
 
 /**
  * 
- * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR
+ * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi - ISTI-CNR</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco - ISTI-CNR</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
@@ -86,8 +87,22 @@ public interface SimpleDriver {
 
 	public abstract boolean addAFMessageListner(AFMessageListner listner);
 
+	/**
+	 * Send LQI request cluster and wait for its response<br />
+	 * This method is used for the discovering of {@link ZigBeeDevice}
+	 * 
+	 * @return the answer to the request or null in case of an error
+	 * @since 0.7.0
+	 */
 	public abstract ZDO_MGMT_LQI_RSP sendLQIRequest(ZDO_MGMT_LQI_REQ request);
 
+	/**
+	 * This method is used for the creation of an virtual device on the dongle<br />
+     * Note: a proper {@link addAFMessageListner} has to be register for answering to request coming from the network
+	 * 
+	 * @since 0.7.0
+     * @deprecated
+	 */
 	public abstract void addCustomDevice(String endpointNumber, String profileID, String deviceID, String version, String inputClusters, String outputCluster);
 
 	/**
@@ -135,7 +150,7 @@ public interface SimpleDriver {
 	 * @deprecated
 	 */
 	public abstract int getCurrentState();
-
+	
 	/**
 	 * <b>WARNING</b>: This method may have to wait for the initialization of the ZigBee network<br>
 	 * thus, it may be quite slow or end up in a deadlock of the application
@@ -144,11 +159,12 @@ public interface SimpleDriver {
 	 * @since 0.6.0
 	 */
 	public abstract int getZigBeeNodeMode();
-
+	
 	/**
 	 * 
 	 * @return The current status of the driver
 	 * @see 0.6.0
 	 */
-	public abstract DriverStatus getDriverStatus();	
+	public abstract DriverStatus getDriverStatus();
+	
 }

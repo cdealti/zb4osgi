@@ -44,15 +44,17 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.IdentifyCluster;
 public class IdentifyImpl implements Identify {
 	
 	private IdentifyCluster identifyCluster;
-	private Attribute identifyTime;	
+	private Attribute identifyTime;
+	
 	
 	public IdentifyImpl(ZigBeeDevice zbDevice){
-		identifyCluster = new IdentifyCluster(zbDevice);		
+		identifyCluster = new IdentifyCluster(zbDevice);
+		
 	}
 
 	public int IdentifyQuery() throws ZigBeeHAException{
 		try {
-			IdentifyQueryResponse response = (IdentifyQueryResponse) identifyCluster.identifyQuery();
+			IdentifyQueryResponse response = (IdentifyQueryResponse)identifyCluster.identifyQuery();
 			return response.getTimeout();
 		} catch (ZigBeeClusterException e) {
 			throw new ZigBeeHAException(e);
@@ -101,5 +103,7 @@ public class IdentifyImpl implements Identify {
 
 	public Attribute[] getAttributes() {
 		return identifyCluster.getAvailableAttributes();
-	}	
+	}
+	
+	
 }

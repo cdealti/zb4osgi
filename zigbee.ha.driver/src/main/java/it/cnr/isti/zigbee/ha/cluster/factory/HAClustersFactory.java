@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.cluster.factory;
 
@@ -54,7 +54,7 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class HAClustersFactory extends ClusterFactoryBase {
-
+    
 	//General
 	final static String BASIC_KEY = HAProfile.ID + ":"+ HAProfile.BASIC;
 	final static String POWER_CONFIGURATION_KEY = HAProfile.ID + ":"+ HAProfile.POWER_CONFIGURATION;
@@ -69,22 +69,21 @@ public class HAClustersFactory extends ClusterFactoryBase {
 	final static String TIME_KEY = HAProfile.ID + ":"+ HAProfile.TIME;
 	// final static String RSSI_LOCATION
 	final static String COMMISSIONING_KEY = HAProfile.ID + ":"+ HAProfile.COMMISSIONING;
-
+	
 	//Measurement and Sensing
 	final static String ILLUMINANCE_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.ILLUMINANCE_MEASUREMENT; // new
 	final static String TEMPERATURE_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.TEMPERATURE_MEASUREMENT;
 	final static String RELATIVE_HUMIDITY_MEASUREMENT_KEY = HAProfile.ID + ":"+ HAProfile.RELATIVE_HUMIDITY_MEASUREMENT;
 	final static String OCCUPANCY_SENSING_KEY = HAProfile.ID + ":"+ HAProfile.OCCUPANCY_SENSING;
-
+	
 	//Security and Safety
 	final static String IAS_ZONE_KEY = HAProfile.ID + ":"+ HAProfile.IAS_ZONE;
 	final static String IAS_WD_KEY = HAProfile.ID + ":"+ HAProfile.IAS_WD;
 	final static String IAS_ACE_KEY = HAProfile.ID + ":"+ HAProfile.IAS_ACE;
-
+	
 	public HAClustersFactory(BundleContext ctx){
-
 		super(ctx);
-
+		
 		//General
 		addCluster(BASIC_KEY, BasicImpl.class);
 		addCluster(POWER_CONFIGURATION_KEY, PowerConfigurationImpl.class);
@@ -98,16 +97,17 @@ public class HAClustersFactory extends ClusterFactoryBase {
 		addCluster(ALARMS_KEY, AlarmsImpl.class);
 		addCluster(TIME_KEY, TimeImpl.class);
 		addCluster(COMMISSIONING_KEY, TimeImpl.class); // new
-
+		
 		//Measurement and Sensing
 		addCluster(ILLUMINANCE_MEASUREMENT_KEY, IlluminanceMeasurementImpl.class); // new
 		addCluster(TEMPERATURE_MEASUREMENT_KEY, TemperatureMeasurementImpl.class);
 		addCluster(RELATIVE_HUMIDITY_MEASUREMENT_KEY, RelativeHumidityMeasurementImpl.class);
 		addCluster(OCCUPANCY_SENSING_KEY, OccupacySensingImpl.class);
-
+		
 		//Security and Safety
 		addCluster(IAS_ZONE_KEY, IASZoneImpl.class);
 		addCluster(IAS_WD_KEY, IASWDImpl.class);
 		addCluster(IAS_ACE_KEY, IASACEImpl.class);
 	}
+
 }

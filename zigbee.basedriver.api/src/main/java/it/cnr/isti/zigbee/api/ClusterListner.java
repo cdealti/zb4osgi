@@ -58,5 +58,6 @@ public interface ClusterListner {
 	 * @param device reference to the {@link ZigBeeDevice} receiving the {@link Cluster}
 	 * @param cluster reference to the received {@link Cluster}
 	 */
-	public void handleCluster(ZigBeeDevice device, Cluster cluster);	
+	public void handleCluster(ZigBeeDevice device, Cluster cluster);
+	
 }

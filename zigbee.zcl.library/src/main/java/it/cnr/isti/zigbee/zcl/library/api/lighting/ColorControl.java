@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.lighting;
 
@@ -29,7 +29,9 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
 public interface ColorControl extends ZCLCluster{
@@ -84,7 +86,7 @@ public interface ColorControl extends ZCLCluster{
 	public Attribute getAttributeColorPointBX();
 	public Attribute getAttributeColorPointBY();
 	public Attribute getAttributeColorPointBIntensity();
-
+	
 	// commands
 	public Response moveToHue(short hue, byte direction, int transitionTime);
 	public Response moveHue(byte moveMode, short rate);

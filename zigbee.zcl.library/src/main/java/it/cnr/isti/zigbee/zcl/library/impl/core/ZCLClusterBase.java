@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public abstract class ZCLClusterBase implements ZCLCluster {
-
+	
 	final public static Logger logger = LoggerFactory.getLogger(ZCLClusterBase.class);
 	
 	private ZigBeeDevice zbDevice;
@@ -58,19 +58,19 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 	public  ZCLClusterBase(ZigBeeDevice zbDevice){
 		this.zbDevice = zbDevice;
 	}
-
+	
 	public abstract short getId();
 	public abstract String getName();
 	public abstract Attribute[] getStandardAttributes() ;
 	
 	protected ZigBeeDevice getZigBeeDevice() {
-		return zbDevice;
+	    return zbDevice;
 	}
-
+	
 	public void enableDefaultResponse() {
 		isDefaultResponseEnabled = true;
 	}
-
+	
 	public boolean isDefaultResponseEnabled() {
 		return isDefaultResponseEnabled;
 	}
@@ -83,10 +83,10 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 				attributes.put(list[i].getId(), list[i]);
 			}
 		}
-
+		
 		return attributes.get(id);
 	}
-
+	
 	public Attribute[] getAvailableAttributes() {
 		//TODO use Discovery Attribute command to find the real attribute
 		return getStandardAttributes();
@@ -124,9 +124,8 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 			}
 		}
 	}
-
+	
 	public Subscription[] getActiveSubscriptions() {
-
 		final ArrayList<Subscription> actives = new ArrayList<Subscription>();
 		final Attribute[] attributes = getAvailableAttributes();
 		for (int i = 0; i < attributes.length; i++) {
@@ -137,4 +136,6 @@ public abstract class ZCLClusterBase implements ZCLCluster {
 		}
 		return actives.toArray(new Subscription[]{});
 	}
+
+
 }

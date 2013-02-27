@@ -32,5 +32,6 @@ import com.itaca.ztool.api.af.AF_INCOMING_MSG;
  */
 public interface AFMessageConsumer {
 
-	public boolean consume(AF_INCOMING_MSG msg);	
+	public boolean consume(AF_INCOMING_MSG msg);
+	
 }

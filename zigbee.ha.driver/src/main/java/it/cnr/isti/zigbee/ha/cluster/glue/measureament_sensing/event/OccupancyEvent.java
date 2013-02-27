@@ -36,5 +36,6 @@ public interface OccupancyEvent {
 
 	public int getEvent();
 	
-	public Cluster getSource();	
+	public Cluster getSource();
+	
 }

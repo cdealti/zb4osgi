@@ -80,6 +80,7 @@ public class RootDeviceListener {
 		public void serviceChanged(ServiceEvent e) {
 			switch(e.getType()){
 				case ServiceEvent.REGISTERED:{
+                    //TODO Verify if next line create duplicate devices
 					listener.deviceDetected( e.getServiceReference() );				
 				};break;
 				

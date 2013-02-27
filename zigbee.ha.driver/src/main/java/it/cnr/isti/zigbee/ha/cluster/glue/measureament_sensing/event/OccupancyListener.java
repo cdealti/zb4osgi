@@ -32,5 +32,6 @@ package it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.event;
  */
 public interface OccupancyListener {
 	
-	public void changedOccupancy(OccupancyEvent event);	
+	public void changedOccupancy(OccupancyEvent event);
+	
 }

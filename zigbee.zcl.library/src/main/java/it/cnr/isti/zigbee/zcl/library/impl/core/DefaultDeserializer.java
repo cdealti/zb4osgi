@@ -144,6 +144,12 @@ public class DefaultDeserializer implements ZBDeserializer {
 		return result;
 	}
 
+	public String readString(int size) {
+		final String result = new String(payload, index, size);
+		index += size;
+		return result;
+	}	
+	
 	public Object readZigBeeType(ZigBeeType type) {
 		Object[] value = new Object[1];
 		switch(type){
@@ -178,10 +184,14 @@ public class DefaultDeserializer implements ZBDeserializer {
 				int i24 = read_int24bit();
 				value[0] = new Integer(i24);
 			break;
-			case CharacterString: case IEEEAddress:
-				value[0] = readString();
-			break;
-			default:
+			case CharacterString: case OctectString:{
+				int size = read_byte();
+				value[0] = readString(size);
+			}break;
+			case LongCharacterString: case LongOctectString:{
+				int size = read_short();
+				value[0] = readString(size);
+			}default:
 				throw new IllegalArgumentException(
 						"No reader defined by this "+ZBDeserializer.class.getName()+
 						" for "+type.toString()+" ("+type.getId()+")"

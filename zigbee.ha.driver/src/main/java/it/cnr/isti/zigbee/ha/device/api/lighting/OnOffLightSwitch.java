@@ -18,15 +18,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.device.api.lighting;
 
-import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
-import it.cnr.isti.zigbee.ha.cluster.glue.general.Identify;
-import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOff;
 import it.cnr.isti.zigbee.ha.cluster.glue.general.OnOffSwitchConfiguration;
-import it.cnr.isti.zigbee.ha.cluster.glue.general.Scenes;
 import it.cnr.isti.zigbee.ha.driver.ArraysUtil;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
 import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
@@ -44,14 +40,15 @@ import it.cnr.isti.zigbee.ha.driver.core.HAProfile;
 public interface OnOffLightSwitch extends HADevice{
 
 	public static final int DEVICE_ID = 0x0103;
-	public static final String NAME = "OnOff Light Switch";
+	public static final String NAME = "OnOff Switch";
 	public static final int[] MANDATORY = ArraysUtil.append(HADevice.MANDATORY, new int[]{
-			HAProfile.ON_OFF_SWITCH_CONFIGURATION, HAProfile.ON_OFF, HAProfile.SCENES, HAProfile.GROUPS, HAProfile.IDENTIFY
+		HAProfile.ON_OFF_SWITCH_CONFIGURATION
 	});
 	public static final int[] OPTIONAL = HADevice.OPTIONAL;
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
 	public static final int[] CUSTOM = {};
-
+	
+		
 	/**
 	 * Access method for the <b>Mandatory</b> cluster: {@link OnOffSwitchConfiguration} 
 	 *  
@@ -59,11 +56,4 @@ public interface OnOffLightSwitch extends HADevice{
 	 */
 	public OnOffSwitchConfiguration getOnOffSwitchConfiguration();
 
-	public OnOff getOnOff();
-
-	public Scenes getScenes();
-
-	public Groups getGroups();
-
-	public Identify getIdentify();
 }

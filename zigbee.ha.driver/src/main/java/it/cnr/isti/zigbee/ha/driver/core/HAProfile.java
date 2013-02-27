@@ -66,11 +66,12 @@ import it.cnr.isti.zigbee.zcl.library.api.security_safety.IASZone;
  * @since 0.4.0
  *
  */
-public class HAProfile {
+public class  HAProfile {
 
 	public static final int ID = 260;
 
-	// General
+	//CLUSTERS
+	//Generic
 	public static final int BASIC = Basic.ID;
 	public static final int POWER_CONFIGURATION = PowerConfiguration.ID;
 	public static final int DEVICE_TEMPERATURE_CONFIGURATION = DeviceTemperatureConfiguration.ID;
@@ -78,10 +79,10 @@ public class HAProfile {
 	public static final int GROUPS = Groups.ID;
 	public static final int SCENES = Scenes.ID;
 	public static final int ON_OFF = OnOff.ID;
+	public static final int TIME = Time.ID;
 	public static final int ON_OFF_SWITCH_CONFIGURATION = OnOffSwitchConfiguration.ID;
 	public static final int LEVEL_CONTROL = LevelControl.ID;
-	public static final int ALARMS = Alarms.ID;	
-	public static final int TIME = Time.ID;
+	public static final int ALARMS = Alarms.ID;
 	//public static final int RSSI_LOCATION												// 0X000b
 	public static final int COMMISSIONING = Commissioning.ID; 							// TODO
 	// Closures
@@ -98,7 +99,7 @@ public class HAProfile {
 	public static final int COLOR_CONTROL = ColorControl.ID;							// 0x0300
 	//public static final int BALLAST_CONFIGURATION										// 0x0301
 
-	// Measureament & Sensing
+	//Measureament & Sensing
 	public static final int ILLUMINANCE_MEASUREMENT = IlluminanceMeasurement.ID; 		// new
 	//public static final int ILLUMINANCE_LEVEL_SENSING									// 0x0401
 	public static final int TEMPERATURE_MEASUREMENT = TemperatureMeasurement.ID;

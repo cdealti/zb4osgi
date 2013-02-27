@@ -106,4 +106,5 @@ public class ConfigureReportingCommand extends AbstractCommand {
 		}
 		return payload;
 	}
+
 }

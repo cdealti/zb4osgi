@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.cluster.glue.security_safety;
 
@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusCha
 /**
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
@@ -46,9 +47,12 @@ public interface IASZone extends Cluster {
 
 	public ZoneEnrollResponse zoneEnrollRequest(ZoneEnrollRequestPayload payload) throws ZigBeeHAException;
 
+	/**
+	 * @since 0.7.0
+	 */
 	public Response zoneStatusChangeNotification(ZoneStatusChangeNotificationPayload payload) throws ZigBeeHAException;
 
 	public boolean addZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 
-	public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
+    public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 }

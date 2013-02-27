@@ -19,43 +19,38 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-package it.cnr.isti.zigbee.zcl.library.impl.general.scenes;
+package it.cnr.isti.zigbee.zcl.library.impl.general.commissioning;
 
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.Status;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZBDeserializer;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
-import it.cnr.isti.zigbee.zcl.library.api.general.scenes.RemoveAllSceneResponse;
+import it.cnr.isti.zigbee.zcl.library.api.general.commissioning.SaveStartupParametersResponse;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
+
 /**
  * 
- * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
- * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
- * @version $LastChangedRevision: 42 $ ($LastChangedDate: 2010-09-23 14:21:48 +0200 (gio, 23 set 2010) $)
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
+ * @version $LastChangedRevision$ ($LastChangedDate$)
+ * @since 0.8.0
  *
  */
-public class RemoveAllSceneResponseImpl extends ResponseImpl implements
-		RemoveAllSceneResponse {
-	
-	private byte status;
-	private int groupId;
+public class SaveStartupParametersResponseImpl extends ResponseImpl implements SaveStartupParametersResponse {
 
-	public RemoveAllSceneResponseImpl(Response response)throws ZigBeeClusterException{
+	private byte status;
+
+	public SaveStartupParametersResponseImpl(Response response) throws ZigBeeClusterException {
+
 		super(response);
-		ResponseImpl.checkSpecificCommandFrame(response, RemoveAllSceneResponse.ID);
-		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
-		status =  deserializer.read_byte();
-		groupId = deserializer.read_short();
-	}
-	
-	public int getGroupId() {
-		return groupId;
+		ResponseImpl.checkGeneralCommandFrame(response, ID);
+
+		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(), 0);
+		status = deserializer.read_byte();
 	}
 
 	public Status getStatus() {
+
 		return Status.getStatus(status);
 	}
-
 }

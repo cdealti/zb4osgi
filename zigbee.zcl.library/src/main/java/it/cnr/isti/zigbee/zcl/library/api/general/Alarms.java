@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.general;
 
@@ -33,13 +33,14 @@ import it.cnr.isti.zigbee.zcl.library.api.general.alarms.AlarmListener;
  * <i>ZigBee Cluster Library</i> public release version 075123r01ZB
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */
 public interface Alarms extends ZCLCluster {
-
+	
 	static final short ID = 0x0009;
 	static final String NAME = "Alarms";
 	static final String DESCRIPTION = "Attributes and commands for sending notifications and configuring alarm functionaly";
@@ -48,9 +49,9 @@ public interface Alarms extends ZCLCluster {
 	static final byte RESET_ALL_ALARMS_ID = 0x01;
 	static final byte GET_ALARM_ID = 0x03;
 	static final byte RESET_ALARM_LOG_ID = 0x03;
-
+	
 	public Attribute getAttributeAlarmCount();
-
+	
 	public Response resetAlarm(int clusterId, int attributeId) throws ZigBeeClusterException;
 	public Response resetAllAlarms() throws ZigBeeClusterException;
 	public Response getAlarm() throws ZigBeeClusterException;

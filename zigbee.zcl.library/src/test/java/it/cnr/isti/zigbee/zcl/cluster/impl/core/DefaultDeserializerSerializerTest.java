@@ -21,8 +21,7 @@
 */
 package it.cnr.isti.zigbee.zcl.cluster.impl.core;
 
-import static org.junit.Assert.*;
-import it.cnr.isti.zigbee.zcl.library.api.measureament_sensing.TemperatureMeasurement;
+import static org.junit.Assert.assertEquals;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultSerializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;

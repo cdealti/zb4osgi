@@ -31,6 +31,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Attribute;
  * <i>ZigBee Cluster Library</i> public release version 075123r01ZB
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  *
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -59,9 +60,15 @@ public interface OccupacySensing extends Cluster {
 	
 	public Attribute getPIROccupiedToUnoccupiedDelay();
 	public Attribute getPIRUnoccupiedToOccupiedDelay();
+	/**
+	 * @since 0.7.0
+	 */
 	public Attribute getPIRUnoccupiedToOccupiedThreshold();
 	
 	public Attribute getUltraSonicOccupiedToUnoccupiedDelay();
 	public Attribute getUltraSonicUnoccupiedToOccupiedDelay();
+	/**
+	 * @since 0.7.0
+	 */
 	public Attribute getUltraSonicUnoccupiedToOccupiedThreshold();
 }

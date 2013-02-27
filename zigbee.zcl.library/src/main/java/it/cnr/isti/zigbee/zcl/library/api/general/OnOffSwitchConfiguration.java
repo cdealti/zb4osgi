@@ -32,6 +32,7 @@ import it.cnr.isti.zigbee.zcl.library.api.core.ZCLCluster;
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version  $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
@@ -44,4 +45,5 @@ public interface OnOffSwitchConfiguration extends ZCLCluster{
 	
 	public Attribute getAttributeSwitchType();
 	public Attribute getAttributeSwitchActions();
+
 }

@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
@@ -31,7 +31,7 @@ import com.itaca.ztool.api.ZToolAddress16;
 import com.itaca.ztool.api.ZToolAddress64;
 
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -46,21 +46,10 @@ public class ImportingQueue {
 
 		private final ZToolAddress16 networkAddress;
 		private final ZToolAddress64 ieeeAddress;
-		private final String permitJoin;
-		private final short lqi;
 
-		public ZigBeeNodeAddress(final ZToolAddress16 networkAddress, final ZToolAddress64 ieeeAddress, final String permitJoin, final short lqi) {			
+		public ZigBeeNodeAddress(final ZToolAddress16 networkAddress, final ZToolAddress64 ieeeAddress) {
 			this.networkAddress = networkAddress;
 			this.ieeeAddress = ieeeAddress;
-			this.permitJoin = permitJoin;
-			this.lqi = lqi;
-		}
-
-		public ZigBeeNodeAddress(final ZToolAddress16 networkAddress, final ZToolAddress64 ieeeAddress) {			
-			this.networkAddress = networkAddress;
-			this.ieeeAddress = ieeeAddress;
-			this.permitJoin = "";
-			this.lqi = 0;
 		}
 
 		public final ZToolAddress16 getNetworkAddress() {
@@ -69,16 +58,9 @@ public class ImportingQueue {
 		public final ZToolAddress64 getIEEEAddress() {
 			return ieeeAddress;
 		}
-		public final String getPermitJoin() {
-			return permitJoin;
-		}
-		public final short getLqi() {
-			return lqi;
-		}
 	}
 
-	private final ArrayList<ZigBeeNodeAddress> addresses = new ArrayList<ZigBeeNodeAddress>();		
-	private final ArrayList<ZigBeeNodeAddress> addressesAlreadyInserted = new ArrayList<ZigBeeNodeAddress>();		
+	private final ArrayList<ZigBeeNodeAddress> addresses = new ArrayList<ZigBeeNodeAddress>();
 
 	public void clear() {
 		synchronized (addresses) {
@@ -98,38 +80,18 @@ public class ImportingQueue {
 		}
 	}
 
-	public void deviceCorrectlyDiscovered(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress){
-
-		//ZigBeeNodeAddress inserted = new ZigBeeNodeAddress(nwkAddress, ieeeAddress);
-		//addressesAlreadyInserted.add(inserted);
-	}
 
 	public void push(ZToolAddress16 nwkAddress, ZToolAddress64 ieeeAddress){
-
 		ZigBeeNodeAddress inserting = new ZigBeeNodeAddress(nwkAddress, ieeeAddress);
-		boolean found = false;
-		for(int i = 0; i < addressesAlreadyInserted.size(); i++){
-			if(addressesAlreadyInserted.get(i).getIEEEAddress().equals(inserting.getIEEEAddress())){
-				found = true;
-				break;
-			}
+		logger.debug("Adding {} ({})",nwkAddress,ieeeAddress);
+		synchronized (addresses) {
+			addresses.add(inserting);
+			addresses.notify();
 		}
-
-		if(!found){
-			// insert only one time a device (IEEE address) 
-			// LQI request cause inserting same devices multiple times because of different nwkAddress
-
-			logger.debug("Adding {} ({})", nwkAddress, ieeeAddress);
-			synchronized (addresses) {
-				addresses.add(inserting);
-				addresses.notify();
-			}		
-			logger.debug("Added {} ({})", nwkAddress, ieeeAddress);
-		}
+		logger.debug("Added {} ({})",nwkAddress,ieeeAddress);
 	}
 
 	public ZigBeeNodeAddress pop(){
-
 		ZigBeeNodeAddress result = null;
 		logger.debug("Removing element");
 		synchronized (addresses) {
@@ -141,7 +103,7 @@ public class ImportingQueue {
 			}
 			result = addresses.remove(addresses.size() - 1);
 		}
-		logger.debug("Removed {} {}", result.networkAddress, result.ieeeAddress);		
+		logger.debug("Removed {} {}", result.networkAddress, result.ieeeAddress);
 		return result;
-	}	
+	}
 }

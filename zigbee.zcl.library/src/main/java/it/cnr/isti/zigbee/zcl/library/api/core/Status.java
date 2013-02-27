@@ -22,7 +22,6 @@
 
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
-import java.util.Hashtable;
 
 /**
  * 

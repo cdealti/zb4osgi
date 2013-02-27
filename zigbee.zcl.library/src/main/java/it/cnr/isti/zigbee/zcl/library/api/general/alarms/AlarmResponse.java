@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.general.alarms;
 
@@ -36,9 +36,9 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
  *
  */
 public interface AlarmResponse extends Response{
-
+    
 	public static final byte ID = 0x00;
-
+	
 	/**
 	 * 
 	 * @return the int representing the <i>Alarm Code</i> field.

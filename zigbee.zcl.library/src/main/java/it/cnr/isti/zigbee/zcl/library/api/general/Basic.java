@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.general;
 
@@ -39,13 +39,13 @@ import it.cnr.isti.zigbee.zcl.library.api.global.DefaultResponse;
  *
  */
 public interface Basic extends ZCLCluster {
-
+	
 	static final short ID = 0x0000;
 	static final String NAME = "Basic";
 	static final String DESCRIPTION = "Attributes and commands for determining basic information about a device, setting user device information such as location, and enabling a device.";
 
 	static final byte RESET_TO_FACTORY_DEFAULT_ID = 0x00;
-
+	
 	public Attribute getAttributeZCLVersion();
 	public Attribute getAttributeApplicationVersion();
 	public Attribute getAttributeStackVersion();
@@ -54,11 +54,19 @@ public interface Basic extends ZCLCluster {
 	public Attribute getAttributeModelIdentifier();
 	public Attribute getAttributeDateCode();
 	public Attribute getPowerSource();
-
+	
 	public Attribute getAttributeLocationDescription();
-	public Attribute getAttributePhysicalEnviroment();
+	public Attribute getAttributePhysicalEnvironment();
 	public Attribute getAttributeDeviceEnabled();
 	public Attribute getAttributeAlarmMask();
 
+	/**
+	 * 
+	 * @since 0.7.1
+	 */
+	public Attribute getAttributeDisableLocalConfig();
+	
+		
+	
 	public DefaultResponse resetToFactoryDefault() throws ZigBeeClusterException;
 }

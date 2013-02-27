@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.global.reporting;
 
@@ -29,6 +29,9 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 
 import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -41,28 +44,27 @@ import java.util.ArrayList;
  *
  */
 public class ReportAttributesCommand extends ResponseImpl {
-
-	//private static final Logger logger = LoggerFactory.getLogger(ReportAttributesCommand.class);
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReportAttributesCommand.class);
+	
 	public static final byte ID = 0x0A;
-
+	
 	private AttributeReport[] attributesReport;
-
+	
 	public ReportAttributesCommand(ResponseImpl response) throws ZigBeeClusterException{
-
 		super(response);
 		ResponseImpl.checkGeneralCommandFrame(response, ReportAttributesCommand.ID);
-
+		
 		byte[] msg = getPayload();
-		ZBDeserializer deserializer = new DefaultDeserializer(msg, 0);
+		ZBDeserializer deserializer = new DefaultDeserializer(msg,0);
 		ArrayList<AttributeReportImpl> attributes = new ArrayList<AttributeReportImpl>();
 		for (int i = 0; deserializer.getPosition() < msg.length; i++) {
 			attributes.add(new AttributeReportImpl(deserializer));
 		}
-
+		
 		attributesReport = attributes.toArray(new AttributeReport[]{});
-	}	
-
+	}		
+	
 	public AttributeReport[] getAttributeReports() {
 		return attributesReport;
 	}

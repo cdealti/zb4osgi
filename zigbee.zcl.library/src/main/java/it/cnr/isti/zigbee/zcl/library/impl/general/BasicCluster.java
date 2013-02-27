@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.general;
 
@@ -42,25 +42,25 @@ import it.cnr.isti.zigbee.zcl.library.impl.global.DefaultResponseImpl;
  *
  */
 public class BasicCluster extends ZCLClusterBase implements Basic {
-
+	
 	private final AttributeImpl zclVersion;  
 	private final AttributeImpl applicationVersion;
 	private final AttributeImpl stackVersion;
 	private final AttributeImpl hwVersion;
 	private final AttributeImpl manufacturerName;
 	private final AttributeImpl modelIdentifier;
-	private final AttributeImpl dataCode;
+	private final AttributeImpl dateCode;
 	private final AttributeImpl powerSource;
-
+	
 	private final AttributeImpl locationDescription;
-	private final AttributeImpl physicalEnviroment;
+	private final AttributeImpl physicalEnvironment;
 	private final AttributeImpl deviceEnabled;
 	private final AttributeImpl alarmMask;
-
+	private final AttributeImpl disableLocalConfig;
+	
 	private final Attribute[] attributes;
-
+	
 	public BasicCluster(ZigBeeDevice zbDevice){
-
 		super(zbDevice);
 		zclVersion = new AttributeImpl(zbDevice,this,Attributes.ZCL_VERSION);
 		applicationVersion = new AttributeImpl(zbDevice,this,Attributes.APPLICATION_VERSION);
@@ -68,17 +68,18 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		hwVersion = new AttributeImpl(zbDevice,this,Attributes.HW_VERSION);
 		manufacturerName = new AttributeImpl(zbDevice,this,Attributes.MANUFACTURER_NAME);
 		modelIdentifier = new AttributeImpl(zbDevice,this,Attributes.MODEL_IDENTIFIER);
-		dataCode = new AttributeImpl(zbDevice,this,Attributes.DATA_CODE);
+		dateCode = new AttributeImpl(zbDevice,this,Attributes.DATE_CODE);
 		powerSource = new AttributeImpl(zbDevice,this,Attributes.POWER_SOURCE);
 		locationDescription = new AttributeImpl(zbDevice,this,Attributes.LOCATION_DESCRIPTION);
-		physicalEnviroment = new AttributeImpl(zbDevice,this,Attributes.PHISICAL_ENVIROMENT);
+		physicalEnvironment = new AttributeImpl(zbDevice,this,Attributes.PHYSICAL_ENVIRONMENT);
 		deviceEnabled = new AttributeImpl(zbDevice,this,Attributes.DEVICE_ENABLED);
 		alarmMask = new AttributeImpl(zbDevice,this,Attributes.ALARM_MASK);
+		disableLocalConfig = new AttributeImpl(zbDevice,this,Attributes.DISABLE_LOCAL_CONFIG);
 		attributes = new AttributeImpl[]{zclVersion, applicationVersion, stackVersion,
-				hwVersion, manufacturerName, modelIdentifier, dataCode, powerSource,
-				locationDescription, physicalEnviroment, deviceEnabled, alarmMask};
+				hwVersion, manufacturerName, modelIdentifier, dateCode, powerSource,
+				locationDescription, physicalEnvironment, deviceEnabled, alarmMask, disableLocalConfig};
 	}
-
+	
 	private static EmptyPayloadCommand CMD_RESET_TO_FACTORY_DEFAULT = new EmptyPayloadCommand()
 	.setId(Basic.RESET_TO_FACTORY_DEFAULT_ID)
 	.setClientServerDirection(true)
@@ -109,7 +110,7 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	}
 
 	public Attribute getAttributeDateCode() {
-		return dataCode;
+		return dateCode;
 	}
 
 	public Attribute getAttributeDeviceEnabled() {
@@ -131,9 +132,9 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 	public Attribute getAttributeModelIdentifier() {
 		return modelIdentifier;
 	}
-
-	public Attribute getAttributePhysicalEnviroment() {
-		return physicalEnviroment;
+                                 
+	public Attribute getAttributePhysicalEnvironment() {
+		return physicalEnvironment;
 	}
 
 	public Attribute getAttributeStackVersion() {
@@ -148,10 +149,14 @@ public class BasicCluster extends ZCLClusterBase implements Basic {
 		return powerSource;
 	}
 
+	public Attribute getAttributeDisableLocalConfig() {
+		return disableLocalConfig;
+	}
+	
 	public DefaultResponse resetToFactoryDefault() throws ZigBeeClusterException{
 		enableDefaultResponse();
 		Response response = invoke(CMD_RESET_TO_FACTORY_DEFAULT);
-		return new DefaultResponseImpl(response);
+		return  new DefaultResponseImpl(response);
 	}
 
 }

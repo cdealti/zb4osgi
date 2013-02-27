@@ -43,7 +43,6 @@ public class AddSceneResponseImpl extends ResponseImpl implements AddSceneRespon
 	private short sceneId;
 	
 	public AddSceneResponseImpl(Response response) throws ZigBeeClusterException {
-		
 		super(response);
 		ResponseImpl.checkSpecificCommandFrame(response, AddSceneResponse.ID);
 		ZBDeserializer deserializer = new DefaultDeserializer(getPayload(),0);
@@ -63,4 +62,5 @@ public class AddSceneResponseImpl extends ResponseImpl implements AddSceneRespon
 	public Status getStatus() {
 		return Status.getStatus(status);
 	}
+
 }

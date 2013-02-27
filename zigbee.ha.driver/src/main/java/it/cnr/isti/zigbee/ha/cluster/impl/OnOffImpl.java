@@ -38,6 +38,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.OnOffCluster;
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -71,7 +72,7 @@ public class OnOffImpl implements OnOff{
 
 	public boolean unsubscribe(OnOffListener listener) {
 		return eventBridge.unsubscribe(listener);
-	}	
+	}
 	
 	public void off() throws ZigBeeHAException {
 		try {

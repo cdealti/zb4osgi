@@ -45,5 +45,7 @@ public interface AnnunceListner {
 	 * @param capabilitiesBitmask the bitmask identifying the network capibility of the 
 	 * 			node that is the subject of the <i>Annunce</i> message
 	 */
-	void notify(ZToolAddress16 senderAddress, ZToolAddress64 ieeeAddress, ZToolAddress16 networkAddress, int capabilitiesBitmask);
+	void notify(ZToolAddress16 senderAddress, ZToolAddress64 ieeeAddress,
+			ZToolAddress16 networkAddress, int capabilitiesBitmask);
+
 }

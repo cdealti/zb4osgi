@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.DefaultDeserializer;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -39,12 +39,12 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  */
 public class ViewGroupResponseImpl extends ResponseImpl implements
 		ViewGroupResponse {
-	
+
 	private int groupId;
 	private String groupName;
 	private byte status;
-	
-	
+
+
 	public ViewGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
 		ResponseImpl.checkSpecificCommandFrame(response, ViewGroupResponse.ID);
@@ -57,7 +57,7 @@ public class ViewGroupResponseImpl extends ResponseImpl implements
 			groupName = (String) deserializer.readZigBeeType(ZigBeeType.CharacterString);
 		}
 	}
-	
+
 	public int getGroupId() {
 		return groupId;
 	}

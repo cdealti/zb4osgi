@@ -56,4 +56,5 @@ public class AlarmResponseImpl extends ResponseImpl implements AlarmResponse {
 	public int getClusterID() {
 	    return clusterIdentifier;
 	}
+
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone;
 
@@ -27,14 +27,15 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public interface ZoneEnrollResponse extends Response {
 
 	public static final byte ID = 0x00;
-
+	
 	public int getEnrollResponseCode();
-
+	
 	public int getZoneID();
 }

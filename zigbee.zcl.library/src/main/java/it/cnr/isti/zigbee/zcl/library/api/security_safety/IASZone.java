@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.security_safety;
 
@@ -34,17 +34,18 @@ import it.cnr.isti.zigbee.zcl.library.api.security_safety.ias_zone.ZoneStatusCha
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  *         
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.1.0
  *
  */
-public interface IASZone extends ZCLCluster {
+public interface IASZone extends ZCLCluster{
 
 	public static final short ID = 0x0500;
 	static final String NAME = "IAS Zone";
 	static final String DESCRIPTION = "Attributes and commands for IAS security zone device.";
-
+	
 	//received
 	static final byte ZONE_ENROLL_RESPONSE_ID = 0x00;
 	
@@ -62,9 +63,16 @@ public interface IASZone extends ZCLCluster {
 
 	// commands generated
 	public Response zoneStatusChangeNotification(ZoneStatusChangeNotificationPayload payload) throws ZigBeeClusterException;
-
+	
 	public ZoneEnrollResponse zoneEnrollRequest(ZoneEnrollRequestPayload payload) throws ZigBeeClusterException;
 
+	/*
+	 * @since 0.8.0
+	 */
 	public boolean addZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
+
+	/*
+	 * @since 0.8.0
+	 */
 	public boolean removeZoneStatusChangeNotificationListener(ZoneStatusChangeNotificationListener listener);
 }

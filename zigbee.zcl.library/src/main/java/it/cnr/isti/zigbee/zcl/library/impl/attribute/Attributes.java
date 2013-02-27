@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,13 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.attribute;
 
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -36,7 +36,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("OnOff")
 	.setReportable(true)
-	.setType(Boolean.class)
 	.setZigBeeType(ZigBeeType.Boolean)
 	.setWritable(false);
 
@@ -44,7 +43,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("ZCLVersion")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -52,7 +50,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("ApplicationVersion")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -60,7 +57,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("StackVersion")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -68,7 +64,6 @@ public class Attributes  {
 	.setId(0x0003)
 	.setName("HWVersion")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -76,7 +71,6 @@ public class Attributes  {
 	.setId(0x0004)
 	.setName("ManufacturerName")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(false);
 
@@ -84,15 +78,13 @@ public class Attributes  {
 	.setId(0x0005)
 	.setName("ModelIdentifier")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(false);
 
-	final static public   AttributeDescriptor DATA_CODE = new AbstractAttribute()
+	final static public   AttributeDescriptor DATE_CODE = new AbstractAttribute()
 	.setId(0x0006)
-	.setName("DataCode")
+	.setName("DateCode")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(false);
 
@@ -100,7 +92,6 @@ public class Attributes  {
 	.setId(0x0007)
 	.setName("PowerSource")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -108,15 +99,13 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("LocationDescription")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(true);
 
-	final static public   AttributeDescriptor PHISICAL_ENVIROMENT = new AbstractAttribute()
+	final static public   AttributeDescriptor PHYSICAL_ENVIRONMENT = new AbstractAttribute()
 	.setId(0x0011)
-	.setName("PhysicalEnviroment")
+	.setName("PhysicalEnvironment")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(true);
 
@@ -124,7 +113,6 @@ public class Attributes  {
 	.setId(0x0012)
 	.setName("DeviceEnabled")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Boolean)
 	.setWritable(true);
 
@@ -132,15 +120,21 @@ public class Attributes  {
 	.setId(0x0013)
 	.setName("AlarmMask")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
+
+	final static public   AttributeDescriptor DISABLE_LOCAL_CONFIG = new AbstractAttribute()
+	.setId(0x0014)
+	.setName("DisableLocalConfig")
+	.setReportable(false)
+	.setZigBeeType(ZigBeeType.Bitmap8bit)
+	.setWritable(true);
+
 
 	final static public   AttributeDescriptor IDENTIFY_TIME = new AbstractAttribute()
 	.setId(0x0000)
 	.setName("IdentifyTime")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -148,7 +142,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("SceneCount")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -156,7 +149,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("CurrentScene")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -164,7 +156,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("CurrentGroup")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -172,7 +163,6 @@ public class Attributes  {
 	.setId(0x0003)
 	.setName("SceneValid")
 	.setReportable(false)
-	.setType(Boolean.class)
 	.setZigBeeType(ZigBeeType.Boolean)
 	.setWritable(false);
 
@@ -180,7 +170,6 @@ public class Attributes  {
 	.setId(0x0005)
 	.setName("LastConfiguredBy")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.IEEEAddress)
 	.setWritable(false);
 
@@ -188,7 +177,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("NameSupport")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(false);
 
@@ -196,7 +184,6 @@ public class Attributes  {
 	.setId(0x0004)
 	.setName("NameSupport")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(false);
 
@@ -204,7 +191,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("Occupancy")
 	.setReportable(true)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(false);
 
@@ -212,7 +198,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("OccupancySensorType")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -220,15 +205,13 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("PIROccupiedToUnoccupiedDelay")
 	.setReportable(false)
-	.setType(Integer.class)
-	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
+	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
 	final static public   AttributeDescriptor PIR_UNOCCUPIED_TO_OCCUPIED_DELAY = new AbstractAttribute()
 	.setId(0x0011)
 	.setName("PIRUnoccupiedToOccupiedDelay")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -236,7 +219,6 @@ public class Attributes  {
 	.setId(0x0012)
 	.setName("PIRUnoccupiedToOccupiedThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -244,15 +226,13 @@ public class Attributes  {
 	.setId(0x0020)
 	.setName("UltraSonicOccupiedToUnoccupiedDelay")
 	.setReportable(false)
-	.setType(Integer.class)
-	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
+	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
 	final static public   AttributeDescriptor ULTRA_SONIC_UNOCCUPIED_TO_OCCUPIED_DELAY = new AbstractAttribute()
 	.setId(0x0021)
 	.setName("UltraSonicUnoccupiedToOccupiedDelay")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -260,7 +240,6 @@ public class Attributes  {
 	.setId(0x0022)
 	.setName("UltrasonicUnoccupiedToOccupiedThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -268,7 +247,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("MainsVoltage")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -276,7 +254,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("MainsFrequency")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -284,7 +261,6 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("MainsAlarmMask")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
 
@@ -292,7 +268,6 @@ public class Attributes  {
 	.setId(0x0011)
 	.setName("MainsVoltageMinThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -300,7 +275,6 @@ public class Attributes  {
 	.setId(0x0012)
 	.setName("MainsVoltageMaxThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -308,7 +282,6 @@ public class Attributes  {
 	.setId(0x0013)
 	.setName("MainsVoltageDwellTripPoint")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -316,15 +289,13 @@ public class Attributes  {
 	.setId(0x0020)
 	.setName("BatteryVoltage")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
 	final static public   AttributeDescriptor BATTERY_MANUFACTURER = new AbstractAttribute()
 	.setId(0x0030)
-	.setName("BatteryManufaturer")
+	.setName("BatteryManufacturer")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(true);
 
@@ -332,7 +303,6 @@ public class Attributes  {
 	.setId(0x0031)
 	.setName("BatterySize")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(true);
 
@@ -340,7 +310,6 @@ public class Attributes  {
 	.setId(0x0032)
 	.setName("BatteryAHrRating")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -348,7 +317,6 @@ public class Attributes  {
 	.setId(0x0033)
 	.setName("BatteryQuantity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -356,7 +324,6 @@ public class Attributes  {
 	.setId(0x0034)
 	.setName("BatteryRatedVoltage")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -364,7 +331,6 @@ public class Attributes  {
 	.setId(0x0035)
 	.setName("BatteryAlarmMask")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
 
@@ -372,7 +338,6 @@ public class Attributes  {
 	.setId(0x0036)
 	.setName("BatteryVoltageMinThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -380,7 +345,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("CurrentTemperature")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -388,7 +352,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("MinTempExperienced")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -396,7 +359,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("MaxTempExperienced")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -404,7 +366,6 @@ public class Attributes  {
 	.setId(0x0003)
 	.setName("OverTempTotalDwell")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -412,7 +373,6 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("DeviceTempAlarmMask")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
 
@@ -420,7 +380,6 @@ public class Attributes  {
 	.setId(0x0011)
 	.setName("LowTempThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(true);
 
@@ -428,7 +387,6 @@ public class Attributes  {
 	.setId(0x0012)
 	.setName("HighTempThreshold")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(true);
 
@@ -436,7 +394,6 @@ public class Attributes  {
 	.setId(0x0013)
 	.setName("LowTempDwellTripPoint")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger24bit)
 	.setWritable(true);
 
@@ -444,7 +401,6 @@ public class Attributes  {
 	.setId(0x0014)
 	.setName("HighTempDwellTripPoint")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger24bit)
 	.setWritable(true);
 
@@ -452,7 +408,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("SwitchType")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -460,7 +415,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("SwitchActions")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(true);
 
@@ -468,7 +422,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("CurrentLevel")
 	.setReportable(true)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -476,7 +429,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("RemainingTime")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -484,7 +436,6 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("OnOffTransitionTime")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -492,7 +443,6 @@ public class Attributes  {
 	.setId(0x0011)
 	.setName("OnLevel")
 	.setReportable(true)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -500,7 +450,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("Time")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger32bit)
 	.setWritable(true);
 
@@ -508,7 +457,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("TimeStatus")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Bitmap8bit)
 	.setWritable(true);
 
@@ -516,7 +464,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("MeasuredValue")
 	.setReportable(true)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -524,7 +471,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("MinMeasuredValue")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -532,7 +478,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("MaxMeasuredValue")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.SignedInteger16bit)
 	.setWritable(false);
 
@@ -540,7 +485,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("MeasuredValue")
 	.setReportable(true)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -548,7 +492,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("MinMeasuredValue")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -556,7 +499,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("MaxMeasuredValue")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -564,7 +506,6 @@ public class Attributes  {
 	.setId(0x0003)
 	.setName("Tolerance")
 	.setReportable(true)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -572,7 +513,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("AlarmCount")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -580,7 +520,6 @@ public class Attributes  {
 	.setId(0x0004)
 	.setName("LightSensorType")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -588,7 +527,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("ZoneState")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -596,7 +534,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("ZoneType")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration16bit)
 	.setWritable(false);
 
@@ -604,7 +541,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("ZoneStatus")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.Bitmap16bit)
 	.setWritable(false);
 
@@ -612,7 +548,6 @@ public class Attributes  {
 	.setId(0x00010)
 	.setName("IASCieAddress")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.IEEEAddress)
 	.setWritable(true);
 
@@ -620,7 +555,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("CurrentHue")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -628,7 +562,6 @@ public class Attributes  {
 	.setId(0x0001)
 	.setName("CurrentSaturation")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -636,7 +569,6 @@ public class Attributes  {
 	.setId(0x0002)
 	.setName("RemainingTime")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -644,7 +576,6 @@ public class Attributes  {
 	.setId(0x0003)
 	.setName("CurrentX")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -652,7 +583,6 @@ public class Attributes  {
 	.setId(0x0004)
 	.setName("CurrentY")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -660,7 +590,6 @@ public class Attributes  {
 	.setId(0x0005)
 	.setName("DriftCompensation")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -668,7 +597,6 @@ public class Attributes  {
 	.setId(0x0006)
 	.setName("CompensationText")
 	.setReportable(false)
-	.setType(String.class)
 	.setZigBeeType(ZigBeeType.CharacterString)
 	.setWritable(false);
 
@@ -676,7 +604,6 @@ public class Attributes  {
 	.setId(0x0007)
 	.setName("ColorTemperature")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -684,7 +611,6 @@ public class Attributes  {
 	.setId(0x0008)
 	.setName("ColorMode")
 	.setReportable(false)
-	.setType(Byte.class)
 	.setZigBeeType(ZigBeeType.Enumeration8bit)
 	.setWritable(false);
 
@@ -692,7 +618,6 @@ public class Attributes  {
 	.setId(0x0010)
 	.setName("NumberOfPrimaries")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -700,7 +625,6 @@ public class Attributes  {
 	.setId(0x0011)
 	.setName("Primary1X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -708,7 +632,6 @@ public class Attributes  {
 	.setId(0x0012)
 	.setName("Primary1Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -716,7 +639,6 @@ public class Attributes  {
 	.setId(0x0013)
 	.setName("Primary1Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -724,7 +646,6 @@ public class Attributes  {
 	.setId(0x0015)
 	.setName("Primary2X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -732,7 +653,6 @@ public class Attributes  {
 	.setId(0x0016)
 	.setName("Primary2Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -740,7 +660,6 @@ public class Attributes  {
 	.setId(0x0017)
 	.setName("Primary2Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -748,7 +667,6 @@ public class Attributes  {
 	.setId(0x0019)
 	.setName("Primary3X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -756,7 +674,6 @@ public class Attributes  {
 	.setId(0x001a)
 	.setName("Primary3Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -764,7 +681,6 @@ public class Attributes  {
 	.setId(0x001b)
 	.setName("Primary3Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -772,7 +688,6 @@ public class Attributes  {
 	.setId(0x0020)
 	.setName("Primary4X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -780,7 +695,6 @@ public class Attributes  {
 	.setId(0x0021)
 	.setName("Primary4Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -788,7 +702,6 @@ public class Attributes  {
 	.setId(0x0022)
 	.setName("Primary1Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -796,7 +709,6 @@ public class Attributes  {
 	.setId(0x0024)
 	.setName("Primary5X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -804,7 +716,6 @@ public class Attributes  {
 	.setId(0x0025)
 	.setName("Primary5Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -812,7 +723,6 @@ public class Attributes  {
 	.setId(0x0026)
 	.setName("Primary5Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -820,7 +730,6 @@ public class Attributes  {
 	.setId(0x0028)
 	.setName("Primary6X")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -828,7 +737,6 @@ public class Attributes  {
 	.setId(0x0029)
 	.setName("Primary6Y")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(false);
 
@@ -836,7 +744,6 @@ public class Attributes  {
 	.setId(0x002a)
 	.setName("Primary6Intensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(false);
 
@@ -844,7 +751,6 @@ public class Attributes  {
 	.setId(0x0030)
 	.setName("WhitePointX")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -852,7 +758,6 @@ public class Attributes  {
 	.setId(0x0031)
 	.setName("WhitePointY")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -860,7 +765,6 @@ public class Attributes  {
 	.setId(0x0032)
 	.setName("ColorPointRX")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -868,7 +772,6 @@ public class Attributes  {
 	.setId(0x0033)
 	.setName("ColorPointRY")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -876,7 +779,6 @@ public class Attributes  {
 	.setId(0x0034)
 	.setName("ColorPointRIntensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -884,7 +786,6 @@ public class Attributes  {
 	.setId(0x0036)
 	.setName("ColorPointGX")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -892,7 +793,6 @@ public class Attributes  {
 	.setId(0x0037)
 	.setName("ColorPointGY")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -900,7 +800,6 @@ public class Attributes  {
 	.setId(0x0038)
 	.setName("ColorPointGIntensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -908,7 +807,6 @@ public class Attributes  {
 	.setId(0x003a)
 	.setName("ColorPointBX")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -916,7 +814,6 @@ public class Attributes  {
 	.setId(0x003b)
 	.setName("ColorPointBY")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 
@@ -924,7 +821,6 @@ public class Attributes  {
 	.setId(0x003d)
 	.setName("ColorPointBIntensity")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger8bit)
 	.setWritable(true);
 
@@ -932,7 +828,6 @@ public class Attributes  {
 	.setId(0x0000)
 	.setName("MaxDuration")
 	.setReportable(false)
-	.setType(Integer.class)
 	.setZigBeeType(ZigBeeType.UnsignedInteger16bit)
 	.setWritable(true);
 }

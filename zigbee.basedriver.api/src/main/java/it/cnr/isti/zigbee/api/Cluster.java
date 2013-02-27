@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.api;
 
@@ -33,6 +33,7 @@ package it.cnr.isti.zigbee.api;
 public interface Cluster {
 
 	public short getId();
-
-	public byte[] getClusterMsg();	
+	
+	public byte[] getClusterMsg();
+	
 }

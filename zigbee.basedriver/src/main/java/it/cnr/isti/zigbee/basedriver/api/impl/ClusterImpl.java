@@ -35,7 +35,8 @@ import it.cnr.isti.zigbee.api.Cluster;
 public class ClusterImpl implements Cluster {
 
 	private final byte[] msg;
-	private final short id;	
+	private final short id;
+	
 	
 	public ClusterImpl(byte[] msg, short id) {
 		this.msg = msg;
@@ -48,5 +49,6 @@ public class ClusterImpl implements Cluster {
 
 	public short getId() {
 		return id;
-	}	
+	}
+	
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -32,9 +32,9 @@ import java.util.Hashtable;
  *
  */
 public enum ZigBeeType {
-
+	
 	//TODO Add missing data types
-
+	
 	Boolean(0x10, 1, false, Boolean.class),
 	Data8bit(0x08, 1, false, Integer.class),
 	Data16bit(0x09, 2, false, Integer.class),
@@ -59,10 +59,10 @@ public enum ZigBeeType {
 	SignedInteger16bit(0x29, 2, true, Integer.class),
 	SignedInteger24bit(0x2a, 3, true, Integer.class),
 	SignedInteger32bit(0x2b, 4, true, Integer.class);
-
-
+	
+	
 	static Hashtable<Byte, ZigBeeType> MAP;
-
+	
 	private int id;
 	private int length;
 	private boolean analog;
@@ -93,7 +93,7 @@ public enum ZigBeeType {
 	public boolean isAnalog() {
 		return analog;
 	}
-
+	
 	public Class getJavaClass() {
 		return javaClass;
 	}
@@ -101,14 +101,12 @@ public enum ZigBeeType {
 	public static ZigBeeType getType(byte b){
 		return MAP.get(Byte.valueOf(b));
 	}
-
+	
 	private static Hashtable<Byte, ZigBeeType> getMap(){
 		return MAP;
 	}
-
+	
 	private static void setMap(){
-		MAP = new Hashtable<Byte, ZigBeeType>();
+		 MAP = new Hashtable<Byte, ZigBeeType>();
 	}
-
-
 }

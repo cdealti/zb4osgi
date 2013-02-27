@@ -2,13 +2,15 @@
  * 
  */
 package it.cnr.isti.cc2480.low;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import it.cnr.isti.cc2480.virtual.Emulator;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import it.cnr.isti.cc2480.virutal.Emulator;
+
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.itaca.ztool.api.ZToolException;
 import com.itaca.ztool.api.ZToolPacket;
@@ -31,7 +33,7 @@ public class HWLowLevelDriverTest {
 	public void testSendPacket() {
 		final HWLowLevelDriver driver = new HWLowLevelDriver();
 		final ZToolPacket[] packets = new ZToolPacket[1];
-		Emulator serial;
+        Emulator serial;
 		try {
 			serial = new Emulator( Emulator.class.getResourceAsStream( "session.fsm" ) );
 		} catch (IOException e) {
@@ -65,13 +67,14 @@ public class HWLowLevelDriverTest {
 			}			
 		}
 		if( packets[0] == null ){
-			fail("Received no answer from the emulated transmission");
+			fail("Recieved no answer from the emulated transmission");
 		}else{
 			assertEquals(
-					"Received the wrong packet from the emulated transmission",
+					"Recieved the wrong packet from the emulated transmission",
 					SYS_VERSION_RESPONSE.class.getName(), 
 					packets[0].getClass().getName()
-					);
+			);
 		}
 	}
+
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
@@ -39,33 +39,33 @@ public interface Attribute {
 	 * @return the <b>16-bit</b> identifier of the attribute as specified by the cluster
 	 */
 	public int getId();
-
+	
 	/**
 	 * @return the {@link String} associated to this attribute as specified by the cluster
 	 */
 	public String getName();
-
+	
 	/**
 	 * @return the java {@link Class} used to represent the attribute value
 	 */
 	@SuppressWarnings("unchecked")
 	public Class getType();
-
+	
 	/**
 	 * @return the {@link ZigBeeType} that describes the attribute type
 	 */
 	public ZigBeeType getZigBeeType();
-
+			
 	/**
 	 * @return the true if and only if the attribute can be written
 	 */
 	public boolean isWritable();
-
+	
 	/**
 	 * @return the true if and only if the attribute support the {@link Subscription}
 	 */
 	public boolean isReportable();	
-
+	
 	/**
 	 * @return the current value of the attribute 
 	 */
@@ -77,9 +77,10 @@ public interface Attribute {
 	 * @param o the value of to set the attribute to
 	 */
 	public void setValue(Object o) throws ZigBeeClusterException;
-
+	
 	/**
 	 * @return the {@link Subscription}
 	 */
 	public Subscription getSubscription();
+
 }

@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.general.groups;
 
@@ -37,10 +37,10 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
  *
  */
 public class RemoveGroupResponseImpl extends ResponseImpl implements RemoveGroupResponse {
-
+	
 	private byte status;
-	private int groupId;	
-
+	private int groupId;
+	
 	public RemoveGroupResponseImpl(Response response) throws ZigBeeClusterException {
 		super(response);
 		ResponseImpl.checkSpecificCommandFrame(response, RemoveGroupResponse.ID);
@@ -56,4 +56,5 @@ public class RemoveGroupResponseImpl extends ResponseImpl implements RemoveGroup
 	public Status getStatus() {
 		return Status.getStatus(status);
 	}
+
 }

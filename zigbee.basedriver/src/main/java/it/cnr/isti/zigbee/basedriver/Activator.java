@@ -18,19 +18,20 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.basedriver;
 
-//import it.cnr.isti.zb4osgi.api.Eventing;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeDeviceImpl;
+import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.basedriver.communication.SimpleDriverServiceTracker;
 import it.cnr.isti.zigbee.basedriver.configuration.ConfigurationService;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.osgi.framework.BundleActivator;
@@ -52,13 +53,14 @@ public class Activator implements BundleActivator {
 
 	public static final String BASEDRIVER_CONFIG_PID = ConfigurationService.PID;
 
-	private static final String FILTER_SIMPLE_DRIVER_SERVICE = "(" + Constants.OBJECTCLASS + "=" + SimpleDriver.class.getName() + ")";
-
+	private static final String FILTER_SIMPLE_DRIVER_SERVICE = 
+		"(" + Constants.OBJECTCLASS + "=" + SimpleDriver.class.getName() + ")";
+	
 	private static BundleContext context;
 	private static ConfigurationService configuration;
-
+	
 	private static Object singelton = new Object();
-
+	
 	/**
 	 * This variable contains the list of {@link ServiceRegistration} referring to the<br>
 	 * {@link ZigBeeDeviceImpl} service registered by the Base Driver as {@link ZigBeeDevice}.<br>
@@ -66,59 +68,43 @@ public class Activator implements BundleActivator {
 	 * If you want to obtain {@link ZigBeeDeviceImpl} you can use the code<br>
 	 * <code><pre>
         ZigBeeNodeImpl node = null;
-
+        
         ArrayList<ServiceRegistration> devicesOnNode = devices.get(node.getIEEEAddress());
         ServiceRegistration registration = devicesOnNode.get( 0 );
         ZigBeeDeviceImpl dev = (ZigBeeDeviceImpl) 
-        Activator.getBundleContext().getService( registration.getReference() );
+            Activator.getBundleContext().getService( registration.getReference() );
 	 * </pre></code> 
 	 */
-	public static final HashMap<String, ArrayList<ServiceRegistration> > devices = new HashMap<String, ArrayList<ServiceRegistration>>();
+	public static final HashMap<String, ArrayList<ServiceRegistration> > devices = 
+	    new HashMap<String, ArrayList<ServiceRegistration> >();
 
-	private SimpleDriverServiceTracker tracker;
-	//public static Eventing ev;
-
+	private SimpleDriverServiceTracker tracker;	
+	
 	private void registerConfigurableService(){
-
 		synchronized (singelton) {
 			configuration = new ConfigurationService();
 		}
 		Properties properties = new Properties();
-
+		
 		properties.setProperty(Constants.SERVICE_PID, BASEDRIVER_CONFIG_PID);
-
+		
 		Activator.getBundleContext().registerService(
 				ManagedService.class.getName(), 
 				getCurrentConfiguration(),
 				properties
-				);
+		);
 	}
-
+	
+	
 	public void start(BundleContext bc) throws Exception {
-
 		synchronized (singelton) {
 			Activator.context = bc;
 		}
 		registerConfigurableService();
 		registerSimpleDriverTracker();
-		//registerEventingService();
 	}
 
-	/*private void registerEventingService(){
-
-		ev = null;
-		try{
-			ServiceReference g = Activator.getBundleContext().getServiceReference(Eventing.class.getName());
-			if(g != null)
-				ev = (Eventing) Activator.getBundleContext().getService(g);
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
-	}*/
-
 	private void registerSimpleDriverTracker() {
-
 		tracker = new SimpleDriverServiceTracker();
 		try {
 			Activator.getBundleContext().addServiceListener(tracker, FILTER_SIMPLE_DRIVER_SERVICE);
@@ -128,23 +114,21 @@ public class Activator implements BundleActivator {
 	}
 
 	private void unregisterSimpleDriverTracker() {
-
 		Activator.getBundleContext().removeServiceListener(tracker);
 		tracker = null;
 	}
-
+	
 	public static void unregisterAllDeviceService() {
-
-		synchronized ( devices ) {
-			for (ArrayList<ServiceRegistration> registrations : devices.values()) {
-				for ( ServiceRegistration registration : registrations ) {
-					registration.unregister();
-				}
-			}
-			devices.clear();
-		}
+	    synchronized ( devices ) {
+	        for (ArrayList<ServiceRegistration> registrations : devices.values()) {
+	            for ( ServiceRegistration registration : registrations ) {
+	                registration.unregister();
+	            }
+	        }
+	        devices.clear();
+        }
 	}
-
+	
 	public void stop(BundleContext bc) throws Exception {
 		unregisterAllDeviceService();
 		unregisterSimpleDriverTracker();
@@ -152,10 +136,7 @@ public class Activator implements BundleActivator {
 			Activator.context = null;
 		}
 	}
-
-	/*public static Eventing getEventingService(){
-		return ev;
-	}*/
+	
 	/**
 	 * <b>DO NOT USE!! IT IS NEEDED ONLY FOR TEST UNIT PURPOSE</b><br>
 	 * 
@@ -169,13 +150,13 @@ public class Activator implements BundleActivator {
 			context = bc;
 		}
 	}
-
+	
 	public static final ConfigurationService getCurrentConfiguration() {
 		synchronized (singelton) {
 			return configuration;
 		}
 	}
-
+	
 	public static final BundleContext getBundleContext() {
 		synchronized ( singelton ) {
 			return context;

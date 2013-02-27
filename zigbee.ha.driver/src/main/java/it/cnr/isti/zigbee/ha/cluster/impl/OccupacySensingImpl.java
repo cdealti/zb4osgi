@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.cluster.impl;
 
@@ -33,6 +33,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.OccupacySensingC
 
 /**
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @author <a href="mailto:alessandro.giari@isti.cnr.it">Alessandro Giari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
@@ -40,9 +41,8 @@ import it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing.OccupacySensingC
  *
  */
 public class OccupacySensingImpl implements OccupacySensing {
-
+			
 	private OccupacySensingCluster occupacySensingCluster;
-
 	private Attribute occupancy;
 	private Attribute occupancySensorType;
 	private Attribute pirOccupiedToUnoccupiedDelay;
@@ -53,11 +53,10 @@ public class OccupacySensingImpl implements OccupacySensing {
 	private Attribute ultrasonicUnoccupiedToOccupiedThreshold;
 
 	private OccupancyBridgeListeners eventBridge;
-
-	public OccupacySensingImpl(ZigBeeDevice zbDevice){		
-
+	
+	public OccupacySensingImpl(ZigBeeDevice zbDevice){
+		
 		occupacySensingCluster = new OccupacySensingCluster(zbDevice);
-
 		occupancy = occupacySensingCluster.getAttributeOccupancy();
 		occupancySensorType = occupacySensingCluster.getAttributeOccupancySensorType();
 		pirOccupiedToUnoccupiedDelay = occupacySensingCluster.getAttributePIROccupiedToUnoccupiedDelay();
@@ -113,7 +112,7 @@ public class OccupacySensingImpl implements OccupacySensing {
 	public void unsubscribe(OccupancyListener listener) {
 		eventBridge.unsubscribe(listener);
 	}
-
+	
 	public Attribute getAttribute(int id) {		
 		Attribute[] attributes = occupacySensingCluster.getAvailableAttributes();
 		for (int i = 0; i < attributes.length; i++) {
@@ -126,7 +125,7 @@ public class OccupacySensingImpl implements OccupacySensing {
 	public Attribute[] getAttributes() {
 		return occupacySensingCluster.getAvailableAttributes();
 	}
-
+	
 	public Attribute getPIRUnoccupiedToOccupiedThreshold() {
 		return pirUnoccupiedToOccupiedThreshold;
 	}

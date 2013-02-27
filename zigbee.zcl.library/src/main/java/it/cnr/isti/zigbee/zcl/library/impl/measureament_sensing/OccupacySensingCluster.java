@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.measureament_sensing;
 
@@ -33,13 +33,14 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
  * Implementation of the {@link OccupacySensing} interface
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  * @since 0.4.0
  *
  */
 public class OccupacySensingCluster extends ZCLClusterBase implements OccupacySensing {
-
+	
 	private final AttributeImpl occupancy;
 	private final AttributeImpl occupancySensorType;
 	private final AttributeImpl pirOccupiedToUnoccupiedDelay;
@@ -48,19 +49,17 @@ public class OccupacySensingCluster extends ZCLClusterBase implements OccupacySe
 	private final AttributeImpl ultraSonicOccupiedToUnoccupiedDelay;
 	private final AttributeImpl ultraSonicUnoccupiedToOccupiedDelay;
 	private final AttributeImpl ultrasonicUnoccupiedToOccupiedThreshold;
-
+	
 	private final Attribute[] attributes;
 
 	public OccupacySensingCluster(ZigBeeDevice zbDevice){
-
 		super(zbDevice);
-
-		occupancy = new AttributeImpl(zbDevice, this, Attributes.OCCUPANCY);
-		occupancySensorType = new AttributeImpl(zbDevice, this, Attributes.OCCUPANCY_SENSOR_TYPE);
-		pirOccupiedToUnoccupiedDelay = new AttributeImpl(zbDevice, this, Attributes.PIR_OCCUPIED_TO_UNOCCUPIED_DELAY);
-		pirUnoccupiedToOccupiedDelay = new AttributeImpl(zbDevice, this, Attributes.PIR_UNOCCUPIED_TO_OCCUPIED_DELAY);
-		ultraSonicOccupiedToUnoccupiedDelay = new AttributeImpl(zbDevice, this, Attributes.ULTRA_SONIC_OCCUPIED_TO_UNOCCUPIED_DELAY);
-		ultraSonicUnoccupiedToOccupiedDelay = new AttributeImpl(zbDevice, this, Attributes.ULTRA_SONIC_UNOCCUPIED_TO_OCCUPIED_DELAY);
+		occupancy = new AttributeImpl(zbDevice,this,Attributes.OCCUPANCY);
+		occupancySensorType = new AttributeImpl(zbDevice,this,Attributes.OCCUPANCY_SENSOR_TYPE);
+		pirOccupiedToUnoccupiedDelay = new AttributeImpl(zbDevice,this,Attributes.PIR_OCCUPIED_TO_UNOCCUPIED_DELAY);
+		pirUnoccupiedToOccupiedDelay = new AttributeImpl(zbDevice,this,Attributes.PIR_UNOCCUPIED_TO_OCCUPIED_DELAY);
+		ultraSonicOccupiedToUnoccupiedDelay = new AttributeImpl(zbDevice,this,Attributes.ULTRA_SONIC_OCCUPIED_TO_UNOCCUPIED_DELAY);
+		ultraSonicUnoccupiedToOccupiedDelay = new AttributeImpl(zbDevice,this,Attributes.ULTRA_SONIC_UNOCCUPIED_TO_OCCUPIED_DELAY);
 		pirUnoccupiedToOccupiedThreshold = new AttributeImpl(zbDevice, this, Attributes.PIR_UNOCCUPIED_TO_OCCUPIED_THRESHOLD);
 		ultrasonicUnoccupiedToOccupiedThreshold = new AttributeImpl(zbDevice, this, Attributes.ULTRASONIC_UNOCCUPIED_TO_OCCUPIED_THRESHOLD);
 
@@ -68,7 +67,7 @@ public class OccupacySensingCluster extends ZCLClusterBase implements OccupacySe
 				pirUnoccupiedToOccupiedDelay,ultraSonicOccupiedToUnoccupiedDelay,ultraSonicUnoccupiedToOccupiedDelay,
 				pirUnoccupiedToOccupiedThreshold,ultrasonicUnoccupiedToOccupiedThreshold};
 	}
-
+	
 	@Override
 	public short getId() {
 		return OccupacySensing.ID;

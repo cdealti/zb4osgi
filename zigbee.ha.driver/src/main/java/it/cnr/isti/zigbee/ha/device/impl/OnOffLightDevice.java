@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.device.impl;
 
@@ -45,12 +45,12 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class OnOffLightDevice extends HADeviceBase implements OnOffLight {
-
+	
 	private OnOff onOff;
 	private Scenes scenes;
 	private Groups groups;
 	private OccupacySensing occupancySensing;
-
+	
 	public  OnOffLightDevice(BundleContext ctx,ZigBeeDevice zbDevice) throws ZigBeeHAException {
 		super(ctx,zbDevice);
 		onOff = (OnOff) addCluster(HAProfile.ON_OFF);
@@ -58,6 +58,7 @@ public class OnOffLightDevice extends HADeviceBase implements OnOffLight {
 		scenes = (Scenes) addCluster(HAProfile.SCENES);
 		occupancySensing = (OccupacySensing) addCluster(HAProfile.OCCUPANCY_SENSING);
 	}
+
 
 	public Groups getGroups() {
 		return groups;
@@ -74,6 +75,8 @@ public class OnOffLightDevice extends HADeviceBase implements OnOffLight {
 	public Scenes getScenes() {
 		return scenes;
 	}
+
+	
 
 	@Override
 	public String getName() {
@@ -97,11 +100,13 @@ public class OnOffLightDevice extends HADeviceBase implements OnOffLight {
 		public int[] getStandardClusters() {
 			return OnOffLight.STANDARD;
 		}
-
+		
 	};
 
 	@Override
 	public DeviceDescription getDescription() {
 		return DEVICE_DESCRIPTOR;
 	}
+
+
 }

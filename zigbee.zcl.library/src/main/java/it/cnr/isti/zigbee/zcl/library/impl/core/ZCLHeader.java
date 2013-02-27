@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.impl.core;
 
@@ -27,16 +27,17 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Command;
  * 
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
+ * @author <a href="mailto:manlio.bacco@isti.cnr.it">Manlio Bacco</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class ZCLHeader {
-
+	
 	private ZCLFrameControl frameControl;
 	private byte[] manufacturerId;
 	private byte transactionId;
 	private byte commandId;
-
+	
 	private Command cmd;	
 	private byte[] header;
 	private byte[] frame;
@@ -44,15 +45,15 @@ public class ZCLHeader {
 	public ZCLHeader(Command cmd, boolean isDefaultResponseEnabled) {
 		
 		this.cmd = cmd;		
-
+		
 		frameControl = new ZCLFrameControl(cmd,isDefaultResponseEnabled);
 		manufacturerId = cmd.getManufacturerId();
 		transactionId = ZCLLayer.getTransactionId();
 		commandId = cmd.getHeaderCommandId();
-
+		
 		header = createHeader();
 	}
-
+	
 	private byte[] createHeader(){
 		byte[] newHeader;
 		if (cmd.isManufacturerExtension()){
@@ -71,13 +72,13 @@ public class ZCLHeader {
 		}
 		return newHeader;
 	}
-
+	
 	public ZCLHeader(byte[] frame) {
 		this.frame = frame;
 		frameControl = new ZCLFrameControl(frame[0]);
 		header = copyHeader(frameControl.isManufacturerExtension());			
 	}
-
+	
 	private byte[] copyHeader(boolean extendedHeader) {
 		byte[] resultHeader;
 		if(extendedHeader){
@@ -98,27 +99,28 @@ public class ZCLHeader {
 	}
 
 
+
 	public ZCLFrameControl getFramecontrol(){
 		return frameControl;
 	}
-
+	
 	public byte[] getManufacturerId() {
 		return manufacturerId;
 	}
-
+	
 	public byte getTransactionId() {
 		return transactionId;
 	}
-
+	
 	public byte	 getCommandId() {
 		return commandId;
 	}
-
-
+		
+	
 	public byte[] toByte() {
 		return header;
 	}
-
+	
 	public int size(){
 		return toByte().length;
 	}

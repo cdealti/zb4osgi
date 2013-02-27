@@ -18,7 +18,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.zcl.library.api.core;
 
@@ -35,7 +35,7 @@ import it.cnr.isti.zigbee.zcl.library.impl.core.ZigBeeType;
  *
  */
 public interface ZBSerializer {
-
+	
 	/**
 	 * 
 	 * @param data {@link Object} containing the value to append
@@ -43,7 +43,7 @@ public interface ZBSerializer {
 	 * @since 0.4.0
 	 */
 	public void appendZigBeeType(Object data, ZigBeeType type);
-
+	
 	/**
 	 * Append a {@link String} to the stream by prefixing it with the length of the String itself <br>
 	 * as specified by the <b>ZigBee Cluster Library</b> (<i>Document 075123r01ZB</i> 
@@ -53,7 +53,7 @@ public interface ZBSerializer {
 	 * @throws IllegalArgumentException if the length of the {@link String} is greater then 255
 	 */	
 	public void appendString(String str);
-
+	
 	/**
 	 * Since version <b>0.4.0</b> the method must not used, use {@link #appendZigBeeType(Object, ZigBeeType)} instead.<br>
 	 * This method has a conceptual bug in respect to appending 8, 16, or 24 bit long data, in fact<br>
@@ -68,12 +68,12 @@ public interface ZBSerializer {
 	public void appendShort(Short data);
 	public void appendInteger(Integer data);
 	public void appendLong(Long data);
-
+	
 	public void append_boolean(boolean data);
 	public void append_byte(byte data);
 	public void append_short(short data);
 	public void append_int(int data);
-
+	
 	/**
 	 * 
 	 * @param data int value to append
@@ -81,6 +81,11 @@ public interface ZBSerializer {
 	 */
 	public void append_int24bit(int data);
 	public void append_long(long data);
-
+	
+	/**
+	 * 
+	 * @return a copy of the payload
+	 * @since 0.8.0
+	 */
 	public byte[] getPayload();
 }

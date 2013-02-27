@@ -48,9 +48,7 @@ public class TemperatureMeasurementCluster extends ZCLClusterBase implements Tem
 	private final Attribute[] attributes;
 
 	public TemperatureMeasurementCluster(ZigBeeDevice zbDevice){
-		
 		super(zbDevice);
-		
 		measuredValue = new AttributeImpl(zbDevice,this,Attributes.MEASURED_VALUE_SIGNED_16_BIT);
 		minMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MIN_MEASURED_VALUE_SIGNED_16_BIT);
 		maxMeasuredValue = new AttributeImpl(zbDevice,this,Attributes.MAX_MEASURED_VALUE_SIGNED_16_BIT);
@@ -89,4 +87,5 @@ public class TemperatureMeasurementCluster extends ZCLClusterBase implements Tem
 	public Attribute getAttributeTolerance() {
 		return tolerance;
 	}
+
 }

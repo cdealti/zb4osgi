@@ -18,11 +18,10 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.zigbee.ha.device.api.hvac;
 
-import it.cnr.isti.zigbee.ha.cluster.glue.general.Groups;
 import it.cnr.isti.zigbee.ha.cluster.glue.measureament_sensing.TemperatureMeasurement;
 import it.cnr.isti.zigbee.ha.driver.ArraysUtil;
 import it.cnr.isti.zigbee.ha.driver.core.HADevice;
@@ -43,18 +42,17 @@ public interface TemperatureSensor extends HADevice {
 
 	public static final int DEVICE_ID = 0x0302;
 	public static final String NAME = "Temperature Sensor";
-
+	
 	public static final int[] MANDATORY = ArraysUtil.append(HADevice.MANDATORY, new int[]{
-			HAProfile.TEMPERATURE_MEASUREMENT
+		HAProfile.TEMPERATURE_MEASUREMENT
 	});
-
+	
 	public static final int[] OPTIONAL = ArraysUtil.append(HADevice.OPTIONAL, new int[]{
-			HAProfile.GROUPS
 	});
-
+	
 	public static final int[] STANDARD = ArraysUtil.append(MANDATORY, OPTIONAL);
 	public static final int[] CUSTOM = {};
-
+	
 	/**
 	 * Access method for the <b>Mandatory</b> cluster: {@link TemperatureMeasurement} 
 	 *  
@@ -62,5 +60,4 @@ public interface TemperatureSensor extends HADevice {
 	 */
 	public TemperatureMeasurement getTemperatureMeasurement();
 
-	public Groups getGroups();
 }

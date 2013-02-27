@@ -37,4 +37,5 @@ import it.cnr.isti.zigbee.ha.cluster.glue.Cluster;
 public interface ClusterFactory {
 	
 	public Cluster getInstance(String key, ZigBeeDevice zbDevice) throws ZigBeeHAException;	
+
 }

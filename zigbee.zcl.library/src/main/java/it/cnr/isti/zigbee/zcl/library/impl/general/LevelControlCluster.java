@@ -1,10 +1,10 @@
 /*
    Copyright 2008-2010 CNR-ISTI, http://isti.cnr.it
-   Institute of Information Science and Technologies 
-   of the Italian National Research Council 
+   Institute of Information Science and Technologies
+   of the Italian National Research Council
 
 
-   See the NOTICE file distributed with this work for additional 
+   See the NOTICE file distributed with this work for additional
    information regarding copyright ownership
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,6 @@ import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.api.core.ZigBeeClusterException;
 import it.cnr.isti.zigbee.zcl.library.api.general.LevelControl;
 import it.cnr.isti.zigbee.zcl.library.impl.attribute.Attributes;
-import it.cnr.isti.zigbee.zcl.library.impl.core.AbstractCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.AttributeImpl;
 import it.cnr.isti.zigbee.zcl.library.impl.core.EmptyPayloadCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ZCLClusterBase;
@@ -37,23 +36,23 @@ import it.cnr.isti.zigbee.zcl.library.impl.general.level_control.MoveToLevelComm
 import it.cnr.isti.zigbee.zcl.library.impl.general.level_control.StepCommand;
 import it.cnr.isti.zigbee.zcl.library.impl.global.DefaultResponseImpl;
 /**
- * 
+ *
  * @author <a href="mailto:stefano.lenzi@isti.cnr.it">Stefano "Kismet" Lenzi</a>
  * @author <a href="mailto:francesco.furfari@isti.cnr.it">Francesco Furfari</a>
  * @version $LastChangedRevision$ ($LastChangedDate$)
  *
  */
 public class LevelControlCluster extends ZCLClusterBase implements LevelControl {
-	
-	
-	
+
+
+
 	private final AttributeImpl currentLevel;
 	private final AttributeImpl remainingTime;
 	private final AttributeImpl onOffTransactionTime;
 	private final AttributeImpl onLevel;
-	
+
 	private final Attribute[] attributes;
-	
+
 	private static EmptyPayloadCommand CMD_STOP = new EmptyPayloadCommand()
 		.setId(LevelControl.STOP_ID)
 		.setClientServerDirection(true)
@@ -65,8 +64,8 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		.setClientServerDirection(true)
 		.setClusterSpecific(true)
 		.setManufacturerExtension(false);
-	
-	
+
+
 	public LevelControlCluster(ZigBeeDevice zbDevice){
 		super(zbDevice);
 		currentLevel = new AttributeImpl(zbDevice,this,Attributes.CURRENT_LEVEL);
@@ -75,7 +74,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		onLevel = new AttributeImpl(zbDevice,this,Attributes.ON_LEVEL);
 		attributes = new AttributeImpl[]{currentLevel, remainingTime, onOffTransactionTime, onLevel};
 	}
-	
+
 	@Override
 	public short getId() {
 		return LevelControl.ID;
@@ -106,7 +105,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 	public Attribute getAttributeRemainingTime() {
 		return remainingTime;
 	}
-	
+
 	public Response move(byte mode, short rate) throws ZigBeeClusterException{
 		enableDefaultResponse();
 		MoveCommand moveCmd = new MoveCommand(mode,rate);
@@ -120,7 +119,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		Response response = invoke(moveCmd);
 		return new DefaultResponseImpl(response);
 	}
-	
+
 	public Response moveToLevel(short level, int time) throws ZigBeeClusterException{
 		enableDefaultResponse();
 		MoveToLevelCommand moveToLevCmd = new MoveToLevelCommand(level,time);
@@ -141,7 +140,7 @@ public class LevelControlCluster extends ZCLClusterBase implements LevelControl 
 		Response response = invoke(stepCmd);
 		return new DefaultResponseImpl(response);
 	}
-	
+
 	public Response stepWithOnOff(byte mode, short step, int time) throws ZigBeeClusterException {
 		enableDefaultResponse();
 		StepCommand stepCmd = new StepCommand(mode,step,time,true);

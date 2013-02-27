@@ -75,8 +75,8 @@ public class Activator implements BundleActivator {
 
 	private static HADriverConfiguration configuration = null;
 
-	private void doRegisterConfigurationService(BundleContext ctx){
 
+	private void doRegisterConfigurationService(BundleContext ctx){
 		Properties properties = new Properties();
 
 		properties.setProperty(Constants.SERVICE_PID, HA_CONFIG_PID);
@@ -94,7 +94,7 @@ public class Activator implements BundleActivator {
 		doRegisterConfigurationService(ctx);
 
 		new HAClustersFactory(ctx).register();
-
+        //TODO Replace all specific Factory with GenericHADeviceFactory
 		//factories.add(new GenericHADeviceFactory(ctx, HADevice.class, GenericHADevice.class).register());
 
 		factories.add(new ColorDimmableLightFactory(ctx).register());
@@ -133,15 +133,15 @@ public class Activator implements BundleActivator {
 	}
 
 	public void stop(BundleContext context) throws Exception {
-
 		haImporter.close();
 
 		for (HADeviceFactoryBase factory : factories) {
 			factory.unregister();
 		}
+
 	}
 
 	public static HADriverConfiguration getConfiguration(){
 		return configuration;
-	}
+    }
 }

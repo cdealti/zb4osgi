@@ -58,4 +58,5 @@ public class AttributeReportImpl implements AttributeReport {
 	public int getAttributeId() {
 		return attributeId;
 	}
+	
 }

@@ -56,7 +56,8 @@ public class OSGiProperties {
 	public static final int getInt(BundleContext bundle, String property, int defaultValue){
 		String value = bundle == null ? null : bundle.getProperty(property);
 		return value == null ? defaultValue : Integer.parseInt(value);
-	}	
+	}
+	
 	
 	public OSGiProperties(BundleContext bundleContext) {
 		bundle = bundleContext;

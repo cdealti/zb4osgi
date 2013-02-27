@@ -18,10 +18,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 
 package it.cnr.isti.primitvetypes.util;
 
+import java.util.Arrays;
 
 
 /**
@@ -44,17 +45,17 @@ public class Integers {
 	 */
 	public static final byte getByte(final long x, final int n){
 		switch(n){
-		case 0: return (byte)  (x & 0x00000000000000FFL);
-		case 1: return (byte) ((x & 0x000000000000FF00L) >> 8);
-		case 2: return (byte) ((x & 0x0000000000FF0000L) >> 16);
-		case 3: return (byte) ((x & 0x00000000FF000000L) >> 24);
-		case 4: return (byte) ((x & 0x000000FF00000000L) >> 32);
-		case 5: return (byte) ((x & 0x0000FF0000000000L) >> 40);
-		case 6: return (byte) ((x & 0x00FF000000000000L) >> 48);
-		case 7: return (byte) ((x & 0xFF00000000000000L) >> 56);
-		default:
-			throw new IllegalArgumentException("long is reppresented as 8 bytes," +
-					" hence value of n must be between 0 and 3: you have tried to use "+n);
+			case 0: return (byte)  (x & 0x00000000000000FFL);
+			case 1: return (byte) ((x & 0x000000000000FF00L) >> 8);
+			case 2: return (byte) ((x & 0x0000000000FF0000L) >> 16);
+			case 3: return (byte) ((x & 0x00000000FF000000L) >> 24);
+			case 4: return (byte) ((x & 0x000000FF00000000L) >> 32);
+			case 5: return (byte) ((x & 0x0000FF0000000000L) >> 40);
+			case 6: return (byte) ((x & 0x00FF000000000000L) >> 48);
+			case 7: return (byte) ((x & 0xFF00000000000000L) >> 56);
+			default:
+				throw new IllegalArgumentException("long is reppresented as 8 bytes," +
+						" hence value of n must be between 0 and 3: you have tryed to use "+n);
 		}		
 	}
 
@@ -66,17 +67,17 @@ public class Integers {
 	 */
 	public static final int getByteAsInteger(final long x, final int n){
 		switch(n){
-		case 0: return (int) (x & 0x00000000000000FFL);
-		case 1: return (int) ((x & 0x000000000000FF00L) >> 8);
-		case 2: return (int) ((x & 0x0000000000FF0000L) >> 16);
-		case 3: return (int) ((x & 0x00000000FF000000L) >> 24);
-		case 4: return (int) ((x & 0x000000FF00000000L) >> 32);
-		case 5: return (int) ((x & 0x0000FF0000000000L) >> 40);
-		case 6: return (int) ((x & 0x00FF000000000000L) >> 48);
-		case 7: return (int) (((x & 0xFF00000000000000L) >> 56) & 0xFF);
-		default:
-			throw new IllegalArgumentException("long is reppresented as 8 bytes," +
-					" hence value of n must be between 0 and 3: you have tried to use "+n);
+			case 0: return (int) (x & 0x00000000000000FFL);
+			case 1: return (int) ((x & 0x000000000000FF00L) >> 8);
+			case 2: return (int) ((x & 0x0000000000FF0000L) >> 16);
+			case 3: return (int) ((x & 0x00000000FF000000L) >> 24);
+			case 4: return (int) ((x & 0x000000FF00000000L) >> 32);
+			case 5: return (int) ((x & 0x0000FF0000000000L) >> 40);
+			case 6: return (int) ((x & 0x00FF000000000000L) >> 48);
+			case 7: return (int) (((x & 0xFF00000000000000L) >> 56) & 0xFF);
+			default:
+				throw new IllegalArgumentException("long is reppresented as 8 bytes," +
+						" hence value of n must be between 0 and 3: you have tryed to use "+n);
 		}		
 	}
 
@@ -89,16 +90,16 @@ public class Integers {
 	 */
 	public static final int getByteAsInteger(final int x, final int n){
 		switch(n){
-		case 0: return (int)  (x & 0x000000FF);
-		case 1: return (int) ((x & 0x0000FF00) >> 8);
-		case 2: return (int) ((x & 0x00FF0000) >> 16);
-		case 3: return (int) ((x & 0xFF000000) >> 24);
-		default:
-			throw new IllegalArgumentException("long is reppresented as 8 bytes," +
-					" hence value of n must be between 0 and 3: you have tried to use "+n);
+			case 0: return (int)  (x & 0x000000FF);
+			case 1: return (int) ((x & 0x0000FF00) >> 8);
+			case 2: return (int) ((x & 0x00FF0000) >> 16);
+			case 3: return (int) ((x & 0xFF000000) >> 24);
+			default:
+				throw new IllegalArgumentException("long is reppresented as 8 bytes," +
+						" hence value of n must be between 0 and 3: you have tryed to use "+n);
 		}		
 	}	
-
+	
 	/**
 	 * 
 	 * @param x the int containing the data
@@ -107,13 +108,13 @@ public class Integers {
 	 */
 	public static final byte getByte(final int x, final int n){
 		switch(n){
-		case 0: return (byte)  (x & 0x000000FF);
-		case 1: return (byte) ((x & 0x0000FF00) >> 8);
-		case 2: return (byte) ((x & 0x00FF0000) >> 16);
-		case 3: return (byte) ((x & 0xFF000000) >> 24);
-		default:
-			throw new IllegalArgumentException("int is reppresented as 4 bytes," +
-					" hence value of n must be between 0 and 3: you have tried to use "+n);
+			case 0: return (byte)  (x & 0x000000FF);
+			case 1: return (byte) ((x & 0x0000FF00) >> 8);
+			case 2: return (byte) ((x & 0x00FF0000) >> 16);
+			case 3: return (byte) ((x & 0xFF000000) >> 24);
+			default:
+				throw new IllegalArgumentException("int is reppresented as 4 bytes," +
+						" hence value of n must be between 0 and 3: you have tryed to use "+n);
 		}		
 	}
 
@@ -125,11 +126,11 @@ public class Integers {
 	 */
 	public static final byte getByte(final short x, final int n){
 		switch(n){
-		case 0: return (byte)  (x & 0x00FF);
-		case 1: return (byte) ((x & 0xFF00) >> 8);
-		default:
-			throw new IllegalArgumentException("short is reppresented as 2 bytes," +
-					" hence value of n must be between 0 and 1: you have tried to use "+n);
+			case 0: return (byte)  (x & 0x00FF);
+			case 1: return (byte) ((x & 0xFF00) >> 8);
+			default:
+				throw new IllegalArgumentException("short is reppresented as 2 bytes," +
+						" hence value of n must be between 0 and 1: you have tryed to use "+n);
 		}		
 	}
 
@@ -141,11 +142,11 @@ public class Integers {
 	 */
 	public static final int getByteAsInteger(final short x, final int n){
 		switch(n){
-		case 0: return (x & 0x00FF);
-		case 1: return ((x & 0xFF00) >> 8);
-		default:
-			throw new IllegalArgumentException("short is reppresented as 2 bytes," +
-					" hence value of n must be between 0 and 1: you have tried to use "+n);
+			case 0: return (x & 0x00FF);
+			case 1: return ((x & 0xFF00) >> 8);
+			default:
+				throw new IllegalArgumentException("short is reppresented as 2 bytes," +
+						" hence value of n must be between 0 and 1: you have tryed to use "+n);
 		}		
 	}
 
@@ -160,7 +161,7 @@ public class Integers {
 		int value = (values[msb] << 8) + values[lsb];
 		return (short) value;
 	}
-
+	
 	/**
 	 * 
 	 * @param values the byte[] array containing the data
@@ -181,7 +182,7 @@ public class Integers {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 
 	 * @param values the int[] array containing the data
@@ -203,15 +204,15 @@ public class Integers {
 		return result;
 	}
 
-
+	
 	///////////////////////////////////////////////////////////
 	// serialization routines to be use for payload management
 	///////////////////////////////////////////////////////////
-
+	
 	final public static class InvalidObject {};
 	final public static InvalidObject INVALID_OBJECT = new InvalidObject();
-
-
+	
+	
 	final public static int writeObject(byte[] dest, int pos, Object data){
 		if (data.getClass().equals(Boolean.class)){
 			return writeBooleanObject(dest, pos, (Boolean) data);
@@ -227,7 +228,7 @@ public class Integers {
 			throw new IllegalArgumentException("Type "+ data.getClass().getName() + " not supported!" );
 		}
 	}
-
+	
 	final public static int readObject(byte[] dest, int pos, Class clazz, Object[] result){
 		if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)){
 			result[0] = readBooleanObject(dest, pos);
@@ -248,7 +249,7 @@ public class Integers {
 			throw new IllegalArgumentException("Type "+ clazz.getName() + " not supported!" );
 		}
 	}
-
+	
 	final public static int writeBooleanObject(byte[] dest, int pos, Boolean data){
 		return writeBoolean(dest, pos, data.booleanValue());
 	}	
@@ -256,7 +257,7 @@ public class Integers {
 		dest[pos]=   (byte) (data ? 0x01 : 0x00);
 		return 1;
 	}	
-
+	
 	final public static int writeByteObject(byte[] dest, int pos, Byte data){
 		return writeByte(dest, pos, data.byteValue());
 	}
@@ -264,7 +265,7 @@ public class Integers {
 		dest[pos]=   data;
 		return 1;
 	}	
-
+	
 	final public static int writeShortObject(byte[] dest, int pos, Short data){
 		return writeShort(dest, pos, data.shortValue());
 	}
@@ -273,7 +274,7 @@ public class Integers {
 		dest[pos]= (byte)((data << 8) >> 8);
 		return 2;
 	}
-
+	
 	final public static int writeIntObject(byte[] dest, int pos, Integer data){
 		return writeInt(dest, pos, data.intValue());
 	}
@@ -284,7 +285,7 @@ public class Integers {
 		dest[pos+3]= (byte)((data << 24) >> 24);
 		return 4;
 	}
-
+	
 	final public static int writeLongObject(byte[] dest, int pos, Long data){
 		return writeLong(dest, pos, data.longValue());
 	}
@@ -299,7 +300,7 @@ public class Integers {
 		dest[pos+7]= (byte)((data << 56) >> 56);
 		return 8;
 	}
-
+	
 	public static Object readBooleanObject(byte[] src, int pos){
 		switch (src[pos]){
 		case 0:
@@ -310,42 +311,42 @@ public class Integers {
 			return INVALID_OBJECT;
 		}
 	}
-
+	
 	public static boolean readBoolean(byte[] src, int pos){
 		return (src[pos]== 0x01);
 	}
-
+	
 	public static Byte readByteObject(byte[] src, int pos){
 		return Byte.valueOf(readByte(src, pos));
 	}
 	public static byte readByte(byte[] src, int pos){
 		return   src[pos];
 	}
-
+	
 	public static Short readShortObject(byte[] src, int pos){
 		return Short.valueOf(readShort(src, pos));
 	}
 	public static short readShort(byte[] src, int pos){
 		return   (short) (((src[pos+1]& 0x000000FF) <<8 )
-				+ (src[pos]& 0x000000FF)     );
+				   		 + (src[pos  ]& 0x000000FF)     );
 	}
-
+	
 	public static Integer readIntObject(byte[] src, int pos){
 		return Integer.valueOf(readInt(src, pos));
 	}
-
+	
 	public static int readInt(byte[] src, int pos){
 		return   ( (src[pos  ]& 0x000000FF) <<24 )
 				+( (src[pos+1]& 0x000000FF) <<16 )
 				+( (src[pos+2]& 0x000000FF) << 8 )
 				+( (src[pos+3]& 0x000000FF)      );
-
+	
 	}
-
+	
 	public static Long readLongObject(byte[] src, int pos){
 		return Long.valueOf(readLong(src, pos));
 	}
-
+	
 	public static long readLong(byte[] src, int pos){
 		return   ( (long) (src[pos  ]& 0x00000000000000FF) <<56 )
 				+( (long) (src[pos+1]& 0x00000000000000FF) <<48 )
@@ -355,7 +356,7 @@ public class Integers {
 				+( (long) (src[pos+5]& 0x00000000000000FF) <<16 )
 				+( (long) (src[pos+6]& 0x00000000000000FF) << 8 )
 				+( (long) (src[pos+7]& 0x00000000000000FF)      );
-
+	
 	}
 
 	/**
@@ -368,9 +369,9 @@ public class Integers {
 	 */
 	public static int readInt24bit(byte[] src, int pos) {		
 		return  ( 
-				( (src[pos  ] & 0xFF) << 24 )
-				+( (src[pos+1] & 0xFF) << 16 )
-				+( (src[pos+2] & 0xFF) <<  8 ) 
+					 ( (src[pos  ] & 0xFF) << 24 )
+					+( (src[pos+1] & 0xFF) << 16 )
+					+( (src[pos+2] & 0xFF) <<  8 ) 
 				) >> 8;
 	}
 

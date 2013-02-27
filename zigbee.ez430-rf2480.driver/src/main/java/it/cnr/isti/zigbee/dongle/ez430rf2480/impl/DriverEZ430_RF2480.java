@@ -100,6 +100,9 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private final static Logger logger = LoggerFactory.getLogger(DriverEZ430_RF2480.class);
 	private final static Logger logger4Waiter = LoggerFactory.getLogger(WaitForCommand.class);
 
+	public static final int TIMEOUT_DEFAULT = 1000;
+	public static final String TIMEOUT_KEY = "zigbee.driver.ez430_rf2480.timout";
+	
 	public static final int RESEND_TIMEOUT_DEFAULT = 1000;
 	public static final String RESEND_TIMEOUT_KEY = "zigbee.driver.ez430_rf2480.resend.timout";
 
@@ -121,7 +124,7 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 	private byte channel;
 	private boolean cleanStatus;
 
-	private long TIMEOUT = 5000;//Activator.getCurrentConfiguration().getZigBeeTimeout();
+	private final int TIMEOUT;;
 	private final int RESEND_TIMEOUT; 
 	private final int RESEND_MAX_RETRY;
 	private final boolean RESEND_ONLY_EXCEPTION;
@@ -205,7 +208,16 @@ public class DriverEZ430_RF2480 implements Runnable, SimpleDriver{
 			String serialPort, int bitRate, NetworkMode mode, int pan, int channel, boolean cleanNetworkStatus
 			) throws ZToolException {
 
-		int aux = RESEND_TIMEOUT_DEFAULT;
+		int aux = TIMEOUT_DEFAULT;
+		try{
+			aux = Integer.parseInt(System.getProperty(TIMEOUT_KEY)); 
+			logger.debug("Using {} set from enviroment {}", TIMEOUT_KEY, aux);
+		}catch(NumberFormatException ex){
+			logger.debug("Using {} set as DEFAULT {}", TIMEOUT_KEY, aux);
+		}		
+		TIMEOUT = aux;
+
+		
 		try{
 			aux = Integer.parseInt(System.getProperty(RESEND_TIMEOUT_KEY)); 
 			logger.debug("Using {} set from enviroment {}", RESEND_TIMEOUT_KEY, aux);

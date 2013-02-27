@@ -30,7 +30,7 @@
   <groupId>org.aaloa.zb4osgi</groupId>
   <artifactId>org.aaloa.zb4osgi.zigbee.dongle.api</artifactId>
   <version>0.7.0-PREMERGE-SNAPSHOT</version>
-  <packaging>bundle</packaging>  
+  <packaging>bundle</packaging>
 
   <name>ZigBee Interface Controller API</name>
   <url>http://zb4osgi.aaloa.org/</url>
@@ -42,8 +42,8 @@
   <organization>
     <name>Institute of Information Science and Technologies of the Italian National Research Council</name>
     <url>http://isti.cnr.it/</url>
-  </organization> 
-  
+  </organization>
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -51,7 +51,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <developers>
     <developer>
       <id>stefano.lenzi</id>
@@ -70,7 +70,7 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-  
+
   <scm>
     <connection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.dongle.api</connection>
     <developerConnection>scm:svn:svn://svn.aaloa.org/projects/zb4osgi/trunk/zigbee.dongle.api</developerConnection>
@@ -84,7 +84,7 @@
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
   </repositories>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.aaloa.zb4osgi</groupId>
@@ -101,7 +101,7 @@
     <dependency>
       <groupId>org.ops4j.pax.logging</groupId>
       <artifactId>pax-logging-service</artifactId>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.osgi.core</artifactId>
@@ -114,8 +114,8 @@
 
 
   <build>
-    <plugins>  
-      <plugin>    
+    <plugins>
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>

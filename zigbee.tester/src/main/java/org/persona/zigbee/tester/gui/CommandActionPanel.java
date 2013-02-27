@@ -22,6 +22,8 @@
 */
 package org.persona.zigbee.tester.gui;
 
+import it.cnr.isti.zigbee.api.ZigBeeBasedriverTimeOutException;
+import it.cnr.isti.zigbee.ha.driver.core.ZigBeeHAException;
 import it.cnr.isti.zigbee.zcl.library.api.core.Response;
 import it.cnr.isti.zigbee.zcl.library.impl.core.ResponseImpl;
 
@@ -32,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Hashtable;
 
@@ -52,6 +55,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 import org.persona.zigbee.tester.gui.Command.CommandParsingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.itaca.ztool.util.ByteUtils;
 
@@ -62,6 +67,8 @@ import com.itaca.ztool.util.ByteUtils;
  * @since 0.3.0
  */
 public class CommandActionPanel extends JPanel {
+	
+	final static Logger logger = LoggerFactory.getLogger(CommandActionPanel.class);
 	
 	Command action;
 	ArgumentsModel argsModel;
@@ -115,10 +122,19 @@ public class CommandActionPanel extends JPanel {
 				} catch (InvocationTargetException ex){
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);
-					ex.getTargetException().printStackTrace(ps);
+					if( ex.getTargetException() instanceof ZigBeeHAException) {
+						ZigBeeHAException haex = (ZigBeeHAException) ex.getTargetException();
+						if ( haex.getCause() instanceof ZigBeeBasedriverTimeOutException ) {
+							ps.println("Command cluster sent correctly but no answer from the device");
+							ps.println("More dettails on the issue:");
+							ex.getTargetException().printStackTrace(ps);
+						}							
+					} else {
+						ex.getTargetException().printStackTrace(ps);
+					}
 					ps.flush();
 					ps.close();
-                    printReport(params,bof.toString());
+                    printReport(params,bof.toString());                   
 				} catch (Exception ex){
 					ByteArrayOutputStream bof = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(bof);
@@ -143,10 +159,24 @@ public class CommandActionPanel extends JPanel {
 						final Class clzToString = clz.getMethod("toString").getDeclaringClass();
 						if ( clzToString == Object.class || clzToString == ResponseImpl.class) {
 							//TODO A default response to String in a ResponseBase class or Response.stringValueOf(Response) should be provided
-							str = "The response object do not provide any String representation of itself";
+							str = "The response object do not provide any String representation of itself\n";
+							str += "Trying to guess the actual content\n";				
 						}
+						str += "{\n";
+						final Method[] methods = clz.getMethods();
+						for (int i = 0; i < methods.length; i++) {
+							final String name = methods[i].getName();
+							if( methods[i].getParameterTypes().length == 0 && name.startsWith("get") ){
+								try {
+									str+="\t"+name.substring(3)+":"+methods[i].invoke(r, new Object[]{})+"\n";
+								}catch(Exception ignored){
+									logger.debug("Failed to inspect response packet", ignored);
+								};
+							}
+						}
+						str += "}\n";
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						logger.debug("Failed to convert response to string", ex);
 					}
 					result.setText(
 							"Invokation successed, the raw response payload is \n" +

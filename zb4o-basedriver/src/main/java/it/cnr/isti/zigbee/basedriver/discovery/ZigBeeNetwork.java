@@ -22,16 +22,17 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import gnu.trove.TIntObjectHashMap;
-import gnu.trove.TShortObjectHashMap;
-import gnu.trove.TShortObjectIterator;
+
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.api.ZigBeeNode;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +53,9 @@ public class ZigBeeNetwork {
             .getLogger(ZigBeeNetwork.class);
 
     private final Hashtable<String, ZigBeeNodeImpl> nodes = new Hashtable<String, ZigBeeNodeImpl>();
-    private final Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice>> devices = new Hashtable<ZigBeeNode, TShortObjectHashMap<ZigBeeDevice>>();
+    private final Hashtable<ZigBeeNode, Map<Short, ZigBeeDevice>> devices = new Hashtable<ZigBeeNode, Map<Short,ZigBeeDevice>>();
 
-    private final TIntObjectHashMap<ArrayList<ZigBeeDevice>> profiles = new TIntObjectHashMap<ArrayList<ZigBeeDevice>>();
+    private final Map<Integer, ArrayList<ZigBeeDevice>> profiles = new HashMap<Integer, ArrayList<ZigBeeDevice>>();
 
     /**
      *
@@ -78,16 +79,14 @@ public class ZigBeeNetwork {
         if (!nodes.containsKey(ieee)) {
             return false;
         }
-        TShortObjectHashMap<ZigBeeDevice> toRemove = devices.get(node);
+        Map<Short, ZigBeeDevice> toRemove = devices.get(node);
         if (toRemove != null) {
-            TShortObjectIterator<ZigBeeDevice> i = toRemove.iterator();
+            Iterator<Short> i = toRemove.keySet().iterator();
             while (i.hasNext()) {
-                i.advance();
-                if (i.value() != null) {
-                    ZigBeeDevice device = i.value();
-                    i.remove();
-                    removeDeviceFromProfiles(device);
-                }
+            	Short key = i.next();
+            	ZigBeeDevice device = toRemove.get(key);
+            	i.remove();
+            	removeDeviceFromProfiles(device);
             }
         }
         nodes.remove(ieee);
@@ -104,7 +103,7 @@ public class ZigBeeNetwork {
 
         logger.debug("Adding node {} to the network", node);
         nodes.put(ieee, node);
-        devices.put(node, new TShortObjectHashMap<ZigBeeDevice>());
+        devices.put(node, new HashMap<Short, ZigBeeDevice>());
         return true;
     }
 
@@ -120,7 +119,7 @@ public class ZigBeeNetwork {
             return false;
         }
 
-        final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+        final Map<Short, ZigBeeDevice> endPoints = devices.get(node);
         endPoints.remove(device.getId());
         removeDeviceFromProfiles(device);
 
@@ -180,7 +179,7 @@ public class ZigBeeNetwork {
 
         }*/
 
-        TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+        Map<Short, ZigBeeDevice> endPoints = devices.get(node);
         if (endPoints.containsKey(endPoint)) {
             logger.debug("Device {} on node {} already registered", endPoint,
                     node);
@@ -243,7 +242,7 @@ public class ZigBeeNetwork {
          * If node is not null it means that we found the same network node
          * because IEEE address must be unique for each network node
          */
-        final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+        final Map<Short, ZigBeeDevice> endPoints = devices.get(node);
         if (endPoints == null) {
             return false;
         }
@@ -294,7 +293,7 @@ public class ZigBeeNetwork {
             return false;
         }
 
-        final TShortObjectHashMap<ZigBeeDevice> endPoints = devices.get(node);
+        final Map<Short, ZigBeeDevice> endPoints = devices.get(node);
         removeDeviceFromProfiles(endPoints.get(ep) );
         endPoints.remove(ep);
 

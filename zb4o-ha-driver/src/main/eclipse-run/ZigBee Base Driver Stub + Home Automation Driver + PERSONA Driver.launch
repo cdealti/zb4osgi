@@ -27,7 +27,6 @@
 <mapAttribute key="org.ops4j.pax.cursor.provisionItems">
 <mapEntry key="mvn:org.ops4j.pax.confman/pax-confman-propsloader/0.2.2" value="true@true@null@false"/>
 <mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.zcl" value="true@true@null@true"/>
-<mapEntry key="mvn:org.aal-persona.bundles/org.aal-persona.bundles.net.sourceforge.trove/2.0.4-0001" value="true@true@null@false"/>
 <mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.persona" value="true@true@null@true"/>
 <mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.ha" value="true@true@null@true"/>
 <mapEntry key="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver.stub" value="true@true@null@true"/>
@@ -46,7 +45,6 @@
 <listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.ha@update"/>
 <listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.zcl@update"/>
 <listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.persona@update"/>
-<listEntry value="mvn:org.aal-persona.bundles/org.aal-persona.bundles.net.sourceforge.trove/2.0.4-0001"/>
 <listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.basedriver.api@update"/>
 <listEntry value="mvn:org.aal-persona.sail/org.aal-persona.zigbee.driver.pcl@update"/>
 <listEntry value="mvn:org.aal-persona.sail/it.cnr.isti.primitivetypes-util@update"/>

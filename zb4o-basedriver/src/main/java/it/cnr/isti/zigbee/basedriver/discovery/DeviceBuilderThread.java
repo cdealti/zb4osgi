@@ -22,7 +22,7 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import gnu.trove.TByteObjectHashMap;
+
 import it.cnr.isti.thread.Stoppable;
 import it.cnr.isti.thread.ThreadUtils;
 import it.cnr.isti.zigbee.api.ZigBeeBasedriverException;
@@ -39,6 +39,7 @@ import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 import it.cnr.isti.zigbee.util.IEEEAddress;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -206,7 +207,7 @@ public class DeviceBuilderThread implements Stoppable {
 			ZigBeeDeviceImpl device = new ZigBeeDeviceImpl(driver, node, ep);
 			if (network.removeDevice(node, ep) && network.addDevice(device)) {
 				synchronized (Activator.devices) {
-					TByteObjectHashMap<ServiceRegistration> nodeServices = Activator.devices.get(node.getIEEEAddress());
+					Map<Byte, ServiceRegistration> nodeServices = Activator.devices.get(node.getIEEEAddress());
 					ServiceRegistration endpointService = nodeServices.get(ep);
 					// FIX the line below should be throw a ClassCastException but it is not tested by any TestUnit
 					((ZigBeeNodeImpl) endpointService).setNetworkAddress(node.getNetworkAddress());
@@ -224,7 +225,7 @@ public class DeviceBuilderThread implements Stoppable {
 
         if (network.removeDevice(node, ep)) {
             synchronized (Activator.devices) {
-                TByteObjectHashMap<ServiceRegistration> nodeServices = Activator.devices
+                Map<Byte, ServiceRegistration> nodeServices = Activator.devices
                         .get(node.getIEEEAddress());
                 ServiceRegistration endpointService = nodeServices.get(ep);
                 endpointService.unregister();
@@ -241,12 +242,12 @@ public class DeviceBuilderThread implements Stoppable {
                 ServiceRegistration registration = Activator.getBundleContext()
                         .registerService(ZigBeeDevice.class.getName(), device,
                                 device.getDescription());
-                TByteObjectHashMap<ServiceRegistration> list;
+                Map<Byte, ServiceRegistration> list;
                 synchronized (Activator.devices) {
                     final String ieee = node.getIEEEAddress();
                     list = Activator.devices.get(ieee);
                     if (list == null) {
-                        list = new TByteObjectHashMap<ServiceRegistration>();
+                        list = new HashMap<Byte, ServiceRegistration>();
                         Activator.devices.put(ieee, list);
                     }
                 }
@@ -383,7 +384,7 @@ public class DeviceBuilderThread implements Stoppable {
         node.setNetworkAddress(nwk);
         ZigBeeNodeImpl aux = node.clone();
 
-        final TByteObjectHashMap<ServiceRegistration> registrations;
+        final Map<Byte, ServiceRegistration> registrations;
         synchronized (Activator.devices) {
             registrations = Activator.devices.get(node.getIEEEAddress());
         }
@@ -392,14 +393,13 @@ public class DeviceBuilderThread implements Stoppable {
                     + "we identified a network address changing");
             return;
         }
-        ServiceRegistration[] regs = registrations
-                .getValues(new ServiceRegistration[] {});
-        for (int i = 0; i < regs.length; i++) {
-            ServiceReference ref = regs[i].getReference();
+        Collection<ServiceRegistration> regs = registrations.values();
+        for (ServiceRegistration reg : regs) {
+            ServiceReference ref = reg.getReference();
             final ZigBeeDeviceImpl device = (ZigBeeDeviceImpl) Activator
                     .getBundleContext().getService(ref);
             device.setPhysicalNode(aux);
-            regs[i].setProperties(device.getDescription());
+            reg.setProperties(device.getDescription());
         }
     }
 

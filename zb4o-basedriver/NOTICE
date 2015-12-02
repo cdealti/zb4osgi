@@ -20,10 +20,6 @@ This product uses software developed at
 The OPS4J (http://www.ops4j.org)
 Licensed under the Apache License 2.0.
 
-This product uses software developed at
-The GNU Trove (http://trove4j.sourceforge.net)
-Licensed under the Lesser GNU Public License.
-
 
 III. Specification used
 
@@ -37,4 +33,3 @@ IV. License Summary
 
 - Apache License 2.0
 - ZigBee Non-Member License
-- Lesser GNU Public License

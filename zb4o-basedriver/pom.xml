@@ -147,10 +147,6 @@
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.trove4j</groupId>
-			<artifactId>trove4j</artifactId>
-		</dependency>
 	</dependencies>
 
 	<properties>
@@ -185,7 +181,6 @@
 							it.cnr.isti.primitivetypes.util,
 							it.cnr.isti.osgi.util,
 							it.cnr.isti.thread.*,
-							gnu.trove.*,
 							org.osgi.*,
 							org.slf4j; provider=paxlogging,
 						</Import-Package>

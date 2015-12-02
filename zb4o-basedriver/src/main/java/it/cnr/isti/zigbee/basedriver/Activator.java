@@ -24,7 +24,7 @@ package it.cnr.isti.zigbee.basedriver;
 
 
 
-import gnu.trove.TByteObjectHashMap;
+
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeDeviceImpl;
 import it.cnr.isti.zigbee.basedriver.communication.SimpleDriverServiceTracker;
@@ -32,6 +32,7 @@ import it.cnr.isti.zigbee.basedriver.configuration.ConfigurationService;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.osgi.framework.BundleActivator;
@@ -80,7 +81,7 @@ public class Activator implements BundleActivator {
             Activator.getBundleContext().getService( registration.getReference() );
 	 * </pre></code>
 	 */
-	public static final HashMap<String, TByteObjectHashMap<ServiceRegistration>> devices = new HashMap<String, TByteObjectHashMap<ServiceRegistration>>();
+	public static final Map<String, Map<Byte, ServiceRegistration>> devices = new HashMap<String, Map<Byte, ServiceRegistration>>();
 
 	private SimpleDriverServiceTracker tracker;
 
@@ -123,11 +124,11 @@ public class Activator implements BundleActivator {
 
 	public static void unregisterAllDeviceService() {
 		synchronized (devices) {
-			for (TByteObjectHashMap<ServiceRegistration> registrations : devices
+			for (Map<Byte, ServiceRegistration> registrations : devices
 					.values()) {
 
-				for (Object registration : registrations.getValues()) {
-					((ServiceRegistration) registration).unregister();
+				for (ServiceRegistration registration : registrations.values()) {
+					registration.unregister();
 				}
 
 			}

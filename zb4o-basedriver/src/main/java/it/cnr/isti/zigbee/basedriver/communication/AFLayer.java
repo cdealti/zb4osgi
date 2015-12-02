@@ -22,18 +22,19 @@
 
 package it.cnr.isti.zigbee.basedriver.communication;
 
-import gnu.trove.TByteByteHashMap;
-import gnu.trove.TObjectByteHashMap;
-import gnu.trove.TShortArrayList;
-import gnu.trove.TShortHashSet;
-import gnu.trove.TShortObjectHashMap;
 import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.api.ZigBeeDevice;
 import it.cnr.isti.zigbee.basedriver.Activator;
 import it.cnr.isti.zigbee.basedriver.discovery.ZigBeeNetwork;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,9 +86,9 @@ public class AFLayer {
 	
 	private static AFLayer singleton;
 	
-	final TObjectByteHashMap<SenderIdentifier> sender2EndPoint = new TObjectByteHashMap<SenderIdentifier>();
-	final TShortObjectHashMap<TShortArrayList> profile2Cluster = new TShortObjectHashMap<TShortArrayList>();
-	final TByteByteHashMap endPoint2Transaction = new TByteByteHashMap();
+	final Map<SenderIdentifier, Byte> sender2EndPoint = new HashMap<SenderIdentifier, Byte>();
+	final Map<Short, List<Short>> profile2Cluster = new HashMap<Short, List<Short>>();
+	final Map<Byte, Byte> endPoint2Transaction = new HashMap<Byte, Byte>();
 	
 	private final SimpleDriver driver;
 	private final ZigBeeNetwork network;
@@ -191,12 +192,12 @@ public class AFLayer {
 			}
 		} while( true );
 		logger.debug("Registered endpoint {} with clusters: {}", endPoint, clusters);
-		final TShortArrayList list;
+		final List<Short> list;
 		synchronized (profile2Cluster) {
 			if( profile2Cluster.containsKey(si.profileId)){
 				list = profile2Cluster.get(si.profileId);
 			}else{
-				list = new TShortArrayList();
+				list = new ArrayList<Short>();
 				profile2Cluster.put(si.profileId, list);
 			}
 		}
@@ -204,7 +205,7 @@ public class AFLayer {
 			for (int i = 0; i < clusters.length; i++) {
 				list.add(clusters[i]);
 				SenderIdentifier adding = new SenderIdentifier(si.profileId,clusters[i]);
-				if( sender2EndPoint.contains(adding) ) {
+				if( sender2EndPoint.containsKey(adding) ) {
 					logger.warn("Overriding a valid <profileId,clusterId> endpoint with this {}",adding);
 				}
 				logger.debug("Adding <profileId,clusterId> <{},{}> to sender2EndPoint hashtable", adding.profileId, adding.clusterId);
@@ -215,7 +216,7 @@ public class AFLayer {
 	}
 
 	private short[] collectClusterForProfile(short profileId) {
-		final TShortHashSet clusters = new TShortHashSet();
+		final Set<Short> clusters = new HashSet<Short>();
 		final Collection<ZigBeeDevice> devices = network.getDevices(profileId);
 		logger.debug("Found {} devices belonging to profile {}", devices.size(), profileId);
 		for (ZigBeeDevice device : devices) {
@@ -238,16 +239,20 @@ public class AFLayer {
 			}
 		}
 		
-		final TShortArrayList implementedCluster = profile2Cluster.get(profileId);
+		final List<Short> implementedCluster = profile2Cluster.get(profileId);
 		if (implementedCluster != null){
-			final short[] implemented = implementedCluster.toNativeArray();
-			logger.debug("List of clusters of profile {} already provided by some registered endpoint {}", profileId, implemented);
-			clusters.removeAll(implemented);
+			logger.debug("List of clusters of profile {} already provided by some registered endpoint {}", profileId, implementedCluster);
+			clusters.removeAll(implementedCluster);
 		}else{
 			logger.debug("No previus clusters registered on any endpoint of the dongle for the profile {}", profileId);
 		}
 		
-		return clusters.toArray();
+		short[] result = new short[clusters.size()];
+		int i = 0;
+		for (Short cluster : clusters) {
+			result[i++] = cluster;
+		}
+		return result;		
 	}
 
 	public ZigBeeNetwork getZigBeeNetwork() {

@@ -22,7 +22,7 @@
 
 package it.cnr.isti.zigbee.basedriver.api.impl;
 
-import gnu.trove.TIntHashSet;
+
 import it.cnr.isti.thread.ThreadUtils;
 import it.cnr.isti.zigbee.api.Cluster;
 import it.cnr.isti.zigbee.api.ClusterFilter;
@@ -84,7 +84,7 @@ public class ZigBeeDeviceImpl implements ZigBeeDevice, AFMessageListner, AFMessa
     private final SimpleDriver driver;
     private final byte endPointAddress;
 
-    private final TIntHashSet boundCluster = new TIntHashSet();
+    private final HashSet<Integer> boundCluster = new HashSet<Integer>();
     private final HashSet<ClusterListner> listeners = new HashSet<ClusterListner>();
     private final HashSet<AFMessageConsumer> consumers = new HashSet<AFMessageConsumer>();
     private String uuid = null;

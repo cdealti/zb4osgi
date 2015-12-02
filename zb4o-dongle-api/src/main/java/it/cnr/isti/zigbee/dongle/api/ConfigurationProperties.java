@@ -147,7 +147,7 @@ public interface ConfigurationProperties {
     /**
      * The default value for the {@link #APPLICATION_MSG_TIMEOUT_KEY} property, that is <b>2500ms</b>
      */
-    public final static int APPLICATION_MSG_TIMEOUT = 2500;
+    public final static int APPLICATION_MSG_TIMEOUT = 10000;
 
     /**
      * Key to use to control the how much time to wait for waiting an response to a request,<br>

@@ -22,7 +22,7 @@
 
 package it.cnr.isti.zigbee.basedriver.discovery;
 
-import gnu.trove.TShortObjectHashMap;
+
 import it.cnr.isti.primitivetypes.util.Integers;
 import it.cnr.isti.thread.RunnableThread;
 import it.cnr.isti.thread.ThreadUtils;
@@ -32,7 +32,9 @@ import it.cnr.isti.zigbee.basedriver.api.impl.ZigBeeNodeImpl;
 import it.cnr.isti.zigbee.dongle.api.SimpleDriver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.aaloa.zb4osgi.api.monitor.ZigBeeDiscoveryMonitor;
 import org.osgi.framework.InvalidSyntaxException;
@@ -68,7 +70,7 @@ public class LQINetworkBrowserThread extends RunnableThread {
     final SimpleDriver driver;
 
     final ArrayList<NetworkAddressNodeItem> toInspect = new ArrayList<NetworkAddressNodeItem>();
-    final TShortObjectHashMap<NetworkAddressNodeItem> alreadyInspected = new TShortObjectHashMap<NetworkAddressNodeItem>();
+    final Map<Short, NetworkAddressNodeItem> alreadyInspected = new HashMap<Short, NetworkAddressNodeItem>();
     private List<NetworkAddressNodeItem> connectedNodesFound = new ArrayList<NetworkAddressNodeItem>();
 
     private class NetworkAddressNodeItem {

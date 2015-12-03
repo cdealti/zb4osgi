@@ -822,6 +822,23 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 		}
 		return true;
 	}
+	
+	private boolean dongleSetZdoDirectCallbackEnabled(boolean yesno) {
+		ZB_WRITE_CONFIGURATION_RSP response;
+		response = (ZB_WRITE_CONFIGURATION_RSP) sendSynchrouns(
+				high,
+				new ZB_WRITE_CONFIGURATION(
+						ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_ZDO_DIRECT_CB,
+						new int[] { yesno ? 1 : 0 }));
+
+		if (response == null || response.Status != 0) {
+			logger.info("Couldn't set ZCD_NV_ZDO_DIRECT_CB to {}", yesno);
+			return false;
+		} else {
+			logger.info("Set ZCD_NV_ZDO_DIRECT_CB to {}", yesno);
+		}
+		return true;
+	}
 
 	static final int[] buildChannelMask(int channel) {
 		int channelMask = 1 << channel;
@@ -1056,6 +1073,10 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 		// }
 		if (!dongleSetCleanState(true)) {
 			logger.error("Unable to set clean state for dongle");
+			return false;
+		}
+		if (!dongleSetZdoDirectCallbackEnabled(true)) {
+			logger.error("Unable to enable ZDO direct callback for dongle");
 			return false;
 		}
 		if (!dongleSetChannel()) {

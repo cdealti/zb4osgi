@@ -50,6 +50,7 @@ public class ZB_WRITE_CONFIGURATION extends ZToolPacket/* implements IREQUEST,IS
         public class CONFIG_ID{
             public static final int ZCD_NV_STARTUP_OPTION=0x03;
             public static final int ZCD_NV_LOGICAL_TYPE=0x87;
+            public static final int ZCD_NV_ZDO_DIRECT_CB=0x8F;
             public static final int ZCD_NV_POLL_RATE=0x24;
             public static final int ZCD_NV_QEUED_POL_RATE=0x25;
             public static final int ZCD_NV_RESPONSE_POLL_RATE=0x26;

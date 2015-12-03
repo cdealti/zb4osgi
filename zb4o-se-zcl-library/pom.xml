@@ -150,9 +150,7 @@ A set of Java classes reppresenting the Smart Energy v.1 ZigBee Cluster library
 							it.cnr.isti.zigbee.api,
 							it.cnr.isti.zigbee.zcl.library.api.*,
 							it.cnr.isti.zigbee.zcl.library.impl.*,
-							org.slf4j;
-							provider=paxlogging
-
+							org.slf4j
 						</Import-Package>
 						<Export-Package>
 							it.cnr.isti.zigbee.se.zcl.library.api.*;version=${project.version},

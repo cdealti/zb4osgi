@@ -190,7 +190,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
 							it.cnr.isti.zigbee.zhccl.*,
 							it.cnr.isti.osgi.util,
 							org.osgi.*,
-							org.slf4j; provider=paxlogging
+							org.slf4j
 						</Import-Package>
 					</instructions>
 				</configuration>

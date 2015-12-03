@@ -192,7 +192,7 @@
 							it.cnr.isti.zigbee.dongle.api*,
 							it.cnr.isti.cc2480.*, javax.swing,
 							it.cnr.isti.primitivetypes.util, it.cnr.isti.osgi.util,
-							org.slf4j.*; provider=paxlogging
+							org.slf4j.*
 						</Import-Package>
 						<Export-Package>
 						</Export-Package>

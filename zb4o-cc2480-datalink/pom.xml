@@ -194,8 +194,7 @@
 							it.cnr.isti.primitivetypes.util,
 							it.cnr.isti.osgi.util,
 							gnu.io.*, javax.swing.*,
-							org.slf4j.*;
-							provider=paxlogging
+							org.slf4j.*
 						</Import-Package>
 						<Export-Package>
 							com.itaca.ztool.*;version=${project.version},

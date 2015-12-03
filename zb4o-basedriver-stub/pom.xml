@@ -97,8 +97,7 @@
 						<Import-Package>
 							it.cnr.isti.zigbee.api.*,
 							org.osgi.*,
-							org.slf4j;
-							provider=paxlogging
+							org.slf4j
 						</Import-Package>
 					</instructions>
 				</configuration>

@@ -152,8 +152,7 @@ A set of Java classes reppresenting the Energy@Home ZigBee Cluster library
 							it.cnr.isti.zigbee.api,
 							it.cnr.isti.zigbee.zcl.library.api.*,
 							it.cnr.isti.zigbee.zcl.library.impl.*,
-							org.slf4j;
-							provider=paxlogging
+							org.slf4j
 						</Import-Package>
 						<Export-Package>
 							it.cnr.isti.zigbee.eh.zcl.library.*;version=${project.version}

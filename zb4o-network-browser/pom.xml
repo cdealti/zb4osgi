@@ -100,7 +100,7 @@
 							org.aaloa.zb4osgi.api.monitor,
 							org.osgi.*,
 							org.ops4j.*,
-							org.slf4j.*; provider=paxlogging
+							org.slf4j.*
 						</Import-Package>
 					</instructions>
 				</configuration>

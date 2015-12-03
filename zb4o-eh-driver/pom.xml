@@ -182,7 +182,7 @@ as defined by the ZigBee OSGi Base Driver, using the OSGi Device Access Specific
 							it.cnr.isti.zigbee.ha,
 							it.cnr.isti.zigbee.ha.cluster.impl.other_profiles.smart_energy,
 							org.osgi.*,
-							org.slf4j; provider=paxlogging,
+							org.slf4j,
 							it.cnr.isti.zigbee.eh.zcl.library.impl;version=${project.version},
 							it.cnr.isti.zigbee.ha.cluster.glue.general,
 							it.cnr.isti.zigbee.ha.cluster.impl,

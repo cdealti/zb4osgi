@@ -132,7 +132,7 @@
 						<Bundle-Activator />
 						<Import-Package>
 							org.osgi.*,
-							org.slf4j; provider=paxlogging
+							org.slf4j
 						</Import-Package>
 						<Export-Package>
 							it.cnr.isti.*;version=${project.version}

@@ -190,7 +190,7 @@
 							gnu.io.*,
 							com.itaca.ztool.*,
 							it.cnr.isti.zigbee.dongle.api*,
-							it.cnr.isti.cc2480.*, javax.swing,
+							it.cnr.isti.cc2480.*,
 							it.cnr.isti.primitivetypes.util, it.cnr.isti.osgi.util,
 							org.slf4j.*
 						</Import-Package>

@@ -193,7 +193,7 @@
 							it.cnr.isti.collections,
 							it.cnr.isti.primitivetypes.util,
 							it.cnr.isti.osgi.util,
-							gnu.io.*, javax.swing.*,
+							gnu.io.*,
 							org.slf4j.*
 						</Import-Package>
 						<Export-Package>

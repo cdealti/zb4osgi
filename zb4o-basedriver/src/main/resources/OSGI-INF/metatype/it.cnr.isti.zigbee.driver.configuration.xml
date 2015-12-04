@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0" localization="en_us">
+    <OCD id="it.cnr.isti.zigbee.driver.configuration"
+         name="ZigBeeService"
+         description="ZigBeeService configuration">
+        
+        <Icon resource="" size="32"/>
+        
+       	<AD id="it.cnr.isti.zigbee.pan.id"
+            name="it.cnr.isti.zigbee.pan.id"
+            type="Integer"
+            cardinality="0"
+            required="true"
+            default="65535"
+            min="0"
+            max="65535"
+            description="ZigBee PAN ID (decimal). Set to 65535 for automatic selection."/>
+
+       	<AD id="it.cnr.isti.zigbee.epan.id"
+            name="it.cnr.isti.zigbee.epan.id"
+            type="String"
+            cardinality="0"
+            required="true"
+            default="0x1122334455667788"
+            description="ZigBee Extended PAN ID (0x0000000000000000..0xFFFFFFFFFFFFFFFF - not implemented yet)."/>
+            
+        <AD id="it.cnr.isti.zigbee.network.security.enable"
+            name="it.cnr.isti.zigbee.network.security.enable"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Enable network security (not implemented yet)."/>
+
+       	<AD id="it.cnr.isti.zigbee.network.key"
+            name="it.cnr.isti.zigbee.network.key"
+            type="String"
+            cardinality="0"
+            required="true"
+            default="0x1122334455667788"
+            description="ZigBee Network Key (not implemented yet)."/>
+        
+        <AD id="it.cnr.isti.zigbee.network.key.distribute"
+            name="it.cnr.isti.zigbee.network.key.distribute"
+            type="Boolean"
+            cardinality="0"
+            required="true"
+            default="false"
+            description="Enable distributing the Network Key UNENCRYPTED (not implemented yet)."/>
+            
+        <AD id="it.cnr.isti.zigbee.permit.joining"
+            name="it.cnr.isti.zigbee.permit.joining"
+            type="Integer"
+            cardinality="0"
+            required="true"
+            default="255"
+            min="0"
+            max="255"
+            description="Initial interval [s] the network will permit joining (255: forever - not implemented yet)."/>
+            
+        <AD id="it.cnr.isti.zigbee.channel.11"
+            name="it.cnr.isti.zigbee.channel.11"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="true"
+            description="Channel 11."/>
+            
+        <AD id="it.cnr.isti.zigbee.channel.12"
+            name="it.cnr.isti.zigbee.channel.12"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 12."/>
+            
+        <AD id="it.cnr.isti.zigbee.channel.13"
+            name="it.cnr.isti.zigbee.channel.13"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 13."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.14"
+            name="it.cnr.isti.zigbee.channel.14"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 14."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.15"
+            name="it.cnr.isti.zigbee.channel.15"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 15."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.16"
+            name="it.cnr.isti.zigbee.channel.16"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 16."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.17"
+            name="it.cnr.isti.zigbee.channel.17"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 17."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.18"
+            name="it.cnr.isti.zigbee.channel.18"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 18."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.19"
+            name="it.cnr.isti.zigbee.channel.19"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 19."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.20"
+            name="it.cnr.isti.zigbee.channel.20"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 20."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.21"
+            name="it.cnr.isti.zigbee.channel.21"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 21."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.22"
+            name="it.cnr.isti.zigbee.channel.22"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 22."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.23"
+            name="it.cnr.isti.zigbee.channel.23"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 23."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.24"
+            name="it.cnr.isti.zigbee.channel.24"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 24."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.25"
+            name="it.cnr.isti.zigbee.channel.25"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 25."/>
+
+        <AD id="it.cnr.isti.zigbee.channel.26"
+            name="it.cnr.isti.zigbee.channel.26"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="false"
+            description="Channel 26."/>
+            
+        <AD id="it.cnr.isti.zigbee.driver.serial.portname"
+            name="it.cnr.isti.zigbee.driver.serial.portname"
+            type="String"
+            cardinality="1"
+            required="true"
+            default="/dev/ttyACM0"
+            description="Serial port name (e.g. /dev/ttyACM0)."/>
+
+        <AD id="it.cnr.isti.zigbee.driver.serial.baudrate"
+            name="it.cnr.isti.zigbee.driver.serial.baudrate"
+            type="Integer"
+            cardinality="1"
+            required="true"
+            default="115200"
+            description="Serial port baudrate.">
+           <Option label="38400" value="38400"/>
+           <Option label="57600" value="57600"/>
+           <Option label="115200" value="115200"/>
+        </AD>
+
+        <AD id="it.cnr.isti.zigbee.driver.serial.flowctl"
+            name="it.cnr.isti.zigbee.driver.serial.flowctl"
+            type="String"
+            cardinality="1"
+            required="true"
+            default="NONE"
+            description="Serial port flow control (not implemented yet).">
+           <Option label="None" value="NONE"/>
+           <Option label="RTS/CTS" value="RTS_CTS"/>
+           <Option label="XON/XOFF" value="XON_XOFF"/>
+        </AD>
+            
+        <AD id="it.cnr.isti.zigbee.driver.flush"
+            name="it.cnr.isti.zigbee.driver.flush"
+            type="Boolean"
+            cardinality="1"
+            required="true"
+            default="true"
+            description="Reset the stack persistence to a clean state."/>
+
+        <AD id="it.cnr.isti.zigbee.driver.communication.retry.count"
+            name="it.cnr.isti.zigbee.driver.communication.retry.count"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="0"
+            default="1"
+            description="Number of transmission retries."/>
+            
+        <AD id="it.cnr.isti.zigbee.driver.communication.retry.delay"
+            name="it.cnr.isti.zigbee.driver.communication.retry.delay"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="0"
+            default="7500"
+            description="Delay between retransmissions in ms."/>
+            
+        <AD id="it.cnr.isti.zigbee.driver.communication.timeout"
+            name="it.cnr.isti.zigbee.driver.communication.timeout"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="0"
+            default="10000"
+            description="Response timeout in ms."/>        
+
+        <AD id="it.cnr.isti.zigbee.driver.network.browsing.period"
+            name="it.cnr.isti.zigbee.driver.network.browsing.period"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="0"
+            default="900000"
+            description="Network discovery interval in ms."/>
+
+        <AD id="it.cnr.isti.zigbee.driver.device.inspection.rate"
+            name="it.cnr.isti.zigbee.driver.device.inspection.rate"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="0"
+            default="10000"
+            description="Device discovery delay in ms."/>
+
+        <AD id="it.cnr.isti.zigbee.driver.communication.ep.address.first"
+            name="it.cnr.isti.zigbee.driver.communication.ep.address.first"
+            type="Integer"
+            cardinality="1"
+            required="true"
+           	min="1"
+           	max="240"
+            default="2"
+            description="First available endpoint for device registration."/>   
+  
+          <AD id="it.cnr.isti.zigbee.driver.discovery.mode"
+              name="it.cnr.isti.zigbee.driver.discovery.mode"
+              type="Integer"
+              cardinality="1"
+              required="true"
+              default="7"
+              description="Network discovery mode.">
+             <Option label="Device_annce" value="1"/>
+             <Option label="IEEE_addr_req" value="2"/>    
+             <Option label="Mgmt_Lqi_req" value="4"/>
+             <Option label="All" value="7"/>
+          </AD>
+
+          <AD id="it.cnr.isti.zigbee.driver.mode"
+              name="it.cnr.isti.zigbee.driver.mode"
+              type="String"
+              cardinality="1"
+              required="true"
+              default="COORDINATOR"
+              description="ZigBee logical type.">
+             <Option label="Coordinator" value="COORDINATOR"/>
+             <Option label="Router" value="ROUTER"/>          
+             <Option label="End Device" value="END_DEVICE"/>
+          </AD>
+
+          <AD id="it.cnr.isti.zigbee.driver.discovery.duplicate.mac.policy"
+              name="it.cnr.isti.zigbee.driver.discovery.duplicate.mac.policy"
+              type="String"
+              cardinality="1"
+              required="true"
+              default="UPDATE"
+              description="The policy to handle an already discovered node by IEEE address.">
+             <Option label="Allow Duplicates" value="IGNORE"/>
+             <Option label="Update" value="UPDATE"/>
+             <Option label="Remove old" value="REGISTER"/>
+          </AD>
+    </OCD>
+    <Designate pid="it.cnr.isti.zigbee.driver.configuration">
+        <Object ocdref="it.cnr.isti.zigbee.driver.configuration"/>
+    </Designate>
+</MetaData>

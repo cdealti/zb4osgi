@@ -800,7 +800,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 					high,
 					new ZB_WRITE_CONFIGURATION(
 							ZB_WRITE_CONFIGURATION.CONFIG_ID.ZCD_NV_STARTUP_OPTION,
-							new int[] { 0x00000002 }));
+							new int[] { 0x00000002 | 0x00000001 }));
 
 			if (response == null || response.Status != 0) {
 				logger.info("Couldn't set ZCD_NV_STARTUP_OPTION to CLEAN_STATE");

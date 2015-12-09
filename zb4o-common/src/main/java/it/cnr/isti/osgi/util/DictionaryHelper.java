@@ -82,59 +82,87 @@ public class DictionaryHelper {
     }
 
     public int getInt(String property) {
-        String value = (String) dictionary.get(property);
-        return Integer.parseInt(value);
+    	if (dictionary.get(property) instanceof Integer) {
+    		return (Integer) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		return Integer.parseInt(value);
+    	}
     }
 
     public int getInt(String property, int defaultValue) {
-        String value = (String) dictionary.get(property);
-        return value == null ? defaultValue : Integer.parseInt(value);
+    	if (dictionary.get(property) instanceof Integer) {
+    		return (Integer) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		return value == null ? defaultValue : Integer.parseInt(value);
+    	}
     }
 
     public boolean getBoolean(String property) {
-        String value = (String) dictionary.get(property);
-        if (value == null) {
-            throw new NullPointerException("Property " + property
-                    + " doesn't exist");
-        } else if (value.equalsIgnoreCase("true")) {
-            return true;
-        } else if (value.equalsIgnoreCase("on")) {
-            return true;
-        } else if (value.equalsIgnoreCase("yes")) {
-            return true;
-        } else {
-            return false;
-        }
+    	if (dictionary.get(property) instanceof Boolean) {
+    		return (Boolean) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		if (value == null) {
+    			throw new NullPointerException("Property " + property
+    					+ " doesn't exist");
+    		} else if (value.equalsIgnoreCase("true")) {
+    			return true;
+    		} else if (value.equalsIgnoreCase("on")) {
+    			return true;
+    		} else if (value.equalsIgnoreCase("yes")) {
+    			return true;
+    		} else {
+    			return false;
+    		}
+    	}
     }
 
     public boolean getBoolean(String property, boolean defaultValue) {
-        String value = (String) dictionary.get(property);
-        if (value == null) {
-            return defaultValue;
-        } else if (value.equalsIgnoreCase("true")) {
-            return true;
-        } else if (value.equalsIgnoreCase("on")) {
-            return true;
-        } else if (value.equalsIgnoreCase("yes")) {
-            return true;
-        } else {
-            return false;
-        }
+    	if (dictionary.get(property) instanceof Boolean) {
+    		return (Boolean) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		if (value == null) {
+    			return defaultValue;
+    		} else if (value.equalsIgnoreCase("true")) {
+    			return true;
+    		} else if (value.equalsIgnoreCase("on")) {
+    			return true;
+    		} else if (value.equalsIgnoreCase("yes")) {
+    			return true;
+    		} else {
+    			return false;
+    		}
+    	}
     }
 
     public long getLong(String property) {
-        String value = (String) dictionary.get(property);
-        return Long.parseLong(value);
+    	if (dictionary.get(property) instanceof Long) {
+    		return (Long) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		return Long.parseLong(value);
+    	}
     }
 
     public long getLong(String property, long defaultValue) {
-        String value = (String) dictionary.get(property);
-        return value == null ? defaultValue : Long.parseLong(value);
+    	if (dictionary.get(property) instanceof Long) {
+    		return (Long) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		return value == null ? defaultValue : Long.parseLong(value);
+    	}
     }
 
     public double getDouble(String property, double defaultValue) {
-        String value = (String) dictionary.get(property);
-        return value == null ? defaultValue : Double.parseDouble(value);
+    	if (dictionary.get(property) instanceof Double) {
+    		return (Double) dictionary.get(property);
+    	} else {
+    		String value = (String) dictionary.get(property);
+    		return value == null ? defaultValue : Double.parseDouble(value);
+    	}
     }
 
     /**

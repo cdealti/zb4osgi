@@ -121,6 +121,11 @@
 			<artifactId>externals-rxtx</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.kura</groupId>
+			<artifactId>org.eclipse.soda.dk.comm</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
@@ -193,7 +198,8 @@
 							it.cnr.isti.collections,
 							it.cnr.isti.primitivetypes.util,
 							it.cnr.isti.osgi.util,
-							gnu.io.*,
+							gnu.io.*;resolution:=optional,
+							javax.comm.*;resolution:=optional,
 							org.slf4j.*
 						</Import-Package>
 						<Export-Package>

@@ -187,7 +187,6 @@
 						</Private-Package>
 						<Import-Package>
 							org.osgi.*,
-							gnu.io.*,
 							com.itaca.ztool.*,
 							it.cnr.isti.zigbee.dongle.api*,
 							it.cnr.isti.cc2480.*,

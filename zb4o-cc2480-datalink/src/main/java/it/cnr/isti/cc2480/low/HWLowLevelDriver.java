@@ -87,8 +87,9 @@ public class HWLowLevelDriver
      */
     public static final String SERIAL_HANLDER_KEY = "it.cnr.isti.cc2480.low.serial_handler";
 
-    public static final String SERIAL_HANLDER_DEFAULT = "it.cnr.isti.cc2480.low.RealSerialComm";
-
+    //public static final String SERIAL_HANLDER_DEFAULT = "it.cnr.isti.cc2480.low.RealSerialComm";
+    public static final String SERIAL_HANLDER_DEFAULT = "it.cnr.isti.cc2480.low.RealJavaxCommSerial";
+    
     private List<Throwable> errorList = new ArrayList<Throwable>();
 
     private final HashSet<PacketListener> listeners = new HashSet<PacketListener>();

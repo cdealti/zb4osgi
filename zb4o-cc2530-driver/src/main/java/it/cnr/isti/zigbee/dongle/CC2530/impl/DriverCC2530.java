@@ -21,7 +21,6 @@
  */
 package it.cnr.isti.zigbee.dongle.CC2530.impl;
 
-import gnu.io.CommPortIdentifier;
 import it.cnr.isti.cc2480.high.AsynchrounsCommandListener;
 import it.cnr.isti.cc2480.high.HWHighLevelDriver;
 import it.cnr.isti.cc2480.high.SynchrounsCommandListner;
@@ -410,7 +409,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 			low.close();
 			setState(DriverStatus.CREATED);
 		}
-		if (state == DriverStatus.CREATED) {
+		if (state == DriverStatus.CREATED || state == DriverStatus.HARDWARE_INITIALIZING) {
 			setState(DriverStatus.CLOSED);
 		}
 		logger.info("Closed");
@@ -606,32 +605,13 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	@SuppressWarnings("unchecked")
 	private boolean initializeHardware() {
 		String portToOpen = null;
-		if ("auto".equalsIgnoreCase(port)) {
-			logger.info("Automatic discovery the dongle port by inspecting all the serial ports...");
-			Enumeration<CommPortIdentifier> ports = CommPortIdentifier
-					.getPortIdentifiers();
-			while (ports.hasMoreElements()) {
-				CommPortIdentifier com = ports.nextElement();
-				if (initializeHardware(com.getName(), rate)) {
-					portToOpen = com.getName();
-					Thread.currentThread().setName(
-							buildDriverThreadName(portToOpen, rate, channel));
-					break;
-				}
-			}
-			if (portToOpen == null) {
-				logger.error("Automatic discovery FAILED! the dongle couldn't be find on any port: it may be frozen");
-				return false;
-			}
+		if (initializeHardware(port, rate) == true) {
+			portToOpen = port;
 		} else {
-			if (initializeHardware(port, rate) == true) {
-				portToOpen = port;
-			} else {
-				logger.error(
-						"Failed to intialize the dongle on port {} at rate {}",
-						port, rate);
-				return false;
-			}
+			logger.error(
+					"Failed to intialize the dongle on port {} at rate {}",
+					port, rate);
+			return false;
 		}
 
 		low = new HWLowLevelDriver();

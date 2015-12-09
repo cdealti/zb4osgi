@@ -376,6 +376,10 @@ public class ConfigurationService implements ManagedService {
                     SimpleDriver.class.getName());
             return;
         }
+        if (driver != null) {
+        	logger.info("Closing driver {}", driver);
+        	driver.close();
+        }
         if (driver != null && driver.getDriverStatus() != DriverStatus.CLOSED) {
             logger.info(
                     "{} not configured nor started because its status is not equal to CLOSED",

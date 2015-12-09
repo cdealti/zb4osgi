@@ -247,7 +247,7 @@
             
         <AD id="it.cnr.isti.zigbee.driver.communication.timeout"
             name="it.cnr.isti.zigbee.driver.communication.timeout"
-            type="Integer"
+            type="Long"
             cardinality="1"
             required="true"
            	min="0"
@@ -256,7 +256,7 @@
 
         <AD id="it.cnr.isti.zigbee.driver.network.browsing.period"
             name="it.cnr.isti.zigbee.driver.network.browsing.period"
-            type="Integer"
+            type="Long"
             cardinality="1"
             required="true"
            	min="0"
@@ -265,7 +265,7 @@
 
         <AD id="it.cnr.isti.zigbee.driver.device.inspection.rate"
             name="it.cnr.isti.zigbee.driver.device.inspection.rate"
-            type="Integer"
+            type="Long"
             cardinality="1"
             required="true"
            	min="0"

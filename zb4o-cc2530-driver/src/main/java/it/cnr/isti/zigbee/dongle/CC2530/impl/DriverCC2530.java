@@ -442,7 +442,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 
 	public ZDO_MGMT_LQI_RSP sendLQIRequest(ZDO_MGMT_LQI_REQ request) {
 
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_MGMT_LQI_RSP result = null;
 
@@ -464,7 +464,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	}
 
 	public ZDO_IEEE_ADDR_RSP sendZDOIEEEAddressRequest(ZDO_IEEE_ADDR_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_IEEE_ADDR_RSP result = null;
 
@@ -487,7 +487,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 
 	public ZDO_NODE_DESC_RSP sendZDONodeDescriptionRequest(
 			ZDO_NODE_DESC_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_NODE_DESC_RSP result = null;
 
@@ -509,7 +509,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 
 	public ZDO_ACTIVE_EP_RSP sendZDOActiveEndPointRequest(
 			ZDO_ACTIVE_EP_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_ACTIVE_EP_RSP result = null;
 
@@ -538,7 +538,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 			Class<?> clz = request.getClass();
 			Thread requestor = null;
 			while ((requestor = conversation3Way.get(clz)) != null) {
-				if (requestor.isAlive() == false) {
+				if (!requestor.isAlive()) {
 					logger.error("Thread {} whom requested {} DIED before unlocking the conversation");
 					logger.debug("The thread {} who was waiting for {} to complete DIED, so we have to remove the lock");
 					conversation3Way.put(clz, null);
@@ -584,7 +584,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 
 	public ZDO_SIMPLE_DESC_RSP sendZDOSimpleDescriptionRequest(
 			ZDO_SIMPLE_DESC_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_SIMPLE_DESC_RSP result = null;
 		waitAndLock3WayConversation(request);
@@ -606,7 +606,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	public void run() {
 		logger.info("Initializing");
 		setState(DriverStatus.HARDWARE_INITIALIZING);
-		if (initializeHardware() == true) {
+		if (initializeHardware()) {
 			setState(DriverStatus.HARDWARE_READY);
 		} else {
 			close();
@@ -628,7 +628,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	@SuppressWarnings("unchecked")
 	private boolean initializeHardware() {
 		String portToOpen = null;
-		if (initializeHardware(port, rate) == true) {
+		if (initializeHardware(port, rate)) {
 			portToOpen = port;
 		} else {
 			logger.error(
@@ -774,7 +774,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
     }
 
 	private boolean dongleReset() {
-		if (waitForHardware() == false)
+		if (!waitForHardware())
 			return false;
 
 		final WaitForCommand waiter = new WaitForCommand(
@@ -1080,12 +1080,12 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 		boolean cleanNetworkState = cleanStatus;
 
 		if (cleanNetworkState) {
-			if (doCleanAndSetConfiguration() == false) {
+			if (!doCleanAndSetConfiguration()) {
 				return false;
 			}
 		}
 		boolean creation = createZigBeeNetwork();
-		if (creation == false) {
+		if (!creation) {
 			return false;
 		}
 		if (doesCurrentConfigurationMatchZStackConfiguration()) {
@@ -1156,7 +1156,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 			logger.error("Unable to set clean state for dongle");
 			return false;
 		}
-		if (dongleSetNetworkMode() == false) {
+		if (!dongleSetNetworkMode()) {
 			logger.error("Unable to set NETWORK_MODE for ZigBee Network");
 			return false;
 		} else {
@@ -1447,7 +1447,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	}
 
 	public AF_REGISTER_SRSP sendAFRegister(AF_REGISTER request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 
 		AF_REGISTER_SRSP response = (AF_REGISTER_SRSP) sendSynchrouns(high,
@@ -1456,7 +1456,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	}
 
 	public AF_DATA_CONFIRM sendAFDataRequest(AF_DATA_REQUEST request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		AF_DATA_CONFIRM result = null;
 
@@ -1475,7 +1475,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	}
 
 	public ZDO_BIND_RSP sendZDOBind(ZDO_BIND_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_BIND_RSP result = null;
 
@@ -1495,7 +1495,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	}
 
 	public ZDO_UNBIND_RSP sendZDOUnbind(ZDO_UNBIND_REQ request) {
-		if (waitForNetwork() == false)
+		if (!waitForNetwork())
 			return null;
 		ZDO_UNBIND_RSP result = null;
 
@@ -1591,7 +1591,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	 * @since 0.2.0
 	 */
 	public long getExtendedPanId() {
-		if (waitForNetwork() == false) {
+		if (!waitForNetwork()) {
 			logger.info(
 					"Failed to reach the {} level: getExtendedPanId() failed",
 					DriverStatus.NETWORK_READY);
@@ -1619,7 +1619,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 			return ieeeAddress;
 		}
 
-		if (waitForNetwork() == false) {
+		if (!waitForNetwork()) {
 			logger.info(
 					"Failed to reach the {} level: getIEEEAddress() failed",
 					DriverStatus.NETWORK_READY);
@@ -1642,7 +1642,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	 * @since 0.2.0
 	 */
 	public int getCurrentPanId() {
-		if (waitForNetwork() == false) {
+		if (!waitForNetwork()) {
 			logger.info(
 					"Failed to reach the {} level: getCurrentPanId() failed",
 					DriverStatus.NETWORK_READY);
@@ -1664,7 +1664,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	 * @since 0.2.0
 	 */
 	public int getCurrentChannel() {
-		if (waitForNetwork() == false) {
+		if (!waitForNetwork()) {
 			logger.info(
 					"Failed to reach the {} level: getCurrentChannel() failed",
 					DriverStatus.NETWORK_READY);
@@ -1686,7 +1686,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 	 * @since 0.2.0
 	 */
 	public int getCurrentState() {
-		if (waitForNetwork() == false) {
+		if (!waitForNetwork()) {
 			logger.info(
 					"Failed to reach the {} level: getCurrentChannel() failed",
 					DriverStatus.NETWORK_READY);

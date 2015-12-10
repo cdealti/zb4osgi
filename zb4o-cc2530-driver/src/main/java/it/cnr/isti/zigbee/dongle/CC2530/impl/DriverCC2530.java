@@ -233,6 +233,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 						break;
 					case 9:
 						logger.debug("Started as Zigbee Coordinator");
+						setState(DriverStatus.NETWORK_READY);
 						break;
 					case 10:
 						logger.debug("Device has lost information about its parent");
@@ -613,9 +614,7 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 		}
 
 		setState(DriverStatus.NETWORK_INITIALIZING);
-		if (initializeZigBeeNetwork() == true) {
-			setState(DriverStatus.NETWORK_READY);
-		} else {
+		if (!initializeZigBeeNetwork()) {
 			/*
 			 * We reset the status of the driver to HARDWARE_READY because the
 			 * network initialization failed
@@ -1089,7 +1088,6 @@ public class DriverCC2530 implements Runnable, SimpleDriver {
 		if (creation == false) {
 			return false;
 		}
-		setState(DriverStatus.NETWORK_READY);
 		if (doesCurrentConfigurationMatchZStackConfiguration()) {
 			logger.warn("ZigBee Network has been initialized but it seems that "
 					+ "the Dongle configuration does not match the specified configuration."
